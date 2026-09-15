@@ -11,5 +11,5 @@ window.BUDGET_CONFIG = {
   // From finnhub.io → Dashboard → API key. Only the Portfolio tab uses it.
   finnhubKey: "dajfpt1r01qhhp590du0dajfpt1r01qhhp590dug",
   // Only these Google accounts can open the tracker. Anyone else gets a closed door.
-  allowedEmails: ["amast126@gmail.com"],
+  allowedEmails: ["amast126@gmail.com", "my2als66@gmail.com"],
 };
