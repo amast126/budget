@@ -12,4 +12,7 @@ window.BUDGET_CONFIG = {
   finnhubKey: "dajfpt1r01qhhp590du0dajfpt1r01qhhp590dug",
   // Only these Google accounts can open the tracker. Anyone else gets a closed door.
   allowedEmails: ["amast126@gmail.com", "my2als66@gmail.com"],
+  // The account that owns the tracker. Everyone else on the list gets a live, read-only view.
+  ownerEmail: "amast126@gmail.com",
+  sharedDocId: "alec-tracker",
 };
