@@ -2,7 +2,8 @@
 
 Private, single-user dashboard at **https://amast126.github.io/budget/**. Only the owner's Google account gets in.
 
-- **Home** (`index.html` + `dashboard.js`, source in `src/`): money bar, quick add, bills this week, categories running hot, and a News card (US politics from AP and Reuters, top posts on r/popular).
+- **Home** (`index.html` + `dashboard.js`, source in `src/`): money bar, quick add, bills this week, categories running hot, Learning and Cooking cards.
+- **News**: its own tab with US politics (AP, Reuters), Tech & AI (The Verge, Ars Technica, TechCrunch, Wired, Reuters tech), Reddit (r/popular), Pop culture (Variety, THR, Vulture, EW) and Music (Pitchfork, Billboard, Stereogum, Rolling Stone, Guitar World). Sources are set at the top of `scripts/fetch-news.mjs`.
 - **Budget** (`budget.html` + `app.js`): the original budget tracker, unchanged, shown inside the app. Its source is not in this repo; `app.js` is the prebuilt bundle.
 - **Learning** (`src/learning*.js*`): Cloud & AI certification roadmap with links, descriptions and impact, progress tracking (status, exam dates, study hours, renewals). Cert details live in `src/learning-catalog.js`; progress is saved in `trackers/alec-tracker-learning`.
 - **Cooking** (`src/cooking*.js*`, `src/ingredients.mjs`): kitchen list (fridge, freezer, pantry, spices, with a "running low" flag), grocery list, and recipes matched against what you have. "Finish shop" logs the total under Groceries in the budget and moves bought items into the kitchen. Saved in `trackers/alec-tracker-cooking`.
