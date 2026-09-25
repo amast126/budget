@@ -1,1 +1,854 @@
-{"generated":null,"sources":{},"politics":[],"reddit":[]}
+{
+ "generated": "2026-09-25T16:37:24.168Z",
+ "sources": {
+  "ap": {
+   "ok": true,
+   "count": 100,
+   "checked": "2026-09-25T16:37:24.168Z"
+  },
+  "reuters": {
+   "ok": true,
+   "count": 27,
+   "checked": "2026-09-25T16:37:24.168Z"
+  },
+  "reddit": {
+   "ok": true,
+   "count": 25,
+   "checked": "2026-09-25T16:37:24.168Z"
+  }
+ },
+ "politics": [
+  {
+   "id": "ap-odj1on",
+   "title": "Nor’easter to lash the East Coast with strong winds, flooding and heavy rain",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQdGRqdGEzMGFJUjh3UDU4cDJaaGdaWnNMYVpJS1Fid19ueFRYeXRMTGtJODdIeGE4RlYwZnpzU2JWYTdaQnk5LW5KRGluRjVjX2U5cS11UzY4Q0FDQXdWRVJENnluUHBMT1hKa0NRUDlUNU9pVVR0MXN0MFRNLV94WjduYUVkODlBNTdoQUtHUDNvNHp1REV3NWZXQ2c?oc=5",
+   "date": "2026-09-25T16:31:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-12p8ta0",
+   "title": "Pope warns a ‘paradise of machines’ could undermine humanity as he opens France trip",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQY0JDWkxQellXWFhSUEQ1QnBGOXkyQ1pHTkptZlAtYzhWbXZtMjJPSzRvRGd6MU01NF9MRE9Ya08wRmlPZEFzdW50TGJUMU9XQ0JBZGNxVVZQVnItaGNIQXVJMld0anFha1M2Z3paWFF0OXVpX1lYSWY5WTRaV1FlREp1T3I?oc=5",
+   "date": "2026-09-25T16:24:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1n5nej0",
+   "title": "Supreme Court lets Trump administration use revamped federal voter eligibility database for now",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNTjdiQ0dkQkV2V1J1Z19HdURxN0pmMlI3d1dRN2N6QmZpUjFRbUZYd1hMM1JuN0tnaW9Fd1kzRFVwUFh4SGdCVzFpZHJkZDgtV0pRVHd5NzNpZUtGa0xTcnc3VlNwVVZabDZWVDVvU1h2a2luY2NMNkFpWUluMWJHTlhpZXdJUUFTTXFwTTRqS3hvTGI4SFJ2WmxUeGt1cHA0bGVEQXlUbmtNeGZpdmlzeQ?oc=5",
+   "date": "2026-09-25T16:23:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-13k876e",
+   "title": "Trump told Xi that China helping Iran is unacceptable, US ambassador says",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQS3NaNENZd05ESDQwSFdrTGwyLUtGX3NzT1NiR0tzbWwtM282dHRxbkxLYTk2b1Rkd01xQldYM2ItTlNRV01wbnhDMWpZVkliRnBhMlFWYVg1VHh6bjRCVkQwVGFFamhhWWpJa0p5aHlVRkJpblI1UUZJeDN6VFg1Z1hhdGFBSklFN2ZyVjZ0b1IyNUpoMU5GN0tmTlZPMExVNFppU2ZSRGFwcW1QSElZaktmS3pXSElm?oc=5",
+   "date": "2026-09-25T16:03:29.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-ldkbyi",
+   "title": "Brightline reworks debt in bankruptcy court but its high-speed trains will keep running in Florida",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOenpETjVvTWdIdzJvVzI4ZnVUU05WSHpfQnJvcTE4a3RFcnluQ3pRRm1JVVNxSFFmTHA2Q1hnSVVGVVRETTNsZG5KTU5MVlVhZ2ZxbGs1V2RVT3Z1NnllUmV5NUVmekRlYjk4WWlyWjBTVHYtenZqa0FWQjFsczZwMktaTFJCU0hGWHhUUWZxbXRROXlCTmN1ZF93bFRGdmc?oc=5",
+   "date": "2026-09-25T16:03:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1m7vz4d",
+   "title": "Pro-Trump TV ad paid for by US government continues airing with higher spend",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNY0ZRc0tOekNfdlVYVGJscEJoWmRRejRNdmgtaXJxMGFBazgxT0FWZERacC1BZ0JEVk1KQlhCS1ZzNlpwZjg3NWotYzJWVGo3WWZyekZpcDhGYUhrY0Y2SGNSWmRaalBBUDBOelBKU0M2QVA0cGRtRldXcWRfZVcxVktyYm5jWC14cE1iRHVSX3JTTWd2bVVFWWlYancyVzBheElF?oc=5",
+   "date": "2026-09-25T15:53:48.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-1dbx7i6",
+   "title": "US appeals court declines to block Pentagon's blacklisting of Anthropic",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPN2xsSW1uNVNkSjE2UHVQSGFlOGJTbGFRa2dtdWgyb1owYlFpS2RHZHVSQnRxSTRoSnhqWWJTMEV4Q1BfNzRJZ0h4MVY4S014TTAxbjU4aThsZW95OUhEUFg2Tlg5ZU92Y21RcXVZa1hySFBUT2FXVkZ1ZlRaV3BpNnJFY3g2Ny1KRkpyQm5pNTctbS04V182WjZpYWczRWlJM1RMWl9uU0hNQQ?oc=5",
+   "date": "2026-09-25T15:25:30.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-1na851d",
+   "title": "Iran proposes a deal to reopen the Strait of Hormuz in 7 days if the US meets its conditions",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQNElSLUJIM2lSSWJPendCMnQ4Q252MkdGeXFPT0t2R1VHN2tIaFlzdEZPNWhWZUhfdW4ySjdnZF8tal9vblVkNERSNm5hOHlzelVYZk44VXNhSGI4TVpwcnF0Z1hrQVBsdC02OUNGLW0yeG15N2FsT3dMb29NZ1dXR2FPSU5xRW5BOHIyQ2JuMktWYXBsMlR5ZDlxM2lOeTQ?oc=5",
+   "date": "2026-09-25T15:13:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1hu8krh",
+   "title": "Cheetah cubs at Prague Zoo are doing well after a period of strong storms and their mother’s illness",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNZGlnRXJKOUYzanQyV2YwNmNRalZiS21lT3Z0UU1GMzJ2OG1zWjBSd1NFbFhPVzRTNzlMVkpmbHJDbV92YlIwMzF2Rk5hN1p1OTQwV0laYzlZN1d6OFBCempYY0pRSWdyWmV4NnMtZm92S1JvS1pWWmkwbk5VN3VrdVA4aG9yUEFpcERYTW1KSklDeHktbzZEVlFZYw?oc=5",
+   "date": "2026-09-25T15:07:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-5jn9fk",
+   "title": "Louise Erdrich wins the Gish Prize, a top arts honor",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQOGtMNDRYbW1xVEZhaGl2RXN6aEZvREEtajZEblVTbVpPcDhRUnVOaldaRmRxNTRONGNwNExBdWFFOHhCeWI3RkNiMG1LRXhmY0VVY0RxVWlGaUV4ZmVyYW1uQ0JtNXJNYUxQQzQ2Y0R1R005Q21HVXpPZFRFbG1HM21UUllqdG05Y0NONlBlWWNTZDZHMlE?oc=5",
+   "date": "2026-09-25T14:52:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-18yhgf9",
+   "title": "US consumer sentiment eases to four-month low in September",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQTXVLM2tfVGVKZzJNZER0cldoYnJhcE00a04zOUhFTE5IZXhNWDM2Mzk2VTVLVUNsZlYzTEYySVptTHdjd3IxUWRBZjFObUM0QU9MSzQ3WHVwb0lhbENXcHltbW40V0o0UkxObWNoWlk3Yms5M3dfbFU5d2JwM1lSOXU1QkowNTJEc1AxdnZxZ0d5S1JJWWJnYU9RR19ZQQ?oc=5",
+   "date": "2026-09-25T14:35:43.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-lkyidh",
+   "title": "EU vows to defend its stand against X after the US backs a court challenge from Elon Musk",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQeXJPbTB2cGxfZk9ORjVRMEhCMUh2Mk9RbXd0dlBXSkxuYmJjcVRpamNGMUZ2VUtzLXM0YkczWU9lZjhLNVZMaDRaTUVhLTRHR2Z5WDNZMUg5a1d6YVd1cWhLWjN0T0lvcmgzTktwVzRyWTkwZFpiSVBObF9HRmVyQ2VNN1pQVU5KRXE5TFBB?oc=5",
+   "date": "2026-09-25T14:35:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1rgylf5",
+   "title": "White House TV pool appears to be back in operation, but CNN's media analyst calls situation 'fluid'",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPWWdFdkVpT2tLTXhmMkNXSUlSZlBSak8xcU42NlRaMjdHU29VTkFVay10LWtTckN5WWtkMmJwWS1XUEZYOXBRZ3BxSzkxckk1ajZTb3VKTVlDQmd1QkdfSjIybXY3eFdEbGhZRDhmZkVYS2JNU0djLVR4aDFlNHk0SjRfbldwYUdBOGV2bUFEOGh6NEtMeVFsZS1lNlJnb0U?oc=5",
+   "date": "2026-09-25T14:27:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-e04z1a",
+   "title": "Pope Leo XIV affirms need for media to cover public figures when asked about Trump ban",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQQ1lOS0ZReXU2V1BpcHJRcUZjdlNRN0tXejBxNlNfOGhIUlNZTTVpNk9sT3RuOHVNdURWRm9BRVAtRWhPZ0NGc2FnaXJFRVk1WnRBMmpfWVhPa2RqZ1YwZjA4Q2ljMmhzakJ6S0dfQmZmU3BxVW5EN0g5S0xTbXUyV0owdDVEbzgweWprNEhYcl9jVUg5OVItVW4zV0wyQjk2dGFQdUt3WVdhdzBOUDJVaUtR?oc=5",
+   "date": "2026-09-25T13:58:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-k8gbx5",
+   "title": "Ukraine’s Zelenskyy says he urged Trump to enlist China’s help in ending Russia’s invasion",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPbkx1TEZJQ24yS216eVdQMnQxUktGcVJERDI3aG9hMXpBWmZWc1pJMUI3UU1SLV9zdDNQa0JnczZuemdYWE45MlVIZVM3NlRRd0RKWS1Sems5SWdtNTlJTWdzcDhtZUtpQWxpTWhEaWFCck5ud2lPczlzbVlrLUVJWkpkbThHeXFtR01MWWdjQzNXeE1YWUVYQl92blhiMDdXVEJYV1ln?oc=5",
+   "date": "2026-09-25T13:36:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-25w60y",
+   "title": "Volkswagen to recall 2.86 million VW, Audi models over potential steering problem",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNZGdNbUJoZnRqSUV5dmxTLWttYjZmaGJ1NllYdUFILW85OEtqZkN3LWkxbnkza00xVDdPSmhjUHRYRHV1TG05Zzc1QzhLZ25VTlZod05Xdlh4SHpSZlpvWWoxNTBTNjJxZHVQSldTX0VlQ2FWbk9sYlFNNk1nWDIyVlFBd2RZTnB1XzBIREUycHVFN1FVSE0tQmk1eTJoZw?oc=5",
+   "date": "2026-09-25T13:22:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-nn3wbh",
+   "title": "CDC vaccine policy recommendations grind to a halt under Health Secretary Kennedy",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNbnNKUnJmZGYxUWdGczd0NU9JZWJiemlrQWtqRUJjd2w0cG43cklfUmJoRy1QcEZMZUlYX2wxUFdfa2txUUxwSHo4dGxBVVZMMVZRVnA4QlFuSmIyY1hPTUV4RFloaXVMaFhlU1loazZ5d3lsdC1qTkx5VC1CVmNxSTBManhacEhNQ25obmFJSzQwRS14YlE?oc=5",
+   "date": "2026-09-25T13:04:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-zf4gvl",
+   "title": "Xi is wrapping his visit to Washington with a peek at the Constitution and the Bill of Rights",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPNmo4eGdneEJnQUFIc09MRV9CZHduSnhNRV9tbk12YXR3RUZUZHcySmxfRWxwRVJBQV9hOXQwLUtiSWRBZGREdEtqX1lJb0xYWGMyRzk2SXdTenNIUTlfblNpdVJRenZ6d2tRXzJtWGFzZEpwQ0tVQnlVd1hUdjk3UV9id05STTd6T3hSZ3ZaekdTNi1ybVlB?oc=5",
+   "date": "2026-09-25T12:58:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1rj4mhw",
+   "title": "In China, the Xi-Trump summit is seen as projecting image of the country’s rise",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOU0FZS0YtNWM1UDE5emFtRnNOcEQ2VlhUclFaejBjNkxaQ0tzOGFZazlRQnRsU0JFR0o3R0p5RE5QZ3YwODVqajJUeVp6SzMzUDM1aTVSczBuRm9Ld25PMGdRWEFaaHQ5RlUwZ05EOTgxTXA2ZHJpYlR1dmdKQm5OU2RpYkNvcEV1SFhHcEZlWGU?oc=5",
+   "date": "2026-09-25T12:34:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1m6xgl1",
+   "title": "Democrats press RFK Jr. on an ethics agreement change involving law firm fees",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQV0gyTWVLZ3A2OU83SkNLV2FMU2dINHQ2elN6ZzlHN1BmSGFiQk8tQ2lJT05teVBod1YzZENQWVZzMDFkc21DZnMyUjF4b3JsRHAySGoxMnJpYWtHaV9ZVUlLZTk1ZzFTSDg3Nm1MZjByTjNEZzAwOEFQX25xU2dYeG9zUmNmbEZWRnl3VU8yeEZVMmRuVmZmWjBCQmZxUmFxX0l3Mlh2UlpTZmdVZFRFT21UV0xfck0?oc=5",
+   "date": "2026-09-25T12:00:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-fc8u3",
+   "title": "An isolated Netanyahu was defiant at UN as he seeks reelection at home",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQaUl0UTVEc2t2ODJuTTJDTHllZThOUzNyVDA4ZFlFWUpNdVZtNWM2Q3dOalNYQ0FZdFNxbnp3bG1FaWhQbDlzdmtjLW9LWk1vQ25IV19OenVnRjR5NXFIY0F6UVpBOFBUT2dKVktkd2dsSnVXRXhTQllacVg4MDAxY1hXWWdNUlBNekZ3RVZ0V25jR0NXUmV5N0JsZGpON1otWGNrbkJEVWozRnQ2YkRSMV9fNzNDMFQyZjIyRGdaYw?oc=5",
+   "date": "2026-09-25T11:56:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-c9yu3j",
+   "title": "First US trial against TikTok to test claims platform fueled teen mental health crisis",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQTXl6NzNIZ05FSHAtcElIaF9SUWpTRUpjU1ZkelZSRXc0NDUxVHNYb3hhME5PVk9DdzVJZmhLTGhlazhYc3FackY0WUplX3g2cmE0VnV0VWtscG5NNVUxM2pOOXRvb0kxMnVsbG1LTm1idkx4UTl0cno4c2g3U1ptSDRvZHJQbURxYTlHZW1iTW02VW5VcmZiVnZySDdlTWlEc3I4SjVWNkZZMExvY2xOQXIxRDQxNEVVQUV1SzlB?oc=5",
+   "date": "2026-09-25T10:58:40.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "reuters-ucjuxl",
+   "title": "Rush of money, campaign stops show Republicans feel vulnerable in Iowa, Kansas",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxORVd5OXZrQUdaYzNZZDBZUmUwRTBNbjF3MExHNnNqS2ExZjVldVZDdmY5aUdGVEN6eVpSdHpZdENXNzZYMFVXM09KUGwtVUgyN3MzcU1aMm1QTXgyNktyM0ZGWjl3S3lHUmpLQ1FPUThxeU5pVlBDdG10M3NGQzY1M3BNa0dHbFNpMmJlTXcwZG05QUJCc2RxMUZrUU0zZ09rdG5scl9Ld0xXQnl4WGNyWmRCRk52QQ?oc=5",
+   "date": "2026-09-25T10:23:18.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "reuters-1li0b01",
+   "title": "Fear of democratic socialists drives November turnout plans for some Trump voters",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPRTNzOF9OZ29MVF8zU25jSXRjZDY3ZUNDcU9rd19nNTVlVzlhSHpzdmRXXy0yV0VUS2gxYU5ScmE0cG1jY2hMbzJ2TWc0R2U3dTYyak5pLXh1QVRTSVpiUmRkWkQxZW9kaDRyRDBzZHBRU1RLMEZnOFVrWk16cS1nNmgtNVM3Y3FmaGNuT1FYSnJyX3dXVzQxYlJHaGpXT05PazRDeTJHTTlIUEpoSGoxcFFzQjM3UnJGTTVz?oc=5",
+   "date": "2026-09-25T10:17:57.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-53oexf",
+   "title": "Nepal's climate-connected catastrophe is a warning to the rest of the world, prime minister tells UN",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQTHFLSWZuYWpJWmJPdDVOUmNBSTJUcUpsdmNvemxHcjR0WnBCUkhKT1JoUGFCZjB0TUdxV0ZST2c4OVdPck04ZV9PR081eXdKVGM4LUtQancyaDA1NXRLSUhwTjY0WGRsaTRUa3NkTy12NjcwcFJfZzUteHZaRXBVRkhDMk9BY3NlcWVkS3VMakxfS0trQ1BRMGhIZFFvb0MySnlZRXBSNnhWUmstS19JRHFtcWY?oc=5",
+   "date": "2026-09-25T07:08:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-5u77lz",
+   "title": "Trump’s state dinner for Xi features sea bass and a long list of tech titans",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQTHRNd1RUc2NaeXMxMXZsbnBkZkM0dEJiQ1lRNEMxM29RdWlBeTc2V1B5dGhHN0NodlJSaGhBZTY3UGVCRk1KM2xpeFR6czB1SUxob3RPN244NFVDSkktVWxtSzduTzhmSHNxUXRKVVlSRU95VXJ6dHJ5NnF4b2ZkQzh6ZUZLYmo2VHFMMVBQem1jeVg0bWpoRzFR?oc=5",
+   "date": "2026-09-25T05:23:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-bxk3fq",
+   "title": "Yemen tells UN that Houthi rebels’ moves on key strait threaten global economy",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQUjRDUmo2SklGZ0FmaUQ1UDU5ak1vcFM1LTdKdzJ2Y2lWV3dhNWNpeGNhT0dVRnhvYVRsc2M5ZnoyNlVFOTZDdUd4MG9tamZ3bzhMallmX090RGNBVzE3cFQ3V3ZRT1Q3aE1fVUs3NVVhbWhhUEZZZWVrZnd4ZHpLSk0wdWp0TVlLbXo3eGVJRnJIMmstWTV0Rzlucw?oc=5",
+   "date": "2026-09-25T05:18:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-ngiwgf",
+   "title": "Netanyahu says Mamdani endangers Jewish New Yorkers by spreading lies about Israel's actions in Gaza",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNZWwwMXh5M0xLSTdqOUI0ZWhSSUtEU2NfdHlfaTVhUUhEU1NzM0NsczV4UzBnbHRxMXN4VjlDTTBmdm9MWEJKV1NvTW14eW5vWmlRQkV2N0Z1NExpazc4VWxxT05vTTdZN0M4bExaMjlPay1naWV4V2tqVnlMY1g3Z1d5MHkwWEFLSjdGXy14aGlYMkNsZ0liVC1rNHFXN3c?oc=5",
+   "date": "2026-09-25T05:16:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-10cktxf",
+   "title": "Israel's Netanyahu, at UN, calls accusations of genocide in Gaza 'the biggest lie of the century'",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxONnM2WE9GdERPVTluSmVqM0pXLURSOHMxdHRHZmtCRGtoN2JTdUstTDhkVmp5b1JObVNuTVp0b3FVa0VXWkNNWW8zYTJRcGdBRDVqckItTjFCV3U3QU9nQ2VsMFUtN2p0WDhIUjc5Sy15ZzZwMS1hY1lNMHF4d1dPNlhHamNCYWNkTjhyS2hSb2d4cmxFdEgwbUFBdw?oc=5",
+   "date": "2026-09-25T05:08:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-4y4s8w",
+   "title": "Trump administration moves to limit fixes for systemic racism in schools",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPSnBkNjJJbXlJdXFrdnBnNlhmZGxuV1BSNi01OWNLNlF6aERjdmE2bDg1VlJCRlZOdXdFcjdrR1dCeVlwRk1uMXlldnhUVXFQTTg3Szk4Tk1COFQxM2RiOERyb3JuMHIyamgxa0gtaE5YX2hoQnlZeXRxWlZFQUlmd243MU96R2lOekROVU9obEYxaXNIYk53TDFhcU1qZ09nU2VTa1ZNNUVjOXp3ZGdMdw?oc=5",
+   "date": "2026-09-25T04:01:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1wx9eys",
+   "title": "Protesters of Xi’s policies push for change in earshot of White House visit with Trump",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNRGdRQldtTHhNdGRXSXV6NlhNWWV0QUlvM0lacGpNeWVFbmdjdmRsM3hLUFpYczYzZGx5YzQ0UnhDZjBaeldlcThjWE14UEdiM3F2N2VwdHkyQlJKa0duMWNOeW9PMWZrRlJ4Vm1FX0RTQ1VKRHFCWXZzS1JEdUVlWFE3Z2g3cGd3WExXbUNZMGVDVWs?oc=5",
+   "date": "2026-09-25T02:56:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-15vgli9",
+   "title": "New Jersey governor asks her No. 2 to resign over ethics and sexual harassment violations",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQMHo1dDBhZkliV3RaZ1lHVUlpaExHakVDZ2xYX1NqNDZGLUJWdGJQd2Qydmtlem42RFF3Q2ltcE03b0NGTmJTRHhmc29XdkV5YjZrSFNCNDVvanprWWJIY2dyVmN6ODdwY3FfZnRuT2FxeWxZZm14RFE2TGprSWVsekI1cWU5WTNYZ2hSdzB4QXR0T09P?oc=5",
+   "date": "2026-09-25T02:35:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-w4xzeo",
+   "title": "Lawyers for Nolan Wells' family highlight cellphone data, autopsy report and push for investigation",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQVHMwTjJkbWRfcTZyc0U4OGwxS1pweC1aR1RiZDBvaHlLZjVuSE55aDhWMkkzZ1BDcmJ3azZ5YURFS2w4T0VPVHJ2Q0RydWJPNHl0aTg2X3QwbnpHNFVidHFaOXhHVl9tLUhpSFFHeTVUMmNxRnJZNzlCd0l4LWZta1k0T0JYSnNJVjlQaDgwb2F0azRNTWUzTk1Ua2JCdTdUdEExSUxsZVBVdw?oc=5",
+   "date": "2026-09-25T02:06:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1eo6zbd",
+   "title": "Italy decrees limits on non-Italian speakers and veils in school classrooms",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPR2xMNWE5R1FIbWo2LU1vRkJtQ2dtbkxPcVYyeDcxc0c3MVZUekxLaW51SmJnS2d1UHRDTmIzdk5XNm5iQXFpMUNOLWg2OUU0R08tZnBDWnhMdFdvM21kYWt6dEhFQVJVR0tvMEh1Wnc0Q1p1Yk1YeUowbkVtVEliQW02czJwcVNrdE51RXpMdUczaHJUM1dFcjdtZTdwMDRiUENFZXJCOGFXMzE2VElMc2JxVlZ5aGZzNWcxR1RWTG9wUQ?oc=5",
+   "date": "2026-09-25T01:52:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-5yrnpf",
+   "title": "US weighs new limits on Cuban travel at the UN as Havana decries Trump's economic squeeze",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPTVFNVEppNmhvcGVKSXlCWTVNbF9paWJGTmJ6WEEtQXFlcDJjS25GZnROSEVMY1IzRjZ4MVEyZXU3YnJaaHhiSHhGTENrRTV4a1FzcWZqOEtuRFpLUXdsN0VPMVdkYngxYXdOT2YxODlJTGkydGUxcWt0M3dFcTNsOUttZE54SFNfRWllREt6dGZfRWxyckEtbW5ZNExKUQ?oc=5",
+   "date": "2026-09-25T01:42:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1wu1xa0",
+   "title": "Trump administration turns to Supreme Court as third-country deportations are thrown into question",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNdXFCanBmb1VsdDg0SDF2b0ktRTRPcDJaYmdQM1RWZFNQeEtIeGhLOFF2RVZpdUlnUGRhY3hnUWZycEp5NXZKQnJDd2xhSFZ4MUNzTWcxbjBtOE1WcWUtcXExR21tbVZrN2JTekVJM0puR0F5UFZmYkxRcWxCMklPRUlNUlRZR29aRVQ3a1lmeDJPTzEzQ0hKSWh2Nlp3UzNhSTQtbG1PSUdZOVEyRk4yRW05QVZsS3FJaW1F?oc=5",
+   "date": "2026-09-25T01:22:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-e9od4h",
+   "title": "3 US news outlets return to White House after judge orders Trump to lift ban",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPNFNUM3VIUEdwTndqbnFYUjk4OUYzUHNvQ0syOVNEQmNNSUxvd1FzNWdDYnpZcjJyV0xKU1BWUzc0eFVqeFRka3VNU05MeGRIT1ppWDJnbE1xMjZDbVVIc0hZT0pfUDBfNGZLUzhIOVRfU1h2N0I3SjJTajNuYUFrSFVONEVxYlpLa0F1TjcyT3diOU9nNWhhVU1zQW1XeTNSNWw1ekdMdXdQeEk?oc=5",
+   "date": "2026-09-25T00:50:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1s50eo5",
+   "title": "Energy Department will spend $2 billion to squeeze more electricity from the aging power grid",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOYnpMREtYc0hMdHJBLTY2Z1d1R2pkakxJNDltVGdLOEJYajd5SDhjdmI5RG5FNEpBaHNvQlduUXM4MlBCQ3A0dWFsTjNaNDhBMG5Ibk04cmM3MlE4eU1MWDRhSGtNdHBOVy1sb0JQU01GeVRac1NaVW9nSU9IaHFNbXdzRVRJd3pyRXdsVWxHRU9sbnNwZkxLNFB1OG5kU2FLMzB0NQ?oc=5",
+   "date": "2026-09-25T00:49:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1ssy8t6",
+   "title": "FBI employees in Trump Mar-a-Lago case seek clarity on subpoenas in Florida 'grand conspiracy' probe",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNT1RON1NQVTBpX3N5Nmx4Undvd2dXZnc2ZXlhdGVQX1JSajRJcmhORDVubHpmWHhvYjZPRmkwQ0Zsa01UMFVPb1d1WlZVdnJjZEZxTzRueDlJV3JBVHYwSy1ZblBsNVlNY25QNjBnVWxnOHh6ZjExUzhxQ1pHamZtNHRvNFdXMElIWXRKUWtub2ZUR08zS3U0MQ?oc=5",
+   "date": "2026-09-25T00:47:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-fwnj21",
+   "title": "Trump lays out the pomp for Xi but says little about the significant tensions in US-China relations",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNdUlSSmFoWUZsM1V4WlJhUkNONDJwUVRNMEpacHR2ckJUT1ltenVUc2JoSUJMejVtR2g1RkNWZTlpNTFDM1ZTZUhQb0RSbEFTNm40c0Nsc3g0X01ySTZOYWxXT1FUR1FvUmlVV3B4dGhpbDVfcG1FNjNMeXdjSW9BZG9aa1d2c1lMQkhCRDRncw?oc=5",
+   "date": "2026-09-25T00:46:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-15b8z25",
+   "title": "Who was invited to China state dinner: White House releases guest list for celebration",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOaDZ1TUNfTVYycDJrVUt5MGZ2bkxvX2ZUajJWZkZILWtBcWpJVU1meFhPZ19jd085bU5XODg0X045em5wRFlxV1pTS09hYjg3TG1ZZG8yQ0FkVjhNd0xGUk5rQkZSbDAxbGpPZ0lJc0NCRVd3OUVsRW9kTDFYelZOUVNxSHRmUzBCa0NMMzdsTEVGaUJVLVdDRmhwc2FwQjM2UHhv?oc=5",
+   "date": "2026-09-25T00:20:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-18og2dg",
+   "title": "Melania Trump takes China's first lady on a museum outing that's watched for diplomacy and style",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQRTdhNkNqMDZqbWJ4Zmp4RUtuS0dFaFN0bTVnaGVuaW5lNi1jckhHQ0VobWJYRFlOd1FObi1VUmZtNTd5RnpFMERQQVktWWQ3M0dNUmNDdGE0T3FHenZxdjZsMENiXzhCbS1Jcm11NWMtT3hCZldFRGhHU2FFU1cwN2dvUjVwa3NvTzhET0hjMFNtOWU5QzhQZzlFSnFENmpOUUdhQVlEZw?oc=5",
+   "date": "2026-09-25T00:20:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1w09c3b",
+   "title": "Small bites from the UN: Defiance, fiery language and a cold building",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNdlg3SVpadld0SzhuYS0tTEdKM1JMY0dTQThnWTVndkxDeWs1djRkWFVHd09iTjNlUHprZkhBQTU5OGkyWmhXNGp2QjgwLTdYYlZvSlMyWnlOelRlYkl6M1NQMkxfMTFvVVVZY2Q4MUNHMUdqblViMk9BUEtmLTc5Ym9SQTdLZ2trR1djUDBjUm12NkFpTmMxTlgyeTJfQQ?oc=5",
+   "date": "2026-09-24T23:50:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-zq7y86",
+   "title": "California Supreme Court orders Riverside County sheriff to return 650,000 seized ballots",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOZl9ibmdzZ2Q2NkVMTWFVR1kxLUJSWTFNUlAwZlhsQUIzMllMNjB0T0xzMnMtckhORjZkTmsyQU5DWXU3UHdreFNDbnRCVTQ0QUlaeklwSlBNdlN4SWlqdHp5TVFVQVJDdVBXVDI4SVVSWUpvNGZSS2tGbkVVSU5JQTlGUjVDc0laQXc1czRxeGlkclFhTjh5blVZZnZHbW5EMThzdnRRamw3a2M?oc=5",
+   "date": "2026-09-24T23:30:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-nkgqst",
+   "title": "Trump, US House speaker and tech CEOs to meet on AI on September 29, source says",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPSUNPVzNoNDJiWUNfY2hyZTNBT3pJS2kwUWk0Nk9UT0dTenZkTE5acXJaX0V4QXVMWXdwRVZEeVY3Y09HUTZqN2VPYUI0elhjY0RwRHFLTnFsSlNhdGgxUXJ2OE5pVHcyWUFBaWljNThLdUtqOFUzeHU2NjIyS3czT0hsVDdyQVFtemZIX0o2cTR5WGlTVXNnMUdOUUp0bm5PeFZQLXg5Uk81T3FJMmxn?oc=5",
+   "date": "2026-09-24T23:23:55.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-6husj0",
+   "title": "Man who was shot during 2024 Trump campaign rally in Butler, Pennsylvania, has died",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOelhPaU1SSDVKNG41ZktkNU5xVEZZaXV3NU5VOGs3dVg3aXU5X0JiYzVGbHRRVjdlcFpzTHZHTTFtUXk2QXVmVTFaNlJtYi1aLTNGM2U5R0lqNEVhbUhKbS1JR3RlcE5ONWREaFA3SjNWR2JYN3hNeTVnTVFIRkZTMmM2b0hJTU8ySDZtUTNUckVDbUxUVUxaVl9mZl9DWXo0Mmc?oc=5",
+   "date": "2026-09-24T23:23:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-ni6tyv",
+   "title": "Sarkisian expecting communication issues with Trump attending Texas-Tennessee game",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQWVNUeUo2cXVXMHJZMUlMRVdPcm1WT050bk1IZUJkNmpWVUhpSDYwUnZpVUs5bjdoc1NQRnFtT0dMRzd5QlNpd3ktMW9jOG5BUkgzYU1ySXlnTnlaaS1JWGM1bWRhOFhVc3B6YkFqRmJQXzFDb2JCZUdsNUFjb0VPZFNTWFFmcnB0STFveldOWXc4YjA0ekE?oc=5",
+   "date": "2026-09-24T23:03:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1csaira",
+   "title": "Cardi B brings star power as Roberto Cavalli goes wild at Milan Fashion Week",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPbEpBZk1qMXlHWGdvSktPM3UtVFZVODZGbXhzM0JUMkM4VXNqck9Qb3FDVXZhM19VMmlyaXJrbHA2OThHNm1kQmJZSFNBTWIyTTlXVjV3dEVKVG9iMDltWU1MSWU4OG9jWml6ZWYwb2hERDlWQXFuQWJGdV9SMTZiY0thTV9qLVk3QVVQV3ZuanlWdkJLUjRIOF9n?oc=5",
+   "date": "2026-09-24T22:06:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-40wyqo",
+   "title": "Texas appeals court rejects ruling of innocence for woman on death row for 18 years",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQWk9mMTV5ek5pcllMb09OZ2ZHQ0RuZ1FEN0psd2xGT0hXVWk5a1QyOHJxTGIyT0lSRXZmN01Za0dNT3dwVTdvRmxhMmFJLUx0cDF0RmppcWlTZlpBRlJUX1BlOWx0SXFVZmpXOUhDWTJ4MUZoNVZEeHRGcXc1QlBPdkdpS0VxSjdtOHBfQ2VjU1h1S2s?oc=5",
+   "date": "2026-09-24T21:55:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-n7br3o",
+   "title": "Trump relishes showing Xi his Marine One chopper and new White House helipad",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNVkNwOGpDODlhZEJ0UU8tcElaNUxYRjFKNzhJSmxSZUpuUk5WVFNoNG9tQ3FDZlZocmtsd01DdHlzUWtORHgtWThpekZ2VzlmTUQ3TzB1VWloS2xHNEhIUkVRTUZOZ0hCVEpHMUFJUW5iWFdWRVFqNEFIQmpEM2g3R3NJc1J4RGNJT09aeEVmR0xyc3QweHc?oc=5",
+   "date": "2026-09-24T21:43:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-180mifi",
+   "title": "40 days to midterms, election officials say new US cyber plan comes too late",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOTmNGU0tUVHVmSExPTzVrQnZOOVU0c1MxQzVURVBmR293a1JsRXppUnhJQWphVXpLSGxIZC1SeGR3SGlJVnBEempldmJ5YnZUQlktRUhYMldnN0ZIM2FPMHdhZlhFVzhpQ2Y5UGpkYklrQlpOYThnZkw2RTU5T3M4WmMxSE9FR0hGMi1rbGdUSmMtand1RzB3cXpwMjZabjJheFlFZ3ZnYw?oc=5",
+   "date": "2026-09-24T21:35:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-y8tirw",
+   "title": "US government seeks to join Elon Musk in challenge against EU's fine on X",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOb3VpWGF0eE1IT19OODViaGo4SHB0QjFieHhFdWVMOTJ1QVZWS0N2WU90WThWUmYtZGtKTGxKRkpEZ1JBeUZ5eGdJOXZoc0RzeUtISW9iclFfaE5QM3UxYzFQODBwX000dWdQejJieDZzR19EcWxZdEo5dVZHanEtZE5JdjVMRl9KQk4xVGNzRkloMGVDc1RHU0ZUdFZaZFd2OGhFamc2SlA?oc=5",
+   "date": "2026-09-24T21:34:27.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-1a4rnyi",
+   "title": "FDA nominee says vaccines are safe despite Trump efforts to overhaul childhood shots",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNOEwzaXhGdkN5bTN4TjBRRWdCWnpYMFotYXpCVVlYQ0xrTHZhdFA0cXBRcldmb096U01ic1ZGMG9vVXNnNGdUMmFld0lDN25TSG1pRGh3Zmh3OGhrNTA5MDJ5cFhxWVVBUDRCdGRSNDgxZVFEb21iQzJ0OHhXTWJrT09LYmItRlJ2RGZZYnlnVFRfSmE1WXE3Q244NFFZamZsNUdv?oc=5",
+   "date": "2026-09-24T21:19:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-14kwsoe",
+   "title": "Homeland Security defends officers in immigrant’s fatal car crash in Michigan",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNUTZKdHkzSGRKMDN2Z2hBQnlHaDVZaEVhbjBhRWx0cENzemVaMk1nNXpFOTNzdHJrOThYUmFmOXpWN1VfS2F6bXcwd2owdzRzY1hUQzNUdEY4djNvV3lEN2l4ZzJRMzdXdGF5VC1mZm5nM183bktOMkFVUXc4SzdhdWJPUjJhVk9YNkNjUWhwUGJfdzYz?oc=5",
+   "date": "2026-09-24T21:18:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1o0sz3v",
+   "title": "More than 160,000 pounds of meat bearing false USDA inspection labels recalled",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNc3FNbDVGaGJkY3gyWWZIQ0xER1Q1aTZweWh0UVRBZXV1UkNzdk9JUWxlZXBaTXZ0WkJ4MFpGcjYxR0plYlc1RjVaM2xsRGJHWkw1ZUlyT01nXzZUUndqdWZfc1F2RExLWGg4ZW1jU3RiMndLUXZnT3NNZk9OZWV1eGxoZzBhZEhvSGM5b1p1NlRfY0hTcko4V0Q4UlAwZWdaQWo0?oc=5",
+   "date": "2026-09-24T20:57:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1bufkxm",
+   "title": "A shaky day for oil prices and the bond market leaves US stocks not far from where they started",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPRHUzTjM3VWZ3QnJIYnFpaU4xWmZqTjB4cmE4emVYTXdxMXVaTWhQTG40alNnWjk0aG9qQmlJMVdzcFpJN1VXdEN2WktZLV9aZXRQaEgxTld4dGlreXlUN2QwWGIxNUQ5dlA1Xy1QWG5nSGl5Q0NxQ1V3X0VfTENNNmpZR1c1T0l3OHF3LTdiSklnTHdyNTBGbjdNaGNTamo1amlN?oc=5",
+   "date": "2026-09-24T20:52:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-1o5nysq",
+   "title": "Trump asks US Supreme Court to intervene to allow third-country deportations",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPaU9HOVEzYWlBVlFELWE0RlRmaUo1VjZnSUw1bnlLNmR4MkJMVmZJbzlnSjJ3bGdDUE1DMzNJY0otZ2hhUUw5bzdTVkd5QXR4cThRVjNTOWtablZNSlVZNXN2eWVOa1hBMlJXTWtnaGczZTZNUW9QalphTkQ1UXVNS3pTUlg0WDNMVnlzd2lnNzZ4RGh0Zm04WVVoRGI2NWw5Y19nM1VFWVpDZ3plczA3WDliQWtBZEMzUmVaQlBR?oc=5",
+   "date": "2026-09-24T20:46:28.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "reuters-1jxbyrb",
+   "title": "US Senate rejects Democratic-led resolution to curb Trump's Iran war powers",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNMU45a3FvODBzSXpndWg1QUVuQzlqUmVJWjZEWUFXNWltVUx0Sm4zbDE1X3lFSnFYd2hQeGotT1YtejB1NU9lZDJKcnJjeEZqNkJtZkQ0anhFUG92V3pWLXlyQzhIalFwTzRuVnVvd3BGQ2tfYTJ3RUxMRlhlWTdTUFE3MnAzMUxmallxcE9SZU5ldmxJeE1fYnhyT0c5eG9lVXVydVg2TFhnbnFJYUFsOE56U194eTltTnc2bGFR?oc=5",
+   "date": "2026-09-24T20:34:36.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "reuters-1se3kfp",
+   "title": "Mother of man wounded by ICE in Texas describes video call moments after shooting",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNbERIY0taNUFhU0pyLV9aLVJHTzg3ODZCVHlmc0V5T282WE5TeDRJWUs2a3BJejRGdlRINlVVV3hTYWtELWw1UjdBNThKUEJ2TXJPX01yVHhOMGJhZkM5Rnl4SG5VUVRDNVpxcVo2VWRfYkhJT1BXeVFhbWhRTml2dDB4OFM2OVZjNnczUDNKQzJpcG5nLWdzc0FPRlhMbUthZTZLMUo0cFNPNmJZaEJIUkZnd1BuU2pCZ1JTRw?oc=5",
+   "date": "2026-09-24T20:31:24.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-j6kk3b",
+   "title": "Senate rejects resolution to halt the Iran war as gas prices upend midterms",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQckgtUmd0M3RFbl92TnI3eGtRZ2l6Z0ZNbUZuRm9OMWJjY0VmSGI3ZEVWbU03Yl9GOE5fczFqeW5QV2NiNGlXUGRiQllOSzBWUnlWWVE3Q1RaUzBlVEthZ0NJZzlFRkRMalZXUU1vUkNWTUh0VjFDYjRVbHVTeS1pQWhPd09ycUszUFNrcmtsWFZ3Zw?oc=5",
+   "date": "2026-09-24T20:03:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-gbrguk",
+   "title": "Mortgage rates climb for 5th straight week, pushing average rate on a 30-year home loan above 7%",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQRWxBdGFiWUNsSDR5QUxyQzZrZHU4aW1pWGdTM3hRWmp4eXdYYWpCQk53ZDQ5OFZTOWp2ek5MT2lLVG1YbV8tdXQyYk1XelJhRXVPaTVLNHZEUk5QUWdmamE0S2hwMFJ6bWFlUVhxUnBNWWlPTmZSdjJiN0NDTS1ZZWlPak81RkllblNzWUZIcGJNcWc?oc=5",
+   "date": "2026-09-24T19:18:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1t0jfnm",
+   "title": "Montana Supreme Court puts Butte’s data center initiative back on the ballot",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOZm40cGZFSHZ4d01Fb2JFb1lFSEd5UmlqWnZKVDRMWTZiYlFDby1CclJfdHpEeWZuT2JnWTduMUIwNVI2SVVzOHBzX05KVjMwZW0zNWNiaXFVRlpIZmFPUDVtQWg2NnZsaTJ1d013dVhJUi1JUnplcHJFdFRuX1pUeDRRc0hnNzJVanpMaEstc0ZJTUlNRGI1al9ZUjYxQTBUR1ZQbW1SWkR2bGMwV2VBclRadw?oc=5",
+   "date": "2026-09-24T18:57:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-1cfuleg",
+   "title": "US Senate rejects resolution curbing Trump's Iran war powers",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNODVQSjliMlBWTFZPaHV3aXY5Y3hMVGl0dWc0bTRDdGxOU1NhOXZJVmx1eWh2Q3VmX0h3UWZnOVZlODRXcEU1LVNtWHpVSDNVOGpmU3BWVVNzUzd1T1d5UlRLcktuVENkeGpMem1FcmJkUWVoR1dpMFY0QnZ1ZDZZV0pHczRpOWI4ZnZtRS1CdGUzQlZMUlRzazU5dk9yZUl6NjdlMlNFSQ?oc=5",
+   "date": "2026-09-24T18:51:47.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-qdb0ze",
+   "title": "Starbucks to shutter 250 stores in North America this week in 2nd wave of closings",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNakxReFNDbDRFSGQwQlpHalJIWjdRZXRxcEdidEZkNklXSkR3MVdtekg3TGNwZk1QLUVNZWhQd2d2NzRFMVNvVzlETHQ2aUE0eHBOdHFBTmhrQ0xzMVV4TlBoZ29EVXQ4QXM4dF9jUW9SWmE5bUtBOUdnR1VPdGpDdklldTFTNkdOY0ZRWWIxZjlXanNiTW1QYXI2cw?oc=5",
+   "date": "2026-09-24T18:48:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1sifeaz",
+   "title": "Delegates walk out as Israel’s Netanyahu begins UNGA address",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOTjNJZEdKdVhNcEhtMEF3QkxCYS1MN3loVl9scVFwZGtNTWZOeEZjLXlORlFyTDBYdVZld1AxQ2YyaWd6aEZJUk5nTHFyTzQzM05SZ1pkSm1qbjF0ZEtFWTFoM3BDbC1XSG1kaGVLREplaVhfUkZoWThidzEzOTVpVFF6dDlWSWI5NnEtLV9WX2ROR05vLU5PSU5JQ2VRYnFrZlFMbVlMZW1wdlVqcUQwSERsbE05VEZB?oc=5",
+   "date": "2026-09-24T18:23:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-hc0uvz",
+   "title": "Xi says 2 giant pandas from China will arrive at Atlanta’s zoo in the coming days",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOTmowTmhMd0I4eEJzNTJYQUtrczVldF81aDVKTlFDejZTVFpkbFFHdWE5Uk9HOHpocFdjWnNFWDdiY016NFlCLUMwWUFzaDBMdzkwRHN6OVNhRWNSQ2N2TjRhMmc2aVFmTGVkUGlsU3pOMGtieUpoNDhVRldaYjJ4RkxpS1plNnB2b1dKNmJ3Z0VhZ1ZpVEpPNA?oc=5",
+   "date": "2026-09-24T18:22:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-1c6r923",
+   "title": "US Treasury accepted $4.078 billion in buyback operation",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNTGU1d0pSel80SGZ6SkFjblpLdG5yQXVJcE5yU0VQbmp0dFpvR0xFdXY5QXVLSmJXblhUMmJac1N5ZEgtSGZ4cjMxeUV0cFhyMFhwbkM2cDR2ZlluOTc5ZTVNamlRdXJmR1JxWG03TGk2OGNJeTNaWHdxRFBzemZ4aEM1U2ZjM2ZTQ0ZnbGhBT0VqbExMM0FzSw?oc=5",
+   "date": "2026-09-24T18:19:43.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-1ohdq72",
+   "title": "Kenya destroys $63 million meth haul intercepted at sea",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNQkFPLUREMW1yZ3VFVUs2MnRHNW5jTnBRQWUteWlVOHFGbDRvakM0aUdkSjJoYVVwT3htbTBGQi1GNVo5VzNpZklJVFpKbDNrQnM5Q2F1NENYc2tiWWJ6U1A4LVI1QWRaNGNDR0JjMmd5M1hQMUZLYUNpai01SHNSaHhqMzdVSEd5?oc=5",
+   "date": "2026-09-24T17:55:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-bu0yzn",
+   "title": "US weekly jobless claims near 57-year lows; price reductions boost new home sales",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPbkFjbktqV0kzSmJtNEZPU2p1MWRCWTdKLWVySDEtTnJMbUdVR1p4VGZ1YnVlM0tkcEsxSFlsdTY4b1RodjlqVDQ5V0hoT3FubnE1N1c5U0RZOTgyZ0JsQnFWQmJQTGx2QUNTZmJROHN4dmN3VnNXNXRnTVBsQlFIZzVqb0JjMzl1MlVEeDFUNUFJQm53RVU5WkFGd3VhNjhXbHlGVUFnYWZ0VGM?oc=5",
+   "date": "2026-09-24T17:01:58.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-186kxo6",
+   "title": "ICE is wasting tens of millions of dollars on ‘uninformed’ detention projects, report finds",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOSWFDSWwzY0MwMzdvdGk4RkJMWkhBSHpsT3NZYnBPbnhKM2lSRmxGZWIyY2xiUVdVSnlHTktKN0stVWhBRTlZa1IyMFExUUVrbVJGaVdpTWpIcGl4NWtxYy1pNWw4aUVCOTlQTzlJUl9lVnlycmsxbExDdWtMa3FSbWpkWENHZjNfVjRHTy1veFVIc0po?oc=5",
+   "date": "2026-09-24T16:39:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-5in0k3",
+   "title": "Macklemore announces concerts benefiting Palestinian aid organizations",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOU2JWOGhFRlJvZXRoanB4bGduQTRhRUlybmJ3dkVOMmtlSkFmS0tlRlQwSXZ1aTdqeFh3eDI0dVMtdUdueWV6RXZFdXB5VzRIUWJMaTVKbmhFTV95Sm9UR3k5dmpYWVo4ZWtzYkIzWVFqSUYxaGozc3dFNmdHcjF5NGVSbGtxemtXUlYwc0NWUkFzRks2VkNrb1F5WDNnU19OUUU4aQ?oc=5",
+   "date": "2026-09-24T16:03:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1tyqu8v",
+   "title": "US government foots bill for television advertisement featuring Trump’s midterm messaging",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQZXlsMk03U0JUaXRNd2R6LW5vX2Z6TWpvOGJWODlvaWdJQk9UX1llT3RpZVhMby1TZXBlSW1neG1wV1MxbkM1c1ZveHRiWFF5RHlyUXhldGpFcjFoWkxTUEdEdDM0bTVnb3hnRGNLMXMzX0JyY1lPMHMxaHlPcFk5WkJSZ3BzNFJhTVJTX1F4QjZsSGRLd2VTUA?oc=5",
+   "date": "2026-09-24T15:54:28.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-tqfbr2",
+   "title": "New York sues prediction market Polymarket, calling it an unlicensed gambling operation",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNVU1ObU9oM2FGZERjSHlNQm5wU3dpejlCTDJrRm5Ib2VNS2JNNWxrQ2RRQTZsZWRSZXZvSE1CeDlIS1h3TEN0Q0xTb08yTnB2UjZSMWpaTlVRRnpUUGMwZUFPOGVaaG1WLV91S2ZGVUJRLWloaEFnQzZFWEVRMW5pakxqVGFUMFpVMUZDWVA1REdpVTZvWEdLLWxqd08?oc=5",
+   "date": "2026-09-24T15:50:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-16lrn2v",
+   "title": "Autonomous AI hacks raise thorny questions of legal accountability",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPSkFxcnNNRzRiNC1tWHI2MGxDTXlnblNyb212bmRPTHUwMGIyME8zSDhveDJhX0p1ZmNEQjFHcFFObkxibXhYSXBEN1NYNl9GNUdhNU9FOGhfYVdSc19majd4c1JadW0yU1U5WXRGVER3OElZdllhaUhMZnJfQWZiaTJSUXE5b0JqMzd2QlRmUXVWbjB2dVVz?oc=5",
+   "date": "2026-09-24T15:46:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-neqdt3",
+   "title": "US new home sales jump to eight-month high in August",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNRElGSl9lTnJscFFhUDVxNVZSbzM3d09EVXBYdDBTVlFHcVB0UDd0ZmJ6YVJxYzZoUy1NNWhBYzBjZGpfRW1TXzFuTkJuVzRNRmhuZkdISnNScnNzcTluWjl4cnc5cHA4a3E4dlRQNnFRa3l4aTNfNUttaFJmY0YtTVZPX3FzcFU4eklJa28tTjRpYVl0LWc?oc=5",
+   "date": "2026-09-24T14:41:44.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "reuters-1sv7vlq",
+   "title": "US to provide critical but more limited capabilities to NATO, top commander says",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNNWhWb1lNVDhBc3dVd29qUy1mQmJUZktsZUVVMFlCZ2t6TExRVnhhanRBS0FXYVJUODc5Y29faVdKWlpuWFV0NkYwUFRHV0FVWlYtT2xOSFlsY2dZSERaWVhKZ1NBOGJNSmJJek1GeWg2R1d2eEdOd1V0N3hFSWIzNTlZc0wxeFBQUUpGSkNlOE1TLUtGMkZidmxWUVljdzhlU1B5amFQNzVVQ3Zyb0hEaQ?oc=5",
+   "date": "2026-09-24T13:38:43.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-1xjl27",
+   "title": "Judge temporarily blocks media ban, bipartisan criticism of Xi’s state visit",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE40RHpFTE1IejdQSW5hSnVrMm9PdmdINWtSSllmRnVGbExRYkI5cXllb0tCWGZ2VFRuWDh1U0p4NWtma1ZhQ3dXRnJ0LTNzeDdmbUJ6WTBvejBwUU9NWjkzUW5ZU2N3NFNSQlBFQQ?oc=5",
+   "date": "2026-09-24T11:07:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1o75ljg",
+   "title": "Delegates walk out as Netanyahu addresses UN, and other Mideast developments",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOQzRneVkxYkNrSF95ZERSMlJmblVqMF9iMm9yV2dvQS1TMGJpT0RRQnNIVDdNWnBHSnN2cmRvMjdLQUlfREpSSTJsX3I3ZnNkakRwRV9qNnlzMmk0VjRsd0dqWFNDenRsWmhNcmhNOUExS2FfWHhaQk45emg4NUdtSUx2ZUZqU1BlQTFSalJ0R1k2c0prZVRaR2V3OHNuVEt4NDVPcWxBcEtWTFJ3SzJoWXdzMklJQnc?oc=5",
+   "date": "2026-09-24T10:36:13.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1dpssip",
+   "title": "At 10 years old, Smithsonian's Black museum is undaunted amid pressure from Trump administration",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNVnUybDBOSkZMNWlWU1pMRlBmVk5MQTdSU1hnMmlINkFRZ1ZGc0VTaHBrRGl3dTAzak9WUkdmaVFsTjJxZEdrX3BGOEpTdmtlX3IyMnRNMnJrdnIwWFlpQzAtTmpDSnlFOU0zeE5Kc2dFcGRpSURGV2UxZ3VXZzJXbk95RVEyYTVzNm9jRWFaTE1Da1FEcThBWFJ5QldnbXFFbVE?oc=5",
+   "date": "2026-09-24T10:34:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-brami",
+   "title": "Turkey will hand over key base in Iraq in a gradual troop withdrawal deal",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNbXAxMmMwSW9sZGxkUnpfdjdqOEZBUmIxOURJS1QzQnBuWkdVUVNlNGV0RFVQT0ZjaWhVdl9CN19xTzJKSWo3VG1FZ3A3cTZ6OVdFaEEzRXZtU2JETGZYVksyTmhNWmVqQmVYYTJFcnVteDBXVFdjRG1BN2Y2dmZrOHkycjBtUWdUMXM2SVpmVHNuWkE2SGdWdXJvc2VISktJMkxz?oc=5",
+   "date": "2026-09-24T08:23:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-tw3mcp",
+   "title": "Syrian leader lashes out at Israel in UN speech, says Golan is inseparable part of Syria",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNLXBSd1lkWFdWMVVjR2daUFlQVWxEWkNiVDZrX1Y4bUMyT0IxWE5RTW5sZVZoSjBUN0VzQ0J1Q093Sk5ZM2RCRl9tMkNBY1pCYmlmNFBxWWRVN3JaMTFBSTVEdF9DSjdGaXltdGdfQ0dxTTA4NmtWcmFzUGhTR1dzSW9lN2p0bmhaWXpxZUdIcmRaNTF4ZzJNbQ?oc=5",
+   "date": "2026-09-24T07:02:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1s970zb",
+   "title": "Trump’s push to acquire Greenland almost broke NATO. The winner of it all may be ... Greenland",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQMEs5ZWdVZEpDclBicnExV3ZsYktma3d4bXY3b3RmT0pqTDk5R0Z3UWlndndNVEVxZ21KX1dmNmJacElHWHItQTktZDRXU1ZydHdITUw3cC1LSzNkY0xQMjJlUkxEM0gzY2J0dWsyQS1HVWQ4TzFoZEVlWG9qOTROWGdPRHVpeVJYNlBlSXJHeW1xalRJTmZWQWw3bFhDbjVxRVlnTExyZw?oc=5",
+   "date": "2026-09-24T05:52:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-1ek8o4i",
+   "title": "US and Indian top diplomats discuss Russia sanctions bill signed by Trump",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQdjNWTlhTdURkUERZUjdNQnBhQWR2bzRjOUVYNWRJUkdoX1M0NmpBRk5Dc0dHMm8wWlJKby1YNVNDb28wSnJXazJnbG9sQTNRU0RVTXk0eHJJcGQwTkVIdS00UjNRakFkUHFLTFhJdi1vMGJGZVB0dzMtR0JHUlN2RFoza1F5d3FuOWhBd09MR2RBa1I1ZU11OGotV2FwM2NOdmNydlBjeU1nMzFoVXpTQ1RuR1E?oc=5",
+   "date": "2026-09-24T03:51:00.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-1c4ha6m",
+   "title": "They said it: Leaders at the UN, in their own words",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQYy1VbTlRVWxpVjVQYkJOeklNWHFTd1lkbXRUZWljU3pYWEZRUjE3N2FPMzh0dVRrZ1BDWmdUaGJTcXY5SVoxZzV1eFZZbEdINXFLQXpJRE9RUGJaODJiZFdIdFo2b1kyazA0S0drVGl1UDZmQzV4UVJqSEVnQUY2R3UwOE4wVm55dFhJMjJLdw?oc=5",
+   "date": "2026-09-24T02:53:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-18ol1us",
+   "title": "US will make up to $7 billion in loans to help Trump ally Milei tap Argentina’s oil and minerals",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQbFp0bURLM3JiVkx1MDA1UndYOUxaWW5Cc2VFcnltVmV4N0poalFUWXBVNmthOUx6YVFOU1JrazZDR25yb1BSNDYteUdRZ1Ywc3RtZ0d0Tkl4TWdVX25NY3BsUFhvUTZPNV9HYlhOZ09tX0tuU3BJdFM0QXZhNFZCSkxycDlJOEFRR1cyTDUwYUhaeUVNbmM3cHpyTllURlpZRFpHblNWRnUyNFRYMl9aWXlEdTV0a1pMU1RB?oc=5",
+   "date": "2026-09-24T02:51:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1g7dtrq",
+   "title": "Pentagon investigates after China obtains parts from F-35 stealth fighter jet",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPNy0xSEtmUlhxZkZNaEJpV0dEaGlSM29MMUhqQnlGYlRMTVZuTVVsTWo2a0pIQS16bTZJZ2RnTGdEbm9JZ1Zwa01wQzYxaWVvd2c1dlh0cUlzaW1KYlhHRXhIVXptUldBUnkyNEZtdXBMV2F0YkNSTU1kbjFSNi1vYVBObHNuck0yYXphc2FobXAwdTE1Q3FETlk0Yw?oc=5",
+   "date": "2026-09-24T02:47:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-kiij2f",
+   "title": "Zelenskyy says Ukraine sent 2 North Korean prisoners of war to South Korea",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQNlZWT3piTkJfRzRTNlY4NlkyU3hGLW1aeEF2R2NKZW9FakN1T2p0Q2I4Ylk0SFdaU1B2TmJaRTEyYTNtU0FnOGZjX3RnNWtETG9pQmdXbUZBWDNKWjRfd2FWSEN0LUFxNnlHY3V1R1lNQWdmZThHT19zeWdub3hjZ3dlazlmQWhyWS01NXk0VERzTGtZMkpuM0hsRHY4MnJQaWdlRnFmakhOZw?oc=5",
+   "date": "2026-09-24T02:30:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1patitt",
+   "title": "What to know about the agreement signed by President Trump and the leaders of Denmark and Greenland",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPWjctdkJnWHFsSmQwdUlvVXJ6UlF1MFdzR2tYZUdDVFV6QmpxZU1ZVnFEZ2VJMU9RdG1WcWVGUFNQWFYtT3pCNTZfOFlJaXhRbXhWRzRjZThnLWxiREN4VnFPLTU0eUVjeEJnZHI1YmNmekJmc1lRWEdReDk0SzBUSlBfRDVMakZVTS1YcGdBNEkzOUt4XzkyZkFqZkZ2VWg1anc?oc=5",
+   "date": "2026-09-24T02:19:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-24dyr5",
+   "title": "Iran’s president delivers defiant UN speech, and other Mideast developments",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOSllKd01lQ2pnMElyUmpoMnBDTjFjVEpjb0RESGV3Q3VYdEQtNHp4WVZMN3ZISVB5OHhoaEJBbC1CYVZ1NzBkeGxSU0hMbUxEWTdjeEgxSHpkR1RSdjY2SVR3cFNWdGJGd2RQUDJhSlFraU5tdVZtVjhVdzNtQV9xWGN6SEVOYmFuUWxsTHEzTFJqYUZqR3lGdXA5a1FrOUpsOEdValRuMnBPTUJkMUhUX1RsYmp2MUU?oc=5",
+   "date": "2026-09-24T02:10:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1rj0kf6",
+   "title": "FBI investigates hackers' claim to have stolen sensitive employee data, compromised jobs website",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNbnphd05odjktQV9NY2U2eWtjNFhVSlZ5aTFzVDVSdkVPUWpuM2ZuMVV0M3JqRjVWY1lvUURIRGJzdFhqTGMtaEpOQUpaZGhBWnZERjNSZXdBcGd5Zkg5RjVVUVhPYkVtVlNDMzhadVNoZEtrMXF5dnRSWTROaEJZVHk0VUNrd2lWVmZmZjZZYmU1MmlGNnFjdlBHamswRGVuVGZIUXNuVXk?oc=5",
+   "date": "2026-09-24T01:52:00.000Z",
+   "source": "AP"
+  }
+ ],
+ "reddit": [
+  {
+   "id": "rd-efnlxl",
+   "title": "I deserve it",
+   "url": "https://www.reddit.com/r/memes/comments/1wp74gf/i_deserve_it/",
+   "date": "2026-09-24T16:58:17.000Z",
+   "source": "r/memes",
+   "image": "https://preview.redd.it/bn5xt3961irh1.jpeg?width=640&crop=smart&auto=webp&s=cb190c89d156fdf39233ecc67770231fcfd5ae30"
+  },
+  {
+   "id": "rd-4k45x3",
+   "title": "meirl",
+   "url": "https://www.reddit.com/r/meirl/comments/1wpbks4/meirl/",
+   "date": "2026-09-24T19:45:34.000Z",
+   "source": "r/meirl",
+   "image": "https://preview.redd.it/wy6yc5s0virh1.png?width=640&crop=smart&auto=webp&s=bebdc2a407063cc26a248b16e90fef2dce35d71f"
+  },
+  {
+   "id": "rd-rmjhas",
+   "title": "Funniest food review ever",
+   "url": "https://www.reddit.com/r/interesting/comments/1wp880e/funniest_food_review_ever/",
+   "date": "2026-09-24T17:38:59.000Z",
+   "source": "r/interesting",
+   "image": "https://preview.redd.it/g244ippf8irh1.jpeg?width=640&crop=smart&auto=webp&s=d104cec989b3d503b1288122442183e398396f0f"
+  },
+  {
+   "id": "rd-16cyq0c",
+   "title": "Random guy knocked on my door and asked how long I've been sleeping with his girlfriend",
+   "url": "https://www.reddit.com/r/BoyDinnerDiaries/comments/1wpk0rr/random_guy_knocked_on_my_door_and_asked_how_long/",
+   "date": "2026-09-25T01:58:12.000Z",
+   "source": "r/BoyDinnerDiaries",
+   "image": "https://preview.redd.it/0smppdxfpkrh1.jpeg?width=640&crop=smart&auto=webp&s=c662a4fd24f6d30cd47b188d0000e7fef206df13"
+  },
+  {
+   "id": "rd-1v4p7r4",
+   "title": "a starfish born square due to a birth defect",
+   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wp8vni/a_starfish_born_square_due_to_a_birth_defect/",
+   "date": "2026-09-24T18:03:14.000Z",
+   "source": "r/interestingasfuck",
+   "image": "https://preview.redd.it/vktbiaircirh1.jpeg?width=320&crop=smart&auto=webp&s=99911d6fff0c34c6a030083ae5173616b8dda9bd"
+  },
+  {
+   "id": "rd-18ol3rl",
+   "title": "Snake catcher in India calmly handles two massive cobras with his bare hands and a stick",
+   "url": "https://www.reddit.com/r/nextfuckinglevel/comments/1wpbmh5/snake_catcher_in_india_calmly_handles_two_massive/",
+   "date": "2026-09-24T19:47:24.000Z",
+   "source": "r/nextfuckinglevel",
+   "image": "https://external-preview.redd.it/MDNjY3F1MHd1aXJoMQUFyml5Vrcrt0C6oAr0WerFoq6WTD94oAqzaQ0UngXM.png?width=640&crop=smart&auto=webp&s=56f53b0a62af3239edb7237dc72444aaaec1b177"
+  },
+  {
+   "id": "rd-ve6wc",
+   "title": "Diplomats walk out as Israeli PM Benjamin Netanyahu addresses the United Nations General Assembly",
+   "url": "https://www.reddit.com/r/pics/comments/1wpac1v/diplomats_walk_out_as_israeli_pm_benjamin/",
+   "date": "2026-09-24T18:57:32.000Z",
+   "source": "r/pics",
+   "image": "https://preview.redd.it/2ewugve5mirh1.jpeg?width=640&crop=smart&auto=webp&s=56834e6b2f04b8a1be38519df8f85704afeb8372"
+  },
+  {
+   "id": "rd-1spta0t",
+   "title": "Mayor Mamdani and the Met are giving away 70,000 free opera tickets this season. 10,000 tickets per month via lottery. Seats in every section of the house. \"Every New Yorker should have the opportunity... no matter what's in their bank account.\"",
+   "url": "https://www.reddit.com/r/popculturechat/comments/1wp70hs/mayor_mamdani_and_the_met_are_giving_away_70000/",
+   "date": "2026-09-24T16:54:08.000Z",
+   "source": "r/popculturechat",
+   "image": "https://external-preview.redd.it/M3d4MjVqcGUwaXJoMXdOQn8VzkclsrQ-66yiKZiL_hij2NAl1XSILgTiAmT8.png?width=640&crop=smart&auto=webp&s=837c1131f048b524112ff9b2bfc70bbdcbdcc812"
+  },
+  {
+   "id": "rd-1wpl9an",
+   "title": "Snake catcher in India calmly handles two massive cobras with his bare hands and a stick",
+   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wpcd4e/snake_catcher_in_india_calmly_handles_two_massive/",
+   "date": "2026-09-24T20:15:47.000Z",
+   "source": "r/interestingasfuck",
+   "image": "https://external-preview.redd.it/Z3EwMHZqM2UwanJoMYngzVEjSlx6IhtlGTXiLXN_wroyFasccI0a0-LKhkzN.png?width=320&crop=smart&auto=webp&s=5763ba36b2b407384b0e28b92a86e6b028224bf8"
+  },
+  {
+   "id": "rd-10x0xeu",
+   "title": "Forgiven, but never forgotten",
+   "url": "https://www.reddit.com/r/TikTokCringe/comments/1wpcvik/forgiven_but_never_forgotten/",
+   "date": "2026-09-24T20:36:00.000Z",
+   "source": "r/TikTokCringe",
+   "image": "https://external-preview.redd.it/anl4M3RlbHozanJoMTkPJFBzTxK4y36AmAegBE0BpwRQkyzeOJ2ExpgSkwKG.jpeg?width=320&crop=smart&auto=webp&s=b4b9de0b7d9c6773b9c719e3849684225ad7567e"
+  },
+  {
+   "id": "rd-8174sf",
+   "title": "The babiest baby to ever baby",
+   "url": "https://www.reddit.com/r/cats/comments/1wpna7b/the_babiest_baby_to_ever_baby/",
+   "date": "2026-09-25T04:47:25.000Z",
+   "source": "r/cats",
+   "image": "https://external-preview.redd.it/M2Q4dXpjZG9qbHJoMSA7JIBY9xsT7Pw2IW8MQPgMTYkxfylumq3-pj-qi0V0.jpeg?width=320&crop=smart&auto=webp&s=54999b29822659be7b0558aed72c277c86ef1ba9"
+  },
+  {
+   "id": "rd-xllq8n",
+   "title": "Lioness Comes to Face-to-Face with Tourist on Safari",
+   "url": "https://www.reddit.com/r/interesting/comments/1wpcc3k/lioness_comes_to_facetoface_with_tourist_on_safari/",
+   "date": "2026-09-24T20:14:44.000Z",
+   "source": "r/interesting",
+   "image": "https://external-preview.redd.it/d3c2Y3kwbDcwanJoMe1JFMaXC2gmpRSPmkEUStkHhiZx7L773EyTFxApY-yr.png?width=320&crop=smart&auto=webp&s=9160da4027817e8819bad51887f39b8a40aabce0"
+  },
+  {
+   "id": "rd-ynppbu",
+   "title": "[homemade] Poached Beef Medallions with a Tomato and Corn Syrup Reduction and topped with Vinegar Infused with Ground Mustard Seed",
+   "url": "https://www.reddit.com/r/food/comments/1wpe3dc/homemade_poached_beef_medallions_with_a_tomato/",
+   "date": "2026-09-24T21:24:46.000Z",
+   "source": "r/food",
+   "image": "https://preview.redd.it/6fzmzdbpcjrh1.jpeg?width=640&crop=smart&auto=webp&s=a4ccbdf6e44ad3af54500ea720baa99a98a3d4f6"
+  },
+  {
+   "id": "rd-ef1jsw",
+   "title": "Nolan Wells’ autopsy found no water in lungs; data was deleted from his phone the day he disappeared, experts say",
+   "url": "https://www.reddit.com/r/news/comments/1wpczw3/nolan_wells_autopsy_found_no_water_in_lungs_data/",
+   "date": "2026-09-24T20:40:58.000Z",
+   "source": "r/news",
+   "image": null
+  },
+  {
+   "id": "rd-sacxxd",
+   "title": "Look at his silly face",
+   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wpglyx/look_at_his_silly_face/",
+   "date": "2026-09-24T23:13:06.000Z",
+   "source": "r/MadeMeSmile",
+   "image": "https://external-preview.redd.it/cHM5ZmhzYjB3anJoMaQl_S1X7FY1XKkwXfPqGO4jBhKe8Jq6FsQQX92K2ab2.png?width=640&crop=smart&auto=webp&s=f6ef9d8e61ddcf986abd22dcbfc0564df973b1ff"
+  },
+  {
+   "id": "rd-1g0otng",
+   "title": "Love this dude, we should all aspire to be more like him",
+   "url": "https://www.reddit.com/r/JustGuysBeingDudes/comments/1wpbd3n/love_this_dude_we_should_all_aspire_to_be_more/",
+   "date": "2026-09-24T19:37:10.000Z",
+   "source": "r/JustGuysBeingDudes",
+   "image": "https://external-preview.redd.it/OHl4aTMxZml0aXJoMXY1R-ALM_ZNJQmSAC3abbeI9AkLWk5hE6VKYnXERM9R.jpeg?width=320&crop=smart&auto=webp&s=23f4011587aaeb81d45b48f5ebe4402ce3a1540a"
+  },
+  {
+   "id": "rd-f4sdpg",
+   "title": "🔥A sand cat with its kittens",
+   "url": "https://www.reddit.com/r/NatureIsFuckingLit/comments/1wpidow/a_sand_cat_with_its_kittens/",
+   "date": "2026-09-25T00:36:47.000Z",
+   "source": "r/NatureIsFuckingLit",
+   "image": "https://external-preview.redd.it/czdmYnF5cjc5a3JoMS1QJs41g82NuPPU3-YyYalZ6txdaoLZFlUObu8nZK68.png?width=640&crop=smart&auto=webp&s=41ee35d77e03669fbe9668f0e20a8792638a52d0"
+  },
+  {
+   "id": "rd-1bnw3vf",
+   "title": "Wife frequently complains that our dryer is not drying properly.",
+   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1wp84o1/wife_frequently_complains_that_our_dryer_is_not/",
+   "date": "2026-09-24T17:35:30.000Z",
+   "source": "r/mildlyinfuriating",
+   "image": "https://preview.redd.it/5clxwkdt7irh1.jpeg?width=640&crop=smart&auto=webp&s=52af252f40c8a59e4918eb67f63f34140cc9a8ed"
+  },
+  {
+   "id": "rd-eko992",
+   "title": "Delegates walk out at the UN as Netanyahu begins his speech",
+   "url": "https://www.reddit.com/r/Fauxmoi/comments/1wp97j9/delegates_walk_out_at_the_un_as_netanyahu_begins/",
+   "date": "2026-09-24T18:15:19.000Z",
+   "source": "r/Fauxmoi",
+   "image": "https://external-preview.redd.it/dDN4N2lyYnRlaXJoMYEepSeqlAkSz3NXMdlBdWRNAOg2KREJTUfkJGr1Sft1.png?width=640&crop=smart&auto=webp&s=171481cfd5fd19278784ee53dd84e742c9cd0701"
+  },
+  {
+   "id": "rd-cz38j2",
+   "title": "Playing hard to get doesn't work anymore",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wplhru/playing_hard_to_get_doesnt_work_anymore/",
+   "date": "2026-09-25T03:12:28.000Z",
+   "source": "r/SipsTea",
+   "image": "https://preview.redd.it/v179or3r2lrh1.png?width=640&crop=smart&auto=webp&s=bb1e0273bba9c7d3ed7aceee551e2428f4066e96"
+  },
+  {
+   "id": "rd-1nrnyh7",
+   "title": "Small human, big expectations",
+   "url": "https://www.reddit.com/r/memes/comments/1wpfp9m/small_human_big_expectations/",
+   "date": "2026-09-24T22:32:05.000Z",
+   "source": "r/memes",
+   "image": "https://preview.redd.it/e11dhw4qojrh1.jpeg?width=640&crop=smart&auto=webp&s=e986198bf762fb9502462d9e6a20e3644bf7020c"
+  },
+  {
+   "id": "rd-53v2l1",
+   "title": "me_irl",
+   "url": "https://www.reddit.com/r/me_irl/comments/1wpimbn/me_irl/",
+   "date": "2026-09-25T00:48:33.000Z",
+   "source": "r/me_irl",
+   "image": "https://preview.redd.it/vbcc8vu0dkrh1.jpeg?width=640&crop=smart&auto=webp&s=17b08c5918ea0c16c0f5fdafc132aeceece27c3f"
+  },
+  {
+   "id": "rd-i8rwqx",
+   "title": "Currently there right now tbh",
+   "url": "https://www.reddit.com/r/adhdmeme/comments/1wpd46d/currently_there_right_now_tbh/",
+   "date": "2026-09-24T20:45:37.000Z",
+   "source": "r/adhdmeme",
+   "image": "https://preview.redd.it/r4073w3q5jrh1.png?width=640&crop=smart&auto=webp&s=738e7da08ef54d2fd87f589f7b38ea6dfc346df9"
+  },
+  {
+   "id": "rd-e8b8ma",
+   "title": "Never broke an iPhone screen in my life so I decided to take off my case…",
+   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1wpee01/never_broke_an_iphone_screen_in_my_life_so_i/",
+   "date": "2026-09-24T21:36:37.000Z",
+   "source": "r/mildlyinfuriating",
+   "image": "https://preview.redd.it/nyv2am2uejrh1.jpeg?width=640&crop=smart&auto=webp&s=b71739ccbbc91ee310bbc64f8e0e368d56b2e406"
+  },
+  {
+   "id": "rd-xdt32s",
+   "title": "This is just how it should be",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wpgs03/this_is_just_how_it_should_be/",
+   "date": "2026-09-24T23:20:39.000Z",
+   "source": "r/SipsTea",
+   "image": "https://preview.redd.it/3u41ob7exjrh1.jpeg?width=640&crop=smart&auto=webp&s=fa5dc3dfeb0e46938959d71258e5bd733578fd71"
+  }
+ ]
+}
