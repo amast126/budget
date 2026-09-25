@@ -27,6 +27,35 @@ export function createFirebaseBackend() {
   const docId = CFG.sharedDocId || null;
 
   const budgetRef = (user) => doc(db, 'trackers', docId || user.uid);
+  // Other modules get their own document next to the budget, e.g. trackers/alec-tracker-learning.
+  const moduleRef = (user, name) => doc(db, 'trackers', `${docId || user.uid}-${name}`);
+
+  const listen = (ref, cb, onError) =>
+    onSnapshot(
+      ref,
+      (snap) => {
+        if (!snap.exists()) return cb(null);
+        const d = snap.data();
+        try {
+          cb(d.json ? JSON.parse(d.json) : null);
+        } catch (e) {
+          onError && onError(e);
+        }
+      },
+      (e) => onError && onError(e)
+    );
+  // Read-modify-write in one transaction so nothing saved a moment ago elsewhere is lost.
+  const mutate = (ref, fn, init) =>
+    runTransaction(db, async (tx) => {
+      const snap = await tx.get(ref);
+      let data;
+      if (snap.exists() && snap.data().json) data = JSON.parse(snap.data().json);
+      else if (init) data = init();
+      else throw new Error('Data not found');
+      fn(data);
+      data.updatedAt = Date.now();
+      tx.set(ref, { json: JSON.stringify(data), updatedAt: data.updatedAt, client: CLIENT });
+    });
 
   return {
     configured: !!fb,
@@ -58,32 +87,9 @@ export function createFirebaseBackend() {
       }
     },
     signOut: () => (auth ? fbSignOut(auth) : Promise.resolve()),
-    subscribeBudget(user, cb, onError) {
-      return onSnapshot(
-        budgetRef(user),
-        (snap) => {
-          if (!snap.exists()) return cb(null);
-          const d = snap.data();
-          try {
-            cb(d.json ? JSON.parse(d.json) : null);
-          } catch (e) {
-            onError && onError(e);
-          }
-        },
-        (e) => onError && onError(e)
-      );
-    },
-    // Read-modify-write in one transaction so nothing the budget saved a moment ago is lost.
-    async mutateBudget(user, fn) {
-      const ref = budgetRef(user);
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(ref);
-        if (!snap.exists() || !snap.data().json) throw new Error('Budget data not found');
-        const data = JSON.parse(snap.data().json);
-        fn(data);
-        data.updatedAt = Date.now();
-        tx.set(ref, { json: JSON.stringify(data), updatedAt: data.updatedAt, client: CLIENT });
-      });
-    },
+    subscribeBudget: (user, cb, onError) => listen(budgetRef(user), cb, onError),
+    mutateBudget: (user, fn) => mutate(budgetRef(user), fn),
+    subscribeModule: (user, name, cb, onError) => listen(moduleRef(user, name), cb, onError),
+    mutateModule: (user, name, fn, init) => mutate(moduleRef(user, name), fn, init),
   };
 }

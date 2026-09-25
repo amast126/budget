@@ -52,6 +52,22 @@ const init = (exportJson) => {
       setTimeout(() => cb(read()), 10);
       return () => subs.delete(cb);
     },
+    subscribeModule(user, name, cb) {
+      const k = 'mod:' + name;
+      const fire = () => cb(localStorage.getItem(k) ? JSON.parse(localStorage.getItem(k)) : null);
+      window.__modSubs = window.__modSubs || {};
+      (window.__modSubs[name] = window.__modSubs[name] || new Set()).add(fire);
+      setTimeout(fire, 10);
+      return () => window.__modSubs[name].delete(fire);
+    },
+    async mutateModule(user, name, fn, init) {
+      const k = 'mod:' + name;
+      const d = localStorage.getItem(k) ? JSON.parse(localStorage.getItem(k)) : init();
+      fn(d);
+      d.updatedAt = Date.now();
+      localStorage.setItem(k, JSON.stringify(d));
+      (window.__modSubs[name] || []).forEach((f) => f());
+    },
     async mutateBudget(user, fn) {
       const d = read();
       fn(d);
@@ -155,6 +171,53 @@ check(/Dashboard test bagel/.test(btext), 'quick-add shows up inside the budget 
 await page.screenshot({ path: path.join(OUT, 'budget.png') });
 await page.click('a.nav-item:has-text("Home")');
 await page.waitForSelector('.money .big');
+
+
+// ---------------- learning
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.money .big');
+const homeLearn = await page.innerText('.col:nth-child(2) .card');
+check(/Learning/.test(homeLearn) && /AI-901/.test(homeLearn), 'Home shows the Learning card with AI-901');
+await page.click('a.nav-item:has-text("Learning")');
+await page.waitForSelector('.steps .step');
+const stepsText = await page.$$eval('.learning .col:first-child .step .step-head', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
+console.log('  roadmap:', stepsText);
+check(stepsText.length === 5 && /AI-901/.test(stepsText[0]) && /Studying/.test(stepsText[0]), 'roadmap has 5 steps, AI-901 studying first');
+check(stepsText.every((t) => /Target \w{3} 20\d\d/.test(t)), 'every step has a target month');
+await page.screenshot({ path: path.join(OUT, 'learning.png'), fullPage: true });
+// log time on the current cert from the week card
+await page.click('.learning .card:first-child .log-btns button:has-text("+1h")');
+await page.waitForTimeout(150);
+check(/1h of 4h/.test(await page.innerText('.learning .card:first-child')), 'logging +1h updates this week');
+let L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+check(L.log.length === 1 && L.log[0].cert === 'ai-901' && L.log[0].minutes === 60, 'time log saved');
+// book AI-901 for a date and check the roadmap label
+await page.click('.learning .seg-btn:has-text("Exam booked")');
+await page.waitForSelector('.learning input[type=date]');
+const exam = new Date(Date.now() + 20 * 86400000).toISOString().slice(0, 10);
+await page.fill('.learning .cert-detail input[type=date]', exam);
+await page.waitForTimeout(200);
+L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+check(L.certs['ai-901'].status === 'booked' && L.certs['ai-901'].examDate === exam, 'exam booked with date');
+check(/Exam /.test(await page.innerText('.learning .steps .step:first-child .step-head')), 'roadmap shows the exam date');
+// pass AZ-104 to create a renewal
+await page.click('.learning .steps .step:nth-child(2) .step-head');
+await page.click('.learning .step.open .seg-btn:has-text("Passed")');
+await page.waitForTimeout(200);
+L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+check(L.certs['az-104'].status === 'passed' && !!L.certs['az-104'].expires, `AZ-104 passed, renew by ${L.certs['az-104'].expires}`);
+check(/Renewals/.test(await page.innerText('.learning')), 'renewals card appears');
+// add an optional cert
+await page.click('.learning .col:nth-child(2) .step-head:has-text("Identity and Access")');
+await page.click('button:has-text("Add to roadmap")');
+await page.waitForTimeout(200);
+L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+check(L.plan.includes('sc-300'), `SC-300 added to roadmap at position ${L.plan.indexOf('sc-300') + 1}`);
+await page.screenshot({ path: path.join(OUT, 'learning-after.png'), fullPage: true });
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.money .big');
+check(/exam in 20 days/.test(await page.innerText('.col:nth-child(2) .card')), 'Home learning card shows exam countdown');
+await page.screenshot({ path: path.join(OUT, 'home-learning.png'), fullPage: true });
 
 // settings sheet
 await page.click('.nav-settings');

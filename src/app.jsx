@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client';
 import css from './styles.css';
 import { createFirebaseBackend } from './backend.js';
+import { Icon } from './ui.jsx';
+import { LearningPage, LearningHomeCard } from './learning.jsx';
+import { defaultLearning, normalize as normalizeLearning } from './learning-logic.js';
 import {
   homeSummary,
   newTransaction,
@@ -66,21 +69,6 @@ function useRoute() {
 }
 
 // ---------------------------------------------------------------- small pieces
-function Icon({ name, size = 22 }) {
-  const p = {
-    home: 'M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
-    budget: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
-    gear: 'M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zM4 12h2M18 12h2M12 4v2M12 18v2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4',
-    check: 'M5 12.5l4.5 4.5L19 7.5',
-    ext: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5',
-  }[name];
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d={p} />
-    </svg>
-  );
-}
-
 function Pill({ status }) {
   return <span className={`pill pill-${status}`}>{STATUS_LABEL[status] || status}</span>;
 }
@@ -329,7 +317,7 @@ function NewsCard({ news, read, markRead, markAllRead }) {
   );
 }
 
-function Home({ user, data, onAdd, onToggle, news, read, markRead, markAllRead, dataError }) {
+function Home({ user, data, onAdd, onToggle, news, read, markRead, markAllRead, dataError, learning, mutateLearning }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   return (
@@ -358,6 +346,7 @@ function Home({ user, data, onAdd, onToggle, news, read, markRead, markAllRead, 
           )}
         </div>
         <div className="col">
+          <LearningHomeCard data={learning} mutate={mutateLearning} />
           <NewsCard news={news} read={read} markRead={markRead} markAllRead={markAllRead} />
         </div>
       </div>
@@ -424,6 +413,13 @@ function Gate({ user, error }) {
   );
 }
 
+// Fill in any missing fields on a stored learning document before a change is applied to it.
+function normalizeLearningInPlace(d) {
+  const n = normalizeLearning(d);
+  Object.keys(n).forEach((k) => (d[k] = n[k]));
+  return d;
+}
+
 // ---------------------------------------------------------------- app
 function App() {
   const route = useRoute();
@@ -435,6 +431,8 @@ function App() {
   const [toast, setToast] = useState(null);
   const [settings, setSettings] = useState(false);
   const [budgetOpened, setBudgetOpened] = useState(route === 'budget');
+  const [learning, setLearning] = useState(null);
+  const [learningError, setLearningError] = useState('');
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
@@ -448,6 +446,19 @@ function App() {
         setDataError(d ? '' : 'No budget data found for this account yet.');
       },
       (e) => setDataError(`Couldn’t load the budget: ${e.message || e}`)
+    );
+  }, [allowed, user && user.uid]);
+
+  useEffect(() => {
+    if (!allowed) return;
+    return backend.subscribeModule(
+      user,
+      'learning',
+      (d) => {
+        setLearning(normalizeLearning(d)); // nothing saved yet → the default roadmap
+        setLearningError('');
+      },
+      (e) => setLearningError(`Couldn’t load learning progress: ${e.message || e}`)
     );
   }, [allowed, user && user.uid]);
 
@@ -516,6 +527,14 @@ function App() {
       return false;
     }
   };
+  const mutateLearning = async (fn, msg) => {
+    try {
+      await backend.mutateModule(user, 'learning', (d) => fn(normalizeLearningInPlace(d)), defaultLearning);
+      if (msg) showToast({ text: msg });
+    } catch (e) {
+      showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+    }
+  };
   const onToggle = async (u) => {
     try {
       await backend.mutateBudget(user, (d) => toggleBillPaid(d, u.key, u.id));
@@ -540,14 +559,28 @@ function App() {
         <div className="brand">Dashboard</div>
         {nav('home', 'home', 'Home')}
         {nav('budget', 'budget', 'Budget')}
+        {nav('learning', 'learn', 'Learning')}
         <button className="nav-item nav-settings" onClick={() => setSettings(true)} aria-label="Settings">
           <Icon name="gear" />
           <span>Settings</span>
         </button>
       </nav>
       <main className="main">
-        {route === 'budget' ? null : (
-          <Home user={user} data={data} dataError={dataError} onAdd={onAdd} onToggle={onToggle} news={news} read={read} markRead={markRead} markAllRead={markAllRead} />
+        {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} /> : null}
+        {route === 'budget' || route === 'learning' ? null : (
+          <Home
+            user={user}
+            data={data}
+            dataError={dataError}
+            onAdd={onAdd}
+            onToggle={onToggle}
+            news={news}
+            read={read}
+            markRead={markRead}
+            markAllRead={markAllRead}
+            learning={learning}
+            mutateLearning={mutateLearning}
+          />
         )}
         {budgetOpened ? <BudgetFrame visible={route === 'budget'} /> : null}
       </main>
