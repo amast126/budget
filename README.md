@@ -1,50 +1,40 @@
-# Budget Tracker — hosted version
+# Dashboard (formerly Budget Tracker)
 
-Four files do the work: `index.html`, `app.js`, `config.js`, and `manifest.webmanifest` (plus `icon.svg`).
-`firestore.rules` is pasted into Firebase, not served.
+Private, single-user dashboard at **https://amast126.github.io/budget/**. Only the owner's Google account gets in.
 
-Everything is free at this scale: GitHub Pages, Firebase's Spark plan (no card needed), and Finnhub's free key.
+- **Home** (`index.html` + `dashboard.js`, source in `src/`): money bar, quick add, bills this week, categories running hot, and a News card (US politics from AP and Reuters, top posts on r/popular).
+- **Budget** (`budget.html` + `app.js`): the original budget tracker, unchanged, shown inside the app. Its source is not in this repo; `app.js` is the prebuilt bundle.
 
-## 1. Firebase (sign-in and sync) — about 10 minutes
+Both read and write the same Firestore document (`trackers/alec-tracker`), so a quick add or a bill tick on Home appears in the budget within a second, and the other way round.
 
-1. Go to https://console.firebase.google.com and click **Create a project**. Name it anything (e.g. `budget-tracker`).
-   Turn Google Analytics **off** (not needed). Leave it on the **Spark (free)** plan.
-2. In the project, open **Build → Authentication → Get started → Sign-in method**, enable **Google**, pick a support email, save.
-3. Open **Build → Firestore Database → Create database**. Choose a location near you, start in **production mode**, create.
-4. On the Firestore page, open the **Rules** tab, replace everything with the contents of `firestore.rules`, and click **Publish**.
-5. Click the gear → **Project settings**. Under **Your apps** click the **web** icon (`</>`), register the app (any nickname, do not tick Hosting),
-   then copy the `firebaseConfig` object it shows. Paste its values into `config.js`.
-6. Still in Authentication → **Settings → Authorized domains**, add the domain you'll host on (for GitHub Pages that's `YOURNAME.github.io`).
-   `localhost` is already there for testing.
+## Files
 
-## 2. Finnhub (stock prices) — 2 minutes
+| Path | What it is |
+|---|---|
+| `index.html` | Dashboard page. Bump `dashboard.js?v=` and `config.js?v=` when those files change. |
+| `dashboard.js` | Built dashboard. Rebuild with `./build.sh`; don't edit by hand. |
+| `src/app.jsx`, `src/budget-logic.js`, `src/backend.js`, `src/styles.css` | Dashboard source. `budget-logic.js` mirrors the budget module's rules (paydays, bill dates, split bills, pacing). |
+| `budget.html`, `app.js` | The budget module. |
+| `config.js` | Firebase config, Finnhub key, and the allowlist (owner only). Shared by both pages. |
+| `news.json` | Written by the news job every ~30 minutes. |
+| `scripts/fetch-news.mjs` | The news job. Edit `POLITICS` at the top to change sources. |
+| `.github/workflows/news.yml` | Schedule for the news job. Needs Settings → Actions → General → Read and write. |
+| `test/run.mjs` | Headless test at phone and desktop width using a budget export as test data. |
 
-Sign up at https://finnhub.io, confirm your email, copy the API key from the dashboard into `finnhubKey` in `config.js`.
+## Access
 
-## 3. Host it on GitHub Pages — 5 minutes
+Access is enforced twice: `config.js` (the app refuses other accounts) and the Firestore rules in the Firebase console (the data refuses other accounts). The rules allow only the owner's verified email to read or write `trackers/*`.
 
-1. Create a new repository on GitHub (e.g. `budget`). It can be **private**: the site itself is public at its URL,
-   but there's no personal data in these files — your data lives in Firebase and in your browser, never in the repo.
-2. Upload the contents of this folder (the files, not the folder) to the repo. Commit.
-3. Repo **Settings → Pages → Build and deployment**: Source = *Deploy from a branch*, Branch = `main`, folder = `/ (root)`. Save.
-4. After a minute it's live at `https://YOURNAME.github.io/budget/`. Add that domain to Firebase authorized domains if you didn't in step 1.6.
+## Build and test
 
-Prefer no GitHub? Drag the folder onto https://app.netlify.com/drop instead. Same result, and add the Netlify domain to Firebase.
+```bash
+npm install
+./build.sh
+BUDGET_EXPORT=/path/to/budget-tracker-export.json node test/run.mjs shots/
+```
 
-## 4. First run
+## Deploy
 
-1. Open the site, click **Sign in with Google to sync**.
-2. In the Claude version: Settings → **Export JSON**. On the site: Settings → **Import JSON**. Everything comes across.
-3. On your phone, open the same URL, sign in with the same Google account, and the data is already there.
-   Add it to the home screen (Share → Add to Home Screen on iPhone) and it opens like an app.
-
-## How saving works
-
-- Every change saves to the browser immediately and to your Firestore document about half a second later.
-- Other signed-in devices update within a second or two. Offline edits are kept locally and sync when you're back.
-- If two devices edit while offline, the later edit wins when they reconnect.
-- Signed out, the site still works and saves on that device only.
-
-## Updating the app later
-
-Replace `app.js` (and `index.html` if it changed) in the repo. `config.js` stays as is. Your data is untouched.
+1. Upload changed files to the repo (`https://github.com/amast126/budget/upload/main`, or `/upload/main/src` for files in `src/`).
+2. Bump the matching `?v=` number in `index.html` (and `budget.html` for `app.js` or `config.js`).
+3. Wait 1–3 minutes for Pages, reload, and check the build number in Settings.

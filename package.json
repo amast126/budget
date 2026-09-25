@@ -1,0 +1,15 @@
+{
+  "name": "dashboard",
+  "description": "Alec's dashboard: home screen + budget module",
+  "scripts": {
+    "build": "./build.sh",
+    "news": "node scripts/fetch-news.mjs"
+  },
+  "dependencies": {
+    "esbuild": "0.28.2",
+    "firebase": "12.19.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "private": true
+}
