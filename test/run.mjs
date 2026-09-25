@@ -102,7 +102,7 @@ const txt = await page.innerText('.main');
 check(/Left to spend|Over budget by/.test(txt), 'money card renders');
 check(/Next payday/.test(txt), 'payday shown');
 check(/Bills this week/.test(txt), 'bills card renders');
-check(/Supreme Court lets Trump/.test(txt), 'politics news renders');
+check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news is off the home screen');
 const billsShown = await page.$$eval('.bill', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
 console.log('  bills:', billsShown);
 
@@ -154,7 +154,19 @@ if (firstBill) {
   console.log('  (no bills in the next 7 days to toggle)');
 }
 
-// news: tab switch + read marks
+// news tab: sections + read marks
+await page.click('a.nav-item:has-text("News")');
+await page.waitForSelector('.news-page .story');
+check(/Supreme Court lets Trump/.test(await page.innerText('.news')), 'politics renders on the News tab');
+const newsTabs = await page.$$eval('.news-page .tab', (t) => t.map((x) => x.innerText.replace(/\n/g, ' ')));
+check(newsTabs.length === 5 && /US politics/.test(newsTabs[0]) && /Music/.test(newsTabs[4]), `five sections: ${newsTabs.join(' | ')}`);
+await page.click('button.tab:has-text("Tech & AI")');
+check(/open-weight AI model/.test(await page.innerText('.news')) && /The Verge/.test(await page.innerText('.news')), 'Tech & AI section renders with the outlet name');
+await page.click('button.tab:has-text("Pop culture")');
+check(/sequel release date/.test(await page.innerText('.news')), 'Pop culture section renders');
+await page.click('button.tab:has-text("Music")');
+check(/vinyl reissue/.test(await page.innerText('.news')), 'Music section renders');
+await page.screenshot({ path: path.join(OUT, 'news.png'), fullPage: true });
 await page.click('button.tab:has-text("Reddit")');
 check(/r\/pics/.test(await page.innerText('.news')), 'reddit tab renders');
 await page.click('button.tab:has-text("US politics")');

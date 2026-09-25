@@ -1,10 +1,106 @@
-{"generated":"2026-09-25T16:00:00.000Z","sources":{"ap":{"ok":true,"count":3},"reuters":{"ok":true,"count":2},"reddit":{"ok":true,"count":2}},
-"politics":[
-{"id":"ap-1","title":"Supreme Court lets Trump administration use revamped federal voter eligibility database","url":"https://apnews.com/","date":"2026-09-25T15:43:00.000Z","source":"AP"},
-{"id":"reuters-1","title":"Trump told Xi that China helping Iran is unacceptable, US ambassador says","url":"https://reuters.com/","date":"2026-09-25T16:03:00.000Z","source":"Reuters"},
-{"id":"ap-2","title":"Pro-Trump TV ad paid for by US government continues airing with higher spend","url":"https://apnews.com/","date":"2026-09-25T15:53:00.000Z","source":"AP"},
-{"id":"reuters-2","title":"US Senate rejects resolution curbing Trump's Iran war powers","url":"https://reuters.com/","date":"2026-09-24T18:51:00.000Z","source":"Reuters"},
-{"id":"ap-3","title":"Trump administration moves to limit fixes for systemic racism in schools","url":"https://apnews.com/","date":"2026-09-25T04:01:00.000Z","source":"AP"}],
-"reddit":[
-{"id":"rd-1","title":"A sample top post from r/popular for layout testing","url":"https://www.reddit.com/","date":"2026-09-25T09:00:00.000Z","source":"r/pics","image":null},
-{"id":"rd-2","title":"Another sample post with a longer title to check how wrapping looks on a narrow phone screen","url":"https://www.reddit.com/","date":"2026-09-25T07:00:00.000Z","source":"r/interestingasfuck","image":null}]}
+{
+ "generated": "2026-09-25T16:00:00.000Z",
+ "sources": {
+  "ap": {
+   "ok": true,
+   "count": 3
+  },
+  "reuters": {
+   "ok": true,
+   "count": 2
+  },
+  "reddit": {
+   "ok": true,
+   "count": 2
+  }
+ },
+ "politics": [
+  {
+   "id": "ap-1",
+   "title": "Supreme Court lets Trump administration use revamped federal voter eligibility database",
+   "url": "https://apnews.com/",
+   "date": "2026-09-25T15:43:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-1",
+   "title": "Trump told Xi that China helping Iran is unacceptable, US ambassador says",
+   "url": "https://reuters.com/",
+   "date": "2026-09-25T16:03:00.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-2",
+   "title": "Pro-Trump TV ad paid for by US government continues airing with higher spend",
+   "url": "https://apnews.com/",
+   "date": "2026-09-25T15:53:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-2",
+   "title": "US Senate rejects resolution curbing Trump's Iran war powers",
+   "url": "https://reuters.com/",
+   "date": "2026-09-24T18:51:00.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-3",
+   "title": "Trump administration moves to limit fixes for systemic racism in schools",
+   "url": "https://apnews.com/",
+   "date": "2026-09-25T04:01:00.000Z",
+   "source": "AP"
+  }
+ ],
+ "reddit": [
+  {
+   "id": "rd-1",
+   "title": "A sample top post from r/popular for layout testing",
+   "url": "https://www.reddit.com/",
+   "date": "2026-09-25T09:00:00.000Z",
+   "source": "r/pics",
+   "image": null
+  },
+  {
+   "id": "rd-2",
+   "title": "Another sample post with a longer title to check how wrapping looks on a narrow phone screen",
+   "url": "https://www.reddit.com/",
+   "date": "2026-09-25T07:00:00.000Z",
+   "source": "r/interestingasfuck",
+   "image": null
+  }
+ ],
+ "tech": [
+  {
+   "id": "tech-fx0",
+   "title": "Fixture: a new open-weight AI model lands",
+   "url": "https://example.com/tech/0",
+   "date": "2026-09-25T16:52:20.000Z",
+   "source": "The Verge"
+  },
+  {
+   "id": "tech-fx1",
+   "title": "Fixture: chipmaker earnings beat estimates",
+   "url": "https://example.com/tech/1",
+   "date": "2026-09-25T15:52:20.000Z",
+   "source": "TechCrunch"
+  }
+ ],
+ "pop": [
+  {
+   "id": "pop-fx0",
+   "title": "Fixture: studio sets a sequel release date",
+   "url": "https://example.com/pop/0",
+   "date": "2026-09-25T16:52:20.000Z",
+   "source": "Variety"
+  }
+ ],
+ "music": [
+  {
+   "id": "music-fx0",
+   "title": "Fixture: band announces a vinyl reissue",
+   "url": "https://example.com/music/0",
+   "date": "2026-09-25T16:52:20.000Z",
+   "source": "Pitchfork"
+  }
+ ]
+}
