@@ -82,10 +82,44 @@ const init = (exportJson) => {
   };
 };
 
+// Stand-in Open-Meteo responses: a forecast built around the current hour, and a place search.
+const pad = (n) => String(n).padStart(2, '0');
+const localISO = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:00`;
+function forecastFixture(lat) {
+  const now = new Date();
+  const day0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const times = Array.from({ length: 48 }, (_, i) => localISO(new Date(day0.getTime() + i * 3600e3)));
+  const base = lat > 40.7 ? 68 : 71; // a different place gives different numbers
+  return {
+    timezone: 'America/New_York',
+    current: { time: localISO(now), temperature_2m: base - 0.1, apparent_temperature: base - 9, weather_code: 3, is_day: 1, wind_speed_10m: 20, wind_gusts_10m: 35, relative_humidity_2m: 45 },
+    hourly: {
+      time: times,
+      temperature_2m: times.map((_, i) => base - Math.abs(14 - (i % 24)) / 2),
+      precipitation_probability: times.map((_, i) => (i % 24 >= 17 && i % 24 <= 20 ? 55 : 10)),
+      weather_code: times.map((_, i) => (i % 24 >= 17 && i % 24 <= 20 ? 63 : 2)),
+      is_day: times.map((_, i) => (i % 24 >= 7 && i % 24 < 19 ? 1 : 0)),
+    },
+    daily: { time: [times[0].slice(0, 10), times[24].slice(0, 10)], weather_code: [63, 1], temperature_2m_max: [base + 0.5, 70], temperature_2m_min: [55.7, 54], precipitation_probability_max: [55, 5], sunrise: [`${times[0].slice(0, 10)}T06:43`, `${times[24].slice(0, 10)}T06:44`], sunset: [`${times[0].slice(0, 10)}T18:45`, `${times[24].slice(0, 10)}T18:43`], uv_index_max: [3.9, 5] },
+  };
+}
+const weatherCalls = [];
+async function mockWeather(context) {
+  await context.route('https://api.open-meteo.com/**', (route) => {
+    const lat = Number(new URL(route.request().url()).searchParams.get('latitude'));
+    weatherCalls.push(lat);
+    route.fulfill({ contentType: 'application/json', body: JSON.stringify(forecastFixture(lat)) });
+  });
+  await context.route('https://geocoding-api.open-meteo.com/**', (route) =>
+    route.fulfill({ contentType: 'application/json', body: JSON.stringify({ results: [{ name: 'Brooklyn', admin1: 'New York', admin2: 'Kings', country: 'United States', country_code: 'US', latitude: 40.6501, longitude: -73.94958 }] }) })
+  );
+}
+
 const errors = [];
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 await ctx.addInitScript(init, EXPORT);
+await mockWeather(ctx);
 const page = await ctx.newPage();
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
@@ -103,6 +137,52 @@ check(/Left to spend|Over budget by/.test(txt), 'money card renders');
 check(/Next payday/.test(txt), 'payday shown');
 check(/Bills this week/.test(txt), 'bills card renders');
 check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news is off the home screen');
+// weather + to-do on Home, in phone order: weather, to-do, then money
+const order = await page.$$eval('.home-grid .card .card-title', (els) => els.map((e) => [e.textContent, Math.round(e.getBoundingClientRect().top)]).sort((a, b) => a[1] - b[1]).map((x) => x[0]));
+check(order[0] === 'Weather' && order[1] === 'To-do', `phone order starts ${order.slice(0, 4).join(', ')}`);
+const wx = await page.innerText('.weather');
+check(/Dix Hills, NY 11746/.test(wx) && /68°/.test(wx) && /H 69° \/ L 56°/.test(wx.replace(/\s+/g, ' ')), 'weather shows Dix Hills with temp and high/low');
+check(/Rain today, high 69°, low 56°/.test(wx) && /Windy, gusts to 35 mph/.test(wx), `weather sentence: ${(wx.match(/Rain today[^\n]*/) || [''])[0]}`);
+check((await page.$$('.wx-hour')).length >= 5, 'hourly strip for the next 12 hours');
+await page.screenshot({ path: path.join(OUT, 'home-weather.png') });
+await page.click('.weather .card-head .link-btn');
+await page.fill('input[aria-label="Weather location"]', 'Brooklyn');
+await page.click('.wx-search button[type=submit]');
+await page.click('.wx-results .rc');
+await page.waitForTimeout(250);
+let H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
+check(H.place.name === 'Brooklyn, NY' && Math.abs(H.place.lat - 40.65) < 0.01, `location saved (${H.place.name})`);
+check(/Brooklyn, NY/.test(await page.innerText('.weather')) && /71°/.test(await page.innerText('.weather')) && weatherCalls.some((l) => Math.abs(l - 40.65) < 0.01), 'weather reloads for the new place');
+await page.click('.weather .card-head .link-btn');
+await page.click('.wx-search button:has-text("Use Dix Hills")');
+await page.waitForTimeout(250);
+H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
+check(H.place.zip === '11746', 'back to the Dix Hills default');
+// to-do
+for (const t of ['Renew car registration', 'Call the dentist', 'Book AI-901 exam']) {
+  await page.fill('input[aria-label="New to-do"]', t);
+  await page.press('input[aria-label="New to-do"]', 'Enter');
+  await page.waitForTimeout(100);
+}
+H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
+check(H.todos.length === 3 && H.todos[0].text === 'Book AI-901 exam', 'three to-dos added, newest first');
+await page.click('.todo-row:has-text("Call the dentist") input[type=checkbox]');
+await page.waitForTimeout(150);
+check(/2 open/.test(await page.innerText('.todo')) && /Done \(1\)/.test(await page.innerText('.todo')), 'ticking one moves it to Done');
+await page.click('.todo-row:has-text("Renew car registration") .x');
+await page.waitForSelector('.toast');
+H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
+check(H.todos.length === 2, 'delete removes it');
+await page.click('.toast-btn');
+await page.waitForTimeout(200);
+H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
+check(H.todos.length === 3 && H.todos[2].text === 'Renew car registration', 'undo puts it back in place');
+await page.click('.todo button:has-text("Clear done")');
+await page.waitForTimeout(150);
+H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
+check(H.todos.length === 2 && !H.todos.some((t) => t.done), 'clear done');
+await page.screenshot({ path: path.join(OUT, 'home-todo.png') });
+
 const billsShown = await page.$$eval('.bill', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
 console.log('  bills:', billsShown);
 
@@ -192,7 +272,8 @@ await page.waitForSelector('.money .big');
 // ---------------- learning
 await page.click('a.nav-item:has-text("Home")');
 await page.waitForSelector('.money .big');
-const homeLearn = await page.innerText('.col:nth-child(2) .card');
+const learnCard = '.home .card:has(h2:text-is("Learning"))';
+const homeLearn = await page.innerText(learnCard);
 check(/Learning/.test(homeLearn) && /AI-901/.test(homeLearn), 'Home shows the Learning card with AI-901');
 await page.click('a.nav-item:has-text("Learning")');
 await page.waitForSelector('.steps .step');
@@ -232,7 +313,7 @@ check(L.plan.includes('sc-300'), `SC-300 added to roadmap at position ${L.plan.i
 await page.screenshot({ path: path.join(OUT, 'learning-after.png'), fullPage: true });
 await page.click('a.nav-item:has-text("Home")');
 await page.waitForSelector('.money .big');
-check(/exam in 20 days/.test(await page.innerText('.col:nth-child(2) .card')), 'Home learning card shows exam countdown');
+check(/exam in 20 days/.test(await page.innerText(learnCard)), 'Home learning card shows exam countdown');
 await page.screenshot({ path: path.join(OUT, 'home-learning.png'), fullPage: true });
 
 
@@ -341,6 +422,7 @@ await page.click('.sheet .btn.primary');
 // desktop
 const desk = await browser.newContext({ viewport: { width: 1366, height: 900 } });
 await desk.addInitScript(init, EXPORT);
+await mockWeather(desk);
 const dp = await desk.newPage();
 dp.on('pageerror', (e) => errors.push('pageerror(desktop): ' + e.message));
 await dp.goto(base, { waitUntil: 'networkidle' });
