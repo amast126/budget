@@ -28,6 +28,7 @@ const MIN_RATINGS = 25;
 const MIN_STARS = 4.3;
 const PICKS = { main: 8, breakfast: 2, side: 2 };
 const NO_REPEAT_WEEKS = 12;
+const MIN_INGREDIENTS = 4;
 
 const log = (...a) => console.log(...a);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -142,9 +143,9 @@ function rng(seedText) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
-// Weighted draw without replacement: more ratings and more stars → more likely.
+// Weighted draw without replacement: more ratings, more stars and a lower cost per serving → more likely.
 function draw(cands, n, rand) {
-  const pool = cands.map((r) => ({ r, w: Math.sqrt(r.ratings) * Math.pow(r.stars, 2) }));
+  const pool = cands.map((r) => ({ r, w: (Math.sqrt(r.ratings) * Math.pow(r.stars, 2)) / Math.sqrt(Math.max(0.75, r.perServing ?? 2)) }));
   const out = [];
   while (out.length < n && pool.length) {
     const tot = pool.reduce((a, x) => a + x.w, 0);
@@ -210,7 +211,8 @@ let result;
 try {
   const { items, total } = await fetchAll();
   const shaped = items.map(shape).filter(Boolean);
-  const pool = shaped.filter((r) => r.ratings >= MIN_RATINGS && r.stars >= MIN_STARS).sort((a, b) => b.ratings - a.ratings);
+  // Real recipes only: technique posts like "how to boil an egg" have one or two ingredients.
+  const pool = shaped.filter((r) => r.ratings >= MIN_RATINGS && r.stars >= MIN_STARS && r.keys.length >= MIN_INGREDIENTS).sort((a, b) => b.ratings - a.ratings);
   if (pool.length < 50) throw new Error(`only ${pool.length} popular recipes found; the feed may have changed`);
   const history = (prev && prev.history) || [];
   const picks = choosePicks(pool, history, week);
