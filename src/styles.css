@@ -295,7 +295,7 @@ textarea.input { resize: vertical; font: inherit; font-size: 16px; }
 @media (max-width: 1099px) {
   .home-grid .col { display: contents; }
   .home-grid .o1 { order: 1; } .home-grid .o2 { order: 2; } .home-grid .o3 { order: 3; } .home-grid .o4 { order: 4; }
-  .home-grid .o5 { order: 5; } .home-grid .o6 { order: 6; } .home-grid .o7 { order: 7; } .home-grid .o8 { order: 8; }
+  .home-grid .o5 { order: 5; } .home-grid .o6 { order: 6; } .home-grid .o7 { order: 7; } .home-grid .o8 { order: 8; } .home-grid .o9 { order: 9; }
 }
 .wx-now { display: flex; align-items: center; gap: 12px; }
 .wx-icon { font-size: 42px; line-height: 1; }
@@ -312,3 +312,26 @@ textarea.input { resize: vertical; font: inherit; font-size: 16px; }
 .todo-text { font-weight: 500; overflow-wrap: anywhere; }
 .todo-done { margin-top: 8px; border-top: 1px solid var(--paper-deep); padding-top: 6px; }
 .muted-link { color: var(--ink-soft); }
+
+/* ---- auto ---- */
+.alerts { list-style: none; margin: 8px 0 4px; padding: 0; }
+.al { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-weight: 600; font-size: 14px; }
+.al-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); flex: none; }
+.al-over { color: var(--red); } .al-over .al-dot { background: var(--red); }
+.al-soon { color: var(--amber); }
+.tag-over { background: var(--red-soft); color: var(--red); }
+.tag-soon { background: var(--amber-soft); color: var(--amber); }
+.tag-near { background: var(--paper-deep); color: var(--ink); }
+.tag-ok { background: var(--green-soft); color: var(--green); }
+.tag-none { background: var(--paper-deep); color: var(--ink-soft); }
+.odo { margin: 10px 0 8px; }
+.w-row, .mt-row, .dl-row { padding: 9px 0; display: flex; flex-direction: column; gap: 2px; }
+.dl-actions { display: flex; gap: 8px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
+.small-input { width: auto; padding: 6px 8px; font-size: 14px; }
+.chip.on { background: var(--green); border-color: var(--green); color: #fff; }
+.svc-items { margin: 4px 0 10px; }
+.check-line { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 10px 0 0; }
+.rc-recall { padding: 4px 0 10px; }
+.recall-body p { margin: 0 0 8px; }
+.auto-home .home-row { border-top: 1px solid var(--paper-deep); margin-top: 6px; }
+@media (max-width: 420px) { .nav-item { font-size: 10px; letter-spacing: -0.01em; } .nav-item svg { width: 21px; height: 21px; } }

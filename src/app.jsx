@@ -8,6 +8,8 @@ import { defaultLearning, normalize as normalizeLearning } from './learning-logi
 import { CookingPage, CookingHomeCard, FinishShopSheet } from './cooking.jsx';
 import { defaultCooking, normalizeCooking, putAway, groceriesCategory } from './cooking-logic.js';
 import { WeatherCard, TodoCard } from './home-cards.jsx';
+import { AutoPage, AutoHomeCard, useRecalls } from './auto.jsx';
+import { defaultAuto, normalizeAuto } from './auto-logic.js';
 import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
 import {
   homeSummary,
@@ -342,7 +344,7 @@ function NewsPage({ news, read, markRead, markAllRead }) {
   );
 }
 
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   // Slots carry a phone order (weather, to-do, then money); on wide screens the two columns show as laid out.
@@ -366,13 +368,13 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
               <div className="slot o3">
                 <MoneyCard s={s} />
               </div>
-              <div className="slot o4">
+              <div className="slot o5">
                 <QuickAdd s={s} onAdd={onAdd} />
               </div>
-              <div className="slot o5">
+              <div className="slot o6">
                 <BillsCard s={s} onToggle={onToggle} />
               </div>
-              <div className="slot o6">
+              <div className="slot o7">
                 <WatchCard s={s} />
               </div>
             </>
@@ -388,10 +390,13 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
           <div className="slot o2">
             <TodoCard data={home} mutate={mutateHome} onDelete={onDeleteTodo} />
           </div>
-          <div className="slot o7">
-            <LearningHomeCard data={learning} mutate={mutateLearning} />
+          <div className="slot o4">
+            <AutoHomeCard auto={auto} data={data} recalls={recalls} />
           </div>
           <div className="slot o8">
+            <LearningHomeCard data={learning} mutate={mutateLearning} />
+          </div>
+          <div className="slot o9">
             <CookingHomeCard data={cooking} recipes={recipes} />
           </div>
         </div>
@@ -470,6 +475,7 @@ function inPlace(normalizeFn) {
 const normalizeLearningInPlace = inPlace(normalizeLearning);
 const normalizeCookingInPlace = inPlace(normalizeCooking);
 const normalizeHomeInPlace = inPlace(normalizeHome);
+const normalizeAutoInPlace = inPlace(normalizeAuto);
 
 // ---------------------------------------------------------------- app
 function App() {
@@ -489,6 +495,9 @@ function App() {
   const [recipes, setRecipes] = useState(null);
   const [shopping, setShopping] = useState(false);
   const [home, setHome] = useState(null);
+  const [auto, setAuto] = useState(null);
+  const [autoError, setAutoError] = useState('');
+  const recalls = useRecalls(auto ? auto.car : null);
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
@@ -538,6 +547,19 @@ function App() {
       'home',
       (d) => setHome(normalizeHome(d)), // nothing saved yet → Dix Hills weather, empty to-do list
       () => setHome((h) => h || defaultHome())
+    );
+  }, [allowed, user && user.uid]);
+
+  useEffect(() => {
+    if (!allowed) return;
+    return backend.subscribeModule(
+      user,
+      'auto',
+      (d) => {
+        setAuto(normalizeAuto(d)); // nothing saved yet → the Altima with today's mileage and sticker dates
+        setAutoError('');
+      },
+      (e) => setAutoError(`Couldn’t load the car: ${e.message || e}`)
     );
   }, [allowed, user && user.uid]);
 
@@ -639,6 +661,19 @@ function App() {
       showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
     }
   };
+  const mutateAuto = async (fn, msg) => {
+    try {
+      await backend.mutateModule(user, 'auto', (d) => fn(normalizeAutoInPlace(d)), defaultAuto);
+      if (msg) showToast({ text: msg });
+    } catch (e) {
+      showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+    }
+  };
+  const autoBudget = useMemo(() => {
+    if (!data) return null;
+    const s = homeSummary(data);
+    return { methods: s.methods, category: s.categoryNames.find((n) => /gas|auto/i.test(n)) || s.categoryNames[0] };
+  }, [data]);
   const onDeleteTodo = async (t) => {
     let removed = null;
     await mutateHome((d) => (removed = removeTodo(d, t.id)));
@@ -716,6 +751,7 @@ function App() {
         {nav('budget', 'budget', 'Budget')}
         {nav('learning', 'learn', 'Learning')}
         {nav('cooking', 'pot', 'Cooking')}
+        {nav('auto', 'car', 'Auto')}
         <button className="nav-item nav-settings" onClick={() => setSettings(true)} aria-label="Settings">
           <Icon name="gear" />
           <span>Settings</span>
@@ -727,7 +763,10 @@ function App() {
           <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} />
         ) : null}
         {route === 'news' ? <NewsPage news={news} read={read} markRead={markRead} markAllRead={markAllRead} /> : null}
-        {route === 'budget' || route === 'learning' || route === 'cooking' || route === 'news' ? null : (
+        {route === 'auto' ? (
+          <AutoPage auto={auto} data={data} recalls={recalls} mutate={mutateAuto} budget={autoBudget} onAddExpense={(d) => onAdd(newTransaction(d))} error={autoError} />
+        ) : null}
+        {route === 'budget' || route === 'learning' || route === 'cooking' || route === 'news' || route === 'auto' ? null : (
           <Home
             user={user}
             data={data}
@@ -741,6 +780,8 @@ function App() {
             home={home}
             mutateHome={mutateHome}
             onDeleteTodo={onDeleteTodo}
+            auto={auto}
+            recalls={recalls}
           />
         )}
         {budgetOpened ? <BudgetFrame visible={route === 'budget'} /> : null}
