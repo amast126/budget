@@ -74,8 +74,12 @@ export function AutoHomeCard({ auto, data, recalls }) {
           Car →
         </a>
       </div>
-      <div className="muted small">
-        {carName(auto.car)} · ~{mi(milesOn(auto))}
+      <div className="auto-home-top">
+        <div className="grow">
+          <div className="bill-name">{carName(auto.car)}</div>
+          <div className="muted small">~{mi(milesOn(auto))}</div>
+        </div>
+        <img className="auto-thumb" src="car.png" alt="" />
       </div>
       {alerts.length ? (
         <ul className="alerts">
@@ -119,10 +123,7 @@ function CarCard({ auto, mutate }) {
   return (
     <section className="card">
       <div className="card-head">
-        <h2 className="card-title">{carName(auto.car)}</h2>
-      </div>
-      <div className="muted small">
-        {auto.car.engine} {auto.car.drive} · {auto.car.body} · bought {auto.car.isNew ? 'new' : 'used'} {auto.car.boughtMonth ? monthLabel(`${auto.car.boughtMonth}-01`) : auto.car.bought}
+        <h2 className="card-title">Mileage &amp; warranty</h2>
       </div>
       <div className="odo">
         <div>
@@ -273,6 +274,11 @@ function MaintenanceCard({ auto, onLog }) {
               {m.milesLeft > 0 ? ` (~${m.milesLeft.toLocaleString()} mi, around ${monthLabel(m.when)})` : ''}
             </div>
             {m.note ? <div className="muted small">{m.note}</div> : null}
+            {!m.unknown ? (
+              <div className="bar slim">
+                <div className={`bar-fill ${m.status === 'over' ? 'bar-over' : m.status === 'soon' ? 'bar-ahead' : ''}`} style={{ width: `${Math.max(3, Math.min(100, (1 - m.milesLeft / m.miles) * 100))}%` }} />
+              </div>
+            ) : null}
           </li>
         ))}
       </ul>
@@ -443,6 +449,62 @@ function LogServiceSheet({ auto, budget, onSave, onClose }) {
   );
 }
 
+// ---------------------------------------------------------------- hero
+// The soonest thing coming up: a deadline or a maintenance item.
+function nextUp(auto) {
+  const items = [
+    ...deadlines(auto)
+      .filter((d) => d.date)
+      .map((d) => ({ name: d.name, days: d.days })),
+    ...maintenance(auto).map((m) => ({ name: m.name, days: m.days })),
+  ].sort((a, b) => a.days - b.days);
+  const n = items[0];
+  if (!n) return null;
+  return {
+    value: n.days < 0 ? 'Overdue' : n.days === 0 ? 'Today' : n.days === 1 ? '1 day' : n.days < 60 ? `${n.days} days` : `${Math.round(n.days / 30)} mo`,
+    label: n.name.replace(/^NYS /, ''),
+    warn: n.days <= 30,
+  };
+}
+
+function Hero({ auto, data }) {
+  const money = carMoney(data);
+  const next = nextUp(auto);
+  const c = auto.car;
+  return (
+    <section className="auto-hero" aria-label={carName(c)}>
+      <img className="hero-car" src="car.png" alt={`${c.year} ${c.make} ${c.model}`} />
+      <div className="hero-body">
+        <div className="eyebrow">My car</div>
+        <h2 className="hero-title">
+          {c.year} {c.make} {c.model} <span className="trim">{c.trim}</span>
+        </h2>
+        <div className="hero-sub">
+          {c.engine} {c.drive} · {c.body} · bought {c.isNew ? 'new' : 'used'} {c.boughtMonth ? monthLabel(`${c.boughtMonth}-01`) : c.bought}
+        </div>
+        <div className="hero-stats">
+          <div className="hs">
+            <b className="num">{Math.round(milesOn(auto)).toLocaleString()}</b>
+            <span>miles</span>
+          </div>
+          {money && money.loan && money.loan.left != null ? (
+            <div className="hs">
+              <b className="num">{money.loan.left}</b>
+              <span>payments left · done {monthLabel(`${money.loan.ends}-01`)}</span>
+            </div>
+          ) : null}
+          {next ? (
+            <div className={`hs ${next.warn ? 'warn' : ''}`}>
+              <b>{next.value}</b>
+              <span>to {next.label.toLowerCase()}</span>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ---------------------------------------------------------------- page
 export function AutoPage({ auto, data, recalls, mutate, budget, onAddExpense, error }) {
   const [logging, setLogging] = useState(false);
@@ -472,11 +534,9 @@ export function AutoPage({ auto, data, recalls, mutate, budget, onAddExpense, er
     <div className="home auto">
       <header className="page-head">
         <h1 className="page-title">Auto</h1>
-        <div className="muted">
-          {carName(auto.car)} · ~{mi(milesOn(auto))}
-        </div>
       </header>
       {error ? <div className="alert">{error}</div> : null}
+      <Hero auto={auto} data={data} />
       <div className="grid">
         <div className="col">
           <DeadlinesCard auto={auto} mutate={mutate} />
