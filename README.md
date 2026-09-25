@@ -2,7 +2,7 @@
 
 Private, single-user dashboard at **https://amast126.github.io/budget/**. Only the owner's Google account gets in.
 
-- **Home** (`index.html` + `dashboard.js`, source in `src/`): money bar, quick add, bills this week, categories running hot, Learning and Cooking cards.
+- **Home** (`index.html` + `dashboard.js`, source in `src/`): weather for the day (Open-Meteo, no key; location editable, default Dix Hills, NY 11746), a to-do list, money bar, quick add, bills this week, categories running hot, Learning and Cooking cards. Weather location and to-dos are saved in `trackers/alec-tracker-home` (`src/home-logic.js`, `src/home-cards.jsx`).
 - **News**: its own tab with US politics (AP, Reuters), Tech & AI (The Verge, Ars Technica, TechCrunch, Wired, Reuters tech), Reddit (r/popular), Pop culture (Variety, THR, Vulture, EW) and Music (Pitchfork, Billboard, Stereogum, Rolling Stone, Guitar World). Sources are set at the top of `scripts/fetch-news.mjs`.
 - **Budget** (`budget.html` + `app.js`): the original budget tracker, unchanged, shown inside the app. Its source is not in this repo; `app.js` is the prebuilt bundle.
 - **Learning** (`src/learning*.js*`): Cloud & AI certification roadmap with links, descriptions and impact, progress tracking (status, exam dates, study hours, renewals). Cert details live in `src/learning-catalog.js`; progress is saved in `trackers/alec-tracker-learning`.
