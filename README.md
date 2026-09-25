@@ -5,6 +5,8 @@ Private, single-user dashboard at **https://amast126.github.io/budget/**. Only t
 - **Home** (`index.html` + `dashboard.js`, source in `src/`): money bar, quick add, bills this week, categories running hot, and a News card (US politics from AP and Reuters, top posts on r/popular).
 - **Budget** (`budget.html` + `app.js`): the original budget tracker, unchanged, shown inside the app. Its source is not in this repo; `app.js` is the prebuilt bundle.
 - **Learning** (`src/learning*.js*`): Cloud & AI certification roadmap with links, descriptions and impact, progress tracking (status, exam dates, study hours, renewals). Cert details live in `src/learning-catalog.js`; progress is saved in `trackers/alec-tracker-learning`.
+- **Cooking** (`src/cooking*.js*`, `src/ingredients.mjs`): kitchen list (fridge, freezer, pantry, spices, with a "running low" flag), grocery list, and recipes matched against what you have. "Finish shop" logs the total under Groceries in the budget and moves bought items into the kitchen. Saved in `trackers/alec-tracker-cooking`.
+- **Recipes** (`recipes.json`, written weekly by `scripts/fetch-recipes.mjs`): popular Budget Bytes recipes (25+ ratings, 4.3+ stars) with cost per serving and ingredient names, plus 12 picks a week that don't repeat for 12 weeks. Only titles, links, photos, costs and ingredients are kept; the cooking steps stay on budgetbytes.com.
 
 Both read and write the same Firestore document (`trackers/alec-tracker`), so a quick add or a bill tick on Home appears in the budget within a second, and the other way round.
 
@@ -20,6 +22,9 @@ Both read and write the same Firestore document (`trackers/alec-tracker`), so a 
 | `budget.html`, `app.js` | The budget module. |
 | `config.js` | Firebase config, Finnhub key, and the allowlist (owner only). Shared by both pages. |
 | `news.json` | Written by the news job every ~30 minutes. |
+| `recipes.json` | Written by the recipes job every Saturday morning. |
+| `scripts/fetch-recipes.mjs`, `.github/workflows/recipes.yml` | The recipes job. Settings (popularity bar, picks per week, no-repeat weeks) are at the top of the script. Runs on Saturdays, by hand from the Actions tab, or when the script or `src/ingredients.mjs` changes. |
+| `src/ingredients.mjs` | Turns ingredient text into comparable names ("2 cloves garlic, minced" → "garlic"). Shared by the recipes job and the Cooking tab. |
 | `scripts/fetch-news.mjs` | The news job. Edit `POLITICS` at the top to change sources. |
 | `.github/workflows/news.yml` | Schedule for the news job. Needs Settings → Actions → General → Read and write. |
 | `test/run.mjs` | Headless test at phone and desktop width using a budget export as test data. |
@@ -33,7 +38,7 @@ Access is enforced twice: `config.js` (the app refuses other accounts) and the F
 ```bash
 npm install
 ./build.sh
-BUDGET_EXPORT=/path/to/budget-tracker-export.json node test/run.mjs shots/
+BUDGET_EXPORT=/path/to/budget-tracker-export.json RECIPES_FIXTURE=/path/to/recipes.json node test/run.mjs shots/
 ```
 
 ## Deploy
