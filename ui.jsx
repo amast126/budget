@@ -1,0 +1,21 @@
+import React from 'react';
+
+export function Icon({ name, size = 22 }) {
+  const p = {
+    home: 'M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
+    budget: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+    gear: 'M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zM4 12h2M18 12h2M12 4v2M12 18v2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4',
+    check: 'M5 12.5l4.5 4.5L19 7.5',
+    ext: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5',
+    learn: 'M2 8l10-5 10 5-10 5zM6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5M22 8v6',
+    up: 'M6 15l6-6 6 6',
+    down: 'M6 9l6 6 6-6',
+    chev: 'M9 6l6 6-6 6',
+  }[name];
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={p} />
+    </svg>
+  );
+}
+
