@@ -1,9 +1,13 @@
 /**
- * Builds news.json for the dashboard's News card. Runs in GitHub Actions about every 30 minutes
+ * Builds news.json for the dashboard's News tab. Runs in GitHub Actions about every 30 minutes
  * (.github/workflows/news.yml). No dependencies: Node 20+ has fetch built in.
  *
- *   US politics  AP and Reuters, via Google News RSS searches limited to each site
+ *   US politics  AP and Reuters
+ *   Tech & AI    The Verge, Ars Technica, TechCrunch, Wired (plus an AI-focused search of the same sites and Reuters tech)
+ *   Pop culture  Variety, The Hollywood Reporter, Vulture, Entertainment Weekly
+ *   Music        Pitchfork, Billboard, Stereogum, Rolling Stone music, Guitar World
  *   Reddit       top posts of the day on r/popular (Reddit sometimes blocks GitHub; then the last good copy stays)
+ * All but Reddit come from Google News RSS searches limited to those sites.
  *
  * Each source keeps its previous items when a fetch fails. The file is only rewritten when something changed.
  * Run locally: node scripts/fetch-news.mjs
@@ -16,20 +20,52 @@ const OUT = path.join(ROOT, 'news.json');
 const UA = 'Mozilla/5.0 (compatible; dashboard-news/1.0; +https://amast126.github.io/budget/)';
 
 const gnews = (q) => `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`;
-// Edit these to change what shows under "US politics".
-const POLITICS = {
-  ap: {
-    name: 'AP',
-    url: gnews('site:apnews.com (Trump OR Congress OR Senate OR "House Republicans" OR "House Democrats" OR "Supreme Court" OR "White House" OR "Justice Department" OR midterms OR governor) when:2d'),
+// Edit these to change what shows in each News section. `outlet: true` shows the site's own name (The Verge,
+// Variety...) instead of the source name, for searches that cover several sites.
+const SECTIONS = {
+  politics: {
+    keep: 90,
+    maxAgeDays: 4,
+    sources: {
+      ap: {
+        name: 'AP',
+        url: gnews('site:apnews.com (Trump OR Congress OR Senate OR "House Republicans" OR "House Democrats" OR "Supreme Court" OR "White House" OR "Justice Department" OR midterms OR governor) when:2d'),
+      },
+      reuters: { name: 'Reuters', url: gnews('(site:reuters.com/world/us OR site:reuters.com/legal) when:2d') },
+    },
   },
-  reuters: {
-    name: 'Reuters',
-    url: gnews('(site:reuters.com/world/us OR site:reuters.com/legal) when:2d'),
+  tech: {
+    keep: 60,
+    maxAgeDays: 3,
+    sources: {
+      tech: { name: 'Tech', outlet: true, url: gnews('(site:theverge.com OR site:arstechnica.com OR site:techcrunch.com OR site:wired.com) when:1d') },
+      ai: {
+        name: 'AI',
+        outlet: true,
+        url: gnews('(OpenAI OR Anthropic OR ChatGPT OR Claude OR Gemini OR "artificial intelligence" OR "AI model" OR Nvidia) (site:theverge.com OR site:arstechnica.com OR site:techcrunch.com OR site:wired.com OR site:reuters.com/technology) when:2d'),
+      },
+    },
+  },
+  pop: {
+    keep: 60,
+    maxAgeDays: 3,
+    sources: {
+      pop: { name: 'Pop culture', outlet: true, url: gnews('(site:variety.com OR site:hollywoodreporter.com OR site:vulture.com OR site:ew.com) when:1d') },
+    },
+  },
+  music: {
+    keep: 60,
+    maxAgeDays: 4,
+    sources: {
+      music: {
+        name: 'Music',
+        outlet: true,
+        url: gnews('(site:pitchfork.com OR site:billboard.com OR site:stereogum.com OR site:rollingstone.com/music OR site:guitarworld.com) when:2d'),
+      },
+    },
   },
 };
 const REDDIT = 'https://www.reddit.com/r/popular/top/.rss?t=day&limit=25';
-const KEEP_POLITICS = 90;
-const MAX_AGE_DAYS = 4;
 
 const nowISO = () => new Date().toISOString();
 const log = (...a) => console.log(...a);
@@ -76,7 +112,7 @@ function hash(s) {
 const normTitle = (t) => t.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
 const byDateDesc = (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
 
-async function getGoogleNews(key, { name, url }) {
+async function getGoogleNews(key, { name, url, outlet }) {
   const xml = await fetchText(url);
   return xml
     .split('<item>')
@@ -86,7 +122,7 @@ async function getGoogleNews(key, { name, url }) {
       let title = tag(x, 'title');
       if (title.endsWith(` - ${source}`)) title = title.slice(0, -(source.length + 3));
       const link = tag(x, 'link');
-      return { id: `${key}-${hash(tag(x, 'guid') || link)}`, title, url: link, date: isoDate(tag(x, 'pubDate')), source: name };
+      return { id: `${key}-${hash(tag(x, 'guid') || link)}`, title, url: link, date: isoDate(tag(x, 'pubDate')), source: outlet ? source : name };
     })
     .filter((i) => i.title && i.url);
 }
@@ -120,45 +156,49 @@ function readJSON(file) {
   }
 }
 
-async function main() {
-  const prev = readJSON(OUT);
-  const checked = nowISO();
-  const sources = { ...((prev && prev.sources) || {}) };
-  let politics = (prev && prev.politics) || [];
-  let reddit = (prev && prev.reddit) || [];
+// Merge fresh items into a section's list: newest first, no repeats (same story from two searches), trimmed.
+function merge(old, fresh, { keep, maxAgeDays }) {
+  const cutoff = new Date(Date.now() - maxAgeDays * 86400000).toISOString();
+  const byId = new Map();
+  for (const i of [...old, ...fresh]) byId.set(i.id, i);
+  const seen = new Set();
+  return [...byId.values()]
+    .filter((i) => i.date >= cutoff)
+    .sort(byDateDesc)
+    .filter((i) => {
+      const k = normTitle(i.title);
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    })
+    .slice(0, keep);
+}
 
-  const freshPolitics = [];
-  for (const [key, src] of Object.entries(POLITICS)) {
-    try {
-      const items = await getGoogleNews(key, src);
-      freshPolitics.push(...items);
-      sources[key] = { ok: true, count: items.length, checked };
-      log(`${src.name}: ${items.length}`);
-    } catch (e) {
-      sources[key] = { ...(sources[key] || {}), ok: false, error: String(e.message || e).slice(0, 100), checked };
-      log(`${src.name} FAILED: ${e.message}`);
+async function main() {
+  const prev = readJSON(OUT) || {};
+  const checked = nowISO();
+  const sources = { ...(prev.sources || {}) };
+  const out = { reddit: prev.reddit || [] };
+
+  for (const [section, cfg] of Object.entries(SECTIONS)) {
+    const fresh = [];
+    for (const [key, src] of Object.entries(cfg.sources)) {
+      try {
+        const items = await getGoogleNews(key, src);
+        fresh.push(...items);
+        sources[key] = { ok: true, count: items.length, checked };
+        log(`${section}/${src.name}: ${items.length}`);
+      } catch (e) {
+        sources[key] = { ...(sources[key] || {}), ok: false, error: String(e.message || e).slice(0, 100), checked };
+        log(`${section}/${src.name} FAILED: ${e.message}`);
+      }
     }
-  }
-  if (freshPolitics.length) {
-    const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86400000).toISOString();
-    const byId = new Map();
-    for (const i of [...politics, ...freshPolitics]) byId.set(i.id, i);
-    const seen = new Set();
-    politics = [...byId.values()]
-      .filter((i) => i.date >= cutoff)
-      .sort(byDateDesc)
-      .filter((i) => {
-        const k = normTitle(i.title);
-        if (seen.has(k)) return false;
-        seen.add(k);
-        return true;
-      })
-      .slice(0, KEEP_POLITICS);
+    out[section] = fresh.length ? merge(prev[section] || [], fresh, cfg) : prev[section] || [];
   }
 
   try {
     const items = await getReddit();
-    if (items.length) reddit = items; // today's top list replaces yesterday's
+    if (items.length) out.reddit = items; // today's top list replaces yesterday's
     sources.reddit = { ok: true, count: items.length, checked };
     log(`Reddit: ${items.length}`);
   } catch (e) {
@@ -166,11 +206,12 @@ async function main() {
     log(`Reddit FAILED: ${e.message}`);
   }
 
-  const itemsChanged = !prev || JSON.stringify([prev.politics, prev.reddit]) !== JSON.stringify([politics, reddit]);
-  const okChanged = !prev || JSON.stringify(Object.values(prev.sources || {}).map((s) => s.ok)) !== JSON.stringify(Object.values(sources).map((s) => s.ok));
+  const keys = ['politics', 'tech', 'pop', 'music', 'reddit'];
+  const itemsChanged = keys.some((k) => JSON.stringify(prev[k] || []) !== JSON.stringify(out[k] || []));
+  const okChanged = JSON.stringify(Object.entries(prev.sources || {}).map(([k, v]) => [k, v.ok])) !== JSON.stringify(Object.entries(sources).map(([k, v]) => [k, v.ok]));
   if (itemsChanged || okChanged) {
-    fs.writeFileSync(OUT, JSON.stringify({ generated: checked, sources, politics, reddit }, null, 1) + '\n');
-    log(`Wrote news.json: ${politics.length} politics, ${reddit.length} reddit`);
+    fs.writeFileSync(OUT, JSON.stringify({ generated: checked, sources, ...Object.fromEntries(keys.map((k) => [k, out[k] || []])) }, null, 1) + '\n');
+    log(`Wrote news.json: ${keys.map((k) => `${(out[k] || []).length} ${k}`).join(', ')}`);
   } else {
     log('No changes');
   }
