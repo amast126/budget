@@ -21,6 +21,10 @@ const server = http.createServer((req, res) => {
     return res.end('window.BUDGET_CONFIG = { firebase: { apiKey: "" }, finnhubKey: "", allowedEmails: [], ownerEmail: "", sharedDocId: "" };');
   }
   if (p === '/news.json') p = '/test/news.fixture.json';
+  if (p === '/recipes.json' && process.env.RECIPES_FIXTURE) {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(fs.readFileSync(process.env.RECIPES_FIXTURE));
+  }
   const file = path.join(ROOT, p);
   if (!file.startsWith(ROOT) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
     res.writeHead(404);
@@ -219,6 +223,103 @@ await page.waitForSelector('.money .big');
 check(/exam in 20 days/.test(await page.innerText('.col:nth-child(2) .card')), 'Home learning card shows exam countdown');
 await page.screenshot({ path: path.join(OUT, 'home-learning.png'), fullPage: true });
 
+
+// ---------------- cooking
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.money .big');
+check(/Cooking/.test(await page.innerText('.col:nth-child(2)')) && /Grocery list/.test(await page.innerText('.col:nth-child(2)')), 'Home shows the Cooking card');
+await page.click('a.nav-item:has-text("Cooking")');
+await page.waitForSelector('.cooking .kitchen');
+await page.screenshot({ path: path.join(OUT, 'cooking-empty.png'), fullPage: true });
+check((await page.$$('.picks .pick')).length === 12, 'this week’s 12 picks render');
+check(/Chipotle-style steak/.test(await page.innerText('.cooking')), 'starter recipes in My recipes');
+// kitchen: add several at once
+await page.fill('input[aria-label="Add to kitchen"]', 'chicken breasts, garlic, olive oil, rice, yellow onion, soy sauce, eggs, butter, limes');
+await page.click('.kitchen .add-row button[type=submit]');
+await page.waitForTimeout(200);
+let C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(C.kitchen.length === 9, `9 kitchen items saved (${C.kitchen.map((i) => i.name + '@' + i.where).join(', ')})`);
+check(C.kitchen.find((i) => /Chicken/.test(i.name)).where === 'fridge' && C.kitchen.find((i) => /Rice/.test(i.name)).where === 'pantry', 'places guessed (chicken → fridge, rice → pantry)');
+// a common chip
+const chip = await page.$('.chips .chip');
+const chipText = chip ? (await chip.innerText()).replace('+ ', '') : '';
+if (chip) await chip.click();
+await page.waitForTimeout(150);
+C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(C.kitchen.length === 10 && C.kitchen.some((i) => i.name === chipText), `common chip adds "${chipText}"`);
+// cook-now matches
+const rows = await page.$$eval('.cooking .col:nth-child(2) .card:first-child .rc', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
+console.log('  cook now:', rows.slice(0, 4));
+check(rows.length > 0, 'cook-with-what-you-have shows matches');
+// running low → grocery list
+await page.click('.k-row:has-text("Butter") .low-btn');
+await page.waitForTimeout(150);
+C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(C.kitchen.find((i) => i.name === 'Butter').low && C.grocery.some((g) => g.name === 'Butter'), 'Low adds butter to the grocery list');
+// open a pick, add its missing items
+await page.click('.picks .pick >> nth=1');
+await page.waitForSelector('.sheet .ing');
+const sheetText = await page.innerText('.sheet');
+await page.screenshot({ path: path.join(OUT, 'cooking-recipe.png') });
+const addBtn = await page.$('.sheet .btn.primary');
+const nGroceryBefore = C.grocery.length;
+if (addBtn) {
+  await addBtn.click();
+  await page.waitForTimeout(150);
+}
+C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(C.grocery.length > nGroceryBefore && C.grocery.some((g) => g.for && g.for.length), `recipe’s missing items added with a "for" note (${C.grocery.length - nGroceryBefore} added)`);
+// save it
+await page.click('.sheet button:has-text("Save to My recipes")');
+await page.waitForTimeout(150);
+C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(C.mine.some((r) => r.id.startsWith('bb-') && r.ingredients.length > 3), 'pick saved to My recipes with its ingredients');
+await page.click('.sheet button:has-text("Close")');
+// add own recipe
+await page.click('.cooking button:has-text("+ Add")');
+await page.fill('.sheet input >> nth=0', 'Garlic butter rice');
+await page.fill('.sheet textarea >> nth=0', '1 cup rice\n2 Tbsp butter\n3 cloves garlic, minced\nsalt');
+await page.click('.sheet button:has-text("Save recipe")');
+await page.waitForTimeout(150);
+C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(C.mine.some((r) => r.title === 'Garlic butter rice' && r.ingredients.length === 4), 'own recipe added');
+check(/Garlic butter rice/.test(await page.innerText('.cooking .col:nth-child(2) .card:first-child')), 'own recipe tops cook-now (have everything)');
+// tick two grocery items and finish the shop, logging it to the budget
+await page.fill('input[aria-label="Add to grocery list"]', 'cilantro, tortillas');
+await page.click('.grocery .add-row button[type=submit]');
+await page.waitForTimeout(150);
+await page.click('.g-row:has-text("Cilantro") input[type=checkbox]');
+await page.click('.g-row:has-text("Butter") input[type=checkbox]');
+await page.waitForTimeout(150);
+await page.screenshot({ path: path.join(OUT, 'cooking-list.png'), fullPage: true });
+await page.click('.grocery button:has-text("Finish shop")');
+await page.waitForSelector('.sheet input[aria-label="Total spent"]');
+await page.fill('.sheet input[aria-label="Total spent"]', '23.45');
+await page.fill('.sheet input[aria-label="Store or note"]', 'Stop & Shop');
+await page.screenshot({ path: path.join(OUT, 'cooking-finish.png') });
+const b0 = await stored();
+const k0 = b0.months[key] ? b0.months[key].transactions.length : 0;
+await page.click('.sheet button:has-text("Log $23.45")');
+await page.waitForSelector('.toast');
+check(/Logged \$23\.45 to Groceries · 2 put away/.test(await page.innerText('.toast')), `toast: ${(await page.innerText('.toast')).replace(/\n/g, ' ')}`);
+const b1 = await stored();
+const shop = b1.months[key].transactions.slice(-1)[0];
+check(b1.months[key].transactions.length === k0 + 1 && shop.category === 'Groceries' && shop.amount === 23.45 && shop.desc === 'Stop & Shop', `shop logged in budget (${shop.category}, ${shop.desc}, ${shop.amount}, ${shop.method})`);
+C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(!C.grocery.some((g) => g.done) && C.kitchen.some((i) => i.name === 'Cilantro') && !C.kitchen.find((i) => i.name === 'Butter').low, 'bought items put away, butter no longer low');
+// undo both
+await page.click('.toast-btn');
+await page.waitForTimeout(250);
+const b2 = await stored();
+C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(b2.months[key].transactions.length === k0 && C.grocery.filter((g) => g.done).length === 2 && !C.kitchen.some((i) => i.name === 'Cilantro'), 'undo removes the expense and restores the list');
+await page.screenshot({ path: path.join(OUT, 'cooking.png'), fullPage: true });
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.money .big');
+const homeCook = await page.innerText('.col:nth-child(2)');
+check(/Tonight:/.test(homeCook), 'Home Cooking card suggests tonight’s dinner');
+await page.screenshot({ path: path.join(OUT, 'home-cooking.png'), fullPage: true });
+
 // settings sheet
 await page.click('.nav-settings');
 check(/Only this account/.test(await page.innerText('.sheet')), 'settings sheet');
@@ -233,6 +334,11 @@ dp.on('pageerror', (e) => errors.push('pageerror(desktop): ' + e.message));
 await dp.goto(base, { waitUntil: 'networkidle' });
 await dp.waitForSelector('.money .big');
 await dp.screenshot({ path: path.join(OUT, 'desktop.png') });
+await dp.click('a.nav-item:has-text("Cooking")');
+await dp.waitForSelector('.cooking .kitchen');
+await dp.evaluate(() => {});
+await dp.waitForTimeout(300);
+await dp.screenshot({ path: path.join(OUT, 'desktop-cooking.png'), fullPage: true });
 
 await browser.close();
 server.close();
