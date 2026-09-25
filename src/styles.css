@@ -288,3 +288,27 @@ textarea.input { resize: vertical; font: inherit; font-size: 16px; }
 .news-tabs .seg-btn.on { color: #fff; }
 .news-tabs .seg-btn.on .count { background: #fff; color: var(--green); }
 @media (max-width: 420px) { .nav-item { font-size: 10.5px; } }
+
+/* ---- home: weather + to-do, phone order ---- */
+.home-grid .slot { min-width: 0; }
+.home-grid .slot:empty { display: none; }
+@media (max-width: 1099px) {
+  .home-grid .col { display: contents; }
+  .home-grid .o1 { order: 1; } .home-grid .o2 { order: 2; } .home-grid .o3 { order: 3; } .home-grid .o4 { order: 4; }
+  .home-grid .o5 { order: 5; } .home-grid .o6 { order: 6; } .home-grid .o7 { order: 7; } .home-grid .o8 { order: 8; }
+}
+.wx-now { display: flex; align-items: center; gap: 12px; }
+.wx-icon { font-size: 42px; line-height: 1; }
+.wx-hl { text-align: right; font-weight: 600; }
+.wx-sentence { margin: 10px 0 8px; font-size: 14.5px; }
+.wx-hours { display: flex; gap: 4px; overflow-x: auto; padding: 6px 0 2px; border-top: 1px solid var(--paper-deep); scrollbar-width: none; }
+.wx-hours::-webkit-scrollbar { display: none; }
+.wx-hour { flex: 1 0 52px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0; }
+.wx-hicon { font-size: 20px; line-height: 1.2; }
+.wx-rain { color: var(--blue); min-height: 1.2em; }
+.wx-search { background: var(--paper); border: 1px solid var(--paper-deep); border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+.wx-results .rc { padding: 8px 0; }
+.todo-row { padding: 8px 0; }
+.todo-text { font-weight: 500; overflow-wrap: anywhere; }
+.todo-done { margin-top: 8px; border-top: 1px solid var(--paper-deep); padding-top: 6px; }
+.muted-link { color: var(--ink-soft); }

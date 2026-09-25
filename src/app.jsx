@@ -7,6 +7,8 @@ import { LearningPage, LearningHomeCard } from './learning.jsx';
 import { defaultLearning, normalize as normalizeLearning } from './learning-logic.js';
 import { CookingPage, CookingHomeCard, FinishShopSheet } from './cooking.jsx';
 import { defaultCooking, normalizeCooking, putAway, groceriesCategory } from './cooking-logic.js';
+import { WeatherCard, TodoCard } from './home-cards.jsx';
+import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
 import {
   homeSummary,
   newTransaction,
@@ -340,9 +342,10 @@ function NewsPage({ news, read, markRead, markAllRead }) {
   );
 }
 
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
+  // Slots carry a phone order (weather, to-do, then money); on wide screens the two columns show as laid out.
   return (
     <div className="home">
       <header className="page-head">
@@ -353,24 +356,44 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
         <div className="muted">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
       </header>
       {dataError ? <div className="alert">{dataError}</div> : null}
-      <div className="grid">
+      <div className="grid home-grid">
         <div className="col">
+          <div className="slot o1">
+            <WeatherCard place={(home && home.place) || DEFAULT_PLACE} onPlace={(p) => mutateHome((d) => (d.place = p), `Weather set to ${p.name}`)} />
+          </div>
           {s ? (
             <>
-              <MoneyCard s={s} />
-              <QuickAdd s={s} onAdd={onAdd} />
-              <BillsCard s={s} onToggle={onToggle} />
-              <WatchCard s={s} />
+              <div className="slot o3">
+                <MoneyCard s={s} />
+              </div>
+              <div className="slot o4">
+                <QuickAdd s={s} onAdd={onAdd} />
+              </div>
+              <div className="slot o5">
+                <BillsCard s={s} onToggle={onToggle} />
+              </div>
+              <div className="slot o6">
+                <WatchCard s={s} />
+              </div>
             </>
           ) : (
-            <section className="card">
-              <p className="empty">{dataError ? 'Budget data unavailable.' : 'Loading your budget…'}</p>
-            </section>
+            <div className="slot o3">
+              <section className="card">
+                <p className="empty">{dataError ? 'Budget data unavailable.' : 'Loading your budget…'}</p>
+              </section>
+            </div>
           )}
         </div>
         <div className="col">
-          <LearningHomeCard data={learning} mutate={mutateLearning} />
-          <CookingHomeCard data={cooking} recipes={recipes} />
+          <div className="slot o2">
+            <TodoCard data={home} mutate={mutateHome} onDelete={onDeleteTodo} />
+          </div>
+          <div className="slot o7">
+            <LearningHomeCard data={learning} mutate={mutateLearning} />
+          </div>
+          <div className="slot o8">
+            <CookingHomeCard data={cooking} recipes={recipes} />
+          </div>
         </div>
       </div>
     </div>
@@ -446,6 +469,7 @@ function inPlace(normalizeFn) {
 }
 const normalizeLearningInPlace = inPlace(normalizeLearning);
 const normalizeCookingInPlace = inPlace(normalizeCooking);
+const normalizeHomeInPlace = inPlace(normalizeHome);
 
 // ---------------------------------------------------------------- app
 function App() {
@@ -464,6 +488,7 @@ function App() {
   const [cookingError, setCookingError] = useState('');
   const [recipes, setRecipes] = useState(null);
   const [shopping, setShopping] = useState(false);
+  const [home, setHome] = useState(null);
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
@@ -503,6 +528,16 @@ function App() {
         setCookingError('');
       },
       (e) => setCookingError(`Couldn’t load the kitchen: ${e.message || e}`)
+    );
+  }, [allowed, user && user.uid]);
+
+  useEffect(() => {
+    if (!allowed) return;
+    return backend.subscribeModule(
+      user,
+      'home',
+      (d) => setHome(normalizeHome(d)), // nothing saved yet → Dix Hills weather, empty to-do list
+      () => setHome((h) => h || defaultHome())
     );
   }, [allowed, user && user.uid]);
 
@@ -596,6 +631,25 @@ function App() {
       showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
     }
   };
+  const mutateHome = async (fn, msg) => {
+    try {
+      await backend.mutateModule(user, 'home', (d) => fn(normalizeHomeInPlace(d)), defaultHome);
+      if (msg) showToast({ text: msg });
+    } catch (e) {
+      showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+    }
+  };
+  const onDeleteTodo = async (t) => {
+    let removed = null;
+    await mutateHome((d) => (removed = removeTodo(d, t.id)));
+    showToast({
+      text: 'To-do deleted',
+      undo: async () => {
+        if (removed) await mutateHome((d) => restoreTodo(d, removed.item, removed.index));
+        setToast(null);
+      },
+    });
+  };
   // Finish a shop: log the total under Groceries in the budget (optional) and put the ticked items away.
   const budgetInfo = useMemo(() => {
     if (!data) return null;
@@ -684,6 +738,9 @@ function App() {
             mutateLearning={mutateLearning}
             cooking={cooking}
             recipes={recipes}
+            home={home}
+            mutateHome={mutateHome}
+            onDeleteTodo={onDeleteTodo}
           />
         )}
         {budgetOpened ? <BudgetFrame visible={route === 'budget'} /> : null}
