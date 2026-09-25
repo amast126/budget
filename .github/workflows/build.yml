@@ -1,0 +1,40 @@
+name: Build dashboard
+
+on:
+  push:
+    branches: [main]
+    paths: ["src/**", "package.json", "package-lock.json", "build.sh"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-dashboard
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci --no-audit --no-fund
+      - name: Build dashboard.js
+        run: bash build.sh
+      - name: Bump the cache-buster and commit
+        run: |
+          if git diff --quiet -- dashboard.js; then echo "Bundle unchanged."; exit 0; fi
+          n=$(( $(grep -o 'dashboard.js?v=[0-9]*' index.html | grep -o '[0-9]*$') + 1 ))
+          sed -i "s/dashboard.js?v=[0-9]*/dashboard.js?v=$n/; s/window.__BUILD = 'v[0-9]*'/window.__BUILD = 'v$n'/" index.html
+          git config user.name "build-bot"
+          git config user.email "build-bot@users.noreply.github.com"
+          git add dashboard.js index.html
+          git commit -m "build: dashboard v$n"
+          git pull --rebase origin main
+          git push
