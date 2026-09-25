@@ -11,6 +11,7 @@ export function Icon({ name, size = 22 }) {
     up: 'M6 15l6-6 6 6',
     down: 'M6 9l6 6 6-6',
     chev: 'M9 6l6 6-6 6',
+    news: 'M4 5h13v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM17 9h3v9a2 2 0 0 1-2 2h-3M7.5 9h6M7.5 12.5h6M7.5 16h3.5',
     pot: 'M4 10h16v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM2 10h2M20 10h2M9 3.5c-.8.8-.8 2 0 2.8M13 3.5c-.8.8-.8 2 0 2.8',
   }[name];
   return (

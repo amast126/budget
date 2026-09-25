@@ -279,3 +279,12 @@ textarea.input { resize: vertical; font: inherit; font-size: 16px; }
 .home-row + .home-row { border-top: 1px solid var(--paper-deep); }
 .block { display: block; }
 .badge { min-width: 28px; height: 28px; border-radius: 14px; background: var(--green-soft); color: var(--green); font-weight: 700; display: inline-flex; align-items: center; justify-content: center; padding: 0 8px; }
+
+/* ---- news tab ---- */
+.news-page { max-width: 780px; }
+.news-page .page-head { align-items: flex-end; }
+.news-tabs { gap: 6px; margin-bottom: 6px; }
+.news-tabs .seg-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; padding: 7px 12px; border-bottom: 1px solid var(--rule); margin: 0; }
+.news-tabs .seg-btn.on { color: #fff; }
+.news-tabs .seg-btn.on .count { background: #fff; color: var(--green); }
+@media (max-width: 420px) { .nav-item { font-size: 10.5px; } }

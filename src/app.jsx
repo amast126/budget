@@ -247,79 +247,100 @@ function WatchCard({ s }) {
   );
 }
 
-function NewsCard({ news, read, markRead, markAllRead }) {
-  const [tab, setTab] = useState(() => lsGet('dash.newsTab', 'politics'));
-  const [limit, setLimit] = useState(12);
+// Sections of the News tab, in order. Keys match news.json (written by scripts/fetch-news.mjs).
+const NEWS_TABS = [
+  ['politics', 'US politics', 'AP and Reuters, U.S. coverage', ['ap', 'reuters']],
+  ['tech', 'Tech & AI', 'The Verge, Ars Technica, TechCrunch, Wired, Reuters tech', ['tech', 'ai']],
+  ['reddit', 'Reddit', 'Top posts on r/popular today', ['reddit']],
+  ['pop', 'Pop culture', 'Variety, The Hollywood Reporter, Vulture, Entertainment Weekly', ['pop']],
+  ['music', 'Music', 'Pitchfork, Billboard, Stereogum, Rolling Stone, Guitar World', ['music']],
+];
+
+function NewsPage({ news, read, markRead, markAllRead }) {
+  const [tab, setTab] = useState(() => {
+    const t = lsGet('dash.newsTab', 'politics');
+    return NEWS_TABS.some(([k]) => k === t) ? t : 'politics';
+  });
+  const [limit, setLimit] = useState(20);
   useEffect(() => lsSet('dash.newsTab', tab), [tab]);
   const items = (news && news[tab]) || [];
   const unread = (k) => ((news && news[k]) || []).filter((i) => !read.has(i.id)).length;
   const shown = items.slice(0, limit);
-  const tabs = [
-    ['politics', 'US politics'],
-    ['reddit', 'Reddit'],
-  ];
+  const cur = NEWS_TABS.find(([k]) => k === tab);
   const st = (news && news.sources) || {};
+  const failed = cur[3].some((k) => st[k] && !st[k].ok);
   return (
-    <section className="card news">
-      <div className="card-head">
-        <h2 className="card-title">News</h2>
+    <div className="home news-page">
+      <header className="page-head row-between">
+        <div>
+          <h1 className="page-title">News</h1>
+          <div className="muted">{news && news.generated ? `Updated ${timeAgo(news.generated)}` : 'Loading…'}</div>
+        </div>
         {items.some((i) => !read.has(i.id)) ? (
           <button className="btn quiet small" onClick={() => markAllRead(items)}>
             Mark all read
           </button>
         ) : null}
-      </div>
-      <div className="tabs" role="tablist">
-        {tabs.map(([k, l]) => (
-          <button key={k} role="tab" aria-selected={tab === k} className={`tab ${tab === k ? 'active' : ''}`} onClick={() => { setTab(k); setLimit(12); }}>
-            {l}
-            {unread(k) ? <span className="count">{unread(k)}</span> : null}
-          </button>
-        ))}
-      </div>
-      {!news ? (
-        <p className="empty">Loading…</p>
-      ) : items.length === 0 ? (
-        <p className="empty">{news.error ? 'The news feed hasn’t been generated yet. It fills in after the first scheduled run.' : 'Nothing here right now.'}</p>
-      ) : (
-        <ul className="list">
-          {shown.map((i) => (
-            <li key={i.id}>
-              <a className={`story ${read.has(i.id) ? 'read' : ''}`} href={i.url} target="_blank" rel="noopener" onClick={() => markRead(i.id)}>
-                {i.image ? <img className="thumb" src={i.image} alt="" loading="lazy" onError={(e) => (e.currentTarget.style.display = 'none')} /> : null}
-                <div className="grow">
-                  <div className="story-title">
-                    {!read.has(i.id) ? <span className="dot" /> : null}
-                    {i.title}
-                  </div>
-                  <div className="muted small">
-                    {i.source}
-                    {i.date ? ` · ${timeAgo(i.date)}` : ''}
-                    {i.comments ? ` · ${i.comments}` : ''}
-                  </div>
-                </div>
-              </a>
-            </li>
+      </header>
+      <section className="card news">
+        <div className="seg news-tabs" role="tablist">
+          {NEWS_TABS.map(([k, l]) => (
+            <button
+              key={k}
+              role="tab"
+              aria-selected={tab === k}
+              className={`seg-btn tab ${tab === k ? 'on' : ''}`}
+              onClick={() => {
+                setTab(k);
+                setLimit(20);
+              }}
+            >
+              {l}
+              {unread(k) ? <span className="count">{unread(k)}</span> : null}
+            </button>
           ))}
-        </ul>
-      )}
-      {items.length > limit ? (
-        <button className="btn quiet block" onClick={() => setLimit(limit + 12)}>
-          Show more
-        </button>
-      ) : null}
-      <p className="muted small note">
-        {news && news.generated ? `Updated ${timeAgo(news.generated)}` : ''}
-        {tab === 'politics' ? ' · AP and Reuters, U.S. coverage' : ' · Top posts on r/popular today'}
-        {st && ((tab === 'reddit' && st.reddit && !st.reddit.ok) || (tab === 'politics' && ((st.ap && !st.ap.ok) || (st.reuters && !st.reuters.ok))))
-          ? ' · a source failed on the last run, showing the last good copy'
-          : ''}
-      </p>
-    </section>
+        </div>
+        {!news ? (
+          <p className="empty">Loading…</p>
+        ) : items.length === 0 ? (
+          <p className="empty">{news.error ? 'The news feed hasn’t been generated yet.' : 'Nothing here yet. This section fills in on the next update, within about 30 minutes.'}</p>
+        ) : (
+          <ul className="list">
+            {shown.map((i) => (
+              <li key={i.id}>
+                <a className={`story ${read.has(i.id) ? 'read' : ''}`} href={i.url} target="_blank" rel="noopener" onClick={() => markRead(i.id)}>
+                  {i.image ? <img className="thumb" src={i.image} alt="" loading="lazy" onError={(e) => (e.currentTarget.style.display = 'none')} /> : null}
+                  <div className="grow">
+                    <div className="story-title">
+                      {!read.has(i.id) ? <span className="dot" /> : null}
+                      {i.title}
+                    </div>
+                    <div className="muted small">
+                      {i.source}
+                      {i.date ? ` · ${timeAgo(i.date)}` : ''}
+                      {i.comments ? ` · ${i.comments}` : ''}
+                    </div>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        {items.length > limit ? (
+          <button className="btn quiet block" onClick={() => setLimit(limit + 20)}>
+            Show more
+          </button>
+        ) : null}
+        <p className="muted small note">
+          {cur[2]}
+          {failed ? ' · a source failed on the last run, showing the last good copy' : ''}
+        </p>
+      </section>
+    </div>
   );
 }
 
-function Home({ user, data, onAdd, onToggle, news, read, markRead, markAllRead, dataError, learning, mutateLearning, cooking, recipes }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   return (
@@ -350,7 +371,6 @@ function Home({ user, data, onAdd, onToggle, news, read, markRead, markAllRead, 
         <div className="col">
           <LearningHomeCard data={learning} mutate={mutateLearning} />
           <CookingHomeCard data={cooking} recipes={recipes} />
-          <NewsCard news={news} read={read} markRead={markRead} markAllRead={markAllRead} />
         </div>
       </div>
     </div>
@@ -499,7 +519,7 @@ function App() {
     fetch(`news.json?t=${Date.now()}`, { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
       .then(setNews)
-      .catch((e) => setNews({ politics: [], reddit: [], error: String(e.message || e) }));
+      .catch((e) => setNews({ error: String(e.message || e) }));
   }, []);
   useEffect(() => {
     if (!allowed) return;
@@ -638,6 +658,7 @@ function App() {
       <nav className="nav">
         <div className="brand">Dashboard</div>
         {nav('home', 'home', 'Home')}
+        {nav('news', 'news', 'News')}
         {nav('budget', 'budget', 'Budget')}
         {nav('learning', 'learn', 'Learning')}
         {nav('cooking', 'pot', 'Cooking')}
@@ -651,17 +672,14 @@ function App() {
         {route === 'cooking' ? (
           <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} />
         ) : null}
-        {route === 'budget' || route === 'learning' || route === 'cooking' ? null : (
+        {route === 'news' ? <NewsPage news={news} read={read} markRead={markRead} markAllRead={markAllRead} /> : null}
+        {route === 'budget' || route === 'learning' || route === 'cooking' || route === 'news' ? null : (
           <Home
             user={user}
             data={data}
             dataError={dataError}
             onAdd={onAdd}
             onToggle={onToggle}
-            news={news}
-            read={read}
-            markRead={markRead}
-            markAllRead={markAllRead}
             learning={learning}
             mutateLearning={mutateLearning}
             cooking={cooking}
