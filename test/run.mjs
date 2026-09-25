@@ -110,6 +110,18 @@ async function mockWeather(context) {
     weatherCalls.push(lat);
     route.fulfill({ contentType: 'application/json', body: JSON.stringify(forecastFixture(lat)) });
   });
+  await context.route('https://api.nhtsa.gov/**', (route) =>
+    route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({
+        Count: 2,
+        results: [
+          { NHTSACampaignNumber: '21V138000', ReportReceivedDate: '04/03/2021', Component: 'STEERING:LINKAGES:TIE ROD ASSEMBLY', Summary: 'Nissan is recalling certain 2020-2021 Altima vehicles.', Remedy: 'Dealers will replace the tie rods, free of charge.' },
+          { NHTSACampaignNumber: '23V628000', ReportReceivedDate: '08/09/2023', Component: 'BACK OVER PREVENTION: SENSING SYSTEM: CAMERA', Summary: 'The rearview camera image may not display.', Remedy: 'Dealers will update the software, free of charge.' },
+        ],
+      }),
+    })
+  );
   await context.route('https://geocoding-api.open-meteo.com/**', (route) =>
     route.fulfill({ contentType: 'application/json', body: JSON.stringify({ results: [{ name: 'Brooklyn', admin1: 'New York', admin2: 'Kings', country: 'United States', country_code: 'US', latitude: 40.6501, longitude: -73.94958 }] }) })
   );
@@ -412,6 +424,66 @@ await page.waitForSelector('.money .big');
 const homeCook = await page.innerText('.col:nth-child(2)');
 check(/Tonight:/.test(homeCook), 'Home Cooking card suggests tonight’s dinner');
 await page.screenshot({ path: path.join(OUT, 'home-cooking.png'), fullPage: true });
+
+
+// ---------------- auto
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.auto-home');
+let autoHome = await page.innerText('.auto-home');
+check(/2021 Nissan Altima SL/.test(autoHome) && /NYS inspection (due|expired)/.test(autoHome), `Home auto card: ${autoHome.replace(/\n/g, ' | ')}`);
+check(/\d+ payments? left · \$[\d,.]+ · paid off Jun 2027/.test(autoHome), 'Home auto card shows the car loan countdown');
+check(/2 recalls to check/.test(autoHome), 'Home auto card flags recalls');
+await page.click('a.nav-item:has-text("Auto")');
+await page.waitForSelector('.auto .mt-row');
+let atext = await page.innerText('.auto');
+check(/2021 Nissan Altima SL/.test(atext) && /52,000 mi/.test(atext), 'Auto tab shows the car and mileage');
+check((await page.$$('.auto .mt-row')).length === 7, 'seven maintenance items on Nissan’s schedule');
+check(/Car payment/.test(atext) && /\$400\.58\/mo/.test(atext) && /Geico Car Insurance/.test(atext) && /\$190\.28\/mo from Nov 2026/.test(atext), 'costs come from the budget (payment, Geico and its November change)');
+check(/Powertrain/.test(atext) && /Add your purchase month/.test(atext), 'warranty asks for the purchase month');
+await page.screenshot({ path: path.join(OUT, 'auto.png'), fullPage: true });
+// log a service with a cost that goes to the budget
+const bA = await stored();
+const kA = bA.months[key] ? bA.months[key].transactions.length : 0;
+await page.click('.auto button:has-text("Log service")');
+await page.click('.sheet .chip:has-text("Oil & filter")');
+await page.click('.sheet .chip:has-text("Tire rotation")');
+await page.fill('.sheet input[aria-label="Mileage at service"]', '52100');
+await page.fill('.sheet input[aria-label="Cost"]', '89.99');
+await page.fill('.sheet input[placeholder^="Dealer"]', 'Nissan dealer');
+await page.screenshot({ path: path.join(OUT, 'auto-log.png') });
+await page.click('.sheet button:has-text("Save")');
+await page.waitForTimeout(300);
+let A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.service.length === 1 && A.service[0].items.join() === 'oil,rotate' && A.service[0].miles === 52100, 'service logged');
+check(A.odo[A.odo.length - 1].miles === 52100, 'mileage moves up with the service');
+const bB = await stored();
+const svc = bB.months[key].transactions.slice(-1)[0];
+check(bB.months[key].transactions.length === kA + 1 && svc.category === 'Gas & Auto' && svc.amount === 89.99 && /^Car: Oil & filter, Tire rotation/.test(svc.desc), `service cost in the budget (${svc.desc})`);
+atext = await page.innerText('.auto');
+check(/next 62,100 mi/.test(atext) && /next 57,100 mi/.test(atext), 'oil and rotation now count from this service');
+// inspection done
+await page.click('.dl-row:has-text("NYS inspection") button:has-text("Inspected")');
+await page.waitForTimeout(200);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+const now = new Date();
+const expect = new Date(now.getFullYear(), now.getMonth() + 13, 0);
+check(A.inspection === `${expect.getFullYear()}-${String(expect.getMonth() + 1).padStart(2, '0')}-${String(expect.getDate()).padStart(2, '0')}`, `inspection moves to ${A.inspection}`);
+// recalls
+await page.selectOption('select[aria-label="Status of recall 21V138000"]', 'na');
+await page.waitForTimeout(150);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.recalls['21V138000'] === 'na', 'recall status saved');
+// mileage update
+await page.fill('input[aria-label="Current mileage"]', '52,500');
+await page.click('.auto form.add-row button[type=submit]');
+await page.waitForTimeout(150);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.odo[A.odo.length - 1].miles === 52500, 'mileage update saved');
+await page.screenshot({ path: path.join(OUT, 'auto-after.png'), fullPage: true });
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.auto-home');
+autoHome = await page.innerText('.auto-home');
+check(/1 recall to check/.test(autoHome) && !/NYS inspection/.test(autoHome), 'Home card updates (inspection done, one recall left)');
 
 // settings sheet
 await page.click('.nav-settings');
