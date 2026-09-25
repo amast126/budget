@@ -2,7 +2,9 @@ name: Update dashboard news
 
 on:
   schedule:
-    - cron: "7,37 * * * *"   # about every 30 minutes (GitHub can delay scheduled runs a few minutes)
+    # Asks for every 30 minutes. GitHub runs scheduled jobs on free accounts when it has spare capacity,
+    # so in practice this lands every few hours; run it by hand from the Actions tab for fresh news.
+    - cron: "*/30 * * * *"
   workflow_dispatch:          # run it by hand from the Actions tab
 
 permissions:
