@@ -1,0 +1,34 @@
+name: One-time fix (move Learning files)
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/fix-layout.yml"]
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move files into src/ and test/
+        run: |
+          mkdir -p src test
+          for f in app.jsx backend.js budget-logic.js learning-catalog.js learning-logic.js learning.jsx styles.css ui.jsx; do
+            if [ -f "$f" ]; then git mv -f "$f" "src/$f"; fi
+          done
+          if [ -f run.mjs ]; then git mv -f run.mjs test/run.mjs; fi
+          git status --short
+          if git diff --cached --quiet; then echo "Nothing to move."; exit 0; fi
+          git config user.name "build-bot"
+          git config user.email "build-bot@users.noreply.github.com"
+          git commit -m "Move Learning tab source into src/ and test/"
+          git push
+      - name: Start the dashboard build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build.yml --ref main
