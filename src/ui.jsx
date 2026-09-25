@@ -11,6 +11,7 @@ export function Icon({ name, size = 22 }) {
     up: 'M6 15l6-6 6 6',
     down: 'M6 9l6 6 6-6',
     chev: 'M9 6l6 6-6 6',
+    pot: 'M4 10h16v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM2 10h2M20 10h2M9 3.5c-.8.8-.8 2 0 2.8M13 3.5c-.8.8-.8 2 0 2.8',
   }[name];
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

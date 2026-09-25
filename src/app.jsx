@@ -5,6 +5,8 @@ import { createFirebaseBackend } from './backend.js';
 import { Icon } from './ui.jsx';
 import { LearningPage, LearningHomeCard } from './learning.jsx';
 import { defaultLearning, normalize as normalizeLearning } from './learning-logic.js';
+import { CookingPage, CookingHomeCard, FinishShopSheet } from './cooking.jsx';
+import { defaultCooking, normalizeCooking, putAway, groceriesCategory } from './cooking-logic.js';
 import {
   homeSummary,
   newTransaction,
@@ -317,7 +319,7 @@ function NewsCard({ news, read, markRead, markAllRead }) {
   );
 }
 
-function Home({ user, data, onAdd, onToggle, news, read, markRead, markAllRead, dataError, learning, mutateLearning }) {
+function Home({ user, data, onAdd, onToggle, news, read, markRead, markAllRead, dataError, learning, mutateLearning, cooking, recipes }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   return (
@@ -347,6 +349,7 @@ function Home({ user, data, onAdd, onToggle, news, read, markRead, markAllRead, 
         </div>
         <div className="col">
           <LearningHomeCard data={learning} mutate={mutateLearning} />
+          <CookingHomeCard data={cooking} recipes={recipes} />
           <NewsCard news={news} read={read} markRead={markRead} markAllRead={markAllRead} />
         </div>
       </div>
@@ -413,12 +416,16 @@ function Gate({ user, error }) {
   );
 }
 
-// Fill in any missing fields on a stored learning document before a change is applied to it.
-function normalizeLearningInPlace(d) {
-  const n = normalizeLearning(d);
-  Object.keys(n).forEach((k) => (d[k] = n[k]));
-  return d;
+// Fill in any missing fields on a stored module document before a change is applied to it.
+function inPlace(normalizeFn) {
+  return (d) => {
+    const n = normalizeFn(d);
+    Object.keys(n).forEach((k) => (d[k] = n[k]));
+    return d;
+  };
 }
+const normalizeLearningInPlace = inPlace(normalizeLearning);
+const normalizeCookingInPlace = inPlace(normalizeCooking);
 
 // ---------------------------------------------------------------- app
 function App() {
@@ -433,6 +440,10 @@ function App() {
   const [budgetOpened, setBudgetOpened] = useState(route === 'budget');
   const [learning, setLearning] = useState(null);
   const [learningError, setLearningError] = useState('');
+  const [cooking, setCooking] = useState(null);
+  const [cookingError, setCookingError] = useState('');
+  const [recipes, setRecipes] = useState(null);
+  const [shopping, setShopping] = useState(false);
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
@@ -461,6 +472,28 @@ function App() {
       (e) => setLearningError(`Couldn’t load learning progress: ${e.message || e}`)
     );
   }, [allowed, user && user.uid]);
+
+  useEffect(() => {
+    if (!allowed) return;
+    return backend.subscribeModule(
+      user,
+      'cooking',
+      (d) => {
+        setCooking(normalizeCooking(d)); // nothing saved yet → empty kitchen, two starter recipes
+        setCookingError('');
+      },
+      (e) => setCookingError(`Couldn’t load the kitchen: ${e.message || e}`)
+    );
+  }, [allowed, user && user.uid]);
+
+  // Weekly recipe file written by the recipes job; loaded once per visit.
+  useEffect(() => {
+    if (!allowed) return;
+    fetch(`recipes.json?t=${Date.now()}`, { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
+      .then(setRecipes)
+      .catch(() => setRecipes({ picks: [], pool: [], common: null, source: { ok: false } }));
+  }, [allowed]);
 
   const loadNews = useCallback(() => {
     fetch(`news.json?t=${Date.now()}`, { cache: 'no-store' })
@@ -535,6 +568,53 @@ function App() {
       showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
     }
   };
+  const mutateCooking = async (fn, msg) => {
+    try {
+      await backend.mutateModule(user, 'cooking', (d) => fn(normalizeCookingInPlace(d)), defaultCooking);
+      if (msg) showToast({ text: msg });
+    } catch (e) {
+      showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+    }
+  };
+  // Finish a shop: log the total under Groceries in the budget (optional) and put the ticked items away.
+  const budgetInfo = useMemo(() => {
+    if (!data) return null;
+    const s = homeSummary(data);
+    return { methods: s.methods, category: groceriesCategory(s.categoryNames) };
+  }, [data]);
+  const finishShop = async (entry) => {
+    const before = cooking ? { kitchen: cooking.kitchen, grocery: cooking.grocery } : null;
+    const count = cooking ? cooking.grocery.filter((g) => g.done).length : 0;
+    let t = null;
+    try {
+      if (entry && budgetInfo) {
+        t = newTransaction({ date: entry.date, desc: entry.desc.trim() || 'Groceries', category: budgetInfo.category, amount: entry.amount, method: entry.method });
+        await backend.mutateBudget(user, (d) => addTransaction(d, t));
+      }
+      await backend.mutateModule(user, 'cooking', (d) => putAway(normalizeCookingInPlace(d)), defaultCooking);
+      setShopping(false);
+      showToast({
+        text: `${t ? `Logged ${fmt(t.amount)} to ${t.category} · ` : ''}${count} put away`,
+        undo: async () => {
+          if (t)
+            await backend.mutateBudget(user, (d) => {
+              const m = d.months && d.months[keyOf(t.date)];
+              if (m) m.transactions = m.transactions.filter((x) => x.id !== t.id);
+            });
+          if (before)
+            await backend.mutateModule(user, 'cooking', (d) => {
+              normalizeCookingInPlace(d);
+              d.kitchen = before.kitchen;
+              d.grocery = before.grocery;
+            }, defaultCooking);
+          showToast({ text: 'Undone' });
+        },
+      });
+    } catch (e) {
+      showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+    }
+  };
+
   const onToggle = async (u) => {
     try {
       await backend.mutateBudget(user, (d) => toggleBillPaid(d, u.key, u.id));
@@ -560,6 +640,7 @@ function App() {
         {nav('home', 'home', 'Home')}
         {nav('budget', 'budget', 'Budget')}
         {nav('learning', 'learn', 'Learning')}
+        {nav('cooking', 'pot', 'Cooking')}
         <button className="nav-item nav-settings" onClick={() => setSettings(true)} aria-label="Settings">
           <Icon name="gear" />
           <span>Settings</span>
@@ -567,7 +648,10 @@ function App() {
       </nav>
       <main className="main">
         {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} /> : null}
-        {route === 'budget' || route === 'learning' ? null : (
+        {route === 'cooking' ? (
+          <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} />
+        ) : null}
+        {route === 'budget' || route === 'learning' || route === 'cooking' ? null : (
           <Home
             user={user}
             data={data}
@@ -580,6 +664,8 @@ function App() {
             markAllRead={markAllRead}
             learning={learning}
             mutateLearning={mutateLearning}
+            cooking={cooking}
+            recipes={recipes}
           />
         )}
         {budgetOpened ? <BudgetFrame visible={route === 'budget'} /> : null}
@@ -595,6 +681,9 @@ function App() {
         </div>
       ) : null}
       {settings ? <Settings user={user} onClose={() => setSettings(false)} /> : null}
+      {shopping && cooking ? (
+        <FinishShopSheet count={cooking.grocery.filter((g) => g.done).length} budget={budgetInfo} onSubmit={finishShop} onClose={() => setShopping(false)} />
+      ) : null}
     </div>
   );
 }
