@@ -122,6 +122,24 @@ async function mockWeather(context) {
       }),
     })
   );
+  await context.route('https://api.nal.usda.gov/**', async (route) => {
+    const body = JSON.parse(route.request().postData() || '{}');
+    const q = String(body.query || '').toLowerCase();
+    let foods;
+    if (q.includes('banana'))
+      foods = [
+        { fdcId: 2709224, description: 'Banana, raw', dataType: 'Survey (FNDDS)', foodMeasures: [{ disseminationText: '1 banana', gramWeight: 126 }, { disseminationText: '1 cup', gramWeight: 150 }], foodNutrients: [{ nutrientId: 1008, value: 97 }, { nutrientId: 1003, value: 0.74 }, { nutrientId: 1005, value: 22.71 }, { nutrientId: 1004, value: 0.28 }] },
+        { fdcId: 999, description: 'BANANA CHIPS', dataType: 'Branded', brandOwner: 'SNACK CO', servingSize: 30, servingSizeUnit: 'g', householdServingFullText: '1 oz', foodNutrients: [{ nutrientId: 1008, value: 520 }, { nutrientId: 1003, value: 2 }, { nutrientId: 1005, value: 58 }, { nutrientId: 1004, value: 33 }] },
+      ];
+    else foods = [];
+    route.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ foods }) });
+  });
+  await context.route('https://world.openfoodfacts.org/**', (route) => {
+    const url = route.request().url();
+    if (url.includes('0818290019592'))
+      return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ code: '0818290019592', product: { product_name: 'Greek yogurt, coffee', brands: 'Chobani', serving_size: '150 g', serving_quantity: 150, nutriments: { 'energy-kcal_100g': 93, proteins_100g: 7.3, carbohydrates_100g: 10.7, fat_100g: 1.3 } } }) });
+    route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ status: 0 }) });
+  });
   await context.route('https://geocoding-api.open-meteo.com/**', (route) =>
     route.fulfill({ contentType: 'application/json', body: JSON.stringify({ results: [{ name: 'Brooklyn', admin1: 'New York', admin2: 'Kings', country: 'United States', country_code: 'US', latitude: 40.6501, longitude: -73.94958 }] }) })
   );
@@ -140,6 +158,13 @@ const check = (cond, msg) => {
   console.log(`${cond ? '✓' : '✗'} ${msg}`);
   if (!cond) process.exitCode = 1;
 };
+// Phone nav shows Home, News, Budget, Health; the rest are under More.
+async function go(label) {
+  const direct = page.locator(`.nav a.nav-item:has-text("${label}")`);
+  if (await direct.isVisible()) return direct.click();
+  await page.click('.nav-more');
+  await page.click(`.more-sheet .more-item:has-text("${label}")`);
+}
 
 await page.goto(base, { waitUntil: 'networkidle' });
 await page.waitForSelector('.money .big');
@@ -287,7 +312,7 @@ await page.waitForSelector('.money .big');
 const learnCard = '.home .card:has(h2:text-is("Learning"))';
 const homeLearn = await page.innerText(learnCard);
 check(/Learning/.test(homeLearn) && /AI-901/.test(homeLearn), 'Home shows the Learning card with AI-901');
-await page.click('a.nav-item:has-text("Learning")');
+await go('Learning');
 await page.waitForSelector('.steps .step');
 const stepsText = await page.$$eval('.learning .col:first-child .step .step-head', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
 console.log('  roadmap:', stepsText);
@@ -333,7 +358,7 @@ await page.screenshot({ path: path.join(OUT, 'home-learning.png'), fullPage: tru
 await page.click('a.nav-item:has-text("Home")');
 await page.waitForSelector('.money .big');
 check(/Cooking/.test(await page.innerText('.col:nth-child(2)')) && /Grocery list/.test(await page.innerText('.col:nth-child(2)')), 'Home shows the Cooking card');
-await page.click('a.nav-item:has-text("Cooking")');
+await go('Cooking');
 await page.waitForSelector('.cooking .kitchen');
 await page.screenshot({ path: path.join(OUT, 'cooking-empty.png'), fullPage: true });
 check((await page.$$('.picks .pick')).length === 12, 'this week’s 12 picks render');
@@ -433,7 +458,7 @@ let autoHome = await page.innerText('.auto-home');
 check(/2021 Nissan Altima SL/.test(autoHome) && /NYS inspection (due|expired)/.test(autoHome), `Home auto card: ${autoHome.replace(/\n/g, ' | ')}`);
 check(/\d+ payments? left · \$[\d,.]+ · paid off Jun 2027/.test(autoHome), 'Home auto card shows the car loan countdown');
 check(/2 recalls to check/.test(autoHome), 'Home auto card flags recalls');
-await page.click('a.nav-item:has-text("Auto")');
+await go('Auto');
 await page.waitForSelector('.auto .mt-row');
 let atext = await page.innerText('.auto');
 check(/2021 Nissan Altima SL/.test(atext) && /52,000/.test(atext), 'Auto tab shows the car and mileage');
@@ -488,8 +513,178 @@ await page.waitForSelector('.auto-home');
 autoHome = await page.innerText('.auto-home');
 check(/1 recall to check/.test(autoHome) && !/NYS inspection/.test(autoHome), 'Home card updates (inspection done, one recall left)');
 
+
+// ---------------------------------------------------------------- health
+const Y = String(new Date().getFullYear());
+const T = () => new Date().toISOString().slice(0, 10);
+const hDoc = () => page.evaluate(() => JSON.parse(localStorage.getItem('mod:health') || 'null'));
+const yDoc = () => page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-' + y) || 'null'), Y);
+const localToday = await page.evaluate(() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; });
+const dayFood = async () => ((await yDoc()).days[localToday] || { food: [] }).food;
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.health-home');
+check(/Set up your target/.test(await page.innerText('.health-home')), 'Home health card asks for setup');
+const navLabels = await page.$$eval('.nav .nav-item', (els) => els.filter((e) => e.offsetParent !== null).map((e) => e.innerText.trim()));
+check(navLabels.join(',') === 'Home,News,Budget,Health,More', `phone nav: ${navLabels.join(', ')}`);
+await page.click('a.nav-item:has-text("Health")');
+await page.waitForSelector('.health .targets');
+await page.selectOption('select[aria-label="Sex"]', 'male');
+await page.fill('input[aria-label="Age"]', '29');
+await page.press('input[aria-label="Age"]', 'Tab');
+await page.fill('input[aria-label="Height feet"]', '5');
+await page.press('input[aria-label="Height feet"]', 'Tab');
+await page.fill('input[aria-label="Height inches"]', '11');
+await page.press('input[aria-label="Height inches"]', 'Tab');
+await page.waitForTimeout(150);
+await page.fill('input[aria-label="Weight in pounds"]', '180');
+await page.press('input[aria-label="Weight in pounds"]', 'Enter');
+await page.waitForTimeout(250);
+let HD = await hDoc();
+check(HD.profile.sex === 'male' && HD.profile.age === 29 && HD.profile.heightIn === 71 && HD.weights.length === 1, `profile saved (${JSON.stringify(HD.profile)})`);
+let htext = await page.innerText('.health');
+check(/2,480 cal/.test(htext) && /P 144g/.test(htext) && /C 289g/.test(htext) && /F 83g/.test(htext), `targets: ${(htext.match(/[\d,]+ cal · P \d+g · C \d+g · F \d+g/) || [''])[0]}`);
+check(/2,480\s*calories left/.test(htext.replace(/\n/g, ' ')), 'today card shows calories left');
+// search → banana
+await page.click('.food-log button:has-text("+ Log food")');
+await page.waitForSelector('.add-food');
+await page.click('.add-food .seg-btn:has-text("Search")');
+await page.fill('input[aria-label="Search foods"]', 'banana');
+await page.press('input[aria-label="Search foods"]', 'Enter');
+await page.waitForSelector('.add-food .rc');
+const resText = await page.$$eval('.add-food .rc', (e) => e.map((x) => x.innerText.replace(/\n/g, ' ')));
+check(/Banana, Raw|Banana, raw/.test(resText[0]) && /generic/.test(resText[0]) && /Banana Chips/.test(resText[1]), `search results: ${resText.join(' | ')}`);
+await page.click('.add-food .rc >> nth=0');
+await page.selectOption('select[aria-label="Unit"]', { label: '1 banana' });
+await page.click('.meal-seg .seg-btn:has-text("Breakfast")');
+check(/122\s*cal/.test((await page.innerText('.fd-totals')).replace(/\n/g, ' ')), 'banana preview: 122 cal');
+await page.screenshot({ path: path.join(OUT, 'health-add.png') });
+await page.click('.food-detail button.primary');
+await page.waitForTimeout(250);
+let F = await dayFood();
+check(F.length === 1 && F[0].name.toLowerCase() === 'banana, raw' && F[0].k === 122 && F[0].meal === 'breakfast' && F[0].amount === '1 banana', `logged: ${JSON.stringify(F[0])}`);
+// recent → lunch
+await page.click('.meal:has-text("Lunch") button:has-text("+ Add")');
+await page.waitForSelector('.add-food');
+check(/last: 1 banana/.test(await page.innerText('.add-food')), 'recent shows banana with last portion');
+await page.click('.add-food .rc >> nth=0');
+await page.click('.food-detail button.primary');
+await page.waitForTimeout(200);
+F = await dayFood();
+check(F.length === 2 && F[1].meal === 'lunch', 'one-tap add from recent');
+// quick add
+await page.click('.food-log button:has-text("+ Log food")');
+await page.click('.add-food .seg-btn:has-text("Quick add")');
+await page.fill('input[aria-label="Food name"]', 'protein shake');
+await page.fill('input[aria-label="Calories"]', '160');
+await page.fill('input[aria-label="Protein"]', '30');
+await page.fill('input[aria-label="Carbs"]', '5');
+await page.fill('input[aria-label="Fat"]', '2');
+await page.click('.quick-food button[type=submit]');
+await page.click('.meal-seg .seg-btn:has-text("Snacks")');
+await page.click('.food-detail button.primary');
+await page.waitForTimeout(200);
+F = await dayFood();
+check(F.length === 3 && F[2].name === 'Protein shake' && F[2].k === 160 && F[2].p === 30, 'quick add saved with macros');
+// barcode by number
+await page.click('.food-log button:has-text("+ Log food")');
+await page.click('.add-food .seg-btn:has-text("Barcode")');
+await page.fill('input[aria-label="Barcode number"]', '0818290019592');
+await page.click('.add-food button:has-text("Look up")');
+await page.waitForSelector('.food-detail');
+check(/Greek Yogurt, Coffee|Greek yogurt, coffee/.test(await page.innerText('.food-detail')) && /140\s*cal/.test((await page.innerText('.fd-totals')).replace(/\n/g, ' ')), 'barcode lookup: Chobani, 1 serving = 140 cal');
+await page.click('.food-detail button:has-text("Back")');
+// barcode from a photo (decoded by the vendored ZXing)
+await page.setInputFiles('.scanner input[type=file]', process.env.EAN_IMAGE);
+await page.waitForSelector('.food-detail', { timeout: 8000 });
+check(/Chobani/.test(await page.innerText('.food-detail')), 'barcode photo decoded and looked up');
+await page.click('.food-detail button.primary');
+await page.waitForTimeout(200);
+F = await dayFood();
+check(F.length === 4 && F[3].brand === 'Chobani', 'yogurt logged');
+// edit banana to 2
+await page.click('.meal:has-text("Breakfast") .entry');
+await page.fill('.food-detail input[aria-label="Amount"]', '2');
+await page.click('.food-detail button:has-text("Save")');
+await page.waitForTimeout(200);
+F = await dayFood();
+check(F[0].k === 244 && F[0].amount === '2 × 1 banana', `edit updates the entry (${F[0].amount}, ${F[0].k} cal)`);
+// delete + undo
+await page.click('.meal:has-text("Snacks") .entry >> nth=0');
+await page.click('.sheet button:has-text("Delete")');
+await page.waitForSelector('.toast');
+check((await dayFood()).length === 3, 'delete removes the entry');
+await page.click('.toast-btn');
+await page.waitForTimeout(200);
+check((await dayFood()).length === 4, 'undo restores it');
+// totals
+htext = (await page.innerText('.today-health')).replace(/\n/g, ' ');
+const eaten = 244 + 122 + 160 + 140;
+check(new RegExp(`${eaten.toLocaleString()} eaten`).test(htext), `today total ${eaten}: ${htext}`);
+// steps + workout
+await page.fill('input[aria-label="Steps"]', '9,500');
+await page.press('input[aria-label="Steps"]', 'Enter');
+await page.selectOption('select[aria-label="Workout type"]', 'tennis');
+await page.fill('input[aria-label="Minutes"]', '60');
+await page.press('input[aria-label="Minutes"]', 'Enter');
+await page.waitForTimeout(250);
+const D = (await yDoc()).days[localToday];
+check(D.steps === 9500 && D.workouts.length === 1 && D.workouts[0].type === 'tennis', 'steps and workout saved');
+check(/about 596 cal burned/.test(await page.innerText('.health')), 'tennis estimate: about 596 cal');
+// weight history for the chart
+await page.evaluate(() => {
+  const h = JSON.parse(localStorage.getItem('mod:health'));
+  const d0 = new Date();
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  for (let i = 1; i <= 40; i += 2) h.weights.push({ date: iso(new Date(d0.getFullYear(), d0.getMonth(), d0.getDate() - i)), lb: 181.5 - i * 0.03 + (i % 4 ? 0.6 : -0.4) });
+  h.weights.sort((a, b) => (a.date < b.date ? -1 : 1));
+  localStorage.setItem('mod:health', JSON.stringify(h));
+  window.__modSubs.health.forEach((f) => f());
+});
+await page.waitForTimeout(250);
+check((await page.$$('.chart .wdot')).length >= 15 && (await page.$$('.chart .wline')).length === 1, 'weight chart draws weigh-ins and the 7-day line');
+await page.$eval('.chart rect[fill=transparent]', (r) => r.scrollIntoView({ block: 'center' }));
+await page.waitForTimeout(100);
+const wbox = await page.$eval('.chart rect[fill=transparent]', (r) => { const b = r.getBoundingClientRect(); return { x: b.x + b.width * 0.6, y: b.y + 40 }; });
+await page.mouse.move(wbox.x, wbox.y);
+await page.waitForTimeout(100);
+check(/weigh-in/.test(await page.innerText('.chart-tip')) && (await page.$$('.chart .crosshair')).length === 1, 'weight chart hover shows crosshair and tooltip');
+check((await page.$$('.chart .wbar')).length >= 1, 'week chart draws today’s calories');
+await page.screenshot({ path: path.join(OUT, 'health.png'), fullPage: true });
+// copy yesterday's meal
+await page.evaluate(([y]) => {
+  const d = JSON.parse(localStorage.getItem('mod:health-' + y));
+  const t = new Date(); t.setDate(t.getDate() - 1);
+  const iso = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+  if (iso.slice(0, 4) !== y) return;
+  d.days[iso] = { food: [{ id: 'y1', meal: 'dinner', name: 'Chipotle-style steak', amount: '1 serving', qty: 1, portion: '1 serving', key: 'q:steak', k: 650, p: 55, c: 10, f: 40 }], steps: null, workouts: [] };
+  localStorage.setItem('mod:health-' + y, JSON.stringify(d));
+  window.__modSubs['health-' + y].forEach((f) => f());
+}, [Y]);
+await page.waitForTimeout(200);
+const copyBtn = await page.$('.copy-meal');
+if (copyBtn) {
+  await copyBtn.click();
+  await page.waitForTimeout(200);
+  check((await dayFood()).some((e) => e.name === 'Chipotle-style steak'), 'copy yesterday’s dinner');
+}
+// Home card
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.health-home');
+const hh = (await page.innerText('.health-home')).replace(/\n/g, ' ');
+check(/calories left|calories over/.test(hh) && /Steps 9,500/.test(hh) && /Weight/.test(hh), `Home health card: ${hh}`);
+await page.screenshot({ path: path.join(OUT, 'home-health.png'), fullPage: true });
+// Cooking → log a serving
+await go('Cooking');
+await page.waitForSelector('.picks .pick');
+await page.click('.picks .pick >> nth=1');
+await page.waitForSelector('.sheet .nutri');
+await page.click('.sheet button:has-text("Log a serving to Health")');
+await page.waitForTimeout(250);
+check((await dayFood()).some((e) => e.key.startsWith('bb:') && e.k === 420), 'Cooking recipe logged to Health (420 cal)');
+await page.click('.sheet button:has-text("Close")');
+
 // settings sheet
-await page.click('.nav-settings');
+await go('Settings');
 check(/Only this account/.test(await page.innerText('.sheet')), 'settings sheet');
 await page.screenshot({ path: path.join(OUT, 'settings.png') });
 await page.click('.sheet .btn.primary');
@@ -512,6 +707,10 @@ await dp.click('a.nav-item:has-text("Auto")');
 await dp.waitForSelector('.auto-hero');
 await dp.waitForTimeout(300);
 await dp.screenshot({ path: path.join(OUT, 'desktop-auto.png') });
+await dp.click('a.nav-item:has-text("Health")');
+await dp.waitForSelector('.health');
+await dp.waitForTimeout(300);
+await dp.screenshot({ path: path.join(OUT, 'desktop-health.png'), fullPage: true });
 
 await browser.close();
 server.close();
