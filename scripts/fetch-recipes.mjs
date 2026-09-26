@@ -3,8 +3,9 @@
  * No dependencies: Node 20+ has fetch built in.
  *
  * Source: Budget Bytes' public recipe feed (WordPress / WP Recipe Maker REST API), about 20 requests a week.
- *   pool   popular recipes (at least 25 ratings, 4.3 stars or better): title, link, photo, cost, time, rating and
- *          ingredient names, so the tab can match them against your kitchen
+ *   pool   popular recipes (at least 25 ratings, 4.3 stars or better): title, link, photo, cost, time, rating,
+ *          nutrition per serving (for logging in the Health tab) and ingredient names, so the tab can match them
+ *          against your kitchen
  *   picks  12 of those for this week (8 dinners, 2 breakfasts, 2 sides), not repeated for 12 weeks,
  *          with the full ingredient list. Cooking steps always stay on budgetbytes.com.
  *
@@ -21,7 +22,7 @@ const SITE = 'https://www.budgetbytes.com';
 const UPLOADS = `${SITE}/wp-content/uploads/`;
 const API = `${SITE}/wp-json/wp/v2`;
 const UA = 'Mozilla/5.0 (compatible; dashboard-recipes/1.0; personal weekly recipe list; +https://amast126.github.io/budget/)';
-const FIELDS = 'id,link,recipe.name,recipe.rating,recipe.tags,recipe.image_id,recipe.servings,recipe.servings_unit,recipe.total_time,recipe.ingredients_flat';
+const FIELDS = 'id,link,recipe.name,recipe.rating,recipe.tags,recipe.image_id,recipe.servings,recipe.servings_unit,recipe.total_time,recipe.ingredients_flat,recipe.nutrition';
 
 // Edit these to change what counts as popular and how many picks you get.
 const MIN_RATINGS = 25;
@@ -80,6 +81,13 @@ const cleanNotes = (s) =>
     .replace(/,\s*$/, '')
     .trim();
 
+// Per-serving nutrition as [calories, protein g, carbs g, fat g], or null when the recipe has none.
+function nutritionOf(n) {
+  if (!n || !Number(n.calories)) return null;
+  const num = (v) => Math.round((Number(v) || 0) * 10) / 10;
+  return [Math.round(Number(n.calories)), num(n.protein), num(n.carbohydrates), num(n.fat)];
+}
+
 function shape(x) {
   const r = x.recipe || {};
   const ratings = Number((r.rating && r.rating.count) || 0);
@@ -117,6 +125,7 @@ function shape(x) {
     servings: Number(r.servings) || null,
     servingsUnit: cleanName(r.servings_unit || '') || null,
     imageId: r.image_id || null,
+    nutrition: nutritionOf(r.nutrition),
     keys,
     lines,
   };
@@ -239,6 +248,7 @@ try {
       servings: r.servings,
       thumb: img.thumb || null,
       keys: r.keys,
+      nutrition: r.nutrition,
     };
   };
   result = {
