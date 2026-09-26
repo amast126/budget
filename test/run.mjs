@@ -6,11 +6,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 import { chromium } from '/home/claude/.npm-global/lib/node_modules/playwright/index.mjs';
+import { makeHealthExport } from './make-health-export.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
 const EXPORT = fs.readFileSync(process.env.BUDGET_EXPORT, 'utf8');
 fs.mkdirSync(OUT, { recursive: true });
+const HEALTH_ZIP = makeHealthExport(path.join(OUT, 'test-health-export.zip')); // made-up data
 
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json' };
 const server = http.createServer((req, res) => {
@@ -683,6 +685,107 @@ await page.waitForTimeout(250);
 check((await dayFood()).some((e) => e.key.startsWith('bb:') && e.k === 420), 'Cooking recipe logged to Health (420 cal)');
 await page.click('.sheet button:has-text("Close")');
 
+// ---------------------------------------------------------------- Apple Health import
+await go('Health');
+await page.waitForSelector('.health-tabs');
+check((await page.$$eval('.health-tabs .seg-btn', (b) => b.map((x) => x.innerText))).join(',') === 'Today,Activity,Heart,Sleep,Body,Hearing', 'Health has Today, Activity, Heart, Sleep, Body, Hearing');
+await page.click('.health-tabs .seg-btn:has-text("Sleep")');
+check(/Import your Apple Health export/.test(await page.innerText('.health')), 'Sleep asks for an import before there is data');
+await page.click('.health button:has-text("Go to the importer")');
+await page.waitForSelector('.hk-import input[type=file]', { state: 'attached' });
+check(/Export All Health Data/.test(await page.innerText('.hk-import')), 'importer explains how to export from the iPhone');
+await page.setInputFiles('.hk-import input[type=file]', HEALTH_ZIP);
+await page.waitForSelector('.hk-import .ok-note', { timeout: 20000 });
+const okNote = (await page.innerText('.hk-import .ok-note')).replace(/\n/g, ' ');
+check(/401 days/.test(okNote) && /60 nights/.test(okNote) && /2 workouts/.test(okNote) && /1 ECG/.test(okNote) && /3 weigh-ins added/.test(okNote), `import summary: ${okNote}`);
+const HK = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:health-hk')));
+const HKY = await page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-hk-' + y)), Y);
+const yIso = await page.evaluate(() => { const d = new Date(); d.setDate(d.getDate() - 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; });
+const HKYy = yIso.slice(0, 4) === Y ? HKY : await page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-hk-' + y)), yIso.slice(0, 4));
+check(HK.importedAt && HK.workouts.length === 2 && HK.ecg.length === 1 && HK.vo2.length === 4 && Object.keys(HK.months).length >= 13, 'summary document saved (workouts, ECG, VO2 max, months)');
+check(HKYy.days[yIso].st === 5700 && HKYy.days[yIso].sl.a === 435 && HKYy.days[yIso].sh === 11, `yesterday: 5,700 steps (no double count), 7h 15m asleep (${JSON.stringify(HKYy.days[yIso]).slice(0, 80)}…)`);
+check((await page.evaluate(() => JSON.parse(localStorage.getItem('mod:health-hk-ecg')))).traces[HK.ecg[0].id].length === 3840, 'ECG trace saved at 128 samples a second');
+check(Object.keys((await page.evaluate(() => JSON.parse(localStorage.getItem('mod:health-hk-routes')))).routes).length === 1, 'workout route saved');
+HD = await hDoc();
+check(HD.weights.filter((w) => w.src === 'apple').length === 3 && HD.profile.dob === '1990-01-15' && HD.profile.heightIn === 71, 'old weigh-ins added, birthday stored; typed profile kept');
+const foodAfter = await dayFood();
+check(foodAfter.length >= 4, 'food log untouched by the import');
+// Today: yesterday's Apple data
+await page.click('.day-nav button[aria-label="Previous day"]');
+await page.waitForTimeout(150);
+let act = (await page.innerText('.health')).replace(/\n/g, ' ');
+check(/Apple Health/.test(act) && /5,700/.test(act) && /Move/.test(act) && /Exercise/.test(act), 'yesterday shows Apple steps and rings');
+check(/Walking/.test(act) && /Apple Watch/.test(act) && /0\.9 mi/.test(act), 'yesterday lists the Watch walk');
+check(/7h 15m/.test(act) && (await page.$$('.stage-bar span')).length >= 3, 'vitals card: sleep with stages');
+await page.screenshot({ path: path.join(OUT, 'health-today-apple.png'), fullPage: true });
+await page.click('.day-nav .day-label');
+// Activity
+await page.click('.health-tabs .seg-btn:has-text("Activity")');
+await page.waitForTimeout(200);
+act = (await page.innerText('.health')).replace(/\n/g, ' ');
+check(/5,700\s*steps a day/.test(act), 'steps card: 5,700 a day');
+check((await page.$$('.chart .cbar')).length >= 25, 'steps bars drawn');
+check(/Move closed/.test(act) && /100%\s*Exercise closed/.test(act) && /0%\s*Stand closed/.test(act), 'rings: exercise always, stand never');
+check(/Running/.test(act) && /route/.test(act) && /Tennis/.test(act), 'workouts list mixes Apple and logged workouts');
+await page.screenshot({ path: path.join(OUT, 'health-activity.png'), fullPage: true });
+await page.click('.wk-list .rc:has-text("Running")');
+await page.waitForSelector('.route-map', { timeout: 5000 });
+const ws = (await page.innerText('.sheet')).replace(/\n/g, ' ');
+check(/3\.1 mi/.test(ws) && /9:41 \/mi|9:4\d \/mi/.test(ws) && /151 bpm/.test(ws), `workout sheet: ${ws.slice(0, 120)}`);
+await page.screenshot({ path: path.join(OUT, 'health-workout.png') });
+await page.click('.sheet .x');
+// range switch + monthly bars
+await page.click('.card:has(.card-title:text-is("Steps")) .seg-btn:has-text("All time")');
+await page.waitForTimeout(100);
+check((await page.$$('.card:has(.card-title:text-is("Steps")) .chart .cbar')).length >= 13, 'steps all-time: monthly bars');
+// Heart
+await page.click('.health-tabs .seg-btn:has-text("Heart")');
+await page.waitForTimeout(200);
+act = (await page.innerText('.health')).replace(/\n/g, ' ');
+check(/Resting heart rate|Heart rate/.test(act) && (await page.$$('.chart .sline')).length >= 2, 'heart charts drawn');
+check(/42\.5/.test(act) && /4 estimates/.test(act), 'cardio fitness: latest 42.5, 4 estimates');
+check(/Sinus Rhythm/.test(act) && /60 bpm/.test(act), 'ECG listed with its rhythm and rate');
+const hbox = await page.$eval('.card:has(.card-title:text-is("Heart rate")) .chart rect[fill=transparent]', (r) => { r.scrollIntoView({ block: 'center' }); const b = r.getBoundingClientRect(); return { x: b.x + b.width * 0.5, y: b.y + 40 }; });
+await page.mouse.move(hbox.x, hbox.y);
+await page.waitForTimeout(100);
+check(/bpm/.test(await page.innerText('.chart-tip')), 'heart chart tooltip');
+await page.screenshot({ path: path.join(OUT, 'health-heart.png'), fullPage: true });
+await page.click('.card:has(.card-title:text-is("ECG recordings")) .rc');
+await page.waitForSelector('.ecg-row');
+check((await page.$$('.ecg-row')).length === 3, 'ECG drawn as three 10-second strips');
+await page.screenshot({ path: path.join(OUT, 'health-ecg.png') });
+await page.click('.sheet .x');
+// Sleep
+await page.click('.health-tabs .seg-btn:has-text("Sleep")');
+await page.waitForTimeout(200);
+act = (await page.innerText('.health')).replace(/\n/g, ' ');
+check(/7h 15m/.test(act) && /11:15 pm → 6:30 am/.test(act) && /Deep/.test(act) && /REM/.test(act), 'last night: 7h 15m, 11:15 pm → 6:30 am, stages');
+check(/60 of 60|59 of 59|60 of 61/.test(act) || /nights with 7h\+/.test(act), 'sleep trend counts nights with 7h+');
+check((await page.$$('.chart .cbar.st-d')).length >= 25, 'sleep stage bars drawn');
+await page.screenshot({ path: path.join(OUT, 'health-sleep.png'), fullPage: true });
+// Body
+await page.click('.health-tabs .seg-btn:has-text("Body")');
+await page.waitForTimeout(200);
+act = (await page.innerText('.health')).replace(/\n/g, ' ');
+check(/Body composition/.test(act) && /18\.2%/.test(act) && /Weight/.test(act), 'body: composition from the scale and the weight card');
+await page.screenshot({ path: path.join(OUT, 'health-body.png'), fullPage: true });
+// Hearing
+await page.click('.health-tabs .seg-btn:has-text("Hearing")');
+await page.waitForTimeout(200);
+act = (await page.innerText('.health')).replace(/\n/g, ' ');
+check(/Headphone audio/.test(act) && /72 dB/.test(act) && /Hearing test/.test(act) && /normal range/.test(act), 'hearing: headphone level and the audiogram');
+check((await page.$$('.audiogram .ag-o')).length === 6, 'audiogram points drawn');
+await page.screenshot({ path: path.join(OUT, 'health-hearing.png'), fullPage: true });
+// the view is remembered
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.health-home');
+const hh2 = (await page.innerText('.health-home')).replace(/\n/g, ' ');
+check(/Slept 7h 15m/.test(hh2), `Home health card shows last night: ${hh2}`);
+await page.click('a.nav-item:has-text("Health")');
+await page.waitForSelector('.health-tabs');
+check(/on/.test(await page.getAttribute('.health-tabs .seg-btn:has-text("Hearing")', 'class')), 'Health reopens on the last view');
+await page.click('.health-tabs .seg-btn:has-text("Today")');
+
 // settings sheet
 await go('Settings');
 check(/Only this account/.test(await page.innerText('.sheet')), 'settings sheet');
@@ -711,6 +814,13 @@ await dp.click('a.nav-item:has-text("Health")');
 await dp.waitForSelector('.health');
 await dp.waitForTimeout(300);
 await dp.screenshot({ path: path.join(OUT, 'desktop-health.png'), fullPage: true });
+await dp.setInputFiles('.hk-import input[type=file]', HEALTH_ZIP);
+await dp.waitForSelector('.hk-import .ok-note', { timeout: 20000 });
+for (const v of ['Activity', 'Heart', 'Sleep', 'Body', 'Hearing']) {
+  await dp.click(`.health-tabs .seg-btn:has-text("${v}")`);
+  await dp.waitForTimeout(250);
+  await dp.screenshot({ path: path.join(OUT, `desktop-health-${v.toLowerCase()}.png`), fullPage: true });
+}
 
 await browser.close();
 server.close();
