@@ -101,6 +101,7 @@ function forecastFixture(lat) {
       precipitation_probability: times.map((_, i) => (i % 24 >= 17 && i % 24 <= 20 ? 55 : 10)),
       weather_code: times.map((_, i) => (i % 24 >= 17 && i % 24 <= 20 ? 63 : 2)),
       is_day: times.map((_, i) => (i % 24 >= 7 && i % 24 < 19 ? 1 : 0)),
+      wind_speed_10m: times.map(() => 8),
     },
     daily: { time: [times[0].slice(0, 10), times[24].slice(0, 10)], weather_code: [63, 1], temperature_2m_max: [base + 0.5, 70], temperature_2m_min: [55.7, 54], precipitation_probability_max: [55, 5], sunrise: [`${times[0].slice(0, 10)}T06:43`, `${times[24].slice(0, 10)}T06:44`], sunset: [`${times[0].slice(0, 10)}T18:45`, `${times[24].slice(0, 10)}T18:43`], uv_index_max: [3.9, 5] },
   };
@@ -149,7 +150,8 @@ async function mockWeather(context) {
 
 const errors = [];
 const browser = await chromium.launch();
-const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+// Phone checks run with "reduce motion" on so numbers don't count up mid-check; desktop runs with motion.
+const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
 await ctx.addInitScript(init, EXPORT);
 await mockWeather(ctx);
 const page = await ctx.newPage();
@@ -176,9 +178,19 @@ check(/Left to spend|Over budget by/.test(txt), 'money card renders');
 check(/Next payday/.test(txt), 'payday shown');
 check(/Bills this week/.test(txt), 'bills card renders');
 check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news is off the home screen');
-// weather + to-do on Home, in phone order: weather, to-do, then money
-const order = await page.$$eval('.home-grid .card .card-title', (els) => els.map((e) => [e.textContent, Math.round(e.getBoundingClientRect().top)]).sort((a, b) => a[1] - b[1]).map((x) => x[0]));
-check(order[0] === 'Weather' && order[1] === 'To-do', `phone order starts ${order.slice(0, 4).join(', ')}`);
+// phone order: rings (and the weekly recap on Sun/Mon), weather, to-do, then money
+const order = (await page.$$eval('.home-grid .card .card-title', (els) => els.map((e) => [e.textContent, Math.round(e.getBoundingClientRect().top)]).sort((a, b) => a[1] - b[1]).map((x) => x[0]))).filter((t) => !/^(Your week|Last week)$/.test(t));
+check(order[0] === 'Today’s rings' && order[1] === 'Weather' && order[2] === 'To-do', `phone order starts ${order.slice(0, 4).join(', ')}`);
+// the sky header
+const hero = (await page.innerText('.hero')).replace(/\n/g, ' ');
+check(/Good (morning|afternoon|evening), Alec/.test(hero) && /68°/.test(hero), `header greets and shows the weather: ${hero.slice(0, 80)}…`);
+check((await page.$$('.hero .hero-line')).length === 1 && (await page.innerText('.hero-line')).length > 10, `header line: ${await page.innerText('.hero-line')}`);
+check(/to GTA VI/.test(hero) && /to payday|Payday today/.test(hero), 'countdown chips: payday and GTA VI');
+check(/sky-(dawn|day|golden|dusk|night)/.test(await page.getAttribute('.hero', 'class')), `sky phase: ${await page.getAttribute('.hero', 'class')}`);
+check(/Good tennis weather/.test(await page.innerText('.weather')), `tennis line: ${((await page.innerText('.weather')).match(/Good tennis weather[^\n]*/) || ['none'])[0]}`);
+check((await page.$$('.lring')).length === 4 && /Money/.test(await page.innerText('.rings-card')) && /Mind/.test(await page.innerText('.rings-card')), 'four life rings');
+check((await page.$$('.money .spark .spark-line')).length === 1, 'money card sparkline');
+await page.screenshot({ path: path.join(OUT, 'home-hero.png') });
 const wx = await page.innerText('.weather');
 check(/Dix Hills, NY 11746/.test(wx) && /68°/.test(wx) && /H 69° \/ L 56°/.test(wx.replace(/\s+/g, ' ')), 'weather shows Dix Hills with temp and high/low');
 check(/Rain today, high 69°, low 56°/.test(wx) && /Windy, gusts to 35 mph/.test(wx), `weather sentence: ${(wx.match(/Rain today[^\n]*/) || [''])[0]}`);
@@ -220,6 +232,51 @@ await page.click('.todo button:has-text("Clear done")');
 await page.waitForTimeout(150);
 H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
 check(H.todos.length === 2 && !H.todos.some((t) => t.done), 'clear done');
+check(H.doneLog && Object.values(H.doneLog).reduce((a, b) => a + b, 0) === 1, 'finished to-dos are counted even after Clear done');
+let rtxt = (await page.innerText('.rings-card')).replace(/\n/g, ' ');
+check(/1 of 3 to-dos/.test(rtxt) && /1 To-dos/.test(rtxt), `Home ring and to-do streak: ${rtxt}`);
+// swipe right to finish a to-do
+const row = await page.$('.todo-row:has-text("Book AI-901 exam") .todo-text');
+const rb = await row.boundingBox();
+await page.mouse.move(rb.x + 20, rb.y + rb.height / 2);
+await page.mouse.down();
+for (let i = 1; i <= 8; i++) await page.mouse.move(rb.x + 20 + i * 18, rb.y + rb.height / 2);
+await page.mouse.up();
+await page.waitForTimeout(200);
+H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
+check(H.todos.find((t) => t.text === 'Book AI-901 exam').done, 'swipe right finishes a to-do');
+rtxt = (await page.innerText('.rings-card')).replace(/\n/g, ' ');
+check(/2 of 3 to-dos/.test(rtxt), 'Home ring moves to 2 of 3');
+// swipe left deletes (with undo)
+const row2 = await page.$('.todo-row:has-text("Renew car registration") .todo-text');
+const rb2 = await row2.boundingBox();
+await page.mouse.move(rb2.x + 200, rb2.y + rb2.height / 2);
+await page.mouse.down();
+for (let i = 1; i <= 8; i++) await page.mouse.move(rb2.x + 200 - i * 18, rb2.y + rb2.height / 2);
+await page.mouse.up();
+await page.waitForSelector('.toast');
+check(/To-do deleted/.test(await page.innerText('.toast')), 'swipe left deletes, with undo');
+await page.click('.toast-btn');
+await page.waitForTimeout(200);
+// week in review
+await page.click('.rings-card button:has-text("Week in review")');
+await page.waitForSelector('.week-sheet');
+const wtxt = (await page.innerText('.week-sheet')).replace(/\n/g, ' ');
+check(/This week/.test(wtxt) && /Spent|No card spending/.test(wtxt) && /To-dos done/.test(wtxt) && (await page.$$('.week-sheet .tile')).length >= 4, `week in review: ${wtxt.slice(0, 120)}…`);
+await page.click('.week-sheet button[aria-label="Previous week"]');
+check(/Last week/.test(await page.innerText('.week-sheet')), 'week in review steps back a week');
+await page.screenshot({ path: path.join(OUT, 'home-week.png') });
+await page.click('.week-sheet .x');
+// heatmap
+const cells = (await page.$$('.heat-card .hc[role=gridcell]')).length;
+check(cells >= 70 && cells % 7 === 0, `heatmap grid: ${cells} days`);
+check(/Spent on \d+ of \d+ days/.test(await page.innerText('.heat-card')), `heatmap summary: ${await page.innerText('.heat-card .heat-read')}`);
+await page.click('.heat-card .seg-btn:has-text("Study")');
+check(/No study logged|Studied on/.test(await page.innerText('.heat-card')), 'heatmap switches measure');
+await page.click('.heat-card .seg-btn:has-text("Spending")');
+const insightsN = (await page.$$('.insights .insight')).length;
+console.log('  insights:', await page.$$eval('.insights .insight', (e) => e.map((x) => x.innerText)));
+check(insightsN >= 1, `insights card: ${insightsN}`);
 await page.screenshot({ path: path.join(OUT, 'home-todo.png') });
 
 const billsShown = await page.$$eval('.bill', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
@@ -546,6 +603,26 @@ check(HD.profile.sex === 'male' && HD.profile.age === 29 && HD.profile.heightIn 
 let htext = await page.innerText('.health');
 check(/2,480 cal/.test(htext) && /P 144g/.test(htext) && /C 289g/.test(htext) && /F 83g/.test(htext), `targets: ${(htext.match(/[\d,]+ cal · P \d+g · C \d+g · F \d+g/) || [''])[0]}`);
 check(/2,480\s*calories left/.test(htext.replace(/\n/g, ' ')), 'today card shows calories left');
+// swipe the day: right = yesterday, left = back to today
+const swipeDay = (dx) =>
+  page.evaluate((dx) => {
+    const el = document.querySelector('.today-health .card-title');
+    const r = el.getBoundingClientRect();
+    const x = r.left + 60;
+    const y = r.top + r.height / 2;
+    const mk = (type, cx) => {
+      const t = new Touch({ identifier: 1, target: el, clientX: cx, clientY: y });
+      return new TouchEvent(type, { bubbles: true, cancelable: true, touches: type === 'touchend' ? [] : [t], changedTouches: [t] });
+    };
+    el.dispatchEvent(mk('touchstart', x));
+    el.dispatchEvent(mk('touchend', x + dx));
+  }, dx);
+await swipeDay(150);
+await page.waitForTimeout(150);
+check((await page.innerText('.day-nav .day-label')) === 'Yesterday', 'swipe right shows yesterday');
+await swipeDay(-150);
+await page.waitForTimeout(150);
+check((await page.innerText('.day-nav .day-label')) === 'Today', 'swipe left comes back to today');
 // search → banana
 await page.click('.food-log button:has-text("+ Log food")');
 await page.waitForSelector('.add-food');
@@ -674,6 +751,9 @@ await page.click('a.nav-item:has-text("Home")');
 await page.waitForSelector('.health-home');
 const hh = (await page.innerText('.health-home')).replace(/\n/g, ' ');
 check(/calories left|calories over/.test(hh) && /Steps 9,500/.test(hh) && /Weight/.test(hh), `Home health card: ${hh}`);
+check((await page.$$('.health-home .mb-bar')).length === 7, 'Home health card: 7 days of calories');
+const rt2 = (await page.innerText('.rings-card')).replace(/\n/g, ' ');
+check(/Body/.test(rt2) && /(workout|steps)/.test(rt2) && /Food logged/.test(rt2), `rings after logging: ${rt2}`);
 await page.screenshot({ path: path.join(OUT, 'home-health.png'), fullPage: true });
 // Cooking → log a serving
 await go('Cooking');
@@ -800,7 +880,43 @@ const dp = await desk.newPage();
 dp.on('pageerror', (e) => errors.push('pageerror(desktop): ' + e.message));
 await dp.goto(base, { waitUntil: 'networkidle' });
 await dp.waitForSelector('.money .big');
+await dp.waitForTimeout(1400);
+const bigAria = await dp.getAttribute('.money .big > span', 'aria-label');
+check(bigAria && (await dp.innerText('.money .big')).trim() === bigAria, `money counts up to ${bigAria}`);
 await dp.screenshot({ path: path.join(OUT, 'desktop.png') });
+await dp.fill('input[aria-label="New to-do"]', 'Water the plants');
+await dp.press('input[aria-label="New to-do"]', 'Enter');
+await dp.waitForTimeout(150);
+await dp.click('.todo-row:has-text("Water the plants") input[type=checkbox]');
+check((await dp.$$('canvas.confetti')).length === 1, 'finishing a to-do sets off confetti');
+await dp.waitForTimeout(1600);
+check((await dp.$$('canvas.confetti')).length === 0, 'confetti cleans itself up');
+// every tab opened directly from a fresh load (data arrives after the first render)
+for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.page-title'], ['auto', '.auto-hero'], ['news', '.news']]) {
+  const tp = await desk.newPage();
+  const errs = [];
+  tp.on('pageerror', (e) => errs.push(e.message));
+  await tp.goto(`${base}#/${route}`, { waitUntil: 'networkidle' });
+  await tp.waitForTimeout(400);
+  const ok = !!(await tp.$(sel));
+  check(ok && !errs.length, `#/${route} loads directly${errs.length ? ': ' + errs.join(' | ') : ''}`);
+  await tp.close();
+}
+// the sky at different times of day
+for (const [label, hh, want] of [['night', 22, 'sky-night'], ['golden', 18, 'sky-golden'], ['morning', 9, 'sky-day']]) {
+  const tp = await desk.newPage();
+  const t = new Date();
+  t.setHours(hh, hh === 18 ? 25 : 30, 0, 0);
+  await tp.clock.setFixedTime(t);
+  await tp.goto(base, { waitUntil: 'networkidle' });
+  await tp.waitForSelector('.hero');
+  await tp.waitForTimeout(300);
+  const cls = await tp.getAttribute('.hero', 'class');
+  const line = await tp.innerText('.hero-line').catch(() => '');
+  check(cls.includes(want), `${label}: ${cls} · ${line}`);
+  await tp.locator('.hero').screenshot({ path: path.join(OUT, `hero-${label}.png`) });
+  await tp.close();
+}
 await dp.click('a.nav-item:has-text("Cooking")');
 await dp.waitForSelector('.cooking .kitchen');
 await dp.evaluate(() => {});
