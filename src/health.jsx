@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from './ui.jsx';
+import { useWidth, Tip } from './chart-kit.jsx';
+import { hasHk, hkDay, stepsFor, workoutsOn, ringsOf, fmtMins, daysBetween as hkDaysBetween } from './hk-logic.js';
+import { ImportCard, DayVitalsCard, RingBars, ActivityView, HeartView, SleepView, BodyView, HearingView, ViewTabs, EmptyHk, WorkoutSheet, workoutLine } from './health-hk.jsx';
 import { dateLabel } from './budget-logic.js';
 import {
   MEALS,
@@ -21,6 +24,7 @@ import {
   workoutKcal,
   todayISO,
   addDays,
+  ageOf,
 } from './health-logic.js';
 import { searchUsda, lookupBarcode, startScanner, decodePhoto } from './food-api.js';
 
@@ -36,18 +40,6 @@ const dayTitle = (iso) => {
   if (iso === addDays(t, -1)) return 'Yesterday';
   return dateLabel(iso);
 };
-
-function useWidth() {
-  const ref = useRef(null);
-  const [w, setW] = useState(320);
-  useEffect(() => {
-    if (!ref.current) return;
-    const ro = new ResizeObserver((es) => setW(Math.max(200, Math.floor(es[0].contentRect.width))));
-    ro.observe(ref.current);
-    return () => ro.disconnect();
-  }, []);
-  return [ref, w];
-}
 
 // ---------------------------------------------------------------- small pieces
 function MacroBar({ label, value, target, unit = 'g' }) {
@@ -67,25 +59,12 @@ function MacroBar({ label, value, target, unit = 'g' }) {
   );
 }
 
-function Tip({ tip }) {
-  if (!tip) return null;
-  return (
-    <div className="chart-tip" style={{ left: tip.x, top: tip.y }} role="status">
-      {tip.lines.map((l, i) => (
-        <div key={i} className={i === 0 ? 'tip-head' : 'tip-row'}>
-          {l.key ? <span className={`tip-key ${l.key}`} /> : null}
-          {l.value ? <b className="num">{l.value}</b> : null} {l.text}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------- weight chart
 const RANGES = [
   [30, '30 days'],
   [90, '90 days'],
   [365, '1 year'],
+  ['all', 'All'],
 ];
 function niceStep(span) {
   const steps = [0.5, 1, 2, 5, 10, 20];
@@ -95,11 +74,11 @@ function WeightChart({ series, days }) {
   const [ref, width] = useWidth();
   const [tip, setTip] = useState(null);
   const today = todayISO();
-  const start = addDays(today, -days + 1);
+  const start = days === 'all' ? (series[0] ? series[0].date : today) : addDays(today, -days + 1);
   const pts = series.filter((p) => p.date >= start);
   const H = 170;
   const pad = { l: 34, r: 42, t: 10, b: 22 };
-  if (!pts.length) return <p className="empty">No weigh-ins in this range yet.</p>;
+  if (!pts.length) return <p className="empty">{series.length ? 'No weigh-ins in this range. Tap All to see older ones.' : 'No weigh-ins in this range yet.'}</p>;
   const toT = (iso) => new Date(`${iso}T12:00:00`).getTime();
   const t0 = toT(start);
   const t1 = toT(today);
@@ -118,7 +97,8 @@ function WeightChart({ series, days }) {
   const y = (v) => pad.t + (1 - (v - lo) / (hi - lo)) * (H - pad.t - pad.b);
   const ticks = [];
   for (let v = lo; v <= hi + 1e-9; v += step) ticks.push(Math.round(v * 10) / 10);
-  const line = pts.map((p, i) => `${i ? 'L' : 'M'}${x(p.date).toFixed(1)},${y(p.avg).toFixed(1)}`).join(' ');
+  // Break the trend line across long gaps (e.g. years without a scale).
+  const line = pts.map((p, i) => `${i && toT(p.date) - toT(pts[i - 1].date) < 21 * 86400000 ? 'L' : 'M'}${x(p.date).toFixed(1)},${y(p.avg).toFixed(1)}`).join(' ');
   const last = pts[pts.length - 1];
   const onMove = (e) => {
     const box = e.currentTarget.getBoundingClientRect();
@@ -138,7 +118,7 @@ function WeightChart({ series, days }) {
   };
   return (
     <div className="chart" ref={ref}>
-      <svg width={W} height={H} role="img" aria-label={`Weight over the last ${days} days: ${g1(last.avg)} lb 7-day average`}>
+      <svg width={W} height={H} role="img" aria-label={`Weight ${days === 'all' ? 'since the first weigh-in' : `over the last ${days} days`}: ${g1(last.avg)} lb 7-day average`}>
         {ticks.map((v) => (
           <g key={v}>
             <line className="grid" x1={pad.l} x2={W - pad.r} y1={y(v)} y2={y(v)} />
@@ -148,14 +128,14 @@ function WeightChart({ series, days }) {
           </g>
         ))}
         <text className="axis" x={pad.l} y={H - 5}>
-          {dateLabel(start)}
+          {days === 'all' || days === 365 ? new Date(`${start}T12:00:00`).toLocaleString('en-US', { month: 'short', year: 'numeric' }) : dateLabel(start)}
         </text>
         <text className="axis" x={W - pad.r} y={H - 5} textAnchor="end">
           Today
         </text>
         {tip ? <line className="crosshair" x1={x(tip.at)} x2={x(tip.at)} y1={pad.t} y2={H - pad.b} /> : null}
         {pts.map((p) => (
-          <circle key={p.date} className="wdot" cx={x(p.date)} cy={y(p.lb)} r="4" />
+          <circle key={p.date} className="wdot" cx={x(p.date)} cy={y(p.lb)} r={pts.length > 120 ? 2.5 : 4} />
         ))}
         {pts.length > 1 ? <path className="wline" d={line} /> : null}
         <text className="end-label num" x={x(last.date) + 7} y={y(last.avg) + 4}>
@@ -694,9 +674,11 @@ function FoodLogCard({ day, yesterday, onAdd, onEdit, onCopy }) {
 
 function WeightCard({ health, onLog, onRemove }) {
   const [v, setV] = useState('');
-  const [range, setRange] = useState(90);
   const series = useMemo(() => weightSeries(health), [health.weights]);
   const st = weightStats(health);
+  const recentAny = series.some((p) => p.date >= addDays(todayISO(), -89));
+  const [range, setRange] = useState(recentAny || !series.length ? 90 : 'all');
+  const staleDays = st ? Math.round((new Date(`${todayISO()}T12:00:00`) - new Date(`${st.latest.date}T12:00:00`)) / 86400000) : 0;
   const recent = [...health.weights].reverse().slice(0, 5);
   const today = todayISO();
   const todays = health.weights.find((w) => w.date === today);
@@ -710,10 +692,12 @@ function WeightCard({ health, onLog, onRemove }) {
         <div className="w-stats">
           <div>
             <div className="big num">{g1(st.trend)}</div>
-            <div className="muted small">lb trend</div>
+            <div className="muted small">{staleDays > 30 ? `lb · last weighed ${new Date(`${st.latest.date}T12:00:00`).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 'lb trend'}</div>
           </div>
           <div className="w-delta">
-            {st.change30 != null ? (
+            {staleDays > 30 ? (
+              <span className="muted small">Log today’s weight to restart your trend</span>
+            ) : st.change30 != null ? (
               <div className="num">
                 <b>{st.change30 > 0 ? '+' : ''}{g1(st.change30)} lb</b> <span className="muted small">in 30 days</span>
               </div>
@@ -777,12 +761,16 @@ function WeightCard({ health, onLog, onRemove }) {
   );
 }
 
-function ActivityCard({ day, iso, health, onSteps, onAddWorkout, onRemoveWorkout }) {
+function ActivityCard({ day, iso, health, hd, apple, onSteps, onAddWorkout, onRemoveWorkout, onOpenWorkout }) {
   const [steps, setSteps] = useState('');
   const [w, setW] = useState({ type: 'weights', minutes: '' });
   const lb = latestWeight(health);
   const goal = health.stepGoal || 8000;
-  const pct = day.steps ? Math.min(100, (day.steps / goal) * 100) : 0;
+  const st = stepsFor(day, hd);
+  const pct = st.steps ? Math.min(100, (st.steps / goal) * 100) : 0;
+  const rings = ringsOf(hd);
+  const extra = hd ? [hd.di ? `${g1(hd.di)} mi` : null, hd.fl ? `${hd.fl} flight${hd.fl === 1 ? '' : 's'} climbed` : null].filter(Boolean).join(' · ') : '';
+  const count = day.workouts.length + apple.length;
   return (
     <section className="card">
       <div className="card-head">
@@ -790,14 +778,17 @@ function ActivityCard({ day, iso, health, onSteps, onAddWorkout, onRemoveWorkout
         <span className="muted small">{dayTitle(iso)}</span>
       </div>
       <div className="row-between">
-        <span className="bill-name">Steps</span>
+        <span className="bill-name">
+          Steps {st.src === 'apple' ? <span className="tag tag-apple">Apple Health</span> : null}
+        </span>
         <span className="num small">
-          <b>{day.steps ? n0(day.steps) : '—'}</b> <span className="muted">/ {n0(goal)}</span>
+          <b>{st.steps ? n0(st.steps) : '—'}</b> <span className="muted">/ {n0(goal)}</span>
         </span>
       </div>
       <div className="bar slim">
         <div className="bar-fill" style={{ width: `${pct}%` }} />
       </div>
+      {extra ? <p className="muted small tight">{extra}</p> : null}
       <form
         className="add-row"
         onSubmit={(e) => {
@@ -807,14 +798,33 @@ function ActivityCard({ day, iso, health, onSteps, onAddWorkout, onRemoveWorkout
           setSteps('');
         }}
       >
-        <input className="input num" inputMode="numeric" placeholder={day.steps ? 'Update steps' : 'Steps (from your phone’s Health app)'} value={steps} onChange={(e) => setSteps(e.target.value)} aria-label="Steps" />
+        <input className="input num" inputMode="numeric" placeholder={st.steps ? 'Update steps' : 'Steps (from your phone’s Health app)'} value={steps} onChange={(e) => setSteps(e.target.value)} aria-label="Steps" />
         <button className="btn" type="submit" disabled={!steps.trim()}>
           Save
         </button>
       </form>
+      {rings ? (
+        <>
+          <h3 className="k-head">Activity rings</h3>
+          <RingBars r={rings} />
+        </>
+      ) : null}
       <h3 className="k-head">Workouts</h3>
-      {day.workouts.length ? (
+      {count ? (
         <ul className="list">
+          {apple.map((x) => (
+            <li key={x.id}>
+              <button className="rc" onClick={() => onOpenWorkout(x)}>
+                <span className="grow">
+                  <span className="rc-title">
+                    {x.label} <span className="tag tag-apple">{/watch/i.test(x.src || '') ? 'Apple Watch' : 'Apple Health'}</span>
+                  </span>
+                  <span className="muted small">{workoutLine(x)}</span>
+                </span>
+                <Icon name="chev" size={18} />
+              </button>
+            </li>
+          ))}
           {day.workouts.map((x) => {
             const kcal = workoutKcal(x, lb && lb.lb);
             return (
@@ -862,8 +872,8 @@ function ActivityCard({ day, iso, health, onSteps, onAddWorkout, onRemoveWorkout
   );
 }
 
-function WeekCard({ years, t }) {
-  const wk = week(years);
+function WeekCard({ years, t, apple }) {
+  const wk = week(years, todayISO(), apple);
   return (
     <section className="card">
       <div className="card-head">
@@ -889,8 +899,21 @@ function WeekCard({ years, t }) {
   );
 }
 
-function TargetsCard({ health, t, mutate, open, setOpen }) {
+// What the Watch says you burn: average resting + active calories on days it was worn most of the day.
+function watchBurn(hkYears) {
+  const t = todayISO();
+  const days = hkDaysBetween(hkYears, addDays(t, -364), t).filter(({ d }) => d && d.ab && d.ae != null && (d.sh || 0) >= 10);
+  if (days.length < 7) return null;
+  const rest = days.reduce((s, x) => s + x.d.ab, 0) / days.length;
+  const active = days.reduce((s, x) => s + x.d.ae, 0) / days.length;
+  return { rest: Math.round(rest), active: Math.round(active), n: days.length };
+}
+
+function TargetsCard({ health, t, mutate, open, setOpen, hkYears }) {
   const p = health.profile;
+  const burn = hkYears ? watchBurn(hkYears) : null;
+  const lw = latestWeight(health);
+  const weightAge = lw ? Math.round((new Date(`${todayISO()}T12:00:00`) - new Date(`${lw.date}T12:00:00`)) / 86400000) : 0;
   const setP = (k, v) => mutate((h) => (h.profile[k] = v));
   const ft = p.heightIn ? Math.floor(p.heightIn / 12) : '';
   const inch = p.heightIn ? Math.round(p.heightIn % 12) : '';
@@ -930,8 +953,22 @@ function TargetsCard({ health, t, mutate, open, setOpen }) {
               </select>
             </label>
             <label className="field">
-              <span className="small muted">Age</span>
-              <input className="input num" inputMode="numeric" defaultValue={p.age || ''} onBlur={(e) => setP('age', Number(e.target.value) || null)} aria-label="Age" />
+              <span className="small muted">Age{p.dob ? ' (from Apple Health)' : ''}</span>
+              <input
+                key={ageOf(p) || ''}
+                className="input num"
+                inputMode="numeric"
+                defaultValue={ageOf(p) || ''}
+                onBlur={(e) => {
+                  const a = Number(e.target.value) || null;
+                  if (a === ageOf(p)) return;
+                  mutate((h) => {
+                    h.profile.age = a;
+                    delete h.profile.dob; // typed over the birthday-based age
+                  });
+                }}
+                aria-label="Age"
+              />
             </label>
             <label className="field">
               <span className="small muted">Height</span>
@@ -954,10 +991,21 @@ function TargetsCard({ health, t, mutate, open, setOpen }) {
             </label>
           </div>
           {!latestWeight(health) ? <p className="muted small">Log your weight in the Weight card to finish the calculation.</p> : null}
+          {lw && weightAge > 60 ? (
+            <p className="alert small">
+              This uses your last weigh-in, {g1(lw.lb)} lb from {new Date(`${lw.date}T12:00:00`).toLocaleString('en-US', { month: 'short', year: 'numeric' })}. Log today’s weight for an up-to-date target.
+            </p>
+          ) : null}
           {auto ? (
             <p className="small calc">
               Your body burns about <b>{n0(auto.bmr)}</b> calories a day at rest and <b>{n0(auto.tdee)}</b> with your activity level (Mifflin–St Jeor formula). Suggested target: <b>{n0(auto.cal)} cal</b>, protein{' '}
               <b>{n0(auto.p)}g</b> (0.8 g per lb), fat <b>{n0(auto.f)}g</b> (30% of calories), carbs <b>{n0(auto.c)}g</b> (the rest).
+            </p>
+          ) : null}
+          {burn && auto ? (
+            <p className="small calc">
+              Apple Watch check: on the {burn.n} days in the past year you wore it most of the day, you burned about <b>{n0(burn.rest + burn.active)}</b> calories a day ({n0(burn.rest)} resting + {n0(burn.active)} active). If that’s far from the{' '}
+              {n0(auto ? auto.tdee : 0)} above, try a different activity level.
             </p>
           ) : null}
           <label className="check-line small">
@@ -1019,13 +1067,34 @@ function TargetsCard({ health, t, mutate, open, setOpen }) {
 }
 
 // ---------------------------------------------------------------- page
-export function HealthPage({ health, years, act, error }) {
+const VIEW_KEY = 'dash.healthView';
+function savedView() {
+  try {
+    return localStorage.getItem(VIEW_KEY) || 'today';
+  } catch {
+    return 'today';
+  }
+}
+
+export function HealthPage({ health, years, hk, hkYears, act, error }) {
   const [iso, setIso] = useState(todayISO());
+  const [view, setView0] = useState(savedView);
   const [adding, setAdding] = useState(null); // meal
   const [editing, setEditing] = useState(null);
+  const [workout, setWorkout] = useState(null);
   const [openTargets, setOpenTargets] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
+  const setView = (v) => {
+    setView0(v);
+    try {
+      localStorage.setItem(VIEW_KEY, v);
+    } catch {
+      /* ignore */
+    }
+  };
   useEffect(() => {
     if (/add=1/.test(location.hash)) {
+      setView('today');
       setAdding(mealNow());
       history.replaceState(null, '', '#/health');
     }
@@ -1050,57 +1119,95 @@ export function HealthPage({ health, years, act, error }) {
   const yesterday = getDay(years, addDays(iso, -1));
   const tot = totals(day.food);
   const isToday = iso === todayISO();
+  const today = todayISO();
+  const hkv = hk || { workouts: [], months: {}, body: [], vo2: [], ecg: [], hrr: [], steady: [], walk6: [] };
+  const imported = hasHk(hk);
+  const hd = hkDay(hkYears, iso);
+  const weightCard = (
+    <WeightCard
+      health={health}
+      onLog={(v) => {
+        const n = Number(String(v).replace(/[^\d.]/g, ''));
+        if (!(n > 50 && n < 700)) return false;
+        act.logWeight(n);
+        return true;
+      }}
+      onRemove={(date) => act.removeWeight(date)}
+    />
+  );
+  const goImport = () => {
+    setView('today');
+    setImportOpen(true);
+    setTimeout(() => {
+      const el = document.querySelector('.hk-import');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  };
+  const needHk = view !== 'today' && view !== 'body' && hk && !imported;
+  const hkLoading = view !== 'today' && (!hk || !hkYears);
+  const titles = { activity: 'Activity', heart: 'Heart', sleep: 'Sleep', hearing: 'Hearing' };
   return (
     <div className="home health">
       <header className="page-head row-between">
         <h1 className="page-title">Health</h1>
-        <div className="day-nav">
-          <button className="btn quiet small" onClick={() => setIso(addDays(iso, -1))} aria-label="Previous day">
-            ‹
-          </button>
-          <button className="btn quiet small day-label" onClick={() => setIso(todayISO())} disabled={isToday}>
-            {dayTitle(iso)}
-          </button>
-          <button className="btn quiet small" onClick={() => setIso(addDays(iso, 1))} disabled={isToday} aria-label="Next day">
-            ›
-          </button>
-        </div>
+        {view === 'today' ? (
+          <div className="day-nav">
+            <button className="btn quiet small" onClick={() => setIso(addDays(iso, -1))} aria-label="Previous day">
+              ‹
+            </button>
+            <button className="btn quiet small day-label" onClick={() => setIso(todayISO())} disabled={isToday}>
+              {dayTitle(iso)}
+            </button>
+            <button className="btn quiet small" onClick={() => setIso(addDays(iso, 1))} disabled={isToday} aria-label="Next day">
+              ›
+            </button>
+          </div>
+        ) : null}
       </header>
+      <ViewTabs view={view} onChange={setView} />
       {error ? <div className="alert">{error}</div> : null}
-      <div className="grid">
-        <div className="col">
-          <TodayCard t={t} tot={tot} iso={iso} />
-          <FoodLogCard
-            day={day}
-            yesterday={yesterday}
-            onAdd={setAdding}
-            onEdit={setEditing}
-            onCopy={(m) => act.copyMeal(iso, yesterday, m)}
-          />
-          <ActivityCard
-            day={day}
-            iso={iso}
-            health={health}
-            onSteps={(s) => act.setSteps(iso, s)}
-            onAddWorkout={(w) => act.addWorkout(iso, w)}
-            onRemoveWorkout={(id) => act.removeWorkout(iso, id)}
-          />
+      {hkLoading ? (
+        <section className="card">
+          <p className="empty">Loading…</p>
+        </section>
+      ) : needHk ? (
+        <EmptyHk what={titles[view]} onGo={goImport} />
+      ) : view === 'activity' ? (
+        <ActivityView hk={hkv} hkYears={hkYears} health={health} years={years} today={today} onOpenWorkout={setWorkout} />
+      ) : view === 'heart' ? (
+        <HeartView hk={hkv} hkYears={hkYears} today={today} loadDoc={act.loadDoc} />
+      ) : view === 'sleep' ? (
+        <SleepView hk={hkv} hkYears={hkYears} today={today} />
+      ) : view === 'hearing' ? (
+        <HearingView hk={hkv} hkYears={hkYears} today={today} />
+      ) : view === 'body' ? (
+        <BodyView hk={hkv} hkYears={hkYears} health={health} weightCard={weightCard} />
+      ) : (
+        <div className="grid">
+          <div className="col">
+            <TodayCard t={t} tot={tot} iso={iso} />
+            <FoodLogCard day={day} yesterday={yesterday} onAdd={setAdding} onEdit={setEditing} onCopy={(m) => act.copyMeal(iso, yesterday, m)} />
+            <ActivityCard
+              day={day}
+              iso={iso}
+              health={health}
+              hd={hd}
+              apple={workoutsOn(hk, iso)}
+              onSteps={(s) => act.setSteps(iso, s)}
+              onAddWorkout={(w) => act.addWorkout(iso, w)}
+              onRemoveWorkout={(id) => act.removeWorkout(iso, id)}
+              onOpenWorkout={setWorkout}
+            />
+          </div>
+          <div className="col">
+            <DayVitalsCard hk={hk} hkYears={hkYears} iso={iso} />
+            {weightCard}
+            <WeekCard years={years} t={t} apple={{ hk, hkYears }} />
+            <TargetsCard health={health} t={t} mutate={act.mutateHealth} open={openTargets} setOpen={setOpenTargets} hkYears={hkYears} />
+            <ImportCard key={importOpen ? 'open' : 'auto'} hk={hk} onImport={act.importAppleHealth} open={importOpen} />
+          </div>
         </div>
-        <div className="col">
-          <WeightCard
-            health={health}
-            onLog={(v) => {
-              const n = Number(String(v).replace(/[^\d.]/g, ''));
-              if (!(n > 50 && n < 700)) return false;
-              act.logWeight(n);
-              return true;
-            }}
-            onRemove={(date) => act.removeWeight(date)}
-          />
-          <WeekCard years={years} t={t} />
-          <TargetsCard health={health} t={t} mutate={act.mutateHealth} open={openTargets} setOpen={setOpenTargets} />
-        </div>
-      </div>
+      )}
       {adding ? (
         <AddFoodSheet
           health={health}
@@ -1131,17 +1238,24 @@ export function HealthPage({ health, years, act, error }) {
           }}
         />
       ) : null}
+      {workout ? <WorkoutSheet w={workout} loadDoc={act.loadDoc} onClose={() => setWorkout(null)} /> : null}
     </div>
   );
 }
 
 // ---------------------------------------------------------------- Home card
-export function HealthHomeCard({ health, years }) {
+export function HealthHomeCard({ health, years, hk, hkYears }) {
   if (!health || !years) return null;
   const t = targets(health);
-  const day = getDay(years, todayISO());
+  const iso = todayISO();
+  const day = getDay(years, iso);
   const tot = totals(day.food);
   const st = weightStats(health);
+  const stale = st && st.latest.date < addDays(iso, -30);
+  const steps = stepsFor(day, hkDay(hkYears, iso)).steps;
+  const nw = day.workouts.length + workoutsOn(hk, iso).length;
+  const night = hkDay(hkYears, iso) || hkDay(hkYears, addDays(iso, -1));
+  const sl = night && night.sl && night.sl.a ? night.sl : null;
   return (
     <section className="card health-home">
       <div className="card-head">
@@ -1182,17 +1296,20 @@ export function HealthHomeCard({ health, years }) {
       )}
       <a className="home-row" href="#/health">
         <span className="grow small">
-          {st ? (
+          {st && !stale ? (
             <>
               Weight <b className="num">{g1(st.trend)} lb</b>
               {st.change30 != null ? <span className="muted"> · {st.change30 > 0 ? '+' : ''}{g1(st.change30)} in 30 days</span> : null}
+              <span className="muted"> · </span>
             </>
-          ) : (
-            <span className="muted">No weigh-ins yet</span>
-          )}
-          <span className="muted"> · </span>
-          Steps <b className="num">{day.steps ? n0(day.steps) : '—'}</b>
-          {day.workouts.length ? <span className="muted"> · {day.workouts.length} workout{day.workouts.length === 1 ? '' : 's'}</span> : null}
+          ) : null}
+          Steps <b className="num">{steps ? n0(steps) : '—'}</b>
+          {nw ? <span className="muted"> · {nw} workout{nw === 1 ? '' : 's'}</span> : null}
+          {sl ? (
+            <>
+              <span className="muted"> · </span>Slept <b className="num">{fmtMins(sl.a)}</b>
+            </>
+          ) : null}
         </span>
       </a>
     </section>

@@ -13,6 +13,7 @@ import { defaultAuto, normalizeAuto } from './auto-logic.js';
 import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
 import { HealthPage, HealthHomeCard } from './health.jsx';
 import * as H from './health-logic.js';
+import * as HK from './hk-logic.js';
 import {
   homeSummary,
   newTransaction,
@@ -346,7 +347,7 @@ function NewsPage({ news, read, markRead, markAllRead }) {
   );
 }
 
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   // Slots carry a phone order (weather, to-do, then money); on wide screens the two columns show as laid out.
@@ -393,7 +394,7 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
             <TodoCard data={home} mutate={mutateHome} onDelete={onDeleteTodo} />
           </div>
           <div className="slot o3">
-            <HealthHomeCard health={health} years={healthYears} />
+            <HealthHomeCard health={health} years={healthYears} hk={hk} hkYears={hkYears} />
           </div>
           <div className="slot o5">
             <AutoHomeCard auto={auto} data={data} recalls={recalls} />
@@ -483,6 +484,8 @@ const normalizeHomeInPlace = inPlace(normalizeHome);
 const normalizeAutoInPlace = inPlace(normalizeAuto);
 const normalizeHealthInPlace = inPlace(H.normalizeHealth);
 const normalizeYearInPlace = inPlace(H.normalizeYear);
+const normalizeHkInPlace = inPlace(HK.normalizeHk);
+const normalizeHkYearInPlace = inPlace(HK.normalizeHkYear);
 
 // ---------------------------------------------------------------- app
 function App() {
@@ -506,6 +509,8 @@ function App() {
   const [health, setHealth] = useState(null);
   const [healthYears, setHealthYears] = useState(null);
   const [healthError, setHealthError] = useState('');
+  const [hk, setHk] = useState(null);
+  const [hkYears, setHkYears] = useState(null);
   const [more, setMore] = useState(false);
   const [autoError, setAutoError] = useState('');
   const recalls = useRecalls(auto ? auto.car : null);
@@ -600,6 +605,33 @@ function App() {
             push();
           },
           (e) => setHealthError(`Couldn’t load health data: ${e.message || e}`)
+        )
+      ),
+    ];
+    return () => offs.forEach((f) => f && f());
+  }, [allowed, user && user.uid]);
+
+  // Apple Health imports: the summary document plus this year's and last year's days.
+  useEffect(() => {
+    if (!allowed) return;
+    const year = H.todayISO().slice(0, 4);
+    const years = [year, String(Number(year) - 1)];
+    const got = {};
+    const push = () => years.every((y) => got[y]) && setHkYears({ ...got });
+    const offs = [
+      backend.subscribeModule(user, 'health-hk', (d) => setHk(HK.normalizeHk(d)), () => setHk((h) => h || HK.defaultHk())),
+      ...years.map((y) =>
+        backend.subscribeModule(
+          user,
+          `health-hk-${y}`,
+          (d) => {
+            got[y] = HK.normalizeHkYear(d);
+            push();
+          },
+          () => {
+            got[y] = got[y] || HK.defaultHkYear();
+            push();
+          }
         )
       ),
     ];
@@ -765,6 +797,41 @@ function App() {
     removeWorkout: (iso, id) => mutateYear(iso, (y) => H.removeWorkout(y, iso, id)),
     logWeight: (n) => mutateHealth((h) => H.logWeight(h, n), `Logged ${n} lb`),
     removeWeight: (date) => mutateHealth((h) => H.removeWeight(h, date)),
+    // Save a parsed Apple Health export: each year's days, ECGs, routes, weigh-ins, then the summary last
+    // (so "imported" only shows once everything else is in).
+    async importAppleHealth(bundle) {
+      const plan = HK.planImport(bundle);
+      for (const y of plan.summary.years) {
+        await backend.mutateModule(user, `health-hk-${y}`, (d) => plan.years[y](normalizeHkYearInPlace(d)), HK.defaultHkYear);
+      }
+      await backend.mutateModule(user, 'health-hk-ecg', plan.ecg, () => ({ version: 1, traces: {} }));
+      await backend.mutateModule(user, 'health-hk-routes', plan.routes, () => ({ version: 1, routes: {} }));
+      let res = { added: 0, filled: [] };
+      await backend.mutateModule(user, 'health', (d) => (res = plan.health(normalizeHealthInPlace(d))), H.defaultHealth);
+      await backend.mutateModule(user, 'health-hk', (d) => plan.main(normalizeHkInPlace(d)), HK.defaultHk);
+      showToast({ text: 'Apple Health data imported' });
+      return { ...plan.summary, ...res, first: bundle.first, last: bundle.last };
+    },
+    // One-time read of a document that isn't kept live (ECG traces, workout routes).
+    loadDoc: (name) =>
+      new Promise((resolve, reject) => {
+        let off = null;
+        let done = false;
+        off = backend.subscribeModule(
+          user,
+          name,
+          (d) => {
+            if (done) return;
+            done = true;
+            resolve(d);
+            setTimeout(() => off && off(), 0);
+          },
+          (e) => {
+            done = true;
+            reject(e);
+          }
+        );
+      }),
   };
   // Log one serving of a Budget Bytes recipe (from the Cooking tab) to today's food.
   const logRecipe = (r) => {
@@ -876,7 +943,7 @@ function App() {
         {route === 'auto' ? (
           <AutoPage auto={auto} data={data} recalls={recalls} mutate={mutateAuto} budget={autoBudget} onAddExpense={(d) => onAdd(newTransaction(d))} error={autoError} />
         ) : null}
-        {route === 'health' ? <HealthPage health={health} years={healthYears} act={healthAct} error={healthError} /> : null}
+        {route === 'health' ? <HealthPage health={health} years={healthYears} hk={hk} hkYears={hkYears} act={healthAct} error={healthError} /> : null}
         {route === 'budget' || route === 'learning' || route === 'cooking' || route === 'news' || route === 'auto' || route === 'health' ? null : (
           <Home
             user={user}
@@ -895,6 +962,8 @@ function App() {
             recalls={recalls}
             health={health}
             healthYears={healthYears}
+            hk={hk}
+            hkYears={hkYears}
           />
         )}
         {budgetOpened ? <BudgetFrame visible={route === 'budget'} /> : null}

@@ -2,6 +2,7 @@
 //   trackers/<doc>-health         profile, targets, weigh-ins, your food library (recents), settings
 //   trackers/<doc>-health-<year>  that year's days: food log, steps, workouts (one per year keeps each well under Firestore's 1 MB)
 import { uid, todayISO, isoOf, addDays } from './budget-logic.js';
+import { stepsFor, hkDay, ageFrom } from './hk-logic.js';
 
 export const MEALS = [
   ['breakfast', 'Breakfast'],
@@ -73,8 +74,11 @@ export function dayOf(yearDoc, iso) {
 // ---------------------------------------------------------------- targets
 export const latestWeight = (h) => [...h.weights].sort((a, b) => (a.date < b.date ? 1 : -1))[0] || null;
 
+// Age from the birthday Apple Health gave us, else what was typed in.
+export const ageOf = (p) => (p.dob ? ageFrom(p.dob) : Number(p.age) || null);
+
 export function targets(h) {
-  const p = h.profile;
+  const p = { ...h.profile, age: ageOf(h.profile) };
   const w = latestWeight(h);
   const lb = w ? Number(w.lb) : null;
   const auto = (() => {
@@ -240,11 +244,15 @@ export function mealNow(d = new Date()) {
   if (h < 21.5) return 'dinner';
   return 'snack';
 }
-export function week(years, endIso = todayISO()) {
+// hk (optional): { hk, hkYears } so steps and workouts from Apple Health count too.
+export function week(years, endIso = todayISO(), apple) {
   const days = [];
   for (let i = 6; i >= 0; i--) {
     const iso = addDays(endIso, -i);
-    days.push({ iso, ...getDay(years, iso) });
+    const d = getDay(years, iso);
+    const hd = apple ? hkDay(apple.hkYears, iso) : null;
+    const aw = apple && apple.hk ? apple.hk.workouts.filter((w) => w.d === iso).map((w) => ({ minutes: w.min })) : [];
+    days.push({ iso, ...d, steps: stepsFor(d, hd).steps, workouts: [...d.workouts, ...aw] });
   }
   const logged = days.filter((d) => d.food.length);
   const stepDays = days.filter((d) => d.steps);
