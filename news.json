@@ -1,43 +1,78 @@
 {
- "generated": "2026-09-26T07:15:56.149Z",
+ "generated": "2026-09-26T12:21:52.208Z",
  "sources": {
   "ap": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-26T07:15:56.149Z"
+   "checked": "2026-09-26T12:21:52.208Z"
   },
   "reuters": {
    "ok": true,
-   "count": 23,
-   "checked": "2026-09-26T07:15:56.149Z"
+   "count": 24,
+   "checked": "2026-09-26T12:21:52.208Z"
   },
   "reddit": {
    "ok": true,
    "count": 25,
-   "checked": "2026-09-26T07:15:56.149Z"
+   "checked": "2026-09-26T12:21:52.208Z"
   },
   "tech": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-26T07:15:56.149Z"
+   "checked": "2026-09-26T12:21:52.208Z"
   },
   "ai": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-26T07:15:56.149Z"
+   "checked": "2026-09-26T12:21:52.208Z"
   },
   "pop": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-26T07:15:56.149Z"
+   "checked": "2026-09-26T12:21:52.208Z"
   },
   "music": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-26T07:15:56.149Z"
+   "checked": "2026-09-26T12:21:52.208Z"
   }
  },
  "politics": [
+  {
+   "id": "ap-odj1on",
+   "title": "Roads flood in New Jersey, inundate some homes, as major signs of nor’easter take shape",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQdGRqdGEzMGFJUjh3UDU4cDJaaGdaWnNMYVpJS1Fid19ueFRYeXRMTGtJODdIeGE4RlYwZnpzU2JWYTdaQnk5LW5KRGluRjVjX2U5cS11UzY4Q0FDQXdWRVJENnluUHBMT1hKa0NRUDlUNU9pVVR0MXN0MFRNLV94WjduYUVkODlBNTdoQUtHUDNvNHp1REV3NWZXQ2c?oc=5",
+   "date": "2026-09-26T12:11:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "reuters-xng3u3",
+   "title": "On Michigan doorsteps, Republicans sell Democrats-as-extremists message with mixed success",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOeTJfNzN3Z3RrVUYyUHozd3Q0Z3JhRnp2aDU4aC02bjE5cGFxbFFDX0dDWTA3U3BzbVRFbVVnMEhXT3hVY19BXzJERkw3b2NEZThvX0RBVWdTZ0IxSVRVcnl2bXd1OGtGSXg0UTdmdVBmSUdqOU1iODVtZ2QtckZ3VHhyTU93TWFCYnpxME1kazc3djVQZWlMZTRXdnZ5S0RBZE1tcmFCU2V2VjVuVnlzanJzQ0t3RWd0VUFIYnJFZjU?oc=5",
+   "date": "2026-09-26T11:38:26.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "ap-jsk310",
+   "title": "Where things stand after Iran’s new pitch for a deal to open the Strait of Hormuz",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNV0FIQkFKX0N0Z3ktdjZjYXAxMWFURERJWVhjREFrZGNkZFlGVlQ4VzVSQm40Rl9XMjBqeVNxQ0xMQllyYmVKUmpSMFVtZEFQVWdDRWY3djgxcHFnanZsS2g0SXBnUFJJdk01NHdJQnoxOExMUEUtTHpEMDZCTXZ4R0s3LXZPeGw1c0piMHd1R1I0aU00S0szVjdHMmktSXlPS1hBdnhR?oc=5",
+   "date": "2026-09-26T09:01:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-8gbuzt",
+   "title": "Trump posts map showing ‘Trump Strait’ off Iran, and other Mideast developments",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOY3FURU1ld09YM0czSERoLWEtWEQwR1FSZm96NmpURkowVXNHQkRna0gzZEJXTWlKLUE5QW51U24tRFVHX2JDNUpvWVFyNWdGYVhaYThBVmJZMndzM1Z2eDVkVVViRG00M1k3YUpYdDE2azVBcmo4SmlhNDRSLW9Ra0taSTY1V0w3ektQdFpzQXhjTzNBNmxSalgxT0xGbC1y?oc=5",
+   "date": "2026-09-26T07:56:05.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-mizbnm",
+   "title": "Far-right settlers divert West Bank spring water as Israel backs heritage site takeovers",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQOW9xcUJzN1dCTWx6TlJ6NWEwWlN4X3ZmZkR3MHNjdmJLQUc0bUV2bC1VX1V2d2xRMFotQVMybFJDRjhkQmF0X3doeWktbjAyaXd2RVFjZWl6aTN5NGxzNnlzLTMxeEt2aEpqOUpHb01RaWk4T05SajFOZXVDYk5CdC1UbXA3UTQwaXkxQmpWSm9RWUpwcWtmdEZzN2hJYkJPV2g0eGo0YWx2QzUwTHc2a0ZRdXo5dw?oc=5",
+   "date": "2026-09-26T06:39:51.000Z",
+   "source": "AP"
+  },
   {
    "id": "ap-k8gbx5",
    "title": "Ukraine’s Zelenskyy says he urged Trump to enlist China’s help in ending Russia’s invasion",
@@ -46,10 +81,31 @@
    "source": "AP"
   },
   {
+   "id": "ap-1aotuzh",
+   "title": "11-year-old Japanese player Yuki Kurihara wins esports gold medal at the Asian Games",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPREVsN3NuMUtleTk3Wk5RUnoyeGhNbE5mQnBkWW5makNiWWdTYXVUZU5QcV9uVHFZZHZ4cENtZEM1TjNPcy1UbE43M0dxOUhXSU5Zc0dnQzV6M1ZsYjFnNDdwS28zOC1OWHd3OTJRcWc1a3dZektwcHlBX1ZJdTYwMUpqYTVKdFpNWkZYYXZ5V1E2dnFId3gyY0FMNmgxQQ?oc=5",
+   "date": "2026-09-26T06:08:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1lwofow",
+   "title": "Prosecutor accused of misconduct in 'Broadview Six' case resigns, says US attorney 'scapegoated' her",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxON1BGRW5WaWVDbUVob1pldHFtZnBpaW9ZUFl3dklGTm5SVzVQTnZ0VFNmYkRYUmlIanFBZzBZYmFxZVhGSUpDam5YSkRVV0ZJVEFKaERjai1MQXVyVWRnWHMzVGNIVDF3Qm5yRldEclpFZDZjNEp0aXB3YjQ4bTRCRE42MlRZN3NGUjdrYzROU1hfbWR1RTZUMVpnd2labnVtclMyN3l0SzlvWWRTbUl6ejBCRnhpcUM2QnVOOFFHblRjdw?oc=5",
+   "date": "2026-09-26T05:44:26.000Z",
+   "source": "AP"
+  },
+  {
    "id": "ap-1rgylf5",
    "title": "CNN left off Air Force One for Trump's upcoming trip, White House signals in new media restriction",
    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPWWdFdkVpT2tLTXhmMkNXSUlSZlBSak8xcU42NlRaMjdHU29VTkFVay10LWtTckN5WWtkMmJwWS1XUEZYOXBRZ3BxSzkxckk1ajZTb3VKTVlDQmd1QkdfSjIybXY3eFdEbGhZRDhmZkVYS2JNU0djLVR4aDFlNHk0SjRfbldwYUdBOGV2bUFEOGh6NEtMeVFsZS1lNlJnb0U?oc=5",
    "date": "2026-09-26T05:43:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-6ded36",
+   "title": "A month after Nepal floods, thousands are still missing and families face a long recovery",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNd1pDQkZjajhqTERTMGFkakhHdHQ3bnl6MWlmQ3huazd4QU9wM0RsN0lYT1lMRmhkU0VNQnhCM2xpU245QU9yc1Eta2l6QmltQ3JQb2hEVTIzQy1uYk5jUDBlaktMc0wzRzJYSGRWXzNxNVJZUFFiWWlZay13aWhnOUN3em43bkRlUW5aRWRB?oc=5",
+   "date": "2026-09-26T04:04:00.000Z",
    "source": "AP"
   },
   {
@@ -67,10 +123,17 @@
    "source": "AP"
   },
   {
-   "id": "ap-1lwofow",
-   "title": "Prosecutor accused of misconduct in 'Broadview Six' case resigns, says US attorney 'scapegoated' her",
-   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxON1BGRW5WaWVDbUVob1pldHFtZnBpaW9ZUFl3dklGTm5SVzVQTnZ0VFNmYkRYUmlIanFBZzBZYmFxZVhGSUpDam5YSkRVV0ZJVEFKaERjai1MQXVyVWRnWHMzVGNIVDF3Qm5yRldEclpFZDZjNEp0aXB3YjQ4bTRCRE42MlRZN3NGUjdrYzROU1hfbWR1RTZUMVpnd2labnVtclMyN3l0SzlvWWRTbUl6ejBCRnhpcUM2QnVOOFFHblRjdw?oc=5",
-   "date": "2026-09-25T23:54:00.000Z",
+   "id": "ap-1utlmyc",
+   "title": "Supreme Court rejects a Trump-backed Missouri congressional map for the third time",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPanZ2VnlQc3dDZFJVd3JpOVhqa0VtUzVvaFpLMzB0NmlzN0lNVlBid2hfMVlpck5qZThIWFZFZ3VOWTBmemtPMkpXU0hOdm9XZnZfd3J3aEZKVlVIZnRCZXRVMUIyb0xGNGVQaXhhSGlodWFkc1FYcEh4NFlvWUM4RGFzYU9zY2JaSDgxZFoxN0pwb3lETDBhcE5MN19FTlY5a3lBMUdVSG95cWlYRkR1R1QzYzE?oc=5",
+   "date": "2026-09-26T00:38:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1v805ha",
+   "title": "TikTok settles lawsuit with Alabama for at least $100 million, will implement safety features",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNSVh1Wm1PQWp3b2xYSl9jblQwaFRfX3htM2NhNnlUdXN3QVpDa0dzc1A0UVQzcmg2amdBanVzTkNkZW9mbm9uLUhOUmo3bzMxcXFFZVg5ZW1Fa0dhRDlOcTdxakVvYUhFSlVyNFlsWEdiSUVQY2JoZ2hUaWVzbzRHQXN4THl6MXlCQ2JBT3RtS2h1VDMzZGZGVWs5dHBza1M0?oc=5",
+   "date": "2026-09-26T00:02:00.000Z",
    "source": "AP"
   },
   {
@@ -81,10 +144,24 @@
    "source": "Reuters"
   },
   {
+   "id": "ap-179zpa4",
+   "title": "Brazil’s President Lula bans online betting ahead of presidential election",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQVFQzZzgzMER4cWRxMS1ncXE3U29RMlhuc3pxT2Mya3pjZjFCeHRGNjZMREs0WkNucTJPa0ZZMjBwVTZxaG00VFJrVVA5OVNsbFlCcVkwXzB2VTlSSG9ISHNXaUtQQUhyTWYyTEtnT2oyZmhrR3RkMWRTSUJyR1BhZ25UVGJwc0JfbWxkdFZqMVkySGt3ZWVJelZHVzFsY3gtd1dwVmt3?oc=5",
+   "date": "2026-09-25T23:48:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "ap-1n5nej0",
    "title": "Supreme Court lets Trump administration use revamped federal voter eligibility database for now",
    "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNTjdiQ0dkQkV2V1J1Z19HdURxN0pmMlI3d1dRN2N6QmZpUjFRbUZYd1hMM1JuN0tnaW9Fd1kzRFVwUFh4SGdCVzFpZHJkZDgtV0pRVHd5NzNpZUtGa0xTcnc3VlNwVVZabDZWVDVvU1h2a2luY2NMNkFpWUluMWJHTlhpZXdJUUFTTXFwTTRqS3hvTGI4SFJ2WmxUeGt1cHA0bGVEQXlUbmtNeGZpdmlzeQ?oc=5",
    "date": "2026-09-25T23:33:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1kln57v",
+   "title": "Bill Giles, longtime Philadelphia Phillies owner and executive, dies at 92",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPWjhJY2ZaR1ZZQlZjVWFVN041NUVweDFlQmRLaHZSRTljRFZMNmlPc3RpejYzSGp3ZV9STGdWYkt3QzRuRTZOaEd2WVh0Mkp3bUtSLUhyTGgtRE4xYlVzN1kzYUNFMmlOeG05eVpSOGMzaWxMbGI4cUhycDN3TThLT1FHY0JUZw?oc=5",
+   "date": "2026-09-25T23:29:00.000Z",
    "source": "AP"
   },
   {
@@ -95,10 +172,31 @@
    "source": "AP"
   },
   {
+   "id": "ap-rsqhs6",
+   "title": "US coach Pochettino regrets his limited role in Balogun red-card appeal at the World Cup",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPNmJGTldabG1iTlpERGhLcDQzTTVENTBhbFBmM0R1bVRvbVViQ1dpQWliUHJObXpqQVNXLVJveklaYi1wd2pVaXp5MmVrN1pvS3QxcUtPZ2FMa01nRW5ZN0pmUlZzVmtTWlZKZlJYN0txcmNHTmIxdkxmbU11NXoyRjFHaXVEMi1LTkJKRHpGTGFqbEsyN2dYeEhlNEpVZw?oc=5",
+   "date": "2026-09-25T23:12:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-15yd1ce",
+   "title": "UN refugee chief urges action from Security Council so displacement no longer crosses generations",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPOTJDdTQ4RV9HV1pmTEVLQWVfaW9pVXZBaFluX0p1SDJ5OFJfbUN4aTcxRUZ6a3VhVE5scWpIOUpxazdBbDlfRFJPSHUwOFdqVE1tLUpZaWZrTlNuOE83R1ZvZzlYTWNib0FmcUNBc0JYTHktRHpqcEZ3NFk0ZE1USjhBbEhvckl4R0Z3WDlpMWhVdjdTV0VVeWw1ZHlYeTBFaF95X05fRkI2ckc3MHhz?oc=5",
+   "date": "2026-09-25T23:08:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "reuters-ee4oz8",
    "title": "TikTok settles with Alabama ahead of first state trial over claims of teen harms",
    "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNdzBzYTY1WUhwQ0hyamZXX1A3V1o4TlVaeXQ3c1hBUzhTY3ZGdm11UjhhMWJLRmYzZjF4eWVfTXlZeU5aSDNGREYwZ2hnTVNwd1F2M2ZURXhHalNpNjMyblUtR09mcUd4M0tJY3ZhZE5FTGtfODQyNGExYTYtcUZ5QlZqQU83RzdmX1VpcXRrdUNGSHR4cVZmMHZWTURqSHU4TEJDMWpIMTY1R3lzY1hBbC0xY1F6QXNybnFN?oc=5",
    "date": "2026-09-25T22:55:26.000Z",
+   "source": "Reuters"
+  },
+  {
+   "id": "reuters-1li0b01",
+   "title": "Fear of democratic socialists drives November turnout plans for some Trump voters",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPRTNzOF9OZ29MVF8zU25jSXRjZDY3ZUNDcU9rd19nNTVlVzlhSHpzdmRXXy0yV0VUS2gxYU5ScmE0cG1jY2hMbzJ2TWc0R2U3dTYyak5pLXh1QVRTSVpiUmRkWkQxZW9kaDRyRDBzZHBRU1RLMEZnOFVrWk16cS1nNmgtNVM3Y3FmaGNuT1FYSnJyX3dXVzQxYlJHaGpXT05PazRDeTJHTTlIUEpoSGoxcFFzQjM3UnJGTTVz?oc=5",
+   "date": "2026-09-25T22:46:54.000Z",
    "source": "Reuters"
   },
   {
@@ -109,6 +207,13 @@
    "source": "AP"
   },
   {
+   "id": "ap-lfsxz6",
+   "title": "New Jersey’s lieutenant governor resigns after sexual harassment and ethics complaints",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNS3l2WjBBaEtWMmxnS0xMa3hYVTVReXVabFhGRkJtWk1aSG1IZjM5YjQwSHRhY1dJNm5sYzNyOFh5NVBzUlZsdDZONjBYNEZGVnFSczR4aVFSbmZBejAxazVFX0NFMnR3cTE1blI5dXVNVndSdG4zeF95MndjMl8taDZJb3BNWGdPblN0bTFZbWgyM3pqb29ET05oYjQ1ZzJk?oc=5",
+   "date": "2026-09-25T22:24:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "ap-1tjhr1l",
    "title": "It’s officially Dolly Parton Day, with parades, pink lights and book drives",
    "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPd3NEUlNhRDVXdFg5MHFUSlF4SjV2X3lsWEtuOFN4Tm8wNUkyZURLR0xWa1dZU3JMOGJ6OFVFVUhqNWxkNTNvYldteFpmSzlDaUdySW9pMzJxMnQtUkcyNTBVbnF1TTlQa3RRY3JfNEU5RC03M2hNVmllVlRYRGFnVlhLcC1fU28?oc=5",
@@ -116,24 +221,17 @@
    "source": "AP"
   },
   {
-   "id": "ap-1g3wnz5",
-   "title": "A White House press ban was lifted this week. But the tensions and legal battle aren't over yet",
-   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPSzZ2c3h2NFhmd25US1hPc2hTMlZUc3Nuc2lvVTFzUHcxa3IyeUlJVV9PTXBMVjVHSVVuMHdHRHl2aGtJRFp0UXQ3enN2bW1td3pvNkxwQjloNVpkQjhXdlJxckhOUV83NUVjcjlMc2tKVzd5eUx5UGFVYUNmRUdXcXNidERNN1labm5UeGF0cm4?oc=5",
-   "date": "2026-09-25T22:20:15.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-1utlmyc",
-   "title": "Supreme Court rejects a Trump-backed Missouri congressional map for the third time",
-   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPanZ2VnlQc3dDZFJVd3JpOVhqa0VtUzVvaFpLMzB0NmlzN0lNVlBid2hfMVlpck5qZThIWFZFZ3VOWTBmemtPMkpXU0hOdm9XZnZfd3J3aEZKVlVIZnRCZXRVMUIyb0xGNGVQaXhhSGlodWFkc1FYcEh4NFlvWUM4RGFzYU9zY2JaSDgxZFoxN0pwb3lETDBhcE5MN19FTlY5a3lBMUdVSG95cWlYRkR1R1QzYzE?oc=5",
-   "date": "2026-09-25T22:19:35.000Z",
-   "source": "AP"
-  },
-  {
    "id": "ap-cc6r1n",
    "title": "Mbappé limps off with knee injury after scoring for France against Turkey and will leave squad",
    "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNTHpnSjNPbXM5N09obVlXY2c2YkFXY19qZW1xaEd0d01sTVRleFNiVXJ0VjNyR2lYWVBqR2tsWWIwbGJHeG5PM3F3dmtBNnU2VFQ0M0Fjczg3aktEd1hSQUVZY05jWkNsUVN1NXo0NGEyYlR2MDNxUk9xczc3SHBFRzRENnF2dGlPLUVtdXN1MzBtMGxWVUxnWm5jcDd6UVdOR1Z3Yw?oc=5",
    "date": "2026-09-25T21:50:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1g3wnz5",
+   "title": "A White House press ban was lifted this week. But the tensions and legal battle aren't over yet",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPSzZ2c3h2NFhmd25US1hPc2hTMlZUc3Nuc2lvVTFzUHcxa3IyeUlJVV9PTXBMVjVHSVVuMHdHRHl2aGtJRFp0UXQ3enN2bW1td3pvNkxwQjloNVpkQjhXdlJxckhOUV83NUVjcjlMc2tKVzd5eUx5UGFVYUNmRUdXcXNidERNN1labm5UeGF0cm4?oc=5",
+   "date": "2026-09-25T21:34:00.000Z",
    "source": "AP"
   },
   {
@@ -228,6 +326,13 @@
    "source": "AP"
   },
   {
+   "id": "ap-1m7vz4d",
+   "title": "Taxpayer-funded pro-Trump TV ad campaign grows with new spot, wider reach",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNY0ZRc0tOekNfdlVYVGJscEJoWmRRejRNdmgtaXJxMGFBazgxT0FWZERacC1BZ0JEVk1KQlhCS1ZzNlpwZjg3NWotYzJWVGo3WWZyekZpcDhGYUhrY0Y2SGNSWmRaalBBUDBOelBKU0M2QVA0cGRtRldXcWRfZVcxVktyYm5jWC14cE1iRHVSX3JTTWd2bVVFWWlYancyVzBheElF?oc=5",
+   "date": "2026-09-25T19:40:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "ap-q9bfwu",
    "title": "New Mexico jury finds Facebook liable for deceiving users about privacy protections",
    "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQWG40YndwZnVtdGtfVGxGd01iWWxMcUlSNEVTYzR3bVJETERWMFFlMGVoUnFUWUZZbUVLMTEtTW14VEtLQmdqbVIxQlN6OHdYQkc5ZEZkZlY4VnVzVy1Qemc5WTRIUkFtWjRra0s3UWt0ck1Bblk2WkhtWUxENXNTVTgxMmxUaEpoLTloRzV3eGFCYl9YU0RPd1ZjeFdyck9JMXc?oc=5",
@@ -239,6 +344,20 @@
    "title": "Xi says he’ll see Trump again soon as he wraps up US visit with a look at the Constitution",
    "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPNmo4eGdneEJnQUFIc09MRV9CZHduSnhNRV9tbk12YXR3RUZUZHcySmxfRWxwRVJBQV9hOXQwLUtiSWRBZGREdEtqX1lJb0xYWGMyRzk2SXdTenNIUTlfblNpdVJRenZ6d2tRXzJtWGFzZEpwQ0tVQnlVd1hUdjk3UV9id05STTd6T3hSZ3ZaekdTNi1ybVlB?oc=5",
    "date": "2026-09-25T19:31:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1u4fe9x",
+   "title": "Ed Sheeran, Global Citizen, CBGB and All Things Go cancel concerts because of nor’easter",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOYjNlbVRRdm05Ym5JTEc3dUxQbDlHMGVtV1JOeVNoeVNVdGNvd3NUOHZ0b2RNZkt6QzlrdjgxNDJma253dmVCcXo2ZG41MFIzeHJHT3lkQUpWektHOWxTSUl2ZWI5VkNPdGF0ZTlEcGIzSDhYWGRTWkpMbGJPRExpTHlPODl2cURBVWZOcnVFMlhjejZNeDBaN043cTAycTlXUTdkRG1nLUo?oc=5",
+   "date": "2026-09-25T19:10:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1ojabxa",
+   "title": "Former VP Al Gore: A clean Earth is within world’s grasp even as climate dangers accelerate",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNV3BxUTR0TUlSck5rbFhmUlVyZklzTC1hSGVWdDh5Sk1DNjVGQVRIR2xqRS1IbHNUOWdMZHVlOEMyN2dKdlNRM1hQZ1JkRE5PWTZuUk96TmtxYXR2TW1FdGxJLVZfcllFNXFfTDdTY1QteUdXOGJXOVFXU3BRaHNkUTl6SHhfWkZuU2ZGZEZvcmFkUEJTaUZMbUVTenlralJoQmhybVNpaFVBSnM?oc=5",
+   "date": "2026-09-25T19:04:00.000Z",
    "source": "AP"
   },
   {
@@ -305,18 +424,18 @@
    "source": "AP"
   },
   {
+   "id": "ap-h3crql",
+   "title": "Europe’s top leagues add to pressure on Infantino by calling for FIFA reform",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOWm5OVzk2WjVndTZncGdwRHctTEViSGF6SC1UdU1EWDdqaU10TDBpMXk5YU9kX0V1UUVlc3hkTXdXaS1YdGN6STFvRGtfbVJocjJSeE5IWUJFb2dJS2xGYnd6S3ZqQmwtd25MZFN0dmFHWXVESFREZm5xWVNuQ0RGVm03bjhUSlh6RWR4ZUpkRjhiMms?oc=5",
+   "date": "2026-09-25T18:09:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "reuters-1dbx7i6",
    "title": "US appeals court upholds Pentagon's blacklisting of Anthropic",
    "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPN2xsSW1uNVNkSjE2UHVQSGFlOGJTbGFRa2dtdWgyb1owYlFpS2RHZHVSQnRxSTRoSnhqWWJTMEV4Q1BfNzRJZ0h4MVY4S014TTAxbjU4aThsZW95OUhEUFg2Tlg5ZU92Y21RcXVZa1hySFBUT2FXVkZ1ZlRaV3BpNnJFY3g2Ny1KRkpyQm5pNTctbS04V182WjZpYWczRWlJM1RMWl9uU0hNQQ?oc=5",
    "date": "2026-09-25T17:54:58.000Z",
    "source": "Reuters"
-  },
-  {
-   "id": "ap-1u4fe9x",
-   "title": "Ed Sheeran cancels New England concerts as nor’easter looms",
-   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOYjNlbVRRdm05Ym5JTEc3dUxQbDlHMGVtV1JOeVNoeVNVdGNvd3NUOHZ0b2RNZkt6QzlrdjgxNDJma253dmVCcXo2ZG41MFIzeHJHT3lkQUpWektHOWxTSUl2ZWI5VkNPdGF0ZTlEcGIzSDhYWGRTWkpMbGJPRExpTHlPODl2cURBVWZOcnVFMlhjejZNeDBaN043cTAycTlXUTdkRG1nLUo?oc=5",
-   "date": "2026-09-25T17:36:00.000Z",
-   "source": "AP"
   },
   {
    "id": "ap-12dxg9k",
@@ -326,24 +445,10 @@
    "source": "AP"
   },
   {
-   "id": "ap-1ojabxa",
-   "title": "Former VP Al Gore: A clean Earth is within world’s grasp even as climate dangers accelerate",
-   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNV3BxUTR0TUlSck5rbFhmUlVyZklzTC1hSGVWdDh5Sk1DNjVGQVRIR2xqRS1IbHNUOWdMZHVlOEMyN2dKdlNRM1hQZ1JkRE5PWTZuUk96TmtxYXR2TW1FdGxJLVZfcllFNXFfTDdTY1QteUdXOGJXOVFXU3BRaHNkUTl6SHhfWkZuU2ZGZEZvcmFkUEJTaUZMbUVTenlralJoQmhybVNpaFVBSnM?oc=5",
-   "date": "2026-09-25T17:16:10.000Z",
-   "source": "AP"
-  },
-  {
    "id": "ap-1p03jvn",
    "title": "Do-over: FA Cup game to be replayed because of referee error",
    "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOUlgwZHIxal9Pd1BSR2dINlNPUkV5NXhNblRsZTJqRXVJeElqRXBiZklIODlYTnRsWG04SDgyTktIUXhTUUNuMEk0cVR2Vm5RdktPemEwNXI2V2ZsODdyNW1LaDU1aURaM0dOZDF4NnBVWnQybXJqc2h1RE9QZzdpWTlDLWVuS1BYU1paYnByNm8?oc=5",
    "date": "2026-09-25T17:11:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-lfsxz6",
-   "title": "New Jersey’s lieutenant governor resigns after sexual harassment and ethics complaints",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNS3l2WjBBaEtWMmxnS0xMa3hYVTVReXVabFhGRkJtWk1aSG1IZjM5YjQwSHRhY1dJNm5sYzNyOFh5NVBzUlZsdDZONjBYNEZGVnFSczR4aVFSbmZBejAxazVFX0NFMnR3cTE1blI5dXVNVndSdG4zeF95MndjMl8taDZJb3BNWGdPblN0bTFZbWgyM3pqb29ET05oYjQ1ZzJk?oc=5",
-   "date": "2026-09-25T17:06:44.000Z",
    "source": "AP"
   },
   {
@@ -375,10 +480,10 @@
    "source": "AP"
   },
   {
-   "id": "ap-odj1on",
-   "title": "Nor’easter to lash the East Coast with strong winds, flooding and heavy rain",
-   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQdGRqdGEzMGFJUjh3UDU4cDJaaGdaWnNMYVpJS1Fid19ueFRYeXRMTGtJODdIeGE4RlYwZnpzU2JWYTdaQnk5LW5KRGluRjVjX2U5cS11UzY4Q0FDQXdWRVJENnluUHBMT1hKa0NRUDlUNU9pVVR0MXN0MFRNLV94WjduYUVkODlBNTdoQUtHUDNvNHp1REV3NWZXQ2c?oc=5",
-   "date": "2026-09-25T16:31:00.000Z",
+   "id": "ap-nn3wbh",
+   "title": "CDC vaccine policy recommendations grind to a halt under Health Secretary Kennedy",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNbnNKUnJmZGYxUWdGczd0NU9JZWJiemlrQWtqRUJjd2w0cG43cklfUmJoRy1QcEZMZUlYX2wxUFdfa2txUUxwSHo4dGxBVVZMMVZRVnA4QlFuSmIyY1hPTUV4RFloaXVMaFhlU1loazZ5d3lsdC1qTkx5VC1CVmNxSTBManhacEhNQ25obmFJSzQwRS14YlE?oc=5",
+   "date": "2026-09-25T16:20:09.000Z",
    "source": "AP"
   },
   {
@@ -389,17 +494,10 @@
    "source": "AP"
   },
   {
-   "id": "ap-1m7vz4d",
-   "title": "Taxpayer-funded pro-Trump TV ad campaign grows with new spot, wider reach",
-   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNY0ZRc0tOekNfdlVYVGJscEJoWmRRejRNdmgtaXJxMGFBazgxT0FWZERacC1BZ0JEVk1KQlhCS1ZzNlpwZjg3NWotYzJWVGo3WWZyekZpcDhGYUhrY0Y2SGNSWmRaalBBUDBOelBKU0M2QVA0cGRtRldXcWRfZVcxVktyYm5jWC14cE1iRHVSX3JTTWd2bVVFWWlYancyVzBheElF?oc=5",
-   "date": "2026-09-25T15:53:48.000Z",
-   "source": "AP"
-  },
-  {
    "id": "ap-r0ky1p",
    "title": "Police investigating for hazing after men covered in food found in Wisconsin fraternity",
    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQS3dfamdDMlVRYW5LY3JwTUNoeEVPd2RUMkQyV1ozQzBBdkN1aXhzNUE4NWUteko4TEVqYmhvb1N0V2JMRFJ6YUxwaTlLa3FwQjk0MmVtTWFhSm5xekltMkZzSUFneGZvZlNMVVVxcGdnMzJzWjZtVWhZZFB1TEVPNDFST2xwWjRTRDZXUmFxUGV6Z2dmc3B2c2t1dFdjeWs?oc=5",
-   "date": "2026-09-25T15:40:37.000Z",
+   "date": "2026-09-25T15:46:31.000Z",
    "source": "AP"
   },
   {
@@ -487,13 +585,6 @@
    "source": "AP"
   },
   {
-   "id": "ap-nn3wbh",
-   "title": "CDC vaccine policy recommendations grind to a halt under Health Secretary Kennedy",
-   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNbnNKUnJmZGYxUWdGczd0NU9JZWJiemlrQWtqRUJjd2w0cG43cklfUmJoRy1QcEZMZUlYX2wxUFdfa2txUUxwSHo4dGxBVVZMMVZRVnA4QlFuSmIyY1hPTUV4RFloaXVMaFhlU1loazZ5d3lsdC1qTkx5VC1CVmNxSTBManhacEhNQ25obmFJSzQwRS14YlE?oc=5",
-   "date": "2026-09-25T13:04:00.000Z",
-   "source": "AP"
-  },
-  {
    "id": "ap-1rj4mhw",
    "title": "In China, the Xi-Trump summit is seen as projecting image of the country’s rise",
    "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOU0FZS0YtNWM1UDE5emFtRnNOcEQ2VlhUclFaejBjNkxaQ0tzOGFZazlRQnRsU0JFR0o3R0p5RE5QZ3YwODVqajJUeVp6SzMzUDM1aTVSczBuRm9Ld25PMGdRWEFaaHQ5RlUwZ05EOTgxTXA2ZHJpYlR1dmdKQm5OU2RpYkNvcEV1SFhHcEZlWGU?oc=5",
@@ -515,13 +606,6 @@
    "source": "AP"
   },
   {
-   "id": "ap-jx5vo5",
-   "title": "A month after Nepal-China floods, Ukrainian families still desperate for answers",
-   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPMmtuNEtzTzVXN1JHTERjM2thaXZ4SlBoUG4zV3NKbk5DdW55Z1hNOW0tektoTFNYdlNhRTFNS2RMdW02TzZQX0VPQnBTUlpESC1OaGp1eTZIZUN6ZnhzVHdDeGpaUmRmVXk2Y2o2TTMzOWhoaFNlZXRZMDBKUVlDUHZVa2huamRhSFpVZy14UmNXWjJ2RUpuWmRyYnQ?oc=5",
-   "date": "2026-09-25T11:19:00.000Z",
-   "source": "AP"
-  },
-  {
    "id": "ap-1g3jeap",
    "title": "Muslim Americans push back as Republican politicians stoke anti-Sharia rhetoric ahead of election",
    "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNLTh1anZkdDh0Zk4zc3ZJTzBNa1JhSDNJTDFya1NWTi1ybXRtOTFjSzlIS0J6N3hSTnRzM0JOb1NUdzljOHM5REFMS3FQQWEzS1hrdzdLdHNSZkc4NlVwcDlES0RfX1hVTnJadURpRVppdmZ2Vk52cDBjT05kck83S3hZUTRfd21WQWxQamFhTnozckpJZ3dwN0w1ZENrOUZPWHdJeDRVMFB0aEtlQWRXcEJfOVpmVXhWcHNR?oc=5",
@@ -540,13 +624,6 @@
    "title": "Rush of money, campaign stops show Republicans feel vulnerable in Iowa, Kansas",
    "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxORVd5OXZrQUdaYzNZZDBZUmUwRTBNbjF3MExHNnNqS2ExZjVldVZDdmY5aUdGVEN6eVpSdHpZdENXNzZYMFVXM09KUGwtVUgyN3MzcU1aMm1QTXgyNktyM0ZGWjl3S3lHUmpLQ1FPUThxeU5pVlBDdG10M3NGQzY1M3BNa0dHbFNpMmJlTXcwZG05QUJCc2RxMUZrUU0zZ09rdG5scl9Ld0xXQnl4WGNyWmRCRk52QQ?oc=5",
    "date": "2026-09-25T10:23:18.000Z",
-   "source": "Reuters"
-  },
-  {
-   "id": "reuters-1li0b01",
-   "title": "Fear of democratic socialists drives November turnout plans for some Trump voters",
-   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPRTNzOF9OZ29MVF8zU25jSXRjZDY3ZUNDcU9rd19nNTVlVzlhSHpzdmRXXy0yV0VUS2gxYU5ScmE0cG1jY2hMbzJ2TWc0R2U3dTYyak5pLXh1QVRTSVpiUmRkWkQxZW9kaDRyRDBzZHBRU1RLMEZnOFVrWk16cS1nNmgtNVM3Y3FmaGNuT1FYSnJyX3dXVzQxYlJHaGpXT05PazRDeTJHTTlIUEpoSGoxcFFzQjM3UnJGTTVz?oc=5",
-   "date": "2026-09-25T10:17:57.000Z",
    "source": "Reuters"
   },
   {
@@ -590,106 +667,71 @@
    "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNVkpVZ1RtY1EzWm9VdFozM3k5a0V2VWtwWU5BbGxrblhQQ1RZVkNjWkM1M3Vvc1YtaDg4WFFlakQ5Nm45RFdnc3hVTHQyUFZScFlBSkxlamFkRl8zbjdxR05uLURERVhIaXhxemZNeVdlRlZMUFNYNkFiNXNuLTNDMmtlRGo1SXE2d0pfTmpiQUZXamUyYkhVZVhOMzNjV3JNZjdj?oc=5",
    "date": "2026-09-25T08:57:00.000Z",
    "source": "AP"
-  },
-  {
-   "id": "ap-1tyqu8v",
-   "title": "US government foots bill for television advertisement featuring Trump’s midterm messaging",
-   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQZXlsMk03U0JUaXRNd2R6LW5vX2Z6TWpvOGJWODlvaWdJQk9UX1llT3RpZVhMby1TZXBlSW1neG1wV1MxbkM1c1ZveHRiWFF5RHlyUXhldGpFcjFoWkxTUEdEdDM0bTVnb3hnRGNLMXMzX0JyY1lPMHMxaHlPcFk5WkJSZ3BzNFJhTVJTX1F4QjZsSGRLd2VTUA?oc=5",
-   "date": "2026-09-25T07:26:51.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-53oexf",
-   "title": "Nepal's climate-connected catastrophe is a warning to the rest of the world, prime minister tells UN",
-   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQTHFLSWZuYWpJWmJPdDVOUmNBSTJUcUpsdmNvemxHcjR0WnBCUkhKT1JoUGFCZjB0TUdxV0ZST2c4OVdPck04ZV9PR081eXdKVGM4LUtQancyaDA1NXRLSUhwTjY0WGRsaTRUa3NkTy12NjcwcFJfZzUteHZaRXBVRkhDMk9BY3NlcWVkS3VMakxfS0trQ1BRMGhIZFFvb0MySnlZRXBSNnhWUmstS19JRHFtcWY?oc=5",
-   "date": "2026-09-25T07:08:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-etp556",
-   "title": "Bijan Robinson runs roughshod over the Packers as the Falcons breeze to a 35-14 victory",
-   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQcGoyeHFMSWZMRmZ4MXdpQ3pMTkQ1VVE5NHlmVEl4a2c5cDVodzZtQlhDUWx3Mm5YMTBTT3lET1BTZHBjMllYN0J4WWhUWG5WbVp0V01kalBCdV9XWmVxelNEeTRXMjdYZExtZmJxb1BpUnktTnhUQl9hamRJMXF6blVwS1B3R01j?oc=5",
-   "date": "2026-09-25T05:24:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-5u77lz",
-   "title": "Trump’s state dinner for Xi features sea bass and a long list of tech titans",
-   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQTHRNd1RUc2NaeXMxMXZsbnBkZkM0dEJiQ1lRNEMxM29RdWlBeTc2V1B5dGhHN0NodlJSaGhBZTY3UGVCRk1KM2xpeFR6czB1SUxob3RPN244NFVDSkktVWxtSzduTzhmSHNxUXRKVVlSRU95VXJ6dHJ5NnF4b2ZkQzh6ZUZLYmo2VHFMMVBQem1jeVg0bWpoRzFR?oc=5",
-   "date": "2026-09-25T05:23:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-vmqmwr",
-   "title": "A’Ja Wilson and Aces to face Caitlin Clark and Fever in opening round of WNBA playoffs",
-   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5IZHhjb2N5UE45dlFFY3p4aUhMRVEzMjB6d0Q2WWR5MDI0X1ZWdWZUdjhtT2FTQVJmNWwxNXVjaUQ4WDdaN3djcnh3bUFCZzFaYXBDcDRXUjQxV1hrOU9OUFFZdDZsSnFiYzNXaGF5OFJ5WDJoeWgyMlBhTHg3UQ?oc=5",
-   "date": "2026-09-25T05:23:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-bxk3fq",
-   "title": "Yemen tells UN that Houthi rebels’ moves on key strait threaten global economy",
-   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQUjRDUmo2SklGZ0FmaUQ1UDU5ak1vcFM1LTdKdzJ2Y2lWV3dhNWNpeGNhT0dVRnhvYVRsc2M5ZnoyNlVFOTZDdUd4MG9tamZ3bzhMallmX090RGNBVzE3cFQ3V3ZRT1Q3aE1fVUs3NVVhbWhhUEZZZWVrZnd4ZHpLSk0wdWp0TVlLbXo3eGVJRnJIMmstWTV0Rzlucw?oc=5",
-   "date": "2026-09-25T05:18:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-99igip",
-   "title": "Packers booed in a Lambeau flop as they get blown out by Falcons in home opener",
-   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNaHYzYzU1NzlnUzJFM0RnWUdZcTU5QU8tM2pzWUpSai0xTHBycmt1Tmlfa2I5RXZfTmg4ZE1GU091X1dlajZwMTFPVlBCSDExZm8ya3V5VVJhMEcwaV9ncC1EU1F4UmUtbGMtQjgzOFBlRy1NeXFqbUh0MlF6bjh2bE9Hc0FoU2EwLWUzRkw5UGdhZw?oc=5",
-   "date": "2026-09-25T05:17:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-ngiwgf",
-   "title": "Netanyahu says Mamdani endangers Jewish New Yorkers by spreading lies about Israel's actions in Gaza",
-   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNZWwwMXh5M0xLSTdqOUI0ZWhSSUtEU2NfdHlfaTVhUUhEU1NzM0NsczV4UzBnbHRxMXN4VjlDTTBmdm9MWEJKV1NvTW14eW5vWmlRQkV2N0Z1NExpazc4VWxxT05vTTdZN0M4bExaMjlPay1naWV4V2tqVnlMY1g3Z1d5MHkwWEFLSjdGXy14aGlYMkNsZ0liVC1rNHFXN3c?oc=5",
-   "date": "2026-09-25T05:16:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-10cktxf",
-   "title": "Israel's Netanyahu, at UN, calls accusations of genocide in Gaza 'the biggest lie of the century'",
-   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxONnM2WE9GdERPVTluSmVqM0pXLURSOHMxdHRHZmtCRGtoN2JTdUstTDhkVmp5b1JObVNuTVp0b3FVa0VXWkNNWW8zYTJRcGdBRDVqckItTjFCV3U3QU9nQ2VsMFUtN2p0WDhIUjc5Sy15ZzZwMS1hY1lNMHF4d1dPNlhHamNCYWNkTjhyS2hSb2d4cmxFdEgwbUFBdw?oc=5",
-   "date": "2026-09-25T05:08:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-12l502z",
-   "title": "Powerful Hurricane Polo drenches Mexico’s coast as Nolo takes aim at Hawaii",
-   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNRUVtVnNQTENPVGtPZU03Y2R5TVZyNEFUZ3lVNlhnQkxZeHlGcmttZHJNQll0b2p1a0IwbjJjSWRpLTZzSlliMnpIVWtKZHdldkJUaXBGczkyLVdpUWxMRG5EMUM4dGc2UnkwVmlSaFZQNnFkVmFhOWxBOU9XTVZEVTBBalE5Q2N1LW5vZUpDTlBTMTVwSDRqVg?oc=5",
-   "date": "2026-09-25T05:04:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-4y4s8w",
-   "title": "Trump administration moves to limit fixes for systemic racism in schools",
-   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPSnBkNjJJbXlJdXFrdnBnNlhmZGxuV1BSNi01OWNLNlF6aERjdmE2bDg1VlJCRlZOdXdFcjdrR1dCeVlwRk1uMXlldnhUVXFQTTg3Szk4Tk1COFQxM2RiOERyb3JuMHIyamgxa0gtaE5YX2hoQnlZeXRxWlZFQUlmd243MU96R2lOekROVU9obEYxaXNIYk53TDFhcU1qZ09nU2VTa1ZNNUVjOXp3ZGdMdw?oc=5",
-   "date": "2026-09-25T04:01:00.000Z",
-   "source": "AP"
   }
  ],
  "tech": [
   {
-   "id": "tech-us0ctx",
-   "title": "Can an ‘eSUV’ e-bike really go from trail to town?",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQU1U4c3R2aGk1bVF0QTdIeENJSENjb1BXMF9CN21uQVF3QW1QTlE1Z0ZxMEZuNFp5M3dSbnc1MmprVi1leHI3ZW5Wb3J0M2lhTG5fVjJVZnNFMkpNaTc4U2hGYThOZUpZb3dOd05XMGxrWGloMl9oU3FnbW94QXBuczI2WGxnX2JXai1tN3RDb2xXUjg?oc=5",
-   "date": "2026-09-26T07:00:00.000Z",
+   "id": "tech-6uh5yx",
+   "title": "Pokémon card resellers have turned collecting into an online blood sport",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNbVlfVGZSQkgzMnB2R3VPUDBLckdyT3Z2MVgycjNEZXFWX01qWEtDd2thUVJmYVB0akNPdjhJUmlZMHljdU12UWhQZDMyVHIwZGRxS210TnAxQTMzdGdZZV94UTlyeWp4Y2ZYMzhOaWVjV3NELUhYV1ZBU295R3I0bloxVlJxN19JOEE?oc=5",
+   "date": "2026-09-26T12:00:00.000Z",
+   "source": "The Verge"
+  },
+  {
+   "id": "tech-1jvy45o",
+   "title": "Already Invited to a White Elephant Party? Here’s What to Bring",
+   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBidGtXdVpCX0QxYy12S2RkeG9ILURuMXJ5Rnk1YlQwM2s4c29DbkFudkhYa1hSNGY4b09BYmljZzVSNzdRU19ZVXl6UldEczFZYzdkaHRVZExHV1RJeUdHdU03bERiekd6SDg0UUln?oc=5",
+   "date": "2026-09-26T11:36:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-v2btlw",
+   "title": "Login - The Verge",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1lR3paNlFEdU9OZEJlaWphb3N5ZEk0dG42NGRMYWZIRG96WFJ1RE1qUGVsWS1jQm1sS2tWNkNMb0tITVBQcWhJTEtKSV8tNWJkaHFCZXBEVWlSTXZL?oc=5",
+   "date": "2026-09-26T10:45:12.000Z",
    "source": "The Verge"
   },
   {
    "id": "tech-tup44m",
    "title": "- The Verge",
    "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE90bWs2NzVBR3Zkc2x4UjhZUDBUQWg2QnpXb1NXM21HeElsVHFFMjFSRXcxVXFLMVdXc3l2WktjWW1TSXdfblJ3dGVIZTRIMHFfUjBDaXB0ZHVERlNxQTUxUHktQW9ZcnZXV3lZR25sUkVLWjhz?oc=5",
-   "date": "2026-09-26T06:07:59.000Z",
+   "date": "2026-09-26T10:37:59.000Z",
    "source": "The Verge"
   },
   {
-   "id": "tech-v2btlw",
-   "title": "Login - The Verge",
-   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1lR3paNlFEdU9OZEJlaWphb3N5ZEk0dG42NGRMYWZIRG96WFJ1RE1qUGVsWS1jQm1sS2tWNkNMb0tITVBQcWhJTEtKSV8tNWJkaHFCZXBEVWlSTXZL?oc=5",
-   "date": "2026-09-26T04:45:12.000Z",
+   "id": "tech-l2dfyl",
+   "title": "Meta’s Muse Is Adults-Only. Why Does It Look Like a Kids’ Toy?",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPVkJsbXcxMThtdVU2QTZ1RGRpcVRNbzZncTZIa2Zsa3VpSTNCam9uSDlsYkNOQ1ZJMDRWVENmRllEOE1lOGl5R0pHM2R0ZElDV3FrRERaa0kyeC04T3VvNEFEZW85U2NUaTJzQkRIaXpPUkl1SGM1UUQwZDJITkJ2QUZjLUNDS2ROcUpUbUZlUkhBSTluOWc?oc=5",
+   "date": "2026-09-26T10:30:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-zq69r6",
+   "title": "This Browser Extension Lets You Snooze Open Tabs Until Later",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPRUg1TTBxNUxyVFFKaUxqZnpJQlJhMmRUUkdkbmRCZnZ5YklMVVRxZ2hEOHE1R0VXOGFBcHN3a2I5eVNqQzQ0UzlMQXRvSmMxTmIxZHpmV0RRSWdjM2h0Z19RVE15NThSbTM5NVRsR0M3a3ZmWXJBTXVOYzZwWVVNTHVQemJFYzF6RnlsejJDcG1oOTg?oc=5",
+   "date": "2026-09-26T10:00:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-tda4vf",
+   "title": "- WIRED",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQZEd2bjRqWXNVamJVWTJ6MGMyYlBqRm14SzZVMHlmbXJuLS1KYVdNZTVIZlpSdk5mTVczVEp1YXZmbk00dlpYalJPUDlBblVYOUJQQmRFRzh2NXc2MGtzX2ctOXEzVUcxSkU1RDEzNFJkSkllSFRXQ2piTEZGX0pVM2tGR2ktQW5qS1hhcEJuSkJjWEZQbFFoWHVqQWhGWjF5OXNlamtrdmJRMGowMjdtbktWWmowNjJabGoweVBwVHZBUzBqcWNYMG1qRTk?oc=5",
+   "date": "2026-09-26T07:43:08.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-us0ctx",
+   "title": "Can ‘eSUV’ e-bikes really go from trail to town?",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQU1U4c3R2aGk1bVF0QTdIeENJSENjb1BXMF9CN21uQVF3QW1QTlE1Z0ZxMEZuNFp5M3dSbnc1MmprVi1leHI3ZW5Wb3J0M2lhTG5fVjJVZnNFMkpNaTc4U2hGYThOZUpZb3dOd05XMGxrWGloMl9oU3FnbW94QXBuczI2WGxnX2JXai1tN3RDb2xXUjg?oc=5",
+   "date": "2026-09-26T07:00:00.000Z",
    "source": "The Verge"
+  },
+  {
+   "id": "tech-ydu9v1",
+   "title": "- link.wired.com",
+   "url": "https://news.google.com/rss/articles/CBMi5gZBVV95cUxQXzBWYmVaU2JucUdfNTVBMmIzN0tSd1I5VnhnejB1ZnZUWURYSUxLOUJKRVg1aUhzamE1eVVHejJDRXl0d1VIUk5TZWkxckVpaGFFS1VZT0VkQ2RXQlJPZEE5SC1lSnFvQWwxUWdIQjZxVG43TmkzRlF0Z3MwaVhUYjhMNGVzelQxWV9ndW9FaXN2cjRTMzV2eDFwanRieGlrdjZKNUxzYjBHa3ZXTGlMQ3FUblBiMGs1Ry1ndk1STkcxQTVnZEdmcXkweUZrcE1wYnBSUGdWaVljTDU3eHIxakw4V1V0WHRYOVpKZnBpanV5dmFJcFk2aGJHOWpBeXM0SW9jbUIxTXF2VWdVR0FRNlRQNGhFMFRqcFY3VjFBRzJTTmFiaDBHeHozM0k5LUZUYl96VUdWVWdjM3JnVWVqa08tTThocFREdTIxcXRfZUwwZUpJRFh3aV81N1NYVG5Gb3FyRnk3enhBR3FOSnllbmc4cVZ3VW9zUk9GNEVCX1EycGVTc01DdllIcmJZMXAtYTZBYllmWVBIT25oNlQzNkpQSjNkdXhrd3lmVVN3RlprUzhPd2FWNlVDWktfZ2d1amJHTGM4Z3pMR2ZralJGMDhzdjFHZzZOejF6REZnVDA1czZtdVF6elRMbWpaYWZZTi1rLThIekt6Sk0xaEpLYUZYUHcwc0ZZWXVGa1dFUllOeUU4VmlCbjhFSXZqMzl2UE9wS3pJcFc3Ylpjam9aY2RNWFdKbHhJZWhWUmhKdE9GeEI5WFVZQkd0SmdoNnh6OHRpdG12OGIyODRMSm9uWHlRYUl0TkVMTnRxUGNyMEtYV284d0JrRURwZ3Z0cURSUk5LTG1DbUNSdEJ4OTF2U2p1MXQySmtYT01tLS11MHBtSnB2UUZ1REVMN3p6OE4wdjhScFd1eVdnd21sVUdEbWhaWFJFTmhxX09RMTVPYzRUNXpjU1llMWhlOXBlRTFDT3A0dW1LaWNwZmVvamYyZkJjcVE2a0J0NWtMMUJZd04ySEpuN0VCc0I3MzRUdU84QnFWbk5vSHE4WFNSbzdoMGQ1TklfTjE5UkVITlJOVEI4MmhJR1pFWnpQaXJGYmRKN2cwNHB5eThfaEZzUEN5dVl5SFZISlZmb0xTUjFOWUU0SjBVX1E?oc=5",
+   "date": "2026-09-26T06:06:10.000Z",
+   "source": "link.wired.com"
   },
   {
    "id": "tech-rqku7d",
@@ -713,6 +755,20 @@
    "source": "The Verge"
   },
   {
+   "id": "tech-1qps7jx",
+   "title": "Why Buy an Away When Quince Is Half the Price?",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFB0SzZPVUZ3eFJTQ1NPR0JSRXp4M0RHQ2oxUEs5cW9IMW9LNmVnZnlHM01ZNlJ4Skp6WVpKQldUYnFOT2YxMFdFcnY1MzZsLWhOTVhpU1NXaEpyXzJ5X0VMSmN5LThQY2xRSmdHdEkxRnljVjNLNldaOQ?oc=5",
+   "date": "2026-09-26T00:02:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-1wmmp80",
+   "title": "Disrupt 2026 Attendee Portal",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE15MGZyX0d5TFplaUVOYkN2aGZJWnRFX19Nd1ZXSjZVTHBNQ1U5a19XRUZWaUZCV3dSRExCSGlRVmxEWGRscWhXdUJON05uc0F6SXRYNWt6alZGQTNRai1rY21ldnljLXJGb1VBN19yTGs5eXc?oc=5",
+   "date": "2026-09-25T23:22:02.000Z",
+   "source": "TechCrunch"
+  },
+  {
    "id": "tech-odrhzq",
    "title": "Crusoe abandons $1.25B plan to use Boom turbines at AI data centers",
    "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNTG1DRm12U1JjYks1dXo2emhyZjJ1Znk2dXBWNXBSQXVrSjI1VTRiTjFNVkxDUVZhaG9QeFdMUGo4eW13aWZ2bHh6c18yakFPVzJQa1JaODBoRjROeDMzdzFuWlFja0ZBanVSZHVFVnZLRTgwUXJuUW5WdVpWU3hVNWFNWTF3R3hqc1FZd1Z5NWg0enFzVDNGa0NVMTMzMkx5anhv?oc=5",
@@ -727,11 +783,11 @@
    "source": "Ars Technica"
   },
   {
-   "id": "tech-tda4vf",
-   "title": "- WIRED",
-   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQZEd2bjRqWXNVamJVWTJ6MGMyYlBqRm14SzZVMHlmbXJuLS1KYVdNZTVIZlpSdk5mTVczVEp1YXZmbk00dlpYalJPUDlBblVYOUJQQmRFRzh2NXc2MGtzX2ctOXEzVUcxSkU1RDEzNFJkSkllSFRXQ2piTEZGX0pVM2tGR2ktQW5qS1hhcEJuSkJjWEZQbFFoWHVqQWhGWjF5OXNlamtrdmJRMGowMjdtbktWWmowNjJabGoweVBwVHZBUzBqcWNYMG1qRTk?oc=5",
-   "date": "2026-09-25T22:57:00.000Z",
-   "source": "WIRED"
+   "id": "tech-2lacwi",
+   "title": "Social Media Platforms",
+   "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE92MEdPTW96Y3gxVy1MX1gyZktHTjdjc3ZTSjdPYnd0dWdWSHluODcyRHZaMTJMR2I5MEVWYW5XR0JvbTNxcjl3YklWVno5V3hjdGF1b2VB?oc=5",
+   "date": "2026-09-25T22:47:41.000Z",
+   "source": "The Verge"
   },
   {
    "id": "tech-e4eakh",
@@ -767,6 +823,13 @@
    "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPRllod0IySFpxazNkNmtyc0wwSUlzYWdGdzJ3WUNHcjF1bTJ5cDRfbnBwLW9sb1lfRTc3MTNLYmFSSU1BUy1aRkZFX082ek1WTnE4YUFXNzdMUWt3d052bWktY0FWNklrZFlWRXYxMDUzLW50R1BTT3NyeGhWckNFdUdJUDYtV19QN0UzZGpxMTZYU1h3N2FhTzVNTEhoZnNXLVpEOW5paDk1ZXRCRVV5MFhNQ2RORGhQSnFzRDJmcDRYQ1huUGc?oc=5",
    "date": "2026-09-25T21:33:32.000Z",
    "source": "The Verge"
+  },
+  {
+   "id": "tech-toqrym",
+   "title": "AV companies pick their lanes",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9nbWRrOUthNzYwTG56SlNmN25MdmdBSVFlZGFXeWZSQlFRZFZzWnd4eWxaZnlKd2hROXFmTXJtZTA3SUFRd256eTdFNnhfaVpkX3MtdlY2YjBuVUY2Smc5UUEtUDVCVEhtamd6NG9WenE?oc=5",
+   "date": "2026-09-25T21:18:29.000Z",
+   "source": "TechCrunch Mobility"
   },
   {
    "id": "tech-1qr081v",
@@ -881,6 +944,13 @@
    "source": "Ars Technica"
   },
   {
+   "id": "tech-z76omx",
+   "title": "Watch The Backlash Against Women in Tech Is in Full Swing",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOcGtZZ2plc1lfMTJMNkthUzFyNjR3SmN0aFZzV3RnR0pZWlhJN0FUQXJVa0RNS0hfZkw5N1UwYVg1eFZXNXpmaXBENTE5dnlBX0ZQc1R3cFNlWXJFUzZnM19xU2ZVU3VsZTlCWU11RW5HTkEzR2diNGhiNWRUQkR0SjlsSmZhN0w5NVoweHVR?oc=5",
+   "date": "2026-09-25T18:23:14.000Z",
+   "source": "WIRED"
+  },
+  {
    "id": "tech-ewa3qr",
    "title": "Meta’s Muse just stole the AI spotlight from OpenAI and Anthropic",
    "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQNk9GODBSZDJQMTJOSG5feVlNQlZvNmxkQmUtd05la3ZTYndCSndzZ2U2ZkdvMFJLeVkzT3QtMHBUa2FnZGhfZHhtbExJTWx0OTUtZ1YybkVILTZZUUNNaHkxeC13WDR4Q3V4d2d3QzAycnozUnFEdWZ1TURZZkNHRHF3MkQ4UEtodTNGOVBfbU5RYXlxXzhnc3plZGk?oc=5",
@@ -983,7 +1053,7 @@
    "title": "Meta is putting its muscle behind Muse as the AI app takes off",
    "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQdkNva2lfeUVoTzVWcWpHY0FscXh4cnBRSjZ2S2dLdWFVaG1ONEFZd2NnRHFlR2hBeTlUUDVtUXRBRU5ZMVdKRkE2a0NnVzJURFlKSTdnTExfTkhsdVdWWmx0YzN5ZWsyWVRHS1JjZVhwb1ZVdW9ZcVU0dlhVSUFFMnVpYUx5czBVZlVXeEFJSmhsbnF3VVgwRjJ2MU56Zw?oc=5",
    "date": "2026-09-25T16:16:52.000Z",
-   "source": "techcrunch.com"
+   "source": "TechCrunch"
   },
   {
    "id": "tech-in9o7e",
@@ -1019,85 +1089,36 @@
    "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNU05KM0ZyVFg3Yll4THlwYUJkYVY1amJVRkY5Rzc0dlR5enExN0xoQXdaS1llUEJ0dGU4YnpVdWI5UG82bjQtREZYWnVlalJLUzBqS0RESGs5OE5SSUpvcm1JOXQteWtadDJ3c2U4TWFKT2d4bWFMVldKR09mcmhuX011S2tYcDJWWG9MRTY5elJEbGpGdTdUcTVaMW9MNVhPOEx4X3p4cTdTN2VSVVBIdlpVZUd3bUJ5NnpRaGlXeXJfSW8?oc=5",
    "date": "2026-09-25T15:48:14.000Z",
    "source": "techcrunch.com"
-  },
-  {
-   "id": "tech-cyr40w",
-   "title": "Anthropic’s founders seek voting control ahead of IPO",
-   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQbU5OVU5mbzN4aWdDOFl1RmkxSVUxUzl0V2lyUnNKa0ZUMDY3dGg2Z0hGSGE5ZGhLdFViRGRtNlI1a01ITl9wVVo4WGRoTE1GSHJRZ2hHN3hTMS1xUlg5VHo3TllRY0NvYkdDTVJGWXpkVHZHWlZUbkM0aWdURzF5WHNVVUVjTEpJSk9uMEF3LV8?oc=5",
-   "date": "2026-09-25T15:40:03.000Z",
-   "source": "TechCrunch"
-  },
-  {
-   "id": "tech-1dlocxt",
-   "title": "One company is at the center of a wave of rogue AI attacks",
-   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPVklBVkdxTG1sN2lGUmEwelRiZmRaVWJJaWhoeXpYcF95RzdpdzZQQUpTREFUN0VuY2ljUzZnYU5oNVh4Rk9OejM2aEZtS1NjRElYak5FTkdkbG1FWUtNNUJjNTVNcEZxMHdPWkJMeDRTc0ZxbFVsRktDOGxrb1l1WkRuYldNMElrb2dVckF0cC0zeDQ4UzR5d1B5VDREMHNjdTZxSDJjWTRZVEM2SS1PMGZVM0hGTG1kT2syZVV3NFItUFloMFM4?oc=5",
-   "date": "2026-09-25T15:39:48.000Z",
-   "source": "The Verge"
-  },
-  {
-   "id": "tech-1mpta2u",
-   "title": "After seven years, a spacecraft company is releasing its Otters into the wild",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQWUpiQUpCbzM3UVc2MUpMd2JtSUV1RTB6QW5TM2VNd3ZQQXBseDlPVllFaUU4bHlPOGNlOWxmRWJWRUh2S2ZHeXBBN3EtYjNPSERPeW1RNUlUY0lVN3BJVGZ0ZlZPMXQ4b1ZkcGRQQW5hanhDa2ZBbkY1THBRaVBaUl9wUjZnNGhWVEZZcEsxZjlQdVpKX1BHd0NVamdjXzc5d3NSNllKeEI0SWlsck9waERtNG1tUQ?oc=5",
-   "date": "2026-09-25T15:35:23.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-h296nd",
-   "title": "Tesla finally moves to electrify trucking after a decade of work and delays",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQYTJ4UlVUQlNjakx5UF9RcEp2QnEzdTVzWnJYOWdkSlcyRng1aUk5UE1ONHowYTBrZWUwcHgyZjlIODh0RWZkWnZkeUhhcktJd2VrTkt0WFNqcmZ4S2tCSGVndFNVNkxTRjljczl2eEFDRmZONmVCbHpmTk5lS3BGYkh1V08zeGhuREgzd1kxWXMwWmpXTzlOZmUzTHg1TGJwbElfU0xvdzFxdHJaTlp3?oc=5",
-   "date": "2026-09-25T15:24:50.000Z",
-   "source": "TechCrunch"
-  },
-  {
-   "id": "tech-1iv3tu3",
-   "title": "US being left behind in EV charging speeds as China goes sub-5 min to 70%",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQeUs1WWZ1R2xUcExRd1FfTGRuTXNLRF84N3FJMFVjSUZDdWdMYjdFc1dGN3V6eUEwNmF5cmRvS01aUjlOUTFtbEhMekxIYnBjV0trbWNHVHlmbVZMUGxjdjhsSEVzaVNMTFVmYjdsR1IwcThoSU5UTTY4Rm9qclJMdzF4V2JDZnBZWllPVThjWUJaN2EwSzVucHRvNTVuZXQtU0RuWVlLczVjUnVVQThz?oc=5",
-   "date": "2026-09-25T15:21:55.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-1jnssck",
-   "title": "War Bros Didn’t Always Rule Silicon Valley",
-   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTFBLSl8zeGt6TTJfa250Nmc2TXQ5M0ZwWnFYZ0cyMXFXcWVZczVNOWlHTTdtLV9XMzM4TUhPOHJaZTd1SGgySmJlNmY3dVMwTzdtQ29Nc1BiVXFySllEdWgwSkZJUUI3VnQxRTlVYWVWQjBBZ2N2NnlBOERn?oc=5",
-   "date": "2026-09-25T15:00:00.000Z",
-   "source": "WIRED"
-  },
-  {
-   "id": "tech-1sg588p",
-   "title": "Ricursive Intelligence’s co-founders join Disrupt 2026",
-   "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxOb0pWMXhBWUd0NkZObjRoQ1RuR2dHVGJFSlZPTEJ5Y3lhczMzbmhHaXpEdjA0akVnSExZQXNrakI4d2xab0pyWVZ5b242VzZvMk9CSDIyQ2pCeGhMLW52V3F0Y0dEQkVjdFZTaVNuZVhndmZBQmtSUXU1S1pHXzJJeUNjUzQ3WEkwRDRFTmhwaDQ1ZjZ2WEctMU5qTzNmRVpiZlY5V3VlRS14c09LOFBKaWVDS1YzbEZtZm5WUzlDamxHYzV6WFkzUVF6LTZYZWxlNURodGdQU2d5TEdicWxFS0ZPVU15NUUxQkVmWjBmcDBuaG8?oc=5",
-   "date": "2026-09-25T15:00:00.000Z",
-   "source": "TechCrunch"
-  },
-  {
-   "id": "tech-17suf50",
-   "title": "Konami’s celebrating Castlevania’s 40th anniversary with a free mobile port.",
-   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOaG9nN0JiY254UGZsQ1R5RWlEMm9YdFozNnNrNEl4ZjZ1TUI3NUVrZVp6eW8xN091V2R0cFJpalhSSjd5WG45dHpOVzdiNDlqWjFvNng3eWMwOVoyTUhsdHIwZloxSWd5R0ViXzRNZVJ6VFB1SHQ3cmltdUpSWGRxRnZQV0VKYW5RaWVKTmR0RTAyZmYzSWF5dndIZTZ0cHpIZzJ4V0cyRWUtZ0ZZeTd0Zjhn?oc=5",
-   "date": "2026-09-25T14:32:19.000Z",
-   "source": "The Verge"
-  },
-  {
-   "id": "tech-1oehntf",
-   "title": "Cricut’s new compact crafter prints, cuts, and laminates stickers",
-   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOZjNxMEFES0lWeGd0QjJXM2xvbVVzSVBrYnhTREhvVUV1SEdHTjNhQTNZdHVxeW1MakZRcjF1cmxLaG50RFRfeDRodVlRNGRIRmtYa1BVaUxxT2hDU2lqNGRFeG8tX0hKc1ZsMzVWOXRZTkU3RmtRV1ZDTk53S1FvcE5fb3JQcmhZNlVZLWFHb0t3Rm1lcmRzTlJnR05ZQmt5ZEIw?oc=5",
-   "date": "2026-09-25T14:21:25.000Z",
-   "source": "The Verge"
-  },
-  {
-   "id": "tech-1vepqrd",
-   "title": "T(-Virus)eamwork",
-   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNdlhIZmRURFFQUVZRSWFpWVdWdlhZZENWUlZocU5Yd01SZTZ1eEk0WWRYeUpQVGVyTEhlQ2RrZU9VVnQzcVQxUjdhekFKcmVCWmRnV081Q3dvZFJpalRCbkJsOVVELWY5Z0hMUmNiZURBc3hhZ3lzSHV4ckNWV2F4Z2d5OXY?oc=5",
-   "date": "2026-09-25T14:17:17.000Z",
-   "source": "The Verge"
   }
  ],
  "pop": [
+  {
+   "id": "pop-51cywl",
+   "title": "Taylor Swift Is Losing Us: Encore Reactions",
+   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE85OW1iUUQ4MHhueFVwVG04SEVTSEFvMmg1YVhiVk5EVDBaRUgxWW00X2pzNFFRVHYzTkJvSWhHYktiTE03Ynl5SVJ4NkZEQ2UzdjJHTEI5cEk4MWV4em14eGhxa2dIWGpOZmlZZjlOdTI3Q1h1?oc=5",
+   "date": "2026-09-26T11:00:05.000Z",
+   "source": "Vulture"
+  },
+  {
+   "id": "pop-1utd5d6",
+   "title": "Tilly Norwood Wants to Work With Tom Holland and Olivia Colman",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQMnE4aXdWSEd2LVN4SHUtZmpxMWxLT3duT0VMRlNIemJYcU9WcC1tQS1VQk5peEFuUXFxSW84bFo2UkItMWxIVDAxR3llNWFCSEh4a1RBMWZjTzlJSUd4bG9tQ0Z3YTRMcTdxWm5nakFxRWhQUmVGajRCNWUzeU5DcWFFMm93OEhleDRLWkgzclF6b3hfa0toZWhWVWdsSlBYTG5FaQ?oc=5",
+   "date": "2026-09-26T08:28:00.000Z",
+   "source": "Variety"
+  },
   {
    "id": "pop-nm06d2",
    "title": "Oscars Predictions 2027: Post-TIFF Temperature Check as ‘La Bola Negra’ Surges and ‘Digger’ Stumbles",
    "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9TMWdieWI5N3FpZHRoT041RjJtVTdYZDMwTTJYWkk1OEFHcGl4TjJEMXFkUVVBY0hzVVhzOUxpRHk3U0xweXowalhGVzU0UWJWQzFMcHFXMnRQZnltNHdz?oc=5",
    "date": "2026-09-26T06:52:04.000Z",
    "source": "Variety"
+  },
+  {
+   "id": "pop-f2neju",
+   "title": "Julianne Moore Accepts Zurich’s Golden Icon Award — in German",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOdF84TEZBRG10bFZOMWhxM1JhRVdhTDRMMzJ2eHppVE5TM2lqN1hRb3ozZ3otWkdlWndMWmdVUW5VS0hFSjJEbF9pR2pCSDcyYmpiSXhwNldnZndkZ2J4QU1IOWx4Rk5NcXM2TnR6UFByMXREZEhYVFlkdFhBbXJnZEM0MF95SHVLdHdMaVkxU21ibHppd2djVGloNDBSUVZoOGtBbW5wY0g3VTJnTDI3OVIyRmlmaEhRRXQzM0ZmTQ?oc=5",
+   "date": "2026-09-26T06:44:43.000Z",
+   "source": "The Hollywood Reporter"
   },
   {
    "id": "pop-lv6qpo",
@@ -1107,8 +1128,15 @@
    "source": "The Hollywood Reporter"
   },
   {
+   "id": "pop-ra8qny",
+   "title": "‘To Catch a Predator’ Host Chris Hansen Watches Robert Pattinson’s ‘Primetime’ — and He’s Not a Fan",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQR2xlLWs2Um8zeUVwR0dtS1dGclA4VzFQMDdKdkIwLWlkSkZZdEVEMVMyYU9sZVUtTXR4ejc1QThQX1hrQjNkUnNoUmFteENLNGQwQWRpbnYzX21ESWczUXd3MnZ4UlZLTE5NX2ZLYW9TU0pzUFl0MjMydVNnVDhlYVhxZ3lpMWpOWkV2SkV1Z3Q2ZGxFRW1HTTlzdDB3Qi1PYm1IUzZ6cWdzMHNjRXRN?oc=5",
+   "date": "2026-09-26T02:42:11.000Z",
+   "source": "The Hollywood Reporter"
+  },
+  {
    "id": "pop-vd0hf1",
-   "title": "'Hanuman Ansh' Indian Sleeper Hit Goes Global via Hombale Strategy",
+   "title": "‘Hanuman Ansh’ Indian Sleeper Hit’s International Distribution Strategy Unveiled by ‘K.G.F,’ ‘Kantara’ Outfit Hombale Films (EXCLUSIVE)",
    "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPeU95NGliT01uUUI5ejJVbFByTzJYV1RWWTVTbm9sNHJMei01dnRabV85NUhNOEhQQ1JZZGhFXzV3N1JEemNIUVRKMWktdUFiZC1reEttM0xXR2NGZmRPVjhjMndoMkIzR3BpNE9pMWEwbFlIVDM1d2hjYmdFTGFIRmtEMDFHSjFlN0prdDF3WlV4c192RU5Xcm9FdFlKNlZ0Tjc4?oc=5",
    "date": "2026-09-26T02:09:00.000Z",
    "source": "Variety"
@@ -1125,6 +1153,13 @@
    "title": "‘Love Hypothesis’ Director Claire Scanlon Breaks Down the Biggest ‘Star Wars’ Easter Eggs, From Gracie Abrams’ Song to Color-Coded Wardrobes",
    "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNWE9zckF1VjFQSkxEYWswUlViR3phS1VRdUpBWWtvejdzTmxZak1PZG92V25saVpRa0F1aXpjOFpMVTVDai1Wb25wRHdjZ25TdWM4UzExbjNaR0ozcjdkSHY0dGZQRC1ucy1KMGJ0Z28xSlg3N1FWSmVjTnRtNmxyem92RnZ6cjdlY2VtelNSM0N3Um84WF84?oc=5",
    "date": "2026-09-26T01:09:00.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-yfujn1",
+   "title": "Isaac Mizrahi on Unzipped, John Galliano Met Gala and Devil Wears Prada",
+   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQQy1pWjhoUHFPUmtWc09BNjBKMXVLdzZVSF94UU12dllfNUVHYUFrQVBvYk0wS205eU9tSjU1alpOZzhMX1F3eXF0SHI2LXpaRzZmcmxyeVVWZDFRZG5sNURrZDRiS2NRbFYxTTJFLWxUa2tSSkdCUUl1eTRpVWprQlQ2X1JBSDVkcm9udF8ta0R6dWVtX183b1VIQnNvNFEwQk9ySmNvSkc1V0I3LTcwc2tqRFBKS3lUamNlMTV6RXZMTnpTdEdjZ2lhMmtaT3gwYlN2OHJB?oc=5",
+   "date": "2026-09-26T00:44:00.000Z",
    "source": "Variety"
   },
   {
@@ -1161,6 +1196,13 @@
    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPUlpoTW03VnUwMmhoMjA4Q0E2cU9YM0Z3SVl1ZjAwcTRaYVZxUXdXOVZNWW5faC1jbF9NYktJUUs5eDk3am5QSnU5MzV3NXBYc3dVN3BnWW1tZVFXUWhWaHhKa1UwTl96dGEzM1lTYlhRZ0N3bEVaTUlYN2RBVFZ4VXJ6dmItVHhzN21kalJJWmgxenRoU2x6U21FWFdLWnM?oc=5",
    "date": "2026-09-25T23:36:55.000Z",
    "source": "The Hollywood Reporter"
+  },
+  {
+   "id": "pop-1vwxsb7",
+   "title": "What’s Going on With Dolly Parton’s Estate and Bryan Seaver?",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxORDBmSV96Umc4blBLNlE0eDlHRWNkWnpYeWV4RmJndlpFeG1kYy1sSmhOaHNRSTZ1NFhLNktyWlc5MUhaYlZxNmlYRGx3cDUzbXEtVlRSSjJJWWRlU0ZBSWVpQWg3d01JblBMNkhxeEpOa0FhaWllZE00OUhGV256OXU5OW1paUIyc1diQ0pEaWo?oc=5",
+   "date": "2026-09-25T23:27:06.000Z",
+   "source": "Vulture"
   },
   {
    "id": "pop-pef7bu",
@@ -1294,6 +1336,13 @@
    "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNdmZxZ2JJeTdLVkRzcFZFdUp0OXREdkJ6QW4yWDlNcEk3ZUZFLU0tb0UwQWtWbjI2OFBTNHFkdU1ncHh3MU1LeWtaU3ZTNDdBcEV4V0VJZmVfU0hIeXhfTnN3UnJTdklKc19yTkt3V044d1dpdXBDanpOLVBjWEZaSDBnM0djTFhoeXRDRFhYS1d0cHN0LUJ3ZldQYWgyQQ?oc=5",
    "date": "2026-09-25T19:32:00.000Z",
    "source": "Variety"
+  },
+  {
+   "id": "pop-vrgvqg",
+   "title": "Is Zack Snyder in Directors’ Jail?",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9INFVsSTFMUDVSMFQxbWxEdEp1WlRVRVY1YlhBSEVlMV9DZXRZTFo4dVpnVHNGNEE1cWM0bEphQld5ZjI2OTVnVnFqaHdMYm9qUGZnNE1XdldPQnYyMGVsT1I2bXFUbEg5MnNKa01MQ2l0Sm1PSzA0Mg?oc=5",
+   "date": "2026-09-25T19:19:19.000Z",
+   "source": "Vulture"
   },
   {
    "id": "pop-1wmqnzu",
@@ -1462,61 +1511,19 @@
    "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1KWGxxNVJkQjR2MXJIQXo2d1lUbkJRYjZpdDZKQ21HXzhHdGVqU1I2TFpLU1AtWERUNG95MVB0NmFEanFxaGY5cDR1VlA0bWF1RkxQOWlWenNtaE9wQVh2MzVfUTVYTEh6OTlhYTJxdUY2SVVlTDF3RQ?oc=5",
    "date": "2026-09-25T16:56:09.000Z",
    "source": "ew.com"
-  },
-  {
-   "id": "pop-eiid9n",
-   "title": "New York Film Festival Kicks Off With James Gray, Tony Gilroy and Filmmakers Toast In New Lounge",
-   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOMUFXeWRXeFhjeElON29veWdqZjZIRUtWMVF6bS04SWJ3UnJkelpmT18zczdxZHdvaURXLTFCdnBscWNaVXBaOS1BZlVTM1NjaUU3eGY2M1dQNkdMMkxnX2ZrQlQ1andCUGtlY1RhcVpMTU10cUZJM0hHY2FJcExQYUJNTnBxZ3BZdVJsRTMzNkk4V3J6bW9YbElFbFdyZjZid3pIdWFmS1V6RjlUOGVQNlg5RQ?oc=5",
-   "date": "2026-09-25T16:48:21.000Z",
-   "source": "The Hollywood Reporter"
-  },
-  {
-   "id": "pop-1nvbkdl",
-   "title": "Top Hollywood Publicist Alleged to Have Hid Evidence About Role In Celebrity Smear Sites",
-   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQTHhoX2M5UnBUZmFjZ2lVUVMxZUw1T0NKc0E0VGF5Tk1OaUc0WTlYaTZlbnpCbUZHSkhrN2VyaElaekZhSFRuNUFyUUx2VHdmaEhyVGFuNUNUZEExeXVHb3BIWUxmUGNPOTNHUTBIbGppemV6ekp5cVM4WHJEZTVRcEVUVUNBN2g3cG9yUVFIVFJMZTR1OF9VYVU3c05VbGVTS19PNkpHa181S0k5QUxUUGNqdmdLOHNoX1VGUlU0QQ?oc=5",
-   "date": "2026-09-25T16:41:57.000Z",
-   "source": "The Hollywood Reporter"
-  },
-  {
-   "id": "pop-1jtmtmq",
-   "title": "Inside The New York Times 100 Best TV Shows of the 21st Century List, and Why the Times Is All-In On “Canon”",
-   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPNDhZV21uRi1xUnFVQ2ZVSUc0WUNad25sUXBpODAzMVpVbVl4TGxiZWwwR1FSS056UGVjdDVKWW9RWmwtbHF0aXFjeXVyTjVfd3BPYzVvRzNfN05BZWFxUllmLXBkMVctTWZ6MURHSXlOT0VqWGpJYUxMdTRTaEZLdzlGRVBoTVRpQU02VGFsX1R0RVUyQkhwbkxQNmNJRUFiS2U1VTlXemFXRlFqci1kd3EyUXZGUUN4UXd6Tm52X3ZMMm9JZmc?oc=5",
-   "date": "2026-09-25T16:15:15.000Z",
-   "source": "The Hollywood Reporter"
-  },
-  {
-   "id": "pop-19ur3t1",
-   "title": "L.A. Mayoral Candidate Nithya Raman Turns to Microdramas to Power Youth Vote",
-   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOeUkzNDNWemJld2RGdFBMeW1xNnh6NXo4b2FqVkRBYW5aZlRUeUxiUGhKMUJRYVplYTdXNmF6ZFFmUmhYM0dTeGQtVG5zcGxYa3pWeVFyNFN3RzV3LWxlVkY4el9tYWdZREZjTDhBQ2o2SDktSHpGNEdYY0s2ZENXbQ?oc=5",
-   "date": "2026-09-25T16:15:00.000Z",
-   "source": "Variety"
-  },
-  {
-   "id": "pop-wrl5xz",
-   "title": "‘Avengers: Endgame’ Returns to Box Office With $3.8M Previews as Brad Pitt, Robert Pattinson Join Fray",
-   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOUC0wVTVEeWlDQkY4SG9xTXdvY2dkZURXS29PdzRTcnowVTVlM3dneUJXc1pDT2M0TEw1azY1LUh3ZFFwZHpLcnVaRzhHaUhzRHI3elNsNUp1RHM1OVZSUTlXSkZWcFBvMWhIQ3BTTWk1RlB6S2ItM0lJSnNwbTVuUElaUXhZVmNoUE9IaUV1RklDMGRoVTFraHI5WENCQTA3MnlqOC1pY0x6cWFPc3FVY0g3YTJiQlhtLW5iVVp1d0Q?oc=5",
-   "date": "2026-09-25T16:09:10.000Z",
-   "source": "The Hollywood Reporter"
-  },
-  {
-   "id": "pop-iw36ly",
-   "title": "‘Evil Dead Burn’ Sets HBO Max Release Date in Time for Halloween",
-   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPUE9XZk92a3NHMFYzVFNVcWY4b0dCbHlzMi1NbzRWMl82OVl5cUZPajRIMGhFUi1TZ2RILVZDMnE4blBkdDZvSzJUaTZWZlRXWDlCY3k2aFNKSkc0aC0xX0o5TnVMRENhcW5aZ21RLXB1cHp5Yk01UVJTQl9wOGc2TzZiSlc3cG1teFVmQ21EZUg0bFdyZmxn?oc=5",
-   "date": "2026-09-25T16:04:00.000Z",
-   "source": "Variety"
-  },
-  {
-   "id": "pop-n6g1nh",
-   "title": "‘NAZA’ Trailer: First Look at ‘No Other Land’ Directors’ Gaza Doc That Sparked Netanyahu Backlash",
-   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxON0ZvZEVRbmlnaEJkd25lMVl5dDk2MXN0My1YZ042bTBsUlhpTFllUEFFSzlLb1V1YUFVWDVJRHNldmI0Sl9iZ0hfZEtPZXM5dXRiaVZaNndjeExJRDFHSnNHaUZQYUI4REZwQmN0djYxM0VCUkhONnJmaW1vc1dEcmhFVkJ5S2RRT3hUekgxZ3I3X3NSUVAyd3kzdGI5SC12Yll4SWtVTUk?oc=5",
-   "date": "2026-09-25T16:01:34.000Z",
-   "source": "The Hollywood Reporter"
   }
  ],
  "music": [
   {
+   "id": "music-nfnklz",
+   "title": "Pitchfork",
+   "url": "https://news.google.com/rss/articles/CBMiOkFVX3lxTE5xdWlybzgtNUszMmIxV0F6RUxMbm9ja3U0VXVDQ2RYdmZTdlFYblBmYXdMMkJsZ2JfQ1E?oc=5",
+   "date": "2026-09-26T09:28:51.000Z",
+   "source": "Pitchfork"
+  },
+  {
    "id": "music-nv1c0l",
-   "title": "Pearl Jam Surprise Reveal Abe Laboriel Jr. as New Drummer at Ohana Festival",
+   "title": "Pearl Jam Surprise Perform With Drummer Abe Laboriel Jr. at Ohana Festival",
    "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPN3VYNDZQRXI3bDZqcU5udmJsZGJYc1hibDE1RFkxeENiWFl3RUNyYkptakpueGtER0RZaDZzbF9hM1ZTWThjTHo5cnhBb1RaSWo3eGhTRTlscFgwUG03RjN0MjdYOW5TbmR5cVNQeGRoYlhnTEVuZEwxc0VGWEZTTjdtOVRwcl9GWUpodDgwSlV2Z0JhdVBXRjBsMS1VRjN2QWpSWGVhOFFKOVFxVi1VRTk2WVUyZlFy?oc=5",
    "date": "2026-09-26T05:15:35.000Z",
    "source": "Rolling Stone"
@@ -1529,11 +1536,11 @@
    "source": "Pitchfork"
   },
   {
-   "id": "music-nfnklz",
-   "title": "Pitchfork",
-   "url": "https://news.google.com/rss/articles/CBMiOkFVX3lxTE5xdWlybzgtNUszMmIxV0F6RUxMbm9ja3U0VXVDQ2RYdmZTdlFYblBmYXdMMkJsZ2JfQ1E?oc=5",
-   "date": "2026-09-26T03:12:18.000Z",
-   "source": "Pitchfork"
+   "id": "music-palvo6",
+   "title": "“We have long been of the opinion that it is one of the most underrated electric guitars on the market”: The best guitar gear launched this week, ft. Phil Collen’s signature relic’d Jackson and your ’board’s final Boss?",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE91NUJCeWVEbDhJVURpclA0WnFTV2c5V05ocGs4LXhRTFRtMXFWdHNHVElWMXpSSHp0Y0hPaXVodVRCZkoxdER3TTJjbjN3MHJkdWJobjNmVWNzZGNvZmZTWnc4aFV0OUt6eHY5LQ?oc=5",
+   "date": "2026-09-26T04:00:00.000Z",
+   "source": "Guitar World"
   },
   {
    "id": "music-1ihqdyq",
@@ -1561,6 +1568,13 @@
    "title": "Madonna Scores 10th Dance Airplay No. 1 With ‘Confessions II’ Single ‘Danceteria’",
    "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQR1ZLd09zRWhWd3I3SWdRbzhsUkFZaVI4WC0zLVA3LUp3aEVKd2pyTmFubmNwZUNtdUZIYnZJT2JLbmxncU16UlV5MThOY3ZlUWZNbkxjWThWV3RsR0ZodXNNMnBmV0VGQWI5NkJfMHVuYjFYV050dG5qbmU2TWpVQ2RvOU03bTkyZ2cxc2tObVU3blJaSnl6YzNrNVREdFgtWlVHUA?oc=5",
    "date": "2026-09-25T21:28:46.000Z",
+   "source": "Billboard"
+  },
+  {
+   "id": "music-i9pdhk",
+   "title": "Soft Cell Talks the ‘Zeitgeist’ Coincidence of Releasing a ‘Danceteria’ Song the Same Year as Madonna",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNMzVZRHJKMkRickk4SzBiMVRQTzdaMndVMjlGdWRiVXdTOEozZVZnQjBKNS0wRXBGVVU3UFZoMk13NHhHc0lCV25oYkp2RXR3QXExWnEyazlDWHpJdWFaNnFSdFBZSE5nbGpyRkZUR2t6cHNTeTdMZnRxUGkwYnlya2pUV21SaVZqMUd3cWo2Nm4?oc=5",
+   "date": "2026-09-25T20:48:41.000Z",
    "source": "Billboard"
   },
   {
@@ -1695,6 +1709,13 @@
    "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQX1hvMXo0SXNRRnR4Q3BPb3RsWmRzU1pDNGM0elZPVjJOR3lqN3VpYVFLbHJMWDAzeDJwdFNMcFhZSG1mT3l5bk0yRjQyMWc1UExyYnYxNE9aSFphbFBLTUFoS0h3Vnpnc05RazFoa2tmNTlvYkt1THQyUEtZSXJMQlJiV2tacEdzM1lzM3BxV1ljY09fWWVqYXpkUjBJSE4tVWhoenByZ3NIbWl4aDAxb1FQM2w5Zw?oc=5",
    "date": "2026-09-25T16:02:50.000Z",
    "source": "Rolling Stone"
+  },
+  {
+   "id": "music-417qdg",
+   "title": "“I was broke. I only had $200 and we booked a gig. There was this guitar at a pawn shop that had been there for years...” How George Thorogood stumbled across the Gibson that became his go-to guitar – a week before his first gig with the Destroyers",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQdTU5R1NnWHo5TE1xbEpCVEs0VHhzdG5FdmNYT3REY1lEN045ZGVCOExJS1hSOFpNNGJnbl9EUUs1M2I3WEJXWFFvdG41RWgtdHM5OGNoenRYTUVISE1KWVJldlcyRWJXYTRDLVdJV3lCelJnWjdTc1FlVDh1blRrZGItbWg2OW5Db25wMnExZndLbDN2R1E0RVh4bmo0UXpLc1psdmJibk1Nb3RHTUNpYkxPRUNlV1FEbUxtXzlpa2I?oc=5",
+   "date": "2026-09-25T15:52:51.000Z",
+   "source": "Guitar World"
   },
   {
    "id": "music-g9udtl",
@@ -1912,38 +1933,9 @@
    "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQdVdyVndnZkVOaXBiV2VlS3p1cGtVT3dPVU15VVpkOHZhSV9PNlZ3c0ZkSDNtalg2NlJhVnRmSTdBZ3AwbmJld1Y2OFdnNlZZRE5VZy1qcF9sRUlzVnBBNGVRNXFlNUVwTGp4a2tzeVAwVUQ3ckc4a2NiUHdHb05UUjN3bkxyWXc5OHpmbF9jQ1p1WGphR2FOZjU1VkhicmlEaU0wakt2bWpvQjFjZHFV?oc=5",
    "date": "2026-09-25T03:32:04.000Z",
    "source": "Billboard"
-  },
-  {
-   "id": "music-sd6drn",
-   "title": "Rough Weather Cancels Oceans Calling Festival’s Opening Day",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPRWZRM0pTWURZZGJPZ0Q5SFBYX1BnMDlSb0J6Y0t1MGg2TVZBUk1NVk1sSW5pRG4wUHRDV2pBRHdfbi1YVTJnS0dXTkZ1QWlwbXJzVXBkSFo4LURVRURtaDdFUW1ZMWpfNGp3M29seXF3ZUxKWE9zcXl4eUJUSlpBQWo4bk1OdzluLTllVldnMF84ZGQzWXZlMjI2VXdmazBHQV85MmQ5Wl9CUFZreDZR?oc=5",
-   "date": "2026-09-25T03:05:16.000Z",
-   "source": "Rolling Stone"
-  },
-  {
-   "id": "music-1aqwl03",
-   "title": "Joe Jonas Falls Between Two Boats in ‘Terrifying’ Italy Accident: ‘I Just Need to Call My Kids’",
-   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOOXFCdHJ0em00QVpQc2FMUjhvYjlLYW11YmhJU2s2bDQzVWw2TDNiRnhOY1hocTVydVpGaTVZbGNZaXgxMGg1SXV6ZlRKQnNsXzZhcVdSU09JenpqMmU4SDU0clNzaG1OTG9ZV2tBdFo5UjI2YkFtM3VGTEdWR1E1QXd3enVkWXFtRmV4SDROZWRaNl82T1AxN3QxX0kxRWRDZ3BUTXJB?oc=5",
-   "date": "2026-09-25T03:00:09.000Z",
-   "source": "Billboard"
-  },
-  {
-   "id": "music-1hpqjz0",
-   "title": "Bono Says Dolly Parton ‘Sang Her Heart Out’ for Her Final Recording With U2",
-   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPandSOTdKZGVrTWxuWTAwSFBSRXRtaXlYc1E0Y3pwbnR1UWdacVV2QTROOGx4Q090bmM4cEtXM216dERMWnQ2Rld0Y0pVZW56RE5sUHB3MmhSMUFGdk1FTjAtMlZrQTNqeFYzaFNtaVZVT1psOG05WU14SFVqdjA5RktIdjFCYVU4aUNHbzdrMGdvT18z?oc=5",
-   "date": "2026-09-25T02:57:08.000Z",
-   "source": "Billboard"
   }
  ],
  "reddit": [
-  {
-   "id": "rd-1wca82e",
-   "title": "Japan is trialing a drug that regrows human teeth by blocking USAG-1—a protein that keeps dormant tooth buds switched off. Phase I is done. Phase IIa in children with congenital tooth loss is next. If it works, dentures and implants could become obsolete.",
-   "url": "https://www.reddit.com/r/interesting/comments/1wpwvz6/japan_is_trialing_a_drug_that_regrows_human_teeth/",
-   "date": "2026-09-25T13:50:54.000Z",
-   "source": "r/interesting",
-   "image": "https://preview.redd.it/hry2mlgn8orh1.png?width=640&crop=smart&auto=webp&s=27b9c301ac32f2c271a10d268024e3d48198b533"
-  },
   {
    "id": "rd-l2k37q",
    "title": "Man shares a photo of him and his daughter and a photo of him with his granddaughter",
@@ -1951,6 +1943,14 @@
    "date": "2026-09-25T21:32:12.000Z",
    "source": "r/MadeMeSmile",
    "image": "https://preview.redd.it/tkunphcuiqrh1.jpeg?width=640&crop=smart&auto=webp&s=5cefb2528c5bdb5f12cbf97baf73867214851873"
+  },
+  {
+   "id": "rd-1wca82e",
+   "title": "Japan is trialing a drug that regrows human teeth by blocking USAG-1—a protein that keeps dormant tooth buds switched off. Phase I is done. Phase IIa in children with congenital tooth loss is next. If it works, dentures and implants could become obsolete.",
+   "url": "https://www.reddit.com/r/interesting/comments/1wpwvz6/japan_is_trialing_a_drug_that_regrows_human_teeth/",
+   "date": "2026-09-25T13:50:54.000Z",
+   "source": "r/interesting",
+   "image": "https://preview.redd.it/hry2mlgn8orh1.png?width=640&crop=smart&auto=webp&s=27b9c301ac32f2c271a10d268024e3d48198b533"
   },
   {
    "id": "rd-ruwhmk",
@@ -1969,22 +1969,6 @@
    "image": "https://preview.redd.it/qcppngvbnprh1.jpeg?width=640&crop=smart&auto=webp&s=aff7f4c9e30445545dec3ac29e236003f56ea773"
   },
   {
-   "id": "rd-189oxwf",
-   "title": "Tom Cruise has been real quiet since this stunt dropped.",
-   "url": "https://www.reddit.com/r/nevertellmetheodds/comments/1wpu6u6/tom_cruise_has_been_real_quiet_since_this_stunt/",
-   "date": "2026-09-25T11:46:57.000Z",
-   "source": "r/nevertellmetheodds",
-   "image": "https://external-preview.redd.it/a2doamVkdmhtbnJoMTY5arvqMQj7Oc7Zp9kw899yJyakGa_XpIJaT2znHJV4.png?width=320&crop=smart&auto=webp&s=a3ac5b051033708fadb0ffef4ecb2783509bd8be"
-  },
-  {
-   "id": "rd-udwums",
-   "title": "Meirl",
-   "url": "https://www.reddit.com/r/meirl/comments/1wpxuc9/meirl/",
-   "date": "2026-09-25T14:29:44.000Z",
-   "source": "r/meirl",
-   "image": "https://preview.redd.it/bj7go70lforh1.jpeg?width=640&crop=smart&auto=webp&s=f75bd5932e2a818f26da166dd8958de3d899235a"
-  },
-  {
    "id": "rd-c6g2x7",
    "title": "The last footage of Harry R. Truman, a WWI veteran who refused to evacuate his lodge before the eruption of Mt. St. Helens in 1980, sealing his fate beneath the volcanic debris along with his 16 cats.",
    "url": "https://www.reddit.com/r/interestingasfuck/comments/1wpwbxw/the_last_footage_of_harry_r_truman_a_wwi_veteran/",
@@ -2001,36 +1985,20 @@
    "image": "https://preview.redd.it/zzsux3dc7prh1.jpeg?width=640&crop=smart&auto=webp&s=28ce923d2cc6b0207514c0dd72ec0aca58795a9a"
   },
   {
+   "id": "rd-1h50uub",
+   "title": "Hypocrisy 101",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wqer84/hypocrisy_101/",
+   "date": "2026-09-26T02:19:55.000Z",
+   "source": "r/SipsTea",
+   "image": "https://preview.redd.it/dvrlznbayrrh1.jpeg?width=640&crop=smart&auto=webp&s=a1da69c1ac47bace79b651e6c20c8f960347497c"
+  },
+  {
    "id": "rd-57av0h",
    "title": "TIL In 1846, a dead snail was glued to an index card at the British Museum. 4 years later they discovered it was actually still alive. The museum gave the snail a bath and it lived the remaining 2 years in a jar eating cabbage.",
    "url": "https://www.reddit.com/r/todayilearned/comments/1wq5b9i/til_in_1846_a_dead_snail_was_glued_to_an_index/",
    "date": "2026-09-25T19:21:36.000Z",
    "source": "r/todayilearned",
    "image": "https://external-preview.redd.it/jyL_b_naQ8AHoGA5fJ1eH8ispcYUp60iMkzxveRtQFE.jpeg?width=320&crop=smart&auto=webp&s=74b81e189dd04ef3851c69e137222a73dddbbb9b"
-  },
-  {
-   "id": "rd-1rhy0ir",
-   "title": "The staircase in my apartment",
-   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1wpt98m/the_staircase_in_my_apartment/",
-   "date": "2026-09-25T10:56:57.000Z",
-   "source": "r/mildlyinfuriating",
-   "image": "https://preview.redd.it/jn4kbzbmdnrh1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=69ca2545cc0ce1eb5b4ae64f7d67da36249526f0"
-  },
-  {
-   "id": "rd-h5m8ih",
-   "title": "I get it.",
-   "url": "https://www.reddit.com/r/Snorkblot/comments/1wpvdzj/i_get_it/",
-   "date": "2026-09-25T12:45:05.000Z",
-   "source": "r/Snorkblot",
-   "image": "https://preview.redd.it/8iu8q0wwwnrh1.jpeg?width=640&crop=smart&auto=webp&s=c789379c2f6ac42dac440fefc010a404c34f4c41"
-  },
-  {
-   "id": "rd-e60nep",
-   "title": "Lmao the standards",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wpq214/lmao_the_standards/",
-   "date": "2026-09-25T07:34:41.000Z",
-   "source": "r/SipsTea",
-   "image": "https://preview.redd.it/jwmc5nlidmrh1.jpeg?width=640&crop=smart&auto=webp&s=386b11fbd4434e070c4f3f2ad8a04a9c7361e3f7"
   },
   {
    "id": "rd-3vp33e",
@@ -2041,12 +2009,12 @@
    "image": "https://external-preview.redd.it/NHZ6OG00dGZicXJoMYZjnFR6h5aPJPqKLsMzgTfC-14bCjHZl7vOQiDcDRj6.png?width=320&crop=smart&auto=webp&s=6fe64d2d4f4f0e086284fcb117842590892ab9a2"
   },
   {
-   "id": "rd-efts9p",
-   "title": "Brad is right",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wpwyu9/brad_is_right/",
-   "date": "2026-09-25T13:54:22.000Z",
-   "source": "r/SipsTea",
-   "image": "https://preview.redd.it/6pv3ekt99orh1.jpeg?width=640&crop=smart&auto=webp&s=532a429dbebc5330ebf52dbc4fda680a38a9ef46"
+   "id": "rd-h5m8ih",
+   "title": "I get it.",
+   "url": "https://www.reddit.com/r/Snorkblot/comments/1wpvdzj/i_get_it/",
+   "date": "2026-09-25T12:45:05.000Z",
+   "source": "r/Snorkblot",
+   "image": "https://preview.redd.it/8iu8q0wwwnrh1.jpeg?width=640&crop=smart&auto=webp&s=c789379c2f6ac42dac440fefc010a404c34f4c41"
   },
   {
    "id": "rd-1dcg163",
@@ -2057,20 +2025,12 @@
    "image": "https://external-preview.redd.it/MHZjZmlhbzNvcHJoMSto48hWPRvpPklW5blOutpkp7EdFwWxtWvP1glGVBO9.png?width=320&crop=smart&auto=webp&s=cc805d435c282dcbf4b049ad92f5b90e94c5a2ab"
   },
   {
-   "id": "rd-1vdo23u",
-   "title": "This driveway was carved straight into the bedrock",
-   "url": "https://www.reddit.com/r/mildlyinteresting/comments/1wpwk9b/this_driveway_was_carved_straight_into_the_bedrock/",
-   "date": "2026-09-25T13:36:54.000Z",
-   "source": "r/mildlyinteresting",
-   "image": "https://preview.redd.it/i6ks00g56orh1.jpeg?width=640&crop=smart&auto=webp&s=041f78b36d8dd6559383f712f521dd569bb93245"
-  },
-  {
-   "id": "rd-ddv01i",
-   "title": "Minimalistic photography using everyday objects by KAPU",
-   "url": "https://www.reddit.com/r/oddlysatisfying/comments/1wpuhcm/minimalistic_photography_using_everyday_objects/",
-   "date": "2026-09-25T12:01:20.000Z",
-   "source": "r/oddlysatisfying",
-   "image": "https://external-preview.redd.it/aGhuODJ6bWRvbnJoMVyStIkfcfKwFRiV0B-U2wWY4Qx8_cepnBCIYCs2YvvE.png?width=640&crop=smart&auto=webp&s=175d590acfb62c8c6fda3488e6c5c1d4d331eaff"
+   "id": "rd-efts9p",
+   "title": "Brad is right",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wpwyu9/brad_is_right/",
+   "date": "2026-09-25T13:54:22.000Z",
+   "source": "r/SipsTea",
+   "image": "https://preview.redd.it/6pv3ekt99orh1.jpeg?width=640&crop=smart&auto=webp&s=532a429dbebc5330ebf52dbc4fda680a38a9ef46"
   },
   {
    "id": "rd-5j7dmh",
@@ -2081,44 +2041,20 @@
    "image": "https://preview.redd.it/15t84lwotorh1.gif?width=320&crop=smart&s=1964256860021511016d8a7a1c39160080715c79"
   },
   {
+   "id": "rd-1vdo23u",
+   "title": "This driveway was carved straight into the bedrock",
+   "url": "https://www.reddit.com/r/mildlyinteresting/comments/1wpwk9b/this_driveway_was_carved_straight_into_the_bedrock/",
+   "date": "2026-09-25T13:36:54.000Z",
+   "source": "r/mildlyinteresting",
+   "image": "https://preview.redd.it/i6ks00g56orh1.jpeg?width=640&crop=smart&auto=webp&s=041f78b36d8dd6559383f712f521dd569bb93245"
+  },
+  {
    "id": "rd-1ms7or7",
    "title": "My friend spotted this whilst in Paris...",
    "url": "https://www.reddit.com/r/pics/comments/1wq7nzx/my_friend_spotted_this_whilst_in_paris/",
    "date": "2026-09-25T20:55:24.000Z",
    "source": "r/pics",
    "image": "https://preview.redd.it/1v0081ibcqrh1.jpeg?width=640&crop=smart&auto=webp&s=c2c8ce309f9173c09d87a6855a3cff383fded152"
-  },
-  {
-   "id": "rd-1h50uub",
-   "title": "Hypocrisy 101",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wqer84/hypocrisy_101/",
-   "date": "2026-09-26T02:19:55.000Z",
-   "source": "r/SipsTea",
-   "image": "https://preview.redd.it/dvrlznbayrrh1.jpeg?width=640&crop=smart&auto=webp&s=a1da69c1ac47bace79b651e6c20c8f960347497c"
-  },
-  {
-   "id": "rd-1otkyi0",
-   "title": "​The most majestic catwalk you'll see today",
-   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wpq3mv/the_most_majestic_catwalk_youll_see_today/",
-   "date": "2026-09-25T07:37:35.000Z",
-   "source": "r/interestingasfuck",
-   "image": "https://external-preview.redd.it/ZG54eGhncDBlbXJoMfK_bXNmilRVzVPxLUPgDiJ5i24Mc0x2Uqc_MFgDme-B.jpeg?width=320&crop=smart&auto=webp&s=e987b5513e91eaf1deb3f71a27ceb8674bd564b0"
-  },
-  {
-   "id": "rd-8i6iro",
-   "title": "This is how I was terminated. What’s the doucheiest way you were terminated",
-   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1wpyyet/this_is_how_i_was_terminated_whats_the_doucheiest/",
-   "date": "2026-09-25T15:13:18.000Z",
-   "source": "r/mildlyinfuriating",
-   "image": "https://preview.redd.it/5xqq91ucnorh1.jpeg?width=640&crop=smart&auto=webp&s=91579d20353abce4d2e2067ebc130accf55dbf86"
-  },
-  {
-   "id": "rd-12ean2y",
-   "title": "Petah? I genuinely have no idea",
-   "url": "https://www.reddit.com/r/PeterExplainsTheJoke/comments/1wpsltf/petah_i_genuinely_have_no_idea/",
-   "date": "2026-09-25T10:18:50.000Z",
-   "source": "r/PeterExplainsTheJoke",
-   "image": "https://preview.redd.it/h65tsigt6nrh1.jpeg?width=640&crop=smart&auto=webp&s=d610f47c550a9d8ac4da9f36bcb145e2258dc574"
   },
   {
    "id": "rd-5wxlaf",
@@ -2129,12 +2065,76 @@
    "image": "https://preview.redd.it/uvf38qpc9qrh1.jpeg?width=640&crop=smart&auto=webp&s=fb833a061d0e130c34aad9c174cc3edfee0828e4"
   },
   {
+   "id": "rd-8i6iro",
+   "title": "This is how I was terminated. What’s the doucheiest way you were terminated",
+   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1wpyyet/this_is_how_i_was_terminated_whats_the_doucheiest/",
+   "date": "2026-09-25T15:13:18.000Z",
+   "source": "r/mildlyinfuriating",
+   "image": "https://preview.redd.it/5xqq91ucnorh1.jpeg?width=640&crop=smart&auto=webp&s=91579d20353abce4d2e2067ebc130accf55dbf86"
+  },
+  {
+   "id": "rd-1qfspr6",
+   "title": "Old but gold",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wq7p1t/old_but_gold/",
+   "date": "2026-09-25T20:56:34.000Z",
+   "source": "r/SipsTea",
+   "image": "https://external-preview.redd.it/Njh1c2Z2dWZjcXJoMSH7pkpsrThWYy3IvqObAab1FfxevDD2b4XW7Fbh7wyG.png?width=320&crop=smart&auto=webp&s=39c49fc93a0a0e9c454ee0f4642868ad7d66c6cd"
+  },
+  {
+   "id": "rd-43ou2y",
+   "title": "This 'R' I wrote",
+   "url": "https://www.reddit.com/r/oddlysatisfying/comments/1wq00tz/this_r_i_wrote/",
+   "date": "2026-09-25T15:55:29.000Z",
+   "source": "r/oddlysatisfying",
+   "image": "https://preview.redd.it/l03mccqvuorh1.jpeg?width=640&crop=smart&auto=webp&s=4183f4906792fb68af1bc792eac0eec016679d8f"
+  },
+  {
+   "id": "rd-t5lhdd",
+   "title": "of an illegal flashlight beam",
+   "url": "https://www.reddit.com/r/AbsoluteUnits/comments/1wqgj0t/of_an_illegal_flashlight_beam/",
+   "date": "2026-09-26T03:53:31.000Z",
+   "source": "r/AbsoluteUnits",
+   "image": "https://external-preview.redd.it/Y3Y3dDJpMHhlc3JoMf2sRrJ1WSQBpkgYWmdSoAqE-o-VPXikakJXkMUPWon_.png?width=640&crop=smart&auto=webp&s=1e5f6e6b91e6bca9d57b6a404ad1384bc36dcab8"
+  },
+  {
    "id": "rd-d1rx5h",
    "title": "As it should be...",
    "url": "https://www.reddit.com/r/PoursTea/comments/1wpwp6i/as_it_should_be/",
    "date": "2026-09-25T13:42:50.000Z",
    "source": "r/PoursTea",
    "image": "https://preview.redd.it/dlxr55u77orh1.jpeg?width=320&crop=smart&auto=webp&s=3941af6d52c4d1a45b425e7e88702bf00f068a21"
+  },
+  {
+   "id": "rd-spw5j4",
+   "title": "Ed Sheeran’s upcoming shows at Robert Kraft’s Gillette Stadium have been cancelled due to bad weather",
+   "url": "https://www.reddit.com/r/Fauxmoi/comments/1wpy1ql/ed_sheerans_upcoming_shows_at_robert_krafts/",
+   "date": "2026-09-25T14:37:49.000Z",
+   "source": "r/Fauxmoi",
+   "image": "https://preview.redd.it/zn9xviz0horh1.jpeg?width=640&crop=smart&auto=webp&s=5054a383c3d1c256a49ecd0f01814b554e9441fb"
+  },
+  {
+   "id": "rd-1yvg2m8",
+   "title": "After missing out on an Olympic medal, her father’s comforting embrace reminded her that his pride in her goes far beyond any medal",
+   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wpxbgr/after_missing_out_on_an_olympic_medal_her_fathers/",
+   "date": "2026-09-25T14:08:20.000Z",
+   "source": "r/MadeMeSmile",
+   "image": "https://external-preview.redd.it/OGR1emhid3Fib3JoMQklyvWmkYJYI81VEw8Dvo8aA9QuYC1hDRktBvH7sQK0.png?width=320&crop=smart&auto=webp&s=67f834b96bc82f04fb8c5ea4b2b4c6970ddfb64b"
+  },
+  {
+   "id": "rd-g7ivgy",
+   "title": "Should Snow White be updated for the modern audience?",
+   "url": "https://www.reddit.com/r/okbuddycinephile/comments/1wq3atz/should_snow_white_be_updated_for_the_modern/",
+   "date": "2026-09-25T18:02:41.000Z",
+   "source": "r/okbuddycinephile",
+   "image": "https://preview.redd.it/qnucczmhhprh1.jpeg?width=640&crop=smart&auto=webp&s=d43f311860d48ec4a5ee5a29490269a68bfe37b4"
+  },
+  {
+   "id": "rd-1webmoy",
+   "title": "His wife understood the assignment.",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wq1btk/his_wife_understood_the_assignment/",
+   "date": "2026-09-25T16:45:35.000Z",
+   "source": "r/SipsTea",
+   "image": "https://external-preview.redd.it/MDV0aTJ3eXMzcHJoMWFLeqL4YX8zd9WF_moFTNWjgulFUF-rYqAC2pwxVcua.png?width=320&crop=smart&auto=webp&s=27ecb095b02c62c8a34210b9100fe1631872f166"
   }
  ]
 }
