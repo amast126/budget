@@ -8,6 +8,7 @@ Private, single-user dashboard at **https://amast126.github.io/budget/**. Only t
 - **Learning** (`src/learning*.js*`): Cloud & AI certification roadmap with links, descriptions and impact, progress tracking (status, exam dates, study hours, renewals). Cert details live in `src/learning-catalog.js`; progress is saved in `trackers/alec-tracker-learning`.
 - **Cooking** (`src/cooking*.js*`, `src/ingredients.mjs`): kitchen list (fridge, freezer, pantry, spices, with a "running low" flag), grocery list, and recipes matched against what you have. "Finish shop" logs the total under Groceries in the budget and moves bought items into the kitchen. Saved in `trackers/alec-tracker-cooking`.
 - **Auto** (`src/auto.jsx`, `src/auto-logic.js`): the 2021 Altima SL AWD. Deadlines (NYS inspection, registration, insurance renewal), maintenance on Nissan's schedule with a service log (costs can go straight into Gas & Auto), mileage, warranty, NHTSA recalls, and costs read from the budget (car payment, Geico, Gas & Auto). A Home card shows what's due. Saved in `trackers/alec-tracker-auto`.
+- **Health** (`src/health.jsx`, `src/health-logic.js`, `src/food-api.js`): daily calories and macros against a target (Mifflin–St Jeor from sex, age, height, weight and activity, or your own numbers), a food log by meal with USDA FoodData Central search, barcode lookup (Open Food Facts, then USDA) by camera, photo or number, recent foods, quick add, and copy-yesterday; weight with a 7-day trend chart; steps and workouts; a 7-day summary; a Home card. Budget Bytes recipes on the Cooking tab can be logged by the serving. Profile, weigh-ins and the food library are in `trackers/alec-tracker-health`; each year's days are in `trackers/alec-tracker-health-<year>`. Barcode reading on iPhone uses ZXing (`vendor/zxing-0.23.0.min.js`, Apache-2.0, loaded only when scanning).
 - **Recipes** (`recipes.json`, written weekly by `scripts/fetch-recipes.mjs`): popular Budget Bytes recipes (25+ ratings, 4.3+ stars) with cost per serving and ingredient names, plus 12 picks a week that don't repeat for 12 weeks. Only titles, links, photos, costs and ingredients are kept; the cooking steps stay on budgetbytes.com.
 
 Both read and write the same Firestore document (`trackers/alec-tracker`), so a quick add or a bill tick on Home appears in the budget within a second, and the other way round.
@@ -40,7 +41,7 @@ Access is enforced twice: `config.js` (the app refuses other accounts) and the F
 ```bash
 npm install
 ./build.sh
-BUDGET_EXPORT=/path/to/budget-tracker-export.json RECIPES_FIXTURE=/path/to/recipes.json node test/run.mjs shots/
+BUDGET_EXPORT=/path/to/budget-tracker-export.json RECIPES_FIXTURE=/path/to/recipes.json EAN_IMAGE=/path/to/barcode.png node test/run.mjs shots/
 ```
 
 ## Deploy
