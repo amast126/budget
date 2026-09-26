@@ -5,9 +5,12 @@ import { createFirebaseBackend } from './backend.js';
 import { Icon } from './ui.jsx';
 import { LearningPage, LearningHomeCard } from './learning.jsx';
 import { defaultLearning, normalize as normalizeLearning } from './learning-logic.js';
-import { CookingPage, CookingHomeCard, FinishShopSheet } from './cooking.jsx';
+import { CookingPage, CookingHomeCard, FinishShopSheet, tonightPick } from './cooking.jsx';
 import { defaultCooking, normalizeCooking, putAway, groceriesCategory } from './cooking-logic.js';
-import { WeatherCard, TodoCard } from './home-cards.jsx';
+import { WeatherCard, TodoCard, useForecast } from './home-cards.jsx';
+import { Hero, RingsCard, WeekCard, WeekSheet, InsightsCard, HeatmapCard, useNow } from './pulse.jsx';
+import { CountUp, Skeleton } from './fx.jsx';
+import { Sparkline } from './spark.jsx';
 import { AutoPage, AutoHomeCard, useRecalls } from './auto.jsx';
 import { defaultAuto, normalizeAuto } from './auto-logic.js';
 import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
@@ -25,6 +28,7 @@ import {
   dateLabel,
   keyOf,
   STATUS_LABEL,
+  daysIn,
 } from './budget-logic.js';
 
 if (!document.getElementById('dash-css')) {
@@ -93,7 +97,32 @@ function Bar({ spent, budget, frac, status }) {
 }
 
 // ---------------------------------------------------------------- home cards
-function MoneyCard({ s }) {
+// Spending so far this month, day by day, against an even pace to the budget.
+function SpendSpark({ data, s }) {
+  const m = (data.months || {})[s.key];
+  const days = s.pacing.days;
+  const upto = s.pacing.day;
+  if (!m || upto < 2) return null;
+  const byDay = new Array(days).fill(0);
+  (m.transactions || []).forEach((t) => {
+    const d = Number(String(t.date || '').slice(8, 10));
+    if (d >= 1 && d <= days) byDay[d - 1] += Number(t.amount) || 0;
+  });
+  let cum = 0;
+  const mon = new Date(`${s.key}-15T12:00:00`).toLocaleString('en-US', { month: 'short' });
+  const points = byDay.slice(0, upto).map((v, i) => {
+    cum += v;
+    return { i, v: cum, label: `${mon} ${i + 1}` };
+  });
+  return (
+    <div className="money-spark">
+      <Sparkline points={points} reference={[{ i: 0, v: 0 }, { i: days - 1, v: s.budget }]} domain={days - 1} tone={s.status === 'on' || s.status === 'under' ? 'green' : 'amber'} fmt={fmt0} label="Spent so far this month" height={52} />
+      <div className="muted small">Spent so far vs an even pace (gray line) to {fmt0(s.budget)}</div>
+    </div>
+  );
+}
+
+function MoneyCard({ s, data }) {
   const monthName = new Date(`${s.key}-01T12:00:00`).toLocaleString('en-US', { month: 'long' });
   const pd = s.payday;
   return (
@@ -105,7 +134,9 @@ function MoneyCard({ s }) {
       <div className="money-grid">
         <div className="money-main">
           <div className="muted small">{s.left >= 0 ? 'Left to spend' : 'Over budget by'}</div>
-          <div className={`big num ${s.left < 0 ? 'neg' : ''}`}>{fmt(Math.abs(s.left))}</div>
+          <div className={`big num ${s.left < 0 ? 'neg' : ''}`}>
+            <CountUp value={Math.abs(s.left)} format={fmt} />
+          </div>
           <div className="muted small num">
             {fmt(s.spent)} spent of {fmt0(s.budget)}
           </div>
@@ -117,6 +148,7 @@ function MoneyCard({ s }) {
         </div>
       </div>
       <Bar spent={s.spent} budget={s.budget} frac={s.pacing.frac} status={s.status} />
+      {data ? <SpendSpark data={data} s={s} /> : null}
       <div className="row-between">
         <Pill status={s.status} />
         <a className="link small" href="#/budget">Open budget →</a>
@@ -347,66 +379,86 @@ function NewsPage({ news, read, markRead, markAllRead }) {
   );
 }
 
+let homeSeen = false;
 function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
-  // Slots carry a phone order (weather, to-do, then money); on wide screens the two columns show as laid out.
+  const place = (home && home.place) || DEFAULT_PLACE;
+  const forecast = useForecast(place);
+  const now = useNow();
+  const day = todayISO();
+  const [week, setWeek] = useState(false);
+  const [intro] = useState(() => !homeSeen);
+  useEffect(() => {
+    homeSeen = true;
+  }, []);
+  // Everything the rings, streaks, insights and header read from, recomputed only when a document changes.
+  const ctx = useMemo(
+    () => ({ data, health, years: healthYears, hk, hkYears, learning, home, auto, today: day, now: new Date(), pick: tonightPick(cooking, recipes) }),
+    [data, health, healthYears, hk, hkYears, learning, home, auto, cooking, recipes, day]
+  );
+  // Slots carry a phone order; on wide screens the two columns show as laid out.
   return (
-    <div className="home">
-      <header className="page-head">
-        <h1 className="page-title">
-          {greeting()}
-          {first ? `, ${first}` : ''}
-        </h1>
-        <div className="muted">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
-      </header>
+    <div className={`home ${intro ? 'intro' : ''}`}>
+      <Hero ctx={ctx} wx={forecast.s} greeting={greeting(now)} name={first} />
       {dataError ? <div className="alert">{dataError}</div> : null}
       <div className="grid home-grid">
         <div className="col">
           <div className="slot o1">
-            <WeatherCard place={(home && home.place) || DEFAULT_PLACE} onPlace={(p) => mutateHome((d) => (d.place = p), `Weather set to ${p.name}`)} />
+            <RingsCard ctx={ctx} onReview={() => setWeek(true)} />
+          </div>
+          <div className="slot o2">
+            <WeekCard ctx={ctx} onOpen={() => setWeek(true)} />
           </div>
           {s ? (
             <>
-              <div className="slot o4">
-                <MoneyCard s={s} />
-              </div>
-              <div className="slot o6">
-                <QuickAdd s={s} onAdd={onAdd} />
-              </div>
-              <div className="slot o7">
-                <BillsCard s={s} onToggle={onToggle} />
+              <div className="slot o5">
+                <MoneyCard s={s} data={data} />
               </div>
               <div className="slot o8">
-                <WatchCard s={s} />
+                <QuickAdd s={s} onAdd={onAdd} />
+              </div>
+              <div className="slot o9">
+                <BillsCard s={s} onToggle={onToggle} />
               </div>
             </>
           ) : (
-            <div className="slot o4">
-              <section className="card">
-                <p className="empty">{dataError ? 'Budget data unavailable.' : 'Loading your budget…'}</p>
-              </section>
-            </div>
+            <div className="slot o5">{dataError ? <section className="card"><p className="empty">Budget data unavailable.</p></section> : <Skeleton lines={4} tall />}</div>
           )}
+          <div className="slot o7">
+            <InsightsCard ctx={ctx} />
+          </div>
+          <div className="slot o11">
+            <HeatmapCard ctx={ctx} />
+          </div>
+          {s ? (
+            <div className="slot o12">
+              <WatchCard s={s} />
+            </div>
+          ) : null}
         </div>
         <div className="col">
-          <div className="slot o2">
+          <div className="slot o3">
+            <WeatherCard place={place} forecast={forecast} onPlace={(p) => mutateHome((d) => (d.place = p), `Weather set to ${p.name}`)} />
+          </div>
+          <div className="slot o4">
             <TodoCard data={home} mutate={mutateHome} onDelete={onDeleteTodo} />
           </div>
-          <div className="slot o3">
+          <div className="slot o6">
             <HealthHomeCard health={health} years={healthYears} hk={hk} hkYears={hkYears} />
           </div>
-          <div className="slot o5">
+          <div className="slot o10">
             <AutoHomeCard auto={auto} data={data} recalls={recalls} />
           </div>
-          <div className="slot o9">
+          <div className="slot o13">
             <LearningHomeCard data={learning} mutate={mutateLearning} />
           </div>
-          <div className="slot o10">
+          <div className="slot o14">
             <CookingHomeCard data={cooking} recipes={recipes} />
           </div>
         </div>
       </div>
+      {week ? <WeekSheet ctx={ctx} onClose={() => setWeek(false)} /> : null}
     </div>
   );
 }

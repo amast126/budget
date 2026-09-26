@@ -600,6 +600,12 @@ export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogR
   );
 }
 
+// Tonight's best dinner from what's in the kitchen (used by the Home header too).
+export function tonightPick(data, recipes) {
+  if (!data || !data.kitchen.length) return null;
+  return rankRecipes(listFor(data, recipes), kitchenKeys(data), { course: 'main', limit: 1 })[0] || null;
+}
+
 export function CookingHomeCard({ data, recipes }) {
   const kKeys = useMemo(() => (data ? kitchenKeys(data) : []), [data]);
   const best = useMemo(() => (data && data.kitchen.length ? rankRecipes(listFor(data, recipes), kKeys, { course: 'main', limit: 1 })[0] : null), [data, recipes, kKeys]);

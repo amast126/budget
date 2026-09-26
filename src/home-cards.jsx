@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
+import { SwipeRow, celebrate, centerOf } from './fx.jsx';
 import { DEFAULT_PLACE, forecastUrl, geocodeUrl, placesFrom, summarize, addTodo, toggleTodo, clearDone } from './home-logic.js';
 
 const CACHE = 'dash.weather';
@@ -76,11 +77,11 @@ function PlaceSearch({ onPick, onCancel }) {
   );
 }
 
-export function WeatherCard({ place, onPlace }) {
+// The forecast for a place, cached on this device and refreshed every 30 minutes (shared by the header and the card).
+export function useForecast(place) {
   const key = placeKey(place);
   const [w, setW] = useState(() => readCache());
   const [err, setErr] = useState('');
-  const [editing, setEditing] = useState(false);
   const load = useCallback(() => {
     fetch(forecastUrl(place))
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
@@ -102,7 +103,13 @@ export function WeatherCard({ place, onPlace }) {
       document.removeEventListener('visibilitychange', on);
     };
   }, [load]);
-  const s = w && w.key === key ? summarize(w.data) : null;
+  const s = useMemo(() => (w && w.key === key ? summarize(w.data) : null), [w, key]);
+  return { s, err };
+}
+
+export function WeatherCard({ place, onPlace, forecast }) {
+  const [editing, setEditing] = useState(false);
+  const { s, err } = forecast;
   return (
     <section className="card weather">
       <div className="card-head">
@@ -140,6 +147,11 @@ export function WeatherCard({ place, onPlace }) {
             </div>
           </div>
           <p className="wx-sentence">{s.sentence}</p>
+          {s.tennis ? (
+            <p className="wx-tennis small">
+              <span aria-hidden="true">🎾</span> Good tennis weather {s.tennis.label}
+            </p>
+          ) : null}
           <div className="wx-hours" role="list" aria-label="Next 12 hours">
             {s.hours.map((h) => (
               <div key={h.time} className="wx-hour" role="listitem" title={h.text}>
@@ -177,17 +189,22 @@ export function TodoCard({ data, mutate, onDelete }) {
     setText('');
     mutate((d) => addTodo(d, v));
   };
+  // Finishing a to-do gets a small burst of confetti from where you tapped.
+  const toggle = (t, from) => {
+    if (!t.done) celebrate(from || {});
+    mutate((d) => toggleTodo(d, t.id));
+  };
   const row = (t) => (
-    <li key={t.id} className={`bill todo-row ${t.done ? 'done' : ''}`}>
+    <SwipeRow key={t.id} className={`bill todo-row ${t.done ? 'done' : ''}`} onRight={(e) => toggle(t, e && e.clientX != null ? { x: e.clientX, y: e.clientY } : {})} onLeft={() => onDelete(t)} rightLabel={t.done ? 'Undo' : 'Done'}>
       <label className="bill-check">
-        <input type="checkbox" checked={!!t.done} onChange={() => mutate((d) => toggleTodo(d, t.id))} aria-label={`${t.text} done`} />
+        <input type="checkbox" checked={!!t.done} onChange={(e) => toggle(t, centerOf(e.currentTarget.parentElement))} aria-label={`${t.text} done`} />
         <span className="box">{t.done ? <Icon name="check" size={14} /> : null}</span>
       </label>
       <span className="grow bill-name todo-text">{t.text}</span>
       <button className="x" aria-label={`Delete ${t.text}`} onClick={() => onDelete(t)}>
         ×
       </button>
-    </li>
+    </SwipeRow>
   );
   return (
     <section className="card todo">
@@ -202,6 +219,7 @@ export function TodoCard({ data, mutate, onDelete }) {
         </button>
       </form>
       {open.length ? <ul className="list">{open.map(row)}</ul> : <p className="empty">{done.length ? 'Everything’s done.' : 'Nothing on the list yet.'}</p>}
+      {open.length ? <p className="muted small swipe-hint">Swipe right to finish, left to delete.</p> : null}
       {done.length ? (
         <div className="todo-done">
           <div className="row-between">

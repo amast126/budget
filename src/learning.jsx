@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
+import { MiniBars } from './spark.jsx';
+import { celebrate } from './fx.jsx';
 import { CERTS, OPTIONAL, TIPS, SOURCES, PRICES_NOTE } from './learning-catalog.js';
 import {
   STATUSES,
@@ -8,6 +10,7 @@ import {
   statusOf,
   loggedHours,
   hoursThisWeek,
+  weekStart,
   projectPlan,
   currentStep,
   renewals,
@@ -54,6 +57,24 @@ function LogButtons({ onLog, busy }) {
 }
 
 // ---------------------------------------------------------------- Home card
+// Hours studied in each of the last 8 weeks (this week highlighted), against the weekly goal.
+function StudyWeeks({ data, goal }) {
+  const start = weekStart();
+  const weeks = [];
+  for (let i = 7; i >= 0; i--) {
+    const [y, m, d] = start.split('-').map(Number);
+    const s = new Date(y, m - 1, d - i * 7);
+    const e = new Date(y, m - 1, d - i * 7 + 6);
+    const iso = (x) => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
+    const from = iso(s);
+    const to = iso(e);
+    const h = data.log.filter((x) => x.date >= from && x.date <= to).reduce((a, x) => a + (Number(x.minutes) || 0), 0) / 60;
+    weeks.push({ label: i === 0 ? 'This week' : `Week of ${s.toLocaleString('en-US', { month: 'short', day: 'numeric' })}`, v: h, current: i === 0 });
+  }
+  if (!weeks.some((w) => w.v > 0)) return null;
+  return <MiniBars values={weeks} goal={goal} fmt={(v) => `${Math.round(v * 10) / 10}h`} label="Study hours, last 8 weeks" />;
+}
+
 export function LearningHomeCard({ data, mutate }) {
   if (!data) return null;
   const cur = currentStep(data);
@@ -93,6 +114,7 @@ export function LearningHomeCard({ data, mutate }) {
             <LogButtons onLog={(m) => mutate((d) => logTime(d, cur, m), `Logged ${m >= 60 ? m / 60 + 'h' : m + 'm'} on ${c.code === 'Skill' ? c.name : c.code}`)} />
           </div>
           <Progress value={week / goal} tone={week >= goal ? 'green' : 'amber'} />
+          <StudyWeeks data={data} goal={goal} />
         </>
       ) : (
         <p className="empty">Everything on the roadmap is done. Pick the next one on the Learning tab.</p>
@@ -155,7 +177,11 @@ function CertDetail({ id, data, mutate, inPlan, afterId }) {
       <div className="track">
         <div className="seg" role="group" aria-label={`${label} status`}>
           {STATUSES.map(([k, l]) => (
-            <button key={k} className={`seg-btn ${status === k ? 'on' : ''}`} onClick={() => status !== k && mutate((d) => setStatus(d, id, k))}>
+            <button key={k} className={`seg-btn ${status === k ? 'on' : ''}`} onClick={(e) => {
+              if (status === k) return;
+              if (k === 'passed') celebrate({ big: true });
+              mutate((d) => setStatus(d, id, k), k === 'passed' ? `Passed ${c.code === 'Skill' ? c.name : c.code}. Nice work!` : undefined);
+            }}>
               {l}
             </button>
           ))}

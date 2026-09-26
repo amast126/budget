@@ -4,7 +4,7 @@ import { uid, todayISO } from './budget-logic.js';
 export const DEFAULT_PLACE = { name: 'Dix Hills, NY', zip: '11746', lat: 40.80482, lon: -73.33623 };
 
 export function defaultHome() {
-  return { version: 1, place: { ...DEFAULT_PLACE }, todos: [] };
+  return { version: 1, place: { ...DEFAULT_PLACE }, todos: [], doneLog: {} };
 }
 export function normalizeHome(d) {
   const base = defaultHome();
@@ -14,6 +14,7 @@ export function normalizeHome(d) {
     version: 1,
     place: p && Number.isFinite(p.lat) && Number.isFinite(p.lon) && p.name ? p : base.place,
     todos: Array.isArray(d.todos) ? d.todos.filter((t) => t && t.text) : [],
+    doneLog: d.doneLog && typeof d.doneLog === 'object' ? d.doneLog : {}, // to-dos finished per day, kept after "Clear done"
     updatedAt: d.updatedAt,
   };
 }
@@ -30,8 +31,15 @@ export function toggleTodo(d, id) {
   const t = d.todos.find((x) => x.id === id);
   if (!t) return;
   t.done = !t.done;
-  if (t.done) t.doneAt = todayISO();
-  else delete t.doneAt;
+  d.doneLog = d.doneLog || {};
+  if (t.done) {
+    t.doneAt = todayISO();
+    d.doneLog[t.doneAt] = (d.doneLog[t.doneAt] || 0) + 1;
+  } else {
+    if (t.doneAt && d.doneLog[t.doneAt]) d.doneLog[t.doneAt] -= 1;
+    delete t.doneAt;
+  }
+  return t.done;
 }
 export function removeTodo(d, id) {
   const i = d.todos.findIndex((x) => x.id === id);
@@ -55,7 +63,7 @@ export function forecastUrl(p) {
     latitude: p.lat,
     longitude: p.lon,
     current: 'temperature_2m,apparent_temperature,weather_code,is_day,wind_speed_10m,wind_gusts_10m,relative_humidity_2m',
-    hourly: 'temperature_2m,precipitation_probability,weather_code,is_day',
+    hourly: 'temperature_2m,precipitation_probability,weather_code,is_day,wind_speed_10m',
     daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max',
     temperature_unit: 'fahrenheit',
     wind_speed_unit: 'mph',
@@ -146,7 +154,18 @@ export function summarize(w) {
   const gusts = Math.round(w.current.wind_gusts_10m || 0);
   const wind = Math.round(w.current.wind_speed_10m || 0);
   const windLine = gusts >= 30 || wind >= 18 ? ` Windy, gusts to ${gusts} mph.` : '';
+  const tomorrow = w.daily.time && w.daily.time[1] ? { text: describe(w.daily.weather_code[1], 1).text, high: Math.round(w.daily.temperature_2m_max[1]), low: Math.round(w.daily.temperature_2m_min[1]), rain: w.daily.precipitation_probability_max[1] } : null;
   return {
+    code: w.current.weather_code,
+    isDay: w.current.is_day,
+    nowISO: now,
+    sunriseISO: d('sunrise'),
+    sunsetISO: d('sunset'),
+    dayText: describe(d('weather_code'), 1).text,
+    rainFrom: wet != null ? hourLabel(w.hourly.time[wet]) : null,
+    rainNow: wet != null && w.hourly.time[wet] <= now.slice(0, 13) + ':00',
+    tomorrow,
+    tennis: tennisWindow(w),
     temp: Math.round(w.current.temperature_2m),
     feels: Math.round(w.current.apparent_temperature),
     now: cur,
@@ -162,4 +181,50 @@ export function summarize(w) {
     sentence: `${describe(d('weather_code'), 1).text} today, high ${high}°, low ${low}°. ${rainLine}${windLine}`,
     hours,
   };
+}
+
+// Good hours for tennis: dry (no rain codes, rain chance 20% or less), 52–88°F, wind under 14 mph, daylight between
+// 8 am and 8 pm. Returns the longest run of 2+ such hours later today, else tomorrow: { when, from, to, label }.
+const WET = (code) => Number(code) >= 51;
+export function tennisWindow(w) {
+  if (!w || !w.hourly || !w.current) return null;
+  const now = w.current.time;
+  const today = now.slice(0, 10);
+  const H = w.hourly;
+  const good = (i) => {
+    const h = Number(H.time[i].slice(11, 13));
+    const t = H.temperature_2m[i];
+    const wind = H.wind_speed_10m ? H.wind_speed_10m[i] : 0;
+    return h >= 8 && h <= 19 && t >= 52 && t <= 88 && (H.precipitation_probability[i] || 0) <= 20 && !WET(H.weather_code[i]) && (wind == null || wind < 14);
+  };
+  const runs = (day, fromHour) => {
+    let best = null;
+    let start = null;
+    for (let i = 0; i < H.time.length; i++) {
+      const t = H.time[i];
+      const ok = t.slice(0, 10) === day && t.slice(0, 13) >= fromHour && good(i);
+      if (ok && start == null) start = i;
+      if ((!ok || i === H.time.length - 1) && start != null) {
+        const end = ok ? i : i - 1;
+        if (end - start + 1 >= 2 && (!best || end - start > best[1] - best[0])) best = [start, end];
+        start = null;
+      }
+    }
+    return best;
+  };
+  const nextHour = `${today}T${String(Math.min(23, Number(now.slice(11, 13)) + 1)).padStart(2, '0')}`;
+  let when = 'today';
+  let r = runs(today, nextHour);
+  if (!r && H.time.some((t) => t.slice(0, 10) > today)) {
+    const tmr = H.time.find((t) => t.slice(0, 10) > today).slice(0, 10);
+    r = runs(tmr, `${tmr}T00`);
+    when = 'tomorrow';
+  }
+  if (!r) return null;
+  const h0 = Number(H.time[r[0]].slice(11, 13));
+  const h1 = Number(H.time[r[1]].slice(11, 13)) + 1;
+  const ap = (h) => (h < 12 ? 'AM' : 'PM');
+  const hh = (h) => h % 12 || 12;
+  const range = ap(h0) === ap(h1) ? `${hh(h0)}–${hh(h1)} ${ap(h1)}` : `${hh(h0)} ${ap(h0)}–${hh(h1)} ${ap(h1)}`;
+  return { when, from: h0, to: h1, label: `${when === 'tomorrow' ? 'tomorrow ' : ''}${range}` };
 }

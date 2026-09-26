@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { useWidth, Tip } from './chart-kit.jsx';
+import { CountUp, Skeleton, useSwipe } from './fx.jsx';
+import { MiniBars } from './spark.jsx';
 import { hasHk, hkDay, stepsFor, workoutsOn, ringsOf, fmtMins, daysBetween as hkDaysBetween } from './hk-logic.js';
 import { ImportCard, DayVitalsCard, RingBars, ActivityView, HeartView, SleepView, BodyView, HearingView, ViewTabs, EmptyHk, WorkoutSheet, workoutLine } from './health-hk.jsx';
 import { dateLabel } from './budget-logic.js';
@@ -137,7 +139,7 @@ function WeightChart({ series, days }) {
         {pts.map((p) => (
           <circle key={p.date} className="wdot" cx={x(p.date)} cy={y(p.lb)} r={pts.length > 120 ? 2.5 : 4} />
         ))}
-        {pts.length > 1 ? <path className="wline" d={line} /> : null}
+        {pts.length > 1 ? <path className="wline" d={line} pathLength="1" /> : null}
         <text className="end-label num" x={x(last.date) + 7} y={y(last.avg) + 4}>
           {g1(last.avg)}
         </text>
@@ -598,7 +600,9 @@ function TodayCard({ t, tot, iso }) {
       </div>
       <div className="cal-row">
         <div>
-          <div className="big num">{n0(Math.abs(left))}</div>
+          <div className="big num">
+            <CountUp value={Math.abs(left)} />
+          </div>
           <div className="muted small">{left >= 0 ? 'calories left' : 'calories over'}</div>
         </div>
         <div className="cal-side">
@@ -1102,15 +1106,32 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
   useEffect(() => {
     if (health && targets(health).source === 'missing') setOpenTargets(true);
   }, [!!health]);
+  // Swipe the Today view: left for the next day, right for the day before. (Hooks stay above the early return.)
+  const swipe = useSwipe(
+    () => iso < todayISO() && setIso(addDays(iso, 1)),
+    () => setIso(addDays(iso, -1))
+  );
   if (!health || !years) {
     return (
       <div className="home">
         <header className="page-head">
           <h1 className="page-title">Health</h1>
         </header>
-        <section className="card">
-          <p className="empty">{error || 'Loading…'}</p>
-        </section>
+        {error ? (
+          <section className="card">
+            <p className="empty">{error}</p>
+          </section>
+        ) : (
+          <div className="grid">
+            <div className="col">
+              <Skeleton lines={3} tall />
+              <Skeleton lines={5} />
+            </div>
+            <div className="col">
+              <Skeleton lines={4} tall />
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -1183,7 +1204,7 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
       ) : view === 'body' ? (
         <BodyView hk={hkv} hkYears={hkYears} health={health} weightCard={weightCard} />
       ) : (
-        <div className="grid">
+        <div className="grid day-swipe" key={iso} {...swipe}>
           <div className="col">
             <TodayCard t={t} tot={tot} iso={iso} />
             <FoodLogCard day={day} yesterday={yesterday} onAdd={setAdding} onEdit={setEditing} onCopy={(m) => act.copyMeal(iso, yesterday, m)} />
@@ -1256,6 +1277,12 @@ export function HealthHomeCard({ health, years, hk, hkYears }) {
   const nw = day.workouts.length + workoutsOn(hk, iso).length;
   const night = hkDay(hkYears, iso) || hkDay(hkYears, addDays(iso, -1));
   const sl = night && night.sl && night.sl.a ? night.sl : null;
+  const last7 = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = addDays(iso, -i);
+    last7.push({ label: i === 0 ? 'Today' : dateLabel(d), v: totals(getDay(years, d).food).k, current: i === 0 });
+  }
+  const anyFood = last7.some((d) => d.v > 0);
   return (
     <section className="card health-home">
       <div className="card-head">
@@ -1294,6 +1321,7 @@ export function HealthHomeCard({ health, years, hk, hkYears }) {
           </div>
         </>
       )}
+      {anyFood ? <MiniBars values={last7} goal={t.cal || null} fmt={(v) => `${n0(v)} cal`} label="Calories, last 7 days" /> : null}
       <a className="home-row" href="#/health">
         <span className="grow small">
           {st && !stale ? (

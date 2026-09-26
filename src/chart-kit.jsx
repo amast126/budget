@@ -128,7 +128,7 @@ export function LineChart({ points, from, to, fmt = (v) => String(v), label, col
         </text>
         {bandPath ? <path className={`band c-${color}`} d={bandPath} /> : null}
         {tip ? <line className="crosshair" x1={x(tip.at.t)} x2={x(tip.at.t)} y1={pad.t} y2={H - pad.b} /> : null}
-        <path className={`sline c-${color}`} d={d} />
+        <path className={`sline c-${color}`} d={d} pathLength="1" />
         {(showDots ? points : lonely).map((p) => (
           <circle key={p.t} className={`sdot c-${color}`} cx={x(p.t)} cy={y(p.v)} r="4" />
         ))}
