@@ -406,7 +406,7 @@ function MineCard({ data, recipes, onOpen, onAdd }) {
   );
 }
 
-function RecipeSheet({ r, data, recipes, mutate, onClose }) {
+function RecipeSheet({ r, data, recipes, mutate, onLogRecipe, onClose }) {
   const [confirm, setConfirm] = useState(false);
   const kKeys = kitchenKeys(data);
   const isMine = data.mine.some((x) => x.id === r.id);
@@ -439,6 +439,11 @@ function RecipeSheet({ r, data, recipes, mutate, onClose }) {
             .filter(Boolean)
             .join(' · ')}
         </p>
+        {r.nutrition ? (
+          <p className="small nutri">
+            Per serving: <b>{r.nutrition[0]} cal</b> · protein {r.nutrition[1]}g · carbs {r.nutrition[2]}g · fat {r.nutrition[3]}g
+          </p>
+        ) : null}
         <h3 className="k-head">
           Ingredients {m.total ? <span className="muted">· you have {m.have.length} of {m.total}</span> : null}
         </h3>
@@ -470,6 +475,11 @@ function RecipeSheet({ r, data, recipes, mutate, onClose }) {
         ) : (
           <p className="ok-note">You have everything for this.</p>
         )}
+        {r.nutrition && onLogRecipe ? (
+          <button className="btn quiet block" onClick={() => onLogRecipe(r)}>
+            Log a serving to Health · {r.nutrition[0]} cal
+          </button>
+        ) : null}
         {url ? (
           <a className="btn quiet block" href={url} target="_blank" rel="noopener">
             {r.slug || r.webId ? 'Full recipe on Budget Bytes' : 'Open recipe'} <Icon name="ext" size={15} />
@@ -547,7 +557,7 @@ function AddRecipeSheet({ mutate, onClose }) {
 }
 
 // ---------------------------------------------------------------- page + home card
-export function CookingPage({ data, recipes, mutate, error, onFinishShop }) {
+export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogRecipe }) {
   const [open, setOpen] = useState(null);
   const [adding, setAdding] = useState(false);
   if (!data) {
@@ -584,7 +594,7 @@ export function CookingPage({ data, recipes, mutate, error, onFinishShop }) {
           <MineCard data={data} recipes={recipes} onOpen={(r) => setOpen(r)} onAdd={() => setAdding(true)} />
         </div>
       </div>
-      {current ? <RecipeSheet r={current} data={data} recipes={recipes} mutate={mutate} onClose={() => setOpen(null)} /> : null}
+      {current ? <RecipeSheet r={current} data={data} recipes={recipes} mutate={mutate} onLogRecipe={onLogRecipe} onClose={() => setOpen(null)} /> : null}
       {adding ? <AddRecipeSheet mutate={mutate} onClose={() => setAdding(false)} /> : null}
     </div>
   );

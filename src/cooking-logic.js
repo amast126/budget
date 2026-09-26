@@ -221,6 +221,8 @@ export function saveWeb(d, r, recipes) {
     thumb: r.thumb || null,
     perServing: r.perServing ?? null,
     minutes: r.minutes ?? null,
+    nutrition: r.nutrition || null,
+    servings: r.servings || null,
     ingredients: r.lines ? r.lines.filter((l) => l.t).map((l) => l.t + (l.o ? ' (optional)' : '')) : (r.keys || []).map(label),
     made: 0,
   });

@@ -11,6 +11,8 @@ import { WeatherCard, TodoCard } from './home-cards.jsx';
 import { AutoPage, AutoHomeCard, useRecalls } from './auto.jsx';
 import { defaultAuto, normalizeAuto } from './auto-logic.js';
 import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
+import { HealthPage, HealthHomeCard } from './health.jsx';
+import * as H from './health-logic.js';
 import {
   homeSummary,
   newTransaction,
@@ -344,7 +346,7 @@ function NewsPage({ news, read, markRead, markAllRead }) {
   );
 }
 
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   // Slots carry a phone order (weather, to-do, then money); on wide screens the two columns show as laid out.
@@ -365,21 +367,21 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
           </div>
           {s ? (
             <>
-              <div className="slot o3">
+              <div className="slot o4">
                 <MoneyCard s={s} />
               </div>
-              <div className="slot o5">
+              <div className="slot o6">
                 <QuickAdd s={s} onAdd={onAdd} />
               </div>
-              <div className="slot o6">
+              <div className="slot o7">
                 <BillsCard s={s} onToggle={onToggle} />
               </div>
-              <div className="slot o7">
+              <div className="slot o8">
                 <WatchCard s={s} />
               </div>
             </>
           ) : (
-            <div className="slot o3">
+            <div className="slot o4">
               <section className="card">
                 <p className="empty">{dataError ? 'Budget data unavailable.' : 'Loading your budget…'}</p>
               </section>
@@ -390,13 +392,16 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
           <div className="slot o2">
             <TodoCard data={home} mutate={mutateHome} onDelete={onDeleteTodo} />
           </div>
-          <div className="slot o4">
+          <div className="slot o3">
+            <HealthHomeCard health={health} years={healthYears} />
+          </div>
+          <div className="slot o5">
             <AutoHomeCard auto={auto} data={data} recalls={recalls} />
           </div>
-          <div className="slot o8">
+          <div className="slot o9">
             <LearningHomeCard data={learning} mutate={mutateLearning} />
           </div>
-          <div className="slot o9">
+          <div className="slot o10">
             <CookingHomeCard data={cooking} recipes={recipes} />
           </div>
         </div>
@@ -476,6 +481,8 @@ const normalizeLearningInPlace = inPlace(normalizeLearning);
 const normalizeCookingInPlace = inPlace(normalizeCooking);
 const normalizeHomeInPlace = inPlace(normalizeHome);
 const normalizeAutoInPlace = inPlace(normalizeAuto);
+const normalizeHealthInPlace = inPlace(H.normalizeHealth);
+const normalizeYearInPlace = inPlace(H.normalizeYear);
 
 // ---------------------------------------------------------------- app
 function App() {
@@ -496,6 +503,10 @@ function App() {
   const [shopping, setShopping] = useState(false);
   const [home, setHome] = useState(null);
   const [auto, setAuto] = useState(null);
+  const [health, setHealth] = useState(null);
+  const [healthYears, setHealthYears] = useState(null);
+  const [healthError, setHealthError] = useState('');
+  const [more, setMore] = useState(false);
   const [autoError, setAutoError] = useState('');
   const recalls = useRecalls(auto ? auto.car : null);
 
@@ -561,6 +572,38 @@ function App() {
       },
       (e) => setAutoError(`Couldn’t load the car: ${e.message || e}`)
     );
+  }, [allowed, user && user.uid]);
+
+  // Health: the main document plus this year's and last year's day logs.
+  useEffect(() => {
+    if (!allowed) return;
+    const year = H.todayISO().slice(0, 4);
+    const years = [year, String(Number(year) - 1)];
+    const got = {};
+    const push = () => years.every((y) => got[y]) && setHealthYears({ ...got });
+    const offs = [
+      backend.subscribeModule(
+        user,
+        'health',
+        (d) => {
+          setHealth(H.normalizeHealth(d));
+          setHealthError('');
+        },
+        (e) => setHealthError(`Couldn’t load health data: ${e.message || e}`)
+      ),
+      ...years.map((y) =>
+        backend.subscribeModule(
+          user,
+          `health-${y}`,
+          (d) => {
+            got[y] = H.normalizeYear(d);
+            push();
+          },
+          (e) => setHealthError(`Couldn’t load health data: ${e.message || e}`)
+        )
+      ),
+    ];
+    return () => offs.forEach((f) => f && f());
   }, [allowed, user && user.uid]);
 
   // Weekly recipe file written by the recipes job; loaded once per visit.
@@ -669,6 +712,66 @@ function App() {
       showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
     }
   };
+  const saveErr = (e) => showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+  const mutateHealth = async (fn, msg) => {
+    try {
+      await backend.mutateModule(user, 'health', (d) => fn(normalizeHealthInPlace(d)), H.defaultHealth);
+      if (msg) showToast({ text: msg });
+      return true;
+    } catch (e) {
+      saveErr(e);
+      return false;
+    }
+  };
+  const mutateYear = async (iso, fn, msg) => {
+    try {
+      await backend.mutateModule(user, `health-${H.yearOf(iso)}`, (d) => fn(normalizeYearInPlace(d)), H.defaultYear);
+      if (msg) showToast(typeof msg === 'string' ? { text: msg } : msg);
+      return true;
+    } catch (e) {
+      saveErr(e);
+      return false;
+    }
+  };
+  const healthAct = {
+    mutateHealth: (fn) => mutateHealth(fn),
+    async logFood(iso, food, portion, qty, meal) {
+      const entry = H.entryFor(food, portion, qty, meal);
+      await mutateHealth((h) => H.remember(h, food, portion, qty));
+      await mutateYear(iso, (y) => H.addEntry(y, iso, entry), {
+        text: `${entry.name} · ${entry.k} cal added to ${(H.MEALS.find((m) => m[0] === meal) || [])[1] || 'today'}`,
+        undo: async () => {
+          await mutateYear(iso, (y) => H.removeEntry(y, iso, entry.id));
+          setToast(null);
+        },
+      });
+    },
+    async deleteEntry(iso, entry) {
+      await mutateYear(iso, (y) => H.removeEntry(y, iso, entry.id), {
+        text: `Removed ${entry.name}`,
+        undo: async () => {
+          await mutateYear(iso, (y) => H.addEntry(y, iso, entry));
+          setToast(null);
+        },
+      });
+    },
+    async updateEntry(iso, id, { food, portion, qty, meal }) {
+      if (food) await mutateHealth((h) => H.remember(h, food, portion, qty));
+      await mutateYear(iso, (y) => H.updateEntry(y, iso, id, food, portion, qty, meal));
+    },
+    copyMeal: (iso, fromDay, meal) => mutateYear(iso, (y) => H.copyMeal(fromDay, y, iso, meal), `Copied yesterday’s ${meal === 'snack' ? 'snacks' : meal}`),
+    setSteps: (iso, v) => mutateYear(iso, (y) => H.setSteps(y, iso, v)),
+    addWorkout: (iso, w) => mutateYear(iso, (y) => H.addWorkout(y, iso, w), 'Workout logged'),
+    removeWorkout: (iso, id) => mutateYear(iso, (y) => H.removeWorkout(y, iso, id)),
+    logWeight: (n) => mutateHealth((h) => H.logWeight(h, n), `Logged ${n} lb`),
+    removeWeight: (date) => mutateHealth((h) => H.removeWeight(h, date)),
+  };
+  // Log one serving of a Budget Bytes recipe (from the Cooking tab) to today's food.
+  const logRecipe = (r) => {
+    const [k, p, c, f] = r.nutrition;
+    const food = { name: r.title, src: 'bb', ref: String(r.webId || r.id), perServing: { k, p, c, f }, portions: [{ label: '1 serving', mult: 1 }] };
+    return healthAct.logFood(H.todayISO(), food, food.portions[0], 1, H.mealNow());
+  };
   const autoBudget = useMemo(() => {
     if (!data) return null;
     const s = homeSummary(data);
@@ -735,8 +838,10 @@ function App() {
   if (user === undefined) return <div className="gate"><p className="muted">Loading…</p></div>;
   if (!allowed) return <Gate user={user} />;
 
+  // On phones the bar shows Home, News, Budget and Health; the rest sit behind More.
+  const EXTRA = ['learning', 'cooking', 'auto'];
   const nav = (to, icon, label) => (
-    <a className={`nav-item ${route === to ? 'active' : ''}`} href={`#/${to === 'home' ? '' : to}`}>
+    <a className={`nav-item ${route === to ? 'active' : ''} ${EXTRA.includes(to) ? 'nav-extra' : ''}`} href={`#/${to === 'home' ? '' : to}`}>
       <Icon name={icon} />
       <span>{label}</span>
     </a>
@@ -749,24 +854,30 @@ function App() {
         {nav('home', 'home', 'Home')}
         {nav('news', 'news', 'News')}
         {nav('budget', 'budget', 'Budget')}
+        {nav('health', 'heart', 'Health')}
         {nav('learning', 'learn', 'Learning')}
         {nav('cooking', 'pot', 'Cooking')}
         {nav('auto', 'car', 'Auto')}
-        <button className="nav-item nav-settings" onClick={() => setSettings(true)} aria-label="Settings">
+        <button className="nav-item nav-settings nav-extra" onClick={() => setSettings(true)} aria-label="Settings">
           <Icon name="gear" />
           <span>Settings</span>
+        </button>
+        <button className={`nav-item nav-more ${EXTRA.includes(route) ? 'active' : ''}`} onClick={() => setMore(true)} aria-label="More">
+          <Icon name="more" />
+          <span>More</span>
         </button>
       </nav>
       <main className="main">
         {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} /> : null}
         {route === 'cooking' ? (
-          <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} />
+          <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} onLogRecipe={logRecipe} />
         ) : null}
         {route === 'news' ? <NewsPage news={news} read={read} markRead={markRead} markAllRead={markAllRead} /> : null}
         {route === 'auto' ? (
           <AutoPage auto={auto} data={data} recalls={recalls} mutate={mutateAuto} budget={autoBudget} onAddExpense={(d) => onAdd(newTransaction(d))} error={autoError} />
         ) : null}
-        {route === 'budget' || route === 'learning' || route === 'cooking' || route === 'news' || route === 'auto' ? null : (
+        {route === 'health' ? <HealthPage health={health} years={healthYears} act={healthAct} error={healthError} /> : null}
+        {route === 'budget' || route === 'learning' || route === 'cooking' || route === 'news' || route === 'auto' || route === 'health' ? null : (
           <Home
             user={user}
             data={data}
@@ -782,6 +893,8 @@ function App() {
             onDeleteTodo={onDeleteTodo}
             auto={auto}
             recalls={recalls}
+            health={health}
+            healthYears={healthYears}
           />
         )}
         {budgetOpened ? <BudgetFrame visible={route === 'budget'} /> : null}
@@ -797,6 +910,30 @@ function App() {
         </div>
       ) : null}
       {settings ? <Settings user={user} onClose={() => setSettings(false)} /> : null}
+      {more ? (
+        <div className="sheet-bg" onClick={() => setMore(false)}>
+          <div className="sheet more-sheet" role="dialog" aria-label="More" onClick={(e) => e.stopPropagation()}>
+            {[
+              ['learning', 'learn', 'Learning'],
+              ['cooking', 'pot', 'Cooking'],
+              ['auto', 'car', 'Auto'],
+            ].map(([to, icon, label]) => (
+              <a key={to} className={`more-item ${route === to ? 'active' : ''}`} href={`#/${to}`} onClick={() => setMore(false)}>
+                <Icon name={icon} /> {label}
+              </a>
+            ))}
+            <button
+              className="more-item"
+              onClick={() => {
+                setMore(false);
+                setSettings(true);
+              }}
+            >
+              <Icon name="gear" /> Settings
+            </button>
+          </div>
+        </div>
+      ) : null}
       {shopping && cooking ? (
         <FinishShopSheet count={cooking.grocery.filter((g) => g.done).length} budget={budgetInfo} onSubmit={finishShop} onClose={() => setShopping(false)} />
       ) : null}
