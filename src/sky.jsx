@@ -533,11 +533,13 @@ export const skyInternals = { cloudField, makeNoise, lighting, weatherOf };
 // `page`: the sky behind the whole app (glass theme) instead of just the Home header. It draws at a lower
 // resolution and frame rate (it sits behind frosted glass), pauses while the page scrolls, and shades only the top,
 // where titles sit on the sky.
-export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false }) {
+export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false, onTone }) {
   const ref = useRef(null);
   // The wind only sets how fast things drift, so a new reading changes the speed without rebuilding the sky.
   const windRef = useRef(wind);
   windRef.current = wind;
+  const toneRef = useRef(onTone);
+  toneRef.current = onTone;
   useEffect(() => {
     const c = ref.current;
     const g = c && c.getContext && c.getContext('2d');
@@ -569,6 +571,7 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false }) {
     let nextJet = 10 + R() * 40;
     let nextMeteor = 5 + R() * 20;
     let shadeA = 0.2;
+    let lastTone = '';
     let measureIn = 0;
     const probe = mk(24, 10);
     const pg = probe.getContext('2d', { willReadFrequently: true });
@@ -701,6 +704,16 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false }) {
       const sc = skyColors(alt, sun.evening);
       const wxc = (col) => scale(grey(col, wx.grey), wx.dark);
       const top = wxc(sc.top);
+      // behind the page: tell the page the color at the very top (with the shade band over it), so the strip the
+      // phone draws above the page (status bar, browser bars) can match the sky
+      if (page && toneRef.current) {
+        const col = mix(top, [3, 12, 30], shadeA).map((v) => Math.round(clamp(v, 0, 255)));
+        const k = col.join(',');
+        if (k !== lastTone) {
+          lastTone = k;
+          toneRef.current(col);
+        }
+      }
       const mid = wxc(sc.mid);
       const bot = wxc(sc.bot);
       const grd = g.createLinearGradient(0, 0, 0, H);
@@ -1142,11 +1155,20 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false }) {
   return <canvas ref={ref} className="sky-canvas" aria-hidden="true" />;
 }
 
-// The live sky behind the whole app in the glass theme (weather `s` from the forecast summary).
+// The live sky behind the whole app in the glass theme (weather `s` from the forecast summary). The page's own
+// background follows the sky's top color, since phones paint the status bar strip (and Safari its bars) with it.
+export function skyTone(rgb) {
+  const el = document.documentElement;
+  const k = el.classList.contains('dark') ? 0.68 : 1; // the sky is dimmed in dark mode
+  const c = `rgb(${rgb.map((v) => Math.round(v * k)).join(',')})`;
+  el.style.setProperty('--sky-top', c);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta && el.classList.contains('theme-glass')) meta.setAttribute('content', c);
+}
 export function PageSky({ wx }) {
   return (
     <div className="page-sky" aria-hidden="true">
-      <SkyCanvas code={wx ? wx.code : 1} riseISO={wx && wx.sunriseISO} setISO={wx && wx.sunsetISO} wind={wx && wx.wind} page />
+      <SkyCanvas code={wx ? wx.code : 1} riseISO={wx && wx.sunriseISO} setISO={wx && wx.sunsetISO} wind={wx && wx.wind} page onTone={skyTone} />
     </div>
   );
 }

@@ -722,6 +722,70 @@ function useModuleDoc(allowed, user, name) {
   return [doc, err];
 }
 
+// Every tab, in sidebar order.
+const TABS = [
+  ['home', 'home', 'Home'],
+  ['news', 'news', 'News'],
+  ['budget', 'budget', 'Budget'],
+  ['health', 'heart', 'Health'],
+  ['fun', 'game', 'Entertainment'],
+  ['learning', 'learn', 'Learning'],
+  ['cooking', 'pot', 'Cooking'],
+  ['auto', 'car', 'Auto'],
+];
+
+// The sidebar. On phones it's a drawer: it slides in from the left, follows your finger when you swipe it closed,
+// and closes on Escape or a tap outside (the page behind doesn't scroll meanwhile).
+function SideNav({ open, onClose, children }) {
+  const ref = useRef(null);
+  const drag = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', onKey);
+    const html = document.documentElement;
+    const prev = html.style.overflow;
+    html.style.overflow = 'hidden';
+    const t = setTimeout(() => {
+      const el = ref.current && (ref.current.querySelector('.nav-item.active') || ref.current.querySelector('.nav-item'));
+      if (el) el.focus({ preventScroll: true });
+    }, 60);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      html.style.overflow = prev;
+      clearTimeout(t);
+    };
+  }, [open]);
+  const start = (e) => {
+    if (!open || !e.touches || e.touches.length !== 1) return;
+    drag.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, on: null };
+  };
+  const move = (e) => {
+    const d = drag.current;
+    if (!d) return;
+    const dx = e.touches[0].clientX - d.x;
+    const dy = e.touches[0].clientY - d.y;
+    if (d.on == null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) d.on = Math.abs(dx) > Math.abs(dy); // sideways = a swipe, not a scroll
+    if (!d.on) return;
+    d.dx = Math.min(0, dx);
+    ref.current.style.transition = 'none';
+    ref.current.style.transform = `translateX(${d.dx}px)`;
+  };
+  const end = () => {
+    const d = drag.current;
+    drag.current = null;
+    if (!d || !d.on) return;
+    ref.current.style.transition = '';
+    ref.current.style.transform = '';
+    if (d.dx < -60) onClose();
+  };
+  return (
+    <nav id="side-nav" ref={ref} className={`nav ${open ? 'open' : ''}`} aria-label="Tabs" onTouchStart={start} onTouchMove={move} onTouchEnd={end} onTouchCancel={end}>
+      {children}
+    </nav>
+  );
+}
+
 // ---------------------------------------------------------------- app
 function App() {
   const route = useRoute();
@@ -746,7 +810,7 @@ function App() {
   const [healthError, setHealthError] = useState('');
   const [hk, setHk] = useState(null);
   const [hkYears, setHkYears] = useState(null);
-  const [more, setMore] = useState(false);
+  const [menu, setMenu] = useState(false); // the sidebar on phones
   const [autoError, setAutoError] = useState('');
   const recalls = useRecalls(auto ? auto.car : null);
   const [budgetRev, setBudgetRev] = useState(0);
@@ -914,6 +978,7 @@ function App() {
   useEffect(() => {
     if (route === 'budget') setBudgetOpened(true);
     window.scrollTo(0, 0);
+    setMenu(false);
   }, [route]);
 
   const saveRead = (set) => {
@@ -1178,39 +1243,42 @@ function App() {
       </>
     );
 
-  // On phones the bar shows Home, News, Budget and Health; the rest sit behind More.
-  const EXTRA = ['fun', 'learning', 'cooking', 'auto'];
+  // Wide screens keep the sidebar open; on phones it slides out from the menu button.
   const nav = (to, icon, label) => (
-    <a className={`nav-item ${route === to ? 'active' : ''} ${EXTRA.includes(to) ? 'nav-extra' : ''}`} href={`#/${to === 'home' ? '' : to}`}>
+    <a className={`nav-item ${route === to ? 'active' : ''}`} href={`#/${to === 'home' ? '' : to}`} onClick={() => setMenu(false)} aria-current={route === to ? 'page' : undefined}>
       <Icon name={icon} />
       <span>{label}</span>
     </a>
   );
+  const here = TABS.find(([k]) => k === (TABS.some(([t]) => t === route) ? route : 'home'));
 
   return (
     <div className={`app ${route === 'budget' ? 'on-budget' : ''} ${IS_DEMO ? 'demo' : ''}`}>
       {glass ? <PageSky wx={forecast.s} /> : null}
       {glass ? <Lens selector=".nav" id="lens-nav" /> : null}
       {IS_DEMO ? <DemoBar /> : null}
-      <nav className="nav">
+      <button className="menu-btn" onClick={() => setMenu(true)} aria-label={`Menu (on ${here[2]})`} aria-expanded={menu} aria-controls="side-nav">
+        <Icon name="sidebar" size={20} />
+        <span>{here[2]}</span>
+      </button>
+      <div className={`nav-scrim ${menu ? 'on' : ''}`} onClick={() => setMenu(false)} aria-hidden="true" />
+      <SideNav open={menu} onClose={() => setMenu(false)}>
         <div className="brand">Dashboard</div>
-        {nav('home', 'home', 'Home')}
-        {nav('news', 'news', 'News')}
-        {nav('budget', 'budget', 'Budget')}
-        {nav('health', 'heart', 'Health')}
-        {nav('fun', 'game', 'Entertainment')}
-        {nav('learning', 'learn', 'Learning')}
-        {nav('cooking', 'pot', 'Cooking')}
-        {nav('auto', 'car', 'Auto')}
-        <button className="nav-item nav-settings nav-extra" onClick={() => setSettings(true)} aria-label="Settings">
+        {TABS.map(([to, icon, label]) => (
+          <React.Fragment key={to}>{nav(to, icon, label)}</React.Fragment>
+        ))}
+        <button
+          className="nav-item nav-settings"
+          onClick={() => {
+            setMenu(false);
+            setSettings(true);
+          }}
+          aria-label="Settings"
+        >
           <Icon name="gear" />
           <span>Settings</span>
         </button>
-        <button className={`nav-item nav-more ${EXTRA.includes(route) ? 'active' : ''}`} onClick={() => setMore(true)} aria-label="More">
-          <Icon name="more" />
-          <span>More</span>
-        </button>
-      </nav>
+      </SideNav>
       <main className="main">
         {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} guitar={guitar} mutateGuitar={mutateGuitar} /> : null}
         {route === 'cooking' ? (
@@ -1268,31 +1336,6 @@ function App() {
       ) : null}
       {settings ? <Settings user={user} onClose={() => setSettings(false)} onToast={showToast} look={look} /> : null}
       {bdaySheet && birthdays ? <BirthdaySheet data={birthdays} mutate={mutateBirthdays} onClose={() => setBdaySheet(false)} onToast={showToast} /> : null}
-      {more ? (
-        <div className="sheet-bg" onClick={() => setMore(false)}>
-          <div className="sheet more-sheet" role="dialog" aria-label="More" onClick={(e) => e.stopPropagation()}>
-            {[
-              ['fun', 'game', 'Entertainment'],
-              ['learning', 'learn', 'Learning'],
-              ['cooking', 'pot', 'Cooking'],
-              ['auto', 'car', 'Auto'],
-            ].map(([to, icon, label]) => (
-              <a key={to} className={`more-item ${route === to ? 'active' : ''}`} href={`#/${to}`} onClick={() => setMore(false)}>
-                <Icon name={icon} /> {label}
-              </a>
-            ))}
-            <button
-              className="more-item"
-              onClick={() => {
-                setMore(false);
-                setSettings(true);
-              }}
-            >
-              <Icon name="gear" /> Settings
-            </button>
-          </div>
-        </div>
-      ) : null}
       {shopping && cooking ? (
         <FinishShopSheet count={cooking.grocery.filter((g) => g.done).length} budget={budgetInfo} onSubmit={finishShop} onClose={() => setShopping(false)} />
       ) : null}

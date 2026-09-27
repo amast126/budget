@@ -62,10 +62,10 @@ html.theme-glass.dark {
 }
 
 /* the sky is fixed behind the page; the root keeps a sky-ish color for overscroll, and body stays clear */
-html.theme-glass { background: #28476f; }
-html.theme-glass.dark { background: #0a1220; }
+html.theme-glass { background: var(--sky-top, #28476f); }
+html.theme-glass.dark { background: var(--sky-top, #0a1220); }
 html.theme-glass body { background: transparent; }
-.theme-glass .page-sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.theme-glass .page-sky { position: fixed; top: 0; left: 0; right: 0; height: calc(100lvh + 160px); z-index: -1; pointer-events: none; overflow: hidden; } /* taller than the screen, so it reaches under Safari's bottom bar */
 .theme-glass .page-sky .sky-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .theme-glass.dark .page-sky { filter: brightness(0.68) saturate(0.92); } /* a dimmer sky under dark glass, like a dark-mode wallpaper */
 
@@ -148,40 +148,48 @@ html.theme-glass body { background: transparent; }
 .theme-glass .dd-banner { border-radius: 16px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
 .theme-glass .cd-tile { border-radius: 14px; }
 
-/* ---------------------------------------------------------------- navigation: a floating glass bar */
+/* ---------------------------------------------------------------- navigation: a glass sidebar (a drawer on phones) */
 .theme-glass .nav {
-  left: 10px;
-  right: 10px;
-  bottom: calc(8px + var(--safe-b));
-  height: 64px;
-  padding: 0 6px;
   border: 0;
-  border-radius: 32px;
-  background: linear-gradient(180deg, var(--sheen), transparent 60%), rgba(var(--glass), calc(var(--ga) - 0.14));
-  -webkit-backdrop-filter: blur(22px) saturate(190%);
-  backdrop-filter: blur(22px) saturate(190%);
-  box-shadow: 0 0 0 0.5px var(--edge), 0 14px 32px -12px rgba(6, 16, 34, 0.5);
+  border-radius: 28px;
+  top: calc(var(--safe-t) + 10px);
+  bottom: calc(var(--safe-b) + 10px);
+  left: 10px;
+  background: linear-gradient(180deg, var(--sheen), transparent 40%), rgba(var(--glass), calc(var(--ga) - 0.06));
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  backdrop-filter: blur(24px) saturate(190%);
+  box-shadow: 0 0 0 0.5px var(--edge), 0 24px 60px -14px rgba(4, 10, 24, 0.55);
 }
-.theme-glass .nav.has-lens { background: linear-gradient(180deg, var(--sheen), transparent 60%), rgba(var(--glass), calc(var(--ga) - 0.2)); }
-.theme-glass .nav-item { position: relative; z-index: 0; margin: 6px 0; border-radius: 26px; transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1), color 0.2s; }
-.theme-glass .nav-item.active { color: var(--green); }
+.theme-glass .nav.has-lens { background: linear-gradient(180deg, var(--sheen), transparent 40%), rgba(var(--glass), calc(var(--ga) - 0.16)); }
+.theme-glass .nav-item { position: relative; z-index: 0; border-radius: 16px; background: none; transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1), color 0.2s; }
+.theme-glass .nav-item.active { color: var(--green); background: none; }
 .theme-glass .nav-item.active::before {
   content: '';
   position: absolute;
-  inset: 0 2px;
+  inset: 0;
   z-index: -1;
   border-radius: inherit;
   background: var(--lens);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 0 0 0.5px rgba(6, 16, 30, 0.1), 0 4px 12px -6px rgba(6, 16, 30, 0.35);
 }
 .theme-glass.dark .nav-item.active::before { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 0.5px rgba(0, 0, 0, 0.4); }
-.theme-glass .nav-item:active { transform: scale(0.92); }
-.theme-glass .main { padding-bottom: calc(100px + var(--safe-b)); }
+.theme-glass .nav-item:active { transform: scale(0.96); }
+.theme-glass .nav-scrim { background: rgba(4, 10, 22, 0.28); }
+.theme-glass .menu-btn {
+  border: 0;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--sheen), transparent 60%), rgba(var(--glass), calc(var(--ga) - 0.1));
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  backdrop-filter: blur(20px) saturate(190%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 0 0 0.5px var(--edge), 0 12px 28px -10px rgba(6, 16, 34, 0.55);
+}
+.theme-glass.dark .menu-btn { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 0 0.5px rgba(0, 0, 0, 0.5), 0 12px 28px -10px rgba(0, 0, 0, 0.6); }
+.theme-glass .menu-btn svg { color: var(--green); }
+.theme-glass .main { padding-bottom: calc(96px + var(--safe-b)); }
 .theme-glass .frame-wrap { bottom: 0; border-radius: 0; box-shadow: none; }
 .theme-glass .frame { background: transparent; color-scheme: light; } /* same scheme as the page inside, or browsers paint the frame opaque */
 .theme-glass.dark .frame { filter: invert(1) hue-rotate(180deg); } /* the budget's own dark ink, flipped */
 .theme-glass .toast {
-  bottom: calc(84px + var(--safe-b));
   border-radius: 18px;
   background: rgba(22, 26, 34, 0.78);
   -webkit-backdrop-filter: blur(18px) saturate(170%);
@@ -190,11 +198,8 @@ html.theme-glass body { background: transparent; }
 }
 .theme-glass .brand { color: var(--ink); }
 @media (min-width: 900px) {
-  .theme-glass .nav { top: 12px; bottom: 12px; left: 12px; right: auto; width: 200px; height: auto; padding: 20px 10px; border-radius: 26px; }
-  .theme-glass .nav-item { margin: 0; border-radius: 14px; }
-  .theme-glass .nav-settings { margin-top: auto; }
-  .theme-glass .nav-item.active { background: none; }
-  .theme-glass .nav-item.active::before { inset: 0; }
+  .theme-glass .nav { top: 12px; bottom: 12px; left: 12px; width: 200px; height: auto; padding: 20px 10px; border-radius: 26px; }
+  .theme-glass .nav-item { border-radius: 14px; }
   .theme-glass .app { padding-left: 224px; }
   .theme-glass .main { padding: 28px 32px 48px; }
   .theme-glass .frame-wrap { top: 12px; left: 224px; right: 12px; bottom: 12px; border-radius: 24px; overflow: hidden; box-shadow: 0 0 0 0.5px var(--edge), var(--lift); }
@@ -223,7 +228,6 @@ html.theme-glass body { background: transparent; }
   overflow-y: auto;
 }
 @media (min-width: 600px) { .theme-glass .sheet { border-radius: 28px; } }
-.theme-glass .more-item { border-radius: 14px; }
 
 /* ---------------------------------------------------------------- controls */
 .theme-glass .btn {

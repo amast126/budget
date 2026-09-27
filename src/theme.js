@@ -44,7 +44,8 @@ export function applyTheme() {
   el.style.setProperty('--tint', String(getTint()));
   el.style.colorScheme = dark ? 'dark' : 'light';
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', glass ? (dark ? '#0c1422' : '#5b7fa8') : '#F5F6F2');
+  const skyTop = el.style.getPropertyValue('--sky-top');
+  if (meta) meta.setAttribute('content', glass ? skyTop || (dark ? '#0c1422' : '#5b7fa8') : '#F5F6F2');
   document.querySelectorAll('iframe.frame').forEach((f) => {
     try {
       const d = f.contentDocument && f.contentDocument.documentElement;
