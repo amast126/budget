@@ -12,7 +12,12 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Dashboard">
-  <style>html,body{margin:0;background:#F5F6F2}#root:empty::before{content:"Loading…";display:block;padding:24px;font:14px system-ui;color:#5F6B64}</style>
+  <style>html,body{margin:0;background:#F5F6F2}#root:empty::before{content:"Loading…";display:block;padding:24px;font:14px system-ui;color:#5F6B64}
+  html.theme-glass{background:#28476f}html.theme-glass.dark{background:#0a1220}html.theme-glass body{background:transparent}html.theme-glass #root:empty::before{color:#fff}</style>
+  <script>
+    // Pick the look before anything paints (the app keeps it up to date from here): Liquid Glass unless you chose Classic.
+    try { if (localStorage.getItem('dash.theme') !== 'classic') document.documentElement.className = 'theme-glass' + (matchMedia('(prefers-color-scheme: dark)').matches ? ' dark' : ''); } catch (e) {}
+  </script>
 </head>
 <body>
   <div id="root"></div>

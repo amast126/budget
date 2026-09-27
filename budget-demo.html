@@ -10,7 +10,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Budget">
-  <style>html,body{margin:0;background:#F5F6F2}#root:empty::before{content:"Loading…";display:block;padding:24px;font:14px system-ui;color:#5F6B64}</style>
+  <style>html,body{margin:0;background:#F5F6F2}#root:empty::before{content:"Loading…";display:block;padding:24px;font:14px system-ui;color:#5F6B64}
+  /* Inside the dashboard's glass theme: no page background (the dashboard's pane of glass and the sky show through),
+     room at the bottom for the floating tab bar. In dark mode the dashboard flips this frame's colors. */
+  html.in-glass,html.in-glass body,html.in-glass .bt-root{background:transparent!important}
+  html.in-glass:not(.in-dark) #root:empty::before{color:#fff}
+  @media (max-width:899px){html.in-glass .bt-wrap{padding-bottom:120px}}</style>
+  <script>
+    // Follow the dashboard's look when shown inside it (the dashboard updates these classes when you change it).
+    try { if (window.top !== window) { var pc = parent.document.documentElement.classList; if (pc.contains('theme-glass')) document.documentElement.classList.add('in-glass'); if (pc.contains('dark')) document.documentElement.classList.add('in-dark'); } } catch (e) {}
+  </script>
 </head>
 <body>
   <div id="root"></div>
