@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Budget (demo)</title>
+  <meta name="theme-color" content="#145A3C">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Budget">
+  <style>html,body{margin:0;background:#F5F6F2}#root:empty::before{content:"Loading…";display:block;padding:24px;font:14px system-ui;color:#5F6B64}</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="config.js?v=10"></script>
+  <script>
+    // The budget module for the dashboard's demo (…/budget/?demo): local mode on the sample budget, never a real
+    // account. Firebase stays off, and everything this page stores goes under "demo:" keys in this browser. It's a
+    // separate page from budget.html on purpose, so a cached copy of the real page can never stand in for it.
+    window.BUDGET_CONFIG = Object.assign({}, window.BUDGET_CONFIG, { firebase: null, demo: true });
+    (function () {
+      var S = Storage.prototype, P = 'demo:', get = S.getItem, set = S.setItem, del = S.removeItem, key = S.key;
+      S.getItem = function (k) { return get.call(this, P + k); };
+      S.setItem = function (k, v) { return set.call(this, P + k, v); };
+      S.removeItem = function (k) { return del.call(this, P + k); };
+      S.clear = function () {
+        for (var i = this.length - 1; i >= 0; i--) { var k = key.call(this, i); if (k && k.indexOf(P) === 0) del.call(this, k); }
+      };
+    })();
+  </script>
+  <script src="app.js?v=16"></script>
+</body>
+</html>
