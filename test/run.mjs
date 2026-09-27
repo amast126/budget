@@ -242,9 +242,35 @@ check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news
   await page.waitForSelector('.money .big');
 }
 {
-  const edge = await page.evaluate(() => ({ tone: document.documentElement.style.getPropertyValue('--sky-top'), bg: getComputedStyle(document.documentElement).backgroundColor, meta: document.querySelector('meta[name="theme-color"]').content, h: document.querySelector('.page-sky').getBoundingClientRect().height, vh: innerHeight }));
-  const nums = (c) => (c.match(/\d+/g) || []).slice(0, 3).join(',');
-  check(/^rgb/.test(edge.tone) && nums(edge.bg) === nums(edge.tone) && edge.meta === edge.tone && edge.h > edge.vh + 100, `the sky reaches past the screen's edges and the page color matches its top (${edge.tone})`);
+  const edge = await page.evaluate(() => {
+    const cs = (sel) => getComputedStyle(document.querySelector(sel));
+    // the sky's real pixels along the top edge and at the bottom of the screen
+    const c = document.querySelector('.page-sky canvas');
+    const k = c.width / c.getBoundingClientRect().width;
+    const avg = (y) => {
+      const d = c.getContext('2d').getImageData(0, Math.round(y * k), c.width, 1).data;
+      const s = [0, 0, 0];
+      for (let i = 0; i < d.length; i += 4) for (let j = 0; j < 3; j++) s[j] += d[i + j];
+      return s.map((v) => v / (d.length / 4));
+    };
+    return {
+      tone: document.documentElement.style.getPropertyValue('--sky-top'),
+      bottom: document.documentElement.style.getPropertyValue('--sky-bottom'),
+      bg: cs('html').backgroundColor,
+      meta: document.querySelector('meta[name="theme-color"]').content,
+      stripTop: cs('.sky-edge.top').backgroundColor,
+      stripBottom: cs('.sky-edge.bottom').backgroundColor,
+      scrim: cs('.nav-scrim').display,
+      h: document.querySelector('.page-sky').getBoundingClientRect().height,
+      vh: innerHeight,
+      pxTop: avg(1),
+      pxBottom: avg(innerHeight - 4),
+    };
+  });
+  const nums = (c) => (c.match(/\d+/g) || []).slice(0, 3).map(Number);
+  const near = (a, b) => a.length === 3 && a.every((v, i) => Math.abs(v - b[i]) <= 12);
+  check(/^rgb/.test(edge.tone) && nums(edge.bg).join() === nums(edge.tone).join() && edge.meta === edge.tone && edge.h > edge.vh + 100, `the sky reaches past the screen's edges and the page color matches its top (${edge.tone})`);
+  check(near(nums(edge.stripTop), edge.pxTop) && near(nums(edge.stripBottom), edge.pxBottom) && edge.scrim === 'none', `Safari's bars get the sky's own edge colors (top ${edge.stripTop}, bottom ${edge.stripBottom}); nothing else full-width sits at the edges`);
 }
 // phone order: rings (and the weekly recap on Sun/Mon), weather, to-do, then money
 const order = (await page.$$eval('.home-grid .card .card-title', (els) => els.map((e) => [e.textContent, Math.round(e.getBoundingClientRect().top)]).sort((a, b) => a[1] - b[1]).map((x) => x[0]))).filter((t) => !/^(Your week|Last week)$/.test(t));
