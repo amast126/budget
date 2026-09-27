@@ -102,5 +102,73 @@
    "date": "2026-09-25T16:52:20.000Z",
    "source": "Pitchfork"
   }
+ ],
+ "nyc": [
+  {
+   "id": "nyc-1",
+   "title": "Council votes on the mayor's free bus pilot expansion",
+   "url": "https://gothamist.com/",
+   "date": "2026-09-25T15:10:00.000Z",
+   "source": "Gothamist"
+  },
+  {
+   "id": "mamdani-1",
+   "title": "Mamdani names a new deputy mayor for housing",
+   "url": "https://thecity.nyc/",
+   "date": "2026-09-25T13:00:00.000Z",
+   "source": "THE CITY"
+  }
+ ],
+ "markets": [
+  {
+   "id": "energy-1",
+   "title": "Utilities sign new nuclear deals to power data centers",
+   "url": "https://reuters.com/",
+   "date": "2026-09-25T14:00:00.000Z",
+   "source": "Reuters",
+   "tag": "Energy"
+  },
+  {
+   "id": "quantum-1",
+   "title": "A quantum computer runs a chemistry simulation past classical reach",
+   "url": "https://thequantuminsider.com/",
+   "date": "2026-09-25T12:00:00.000Z",
+   "source": "The Quantum Insider",
+   "tag": "Quantum"
+  },
+  {
+   "id": "robotics-1",
+   "title": "Warehouse robots pass a million installed units",
+   "url": "https://therobotreport.com/",
+   "date": "2026-09-24T12:00:00.000Z",
+   "source": "The Robot Report",
+   "tag": "Robotics"
+  }
+ ],
+ "gaming": [
+  {
+   "id": "games-1",
+   "title": "The biggest games still to come this fall",
+   "url": "https://ign.com/",
+   "date": "2026-09-25T15:00:00.000Z",
+   "source": "IGN"
+  },
+  {
+   "id": "mygames-1",
+   "title": "Black Ops 7 Zombies gets a new map next season",
+   "url": "https://charlieintel.com/",
+   "date": "2026-09-25T11:00:00.000Z",
+   "source": "Charlie INTEL",
+   "tag": "Your games"
+  }
+ ],
+ "marvel": [
+  {
+   "id": "marvel-1",
+   "title": "Avengers: Doomsday trailer breaks viewing records",
+   "url": "https://variety.com/",
+   "date": "2026-09-25T10:00:00.000Z",
+   "source": "Variety"
+  }
  ]
 }

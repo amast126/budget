@@ -1,0 +1,12 @@
+{
+ "generated": "2026-09-27T12:00:00.000Z",
+ "sources": {},
+ "official": [
+  { "id": "nw-test-1", "type": "newswire", "title": "Test newswire post one", "url": "https://www.rockstargames.com/newswire", "date": "2026-09-24T11:00:00.000Z", "image": null },
+  { "id": "yt-test-2", "type": "youtube", "title": "Test trailer post two", "url": "https://www.youtube.com/@RockstarGames", "date": "2026-09-20T15:00:00.000Z", "image": null },
+  { "id": "nw-test-3", "type": "newswire", "title": "Test newswire post three", "url": "https://www.rockstargames.com/newswire", "date": "2026-09-10T11:00:00.000Z", "image": null },
+  { "id": "nw-test-4", "type": "newswire", "title": "Older test post four", "url": "https://www.rockstargames.com/newswire", "date": "2026-08-01T11:00:00.000Z", "image": null }
+ ],
+ "press": [],
+ "community": []
+}

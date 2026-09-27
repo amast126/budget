@@ -6,8 +6,13 @@
  *   Tech & AI    The Verge, Ars Technica, TechCrunch, Wired (plus an AI-focused search of the same sites and Reuters tech)
  *   Pop culture  Variety, The Hollywood Reporter, Vulture, Entertainment Weekly
  *   Music        Pitchfork, Billboard, Stereogum, Rolling Stone music, Guitar World
+ *   NYC politics Gothamist, THE CITY, City & State, Politico New York, amNY, Daily News; plus Mamdani coverage anywhere
+ *   Markets      energy (nuclear, grid, clean power), quantum computing and robotics, from business and tech outlets
+ *   Gaming       IGN, Polygon, Kotaku, GameSpot, VGC, Eurogamer (for the Entertainment tab), plus the games you play
+ *   Marvel       Marvel Studios news from the trades (for the Entertainment tab's Doomsday watch list)
  *   Reddit       top posts of the day on r/popular (Reddit sometimes blocks GitHub; then the last good copy stays)
- * All but Reddit come from Google News RSS searches limited to those sites.
+ * All but Reddit come from Google News RSS searches limited to those sites. A source's `tag` is shown on each of its
+ * stories (Energy, Quantum, Robotics, Your games).
  *
  * Each source keeps its previous items when a fetch fails. The file is only rewritten when something changed.
  * Run locally: node scripts/fetch-news.mjs
@@ -64,6 +69,66 @@ const SECTIONS = {
       },
     },
   },
+  nyc: {
+    keep: 60,
+    maxAgeDays: 5,
+    sources: {
+      nyc: {
+        name: 'NYC',
+        outlet: true,
+        url: gnews('(site:gothamist.com OR site:thecity.nyc OR site:cityandstateny.com OR site:politico.com/news/new-york OR site:amny.com OR site:nydailynews.com/news/politics) (Mamdani OR mayor OR "City Hall" OR "City Council" OR Hochul OR Albany OR MTA OR NYPD OR rent OR housing OR budget OR election) when:3d'),
+      },
+      mamdani: { name: 'Mamdani', outlet: true, url: gnews('Mamdani (mayor OR "City Hall" OR NYC) when:2d') },
+    },
+  },
+  markets: {
+    keep: 90,
+    maxAgeDays: 5,
+    sources: {
+      energy: {
+        name: 'Energy',
+        tag: 'Energy',
+        outlet: true,
+        url: gnews('("nuclear power" OR "nuclear energy" OR "small modular reactor" OR SMR OR uranium OR "clean energy" OR "power grid" OR "data center power" OR fusion) (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:marketwatch.com OR site:barrons.com OR site:utilitydive.com OR site:canarymedia.com OR site:axios.com) when:3d'),
+      },
+      quantum: {
+        name: 'Quantum',
+        tag: 'Quantum',
+        outlet: true,
+        url: gnews('("quantum computing" OR "quantum computer" OR qubit OR qubits) (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:marketwatch.com OR site:barrons.com OR site:thequantuminsider.com OR site:techcrunch.com OR site:arstechnica.com OR site:axios.com) when:4d'),
+      },
+      robotics: {
+        name: 'Robotics',
+        tag: 'Robotics',
+        outlet: true,
+        url: gnews('(robotics OR robot OR robots OR humanoid OR "warehouse automation" OR robotaxi) (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:techcrunch.com OR site:theverge.com OR site:therobotreport.com OR site:axios.com) when:3d'),
+      },
+    },
+  },
+  gaming: {
+    keep: 60,
+    maxAgeDays: 4,
+    sources: {
+      games: { name: 'Gaming', outlet: true, url: gnews('(site:ign.com OR site:polygon.com OR site:kotaku.com OR site:gamespot.com OR site:videogameschronicle.com OR site:eurogamer.net) when:1d') },
+      mygames: {
+        name: 'Your games',
+        tag: 'Your games',
+        outlet: true,
+        url: gnews('("Black Ops 7" OR "Modern Warfare 4" OR "Call of Duty" OR "Teamfight Tactics" OR "Pokémon GO" OR "GTA 6" OR "GTA VI" OR PlayStation) (site:ign.com OR site:polygon.com OR site:kotaku.com OR site:gamespot.com OR site:videogameschronicle.com OR site:eurogamer.net OR site:charlieintel.com OR site:dexerto.com) when:3d'),
+      },
+    },
+  },
+  marvel: {
+    keep: 50,
+    maxAgeDays: 7,
+    sources: {
+      marvel: {
+        name: 'Marvel',
+        outlet: true,
+        url: gnews('("Avengers: Doomsday" OR "Marvel Studios" OR MCU OR "Spider-Man: Brand New Day" OR VisionQuest OR "Secret Wars") (site:variety.com OR site:hollywoodreporter.com OR site:deadline.com OR site:ign.com OR site:polygon.com OR site:theverge.com OR site:empireonline.com OR site:marvel.com) when:4d'),
+      },
+    },
+  },
 };
 const REDDIT = 'https://www.reddit.com/r/popular/top/.rss?t=day&limit=25';
 
@@ -112,7 +177,7 @@ function hash(s) {
 const normTitle = (t) => t.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
 const byDateDesc = (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
 
-async function getGoogleNews(key, { name, url, outlet }) {
+async function getGoogleNews(key, { name, url, outlet, tag: label }) {
   const xml = await fetchText(url);
   return xml
     .split('<item>')
@@ -122,7 +187,9 @@ async function getGoogleNews(key, { name, url, outlet }) {
       let title = tag(x, 'title');
       if (title.endsWith(` - ${source}`)) title = title.slice(0, -(source.length + 3));
       const link = tag(x, 'link');
-      return { id: `${key}-${hash(tag(x, 'guid') || link)}`, title, url: link, date: isoDate(tag(x, 'pubDate')), source: outlet ? source : name };
+      const item = { id: `${key}-${hash(tag(x, 'guid') || link)}`, title, url: link, date: isoDate(tag(x, 'pubDate')), source: outlet ? source : name };
+      if (label) item.tag = label;
+      return item;
     })
     .filter((i) => i.title && i.url);
 }
@@ -206,7 +273,7 @@ async function main() {
     log(`Reddit FAILED: ${e.message}`);
   }
 
-  const keys = ['politics', 'tech', 'pop', 'music', 'reddit'];
+  const keys = ['politics', 'tech', 'pop', 'music', 'reddit', 'nyc', 'markets', 'gaming', 'marvel'];
   const itemsChanged = keys.some((k) => JSON.stringify(prev[k] || []) !== JSON.stringify(out[k] || []));
   const okChanged = JSON.stringify(Object.entries(prev.sources || {}).map(([k, v]) => [k, v.ok])) !== JSON.stringify(Object.entries(sources).map(([k, v]) => [k, v.ok]));
   if (itemsChanged || okChanged) {

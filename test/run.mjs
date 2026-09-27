@@ -7,6 +7,10 @@ import path from 'node:path';
 import http from 'node:http';
 import { chromium } from '/home/claude/.npm-global/lib/node_modules/playwright/index.mjs';
 import { makeHealthExport } from './make-health-export.mjs';
+import * as FUN from '../src/fun-logic.js';
+import * as GTR from '../src/guitar-logic.js';
+import * as SD from '../src/sourdough-logic.js';
+import * as BD from '../src/birthdays-logic.js';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -20,9 +24,10 @@ const server = http.createServer((req, res) => {
   if (p === '/') p = '/index.html';
   if (p === '/config.js') {
     res.writeHead(200, { 'Content-Type': 'text/javascript' });
-    return res.end('window.BUDGET_CONFIG = { firebase: { apiKey: "" }, finnhubKey: "", allowedEmails: [], ownerEmail: "", sharedDocId: "" };');
+    return res.end('window.BUDGET_CONFIG = { firebase: { apiKey: "" }, finnhubKey: "test-key", allowedEmails: [], ownerEmail: "", sharedDocId: "" };');
   }
   if (p === '/news.json') p = '/test/news.fixture.json';
+  if (p === '/gta6/news.json') p = '/test/gta6-news.fixture.json'; // the GTA 6 site's feed, next to /budget/ on the live site
   if (p === '/recipes.json' && process.env.RECIPES_FIXTURE) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(fs.readFileSync(process.env.RECIPES_FIXTURE));
@@ -112,6 +117,23 @@ async function mockWeather(context) {
     const lat = Number(new URL(route.request().url()).searchParams.get('latitude'));
     weatherCalls.push(lat);
     route.fulfill({ contentType: 'application/json', body: JSON.stringify(forecastFixture(lat)) });
+  });
+  // Finnhub: made-up quotes and headlines for whatever tickers the budget holds
+  await context.route('https://finnhub.io/**', (route) => {
+    const u = new URL(route.request().url());
+    const sym = u.searchParams.get('symbol') || 'X';
+    const seed = [...sym].reduce((a, c) => a + c.charCodeAt(0), 0);
+    const headers = { 'access-control-allow-origin': '*' };
+    if (u.pathname.endsWith('/quote')) {
+      const c = 20 + (seed % 180);
+      const dp = ((seed % 9) - 4) * 0.7;
+      return route.fulfill({ contentType: 'application/json', headers, body: JSON.stringify({ c, d: (c * dp) / 100, dp, t: Math.floor(Date.now() / 1000) }) });
+    }
+    if (u.pathname.endsWith('/company-news')) {
+      const now = Math.floor(Date.now() / 1000);
+      return route.fulfill({ contentType: 'application/json', headers, body: JSON.stringify([0, 1, 2].map((i) => ({ id: seed * 10 + i, headline: `${sym} test headline ${i + 1}`, source: 'Test Wire', url: `https://example.com/${sym}/${i}`, datetime: now - (i + 1) * 3600 * (seed % 5 + 1) }))) });
+    }
+    route.fulfill({ status: 404, headers, body: '[]' });
   });
   await context.route('https://api.nhtsa.gov/**', (route) =>
     route.fulfill({
@@ -355,7 +377,7 @@ await page.click('a.nav-item:has-text("News")');
 await page.waitForSelector('.news-page .story');
 check(/Supreme Court lets Trump/.test(await page.innerText('.news')), 'politics renders on the News tab');
 const newsTabs = await page.$$eval('.news-page .tab', (t) => t.map((x) => x.innerText.replace(/\n/g, ' ')));
-check(newsTabs.length === 5 && /US politics/.test(newsTabs[0]) && /Music/.test(newsTabs[4]), `five sections: ${newsTabs.join(' | ')}`);
+check(newsTabs.length === 7 && /US politics/.test(newsTabs[0]) && /NYC/.test(newsTabs[1]) && /Markets/.test(newsTabs[6]), `seven sections: ${newsTabs.join(' | ')}`);
 await page.click('button.tab:has-text("Tech & AI")');
 check(/open-weight AI model/.test(await page.innerText('.news')) && /The Verge/.test(await page.innerText('.news')), 'Tech & AI section renders with the outlet name');
 await page.click('button.tab:has-text("Pop culture")');
@@ -900,6 +922,297 @@ await page.waitForSelector('.health-tabs');
 check(/on/.test(await page.getAttribute('.health-tabs .seg-btn:has-text("Hearing")', 'class')), 'Health reopens on the last view');
 await page.click('.health-tabs .seg-btn:has-text("Today")');
 
+// ---------------------------------------------------------------- logic (no browser)
+{
+  const f = FUN.defaultFun();
+  check(FUN.MCU.length === 91 && new Set(FUN.MCU.map((t) => t.id)).size === 91 && FUN.MCU.filter((t) => t.key).length === 17, `Doomsday watch list: ${FUN.MCU.length} titles, ${FUN.MCU.filter((t) => t.key).length} marked key`);
+  FUN.setMcu(f, 'iron-man', 'w');
+  FUN.setMcu(f, 'venom', 's');
+  const p = FUN.mcuProgress(f, '2026-09-27');
+  check(p.watched === 1 && p.skipped === 1 && p.needed === 90 && p.left === 89 && p.days === 82 && p.perWeek === 7.6, `watch progress: ${p.watched} of ${p.needed}, ${p.perWeek} a week for ${p.days} days`);
+  check(FUN.featured(f, '2026-09-27').id === 'gta6' && FUN.upcoming(f, '2026-09-27')[0].id === 'visionquest' && FUN.upcoming(f, '2026-12-27').length === 0, 'releases: GTA VI featured, soonest first, gone a week after');
+  const t = FUN.timeLeft('2026-11-19', new Date(2026, 10, 17, 18, 30, 15));
+  check(t.d === 1 && t.h === 5 && t.m === 29 && t.s === 45, `countdown clock: ${t.d}d ${t.h}h ${t.m}m ${t.s}s`);
+  const g = GTR.defaultGuitar();
+  ['2026-09-20', '2026-09-24', '2026-09-25', '2026-09-26'].forEach((d) => GTR.logPractice(g, 15, { date: d }));
+  const st = GTR.streak(g, '2026-09-27');
+  check(st.current === 3 && !st.today && st.best === 3 && GTR.weekSummary(g, '2026-09-27').minutes === 45, `guitar streak ${st.current} (ends yesterday), best ${st.best}, 45 min this week`);
+  const sr = 48000;
+  const errs = [82.41, 110, 196, 329.63].map((hz) => {
+    const buf = new Float32Array(4096).map((_, i) => 0.6 * Math.sin((2 * Math.PI * hz * i) / sr) + 0.25 * Math.sin((4 * Math.PI * hz * i) / sr) + 0.1 * Math.sin((6 * Math.PI * hz * i) / sr));
+    return Math.abs(GTR.detectPitch(buf, sr) / hz - 1);
+  });
+  const quiet = GTR.detectPitch(new Float32Array(4096), sr);
+  check(errs.every((e) => e < 0.004) && quiet === null, `tuner finds low E to high E within ${(Math.max(...errs) * 1200 / 0.693).toFixed(1)} cents, silence reads nothing`);
+  const n = GTR.noteOf(440);
+  const s = GTR.nearestString(111);
+  check(n.name === 'A' && n.octave === 4 && n.cents === 0 && s.name === 'A' && s.octave === 2 && s.cents > 10 && s.cents < 20, `note names: 440 Hz = ${n.name}${n.octave}, 111 Hz = ${s.name}${s.octave} +${s.cents}¢`);
+  const d1 = SD.doughFor({ loaves: 1, flour: 500, hydration: 75, levain: 20, salt: 2 });
+  const d2 = SD.doughFor({ loaves: 2, flour: 500, hydration: 75, levain: 20, salt: 2, adjust: true });
+  check(d1.flour === 500 && d1.water === 375 && d1.levain === 100 && d1.salt === 10 && d1.total === 985 && d2.flour === 900 && d2.water === 650 && d2.trueHydration === 75, `dough: 500/375/100/10 g; counting the starter, 2 loaves = ${d2.flour} g flour, ${d2.water} g water, ${d2.trueHydration}%`);
+  const plan = SD.bakePlan({ ready: '2026-10-03T10:00', temp: 75, retard: true });
+  const hrs = (a, b) => (plan.steps.find((x) => x.id === b).at - plan.steps.find((x) => x.id === a).at) / 3600000;
+  const awake = (pl) => pl.steps.filter((x) => !['preheat', 'bake', 'done'].includes(x.id)).every((x) => x.at.getHours() >= 7 && x.at.getHours() * 60 + x.at.getMinutes() <= 23 * 60);
+  check(plan.steps.length === 9 && plan.end.getHours() === 10 && hrs('fridge', 'bake') === 12 && hrs('mix', 'shape') === 5 && awake(plan) && !plan.note && plan.steps.every((x) => x.at.getMinutes() % 5 === 0), `bake plan for 10 AM: ${Math.round(plan.hours)} h, 12 h cold proof, 5 h bulk at 75°F, no step before 7 AM`);
+  const noon = SD.bakePlan({ ready: '2026-10-03T13:00', temp: 72, retard: true });
+  const late = SD.bakePlan({ ready: '2026-10-03T17:00', temp: 72, retard: true });
+  check(awake(noon) && noon.proofH !== 12 && noon.proofH >= 8 && noon.proofH <= 16 && !awake(late) && !!late.note, `a 1 PM bake stretches the cold proof to ${noon.proofH} h to keep you out of bed; a 5 PM bake says it runs overnight`);
+  const cold = SD.bakePlan({ ready: '2026-10-03T17:00', temp: 68, retard: false });
+  check((cold.steps.find((x) => x.id === 'shape').at - cold.steps.find((x) => x.id === 'mix').at) / 3600000 > 6, 'a colder kitchen gets a longer bulk');
+  const sd = SD.defaultSourdough();
+  SD.feed(sd, new Date('2026-09-27T08:00:00'));
+  const s1 = SD.starterState(sd, new Date('2026-09-27T10:00:00'));
+  const s2 = SD.starterState(sd, new Date('2026-09-27T13:30:00'));
+  const s3 = SD.starterState(sd, new Date('2026-09-28T09:00:00'));
+  check(s1.state === 'rising' && s2.state === 'peak' && s3.state === 'hungry', `starter: ${s1.state} at 2 h, ${s2.state} at 5.5 h, ${s3.state} next day`);
+  const vcf = ['BEGIN:VCARD', 'VERSION:3.0', 'N:Entine;Val;;;', 'FN:Val Entine', 'BDAY:1985-02-14', 'END:VCARD', 'BEGIN:VCARD', 'FN:Sam Fourth', 'BDAY;X-APPLE-OMIT-YEAR=1604:1604-07-04', 'END:VCARD', 'BEGIN:VCARD', 'FN:No Birthday', 'END:VCARD', 'BEGIN:VCARD', 'FN:Noel Chr', ' istmas', 'BDAY:--1225', 'END:VCARD'].join('\r\n');
+  const vp = BD.parseVcf(vcf);
+  check(vp.length === 3 && vp[0].y === 1985 && vp[1].m === 7 && vp[1].d === 4 && vp[1].y === null && vp[2].name === 'Noel Christmas' && vp[2].m === 12, `vCard import: ${vp.map((x) => `${x.name} ${x.m}/${x.d}${x.y ? '/' + x.y : ''}`).join(', ')}`);
+  const cp = BD.parseCsv('First Name,Last Name,Birthday\r\nCasey,Csv,3/3\r\n"Quote, Person",,"July 4, 1990"\r\nBad,Row,notadate\r\n');
+  check(cp.length === 2 && cp[0].name === 'Casey Csv' && cp[0].m === 3 && cp[1].name === 'Quote, Person' && cp[1].m === 7 && cp[1].y === 1990, `CSV import: ${cp.map((x) => `${x.name} ${x.m}/${x.d}`).join('; ')}`);
+  const bd = BD.defaultBirthdays();
+  BD.importPeople(bd, [{ name: 'Leap Day', m: 2, d: 29, y: 2000 }, ...vp]);
+  const leap = BD.nextDate(bd.people[0], '2027-01-10');
+  check(leap.iso === '2027-02-28' && leap.turning === 27 && BD.upcoming(bd, '2026-12-20', 10).map((x) => x.p.name).join() === 'Noel Christmas', `birthdays: Feb 29 falls on ${leap.iso} in 2027 (turns ${leap.turning}); next 10 days from Dec 20: Noel`);
+  const ics = BD.toIcs(bd);
+  check((ics.match(/BEGIN:VEVENT/g) || []).length === 4 && /BYMONTHDAY=-1/.test(ics) && /TRIGGER:-PT15H/.test(ics), 'calendar file: a yearly event per person with a reminder the day before');
+}
+
+// ---------------------------------------------------------------- Entertainment
+const localDay = (n) => {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
+const mod = (name) => page.evaluate((n) => JSON.parse(localStorage.getItem('mod:' + n) || 'null'), name);
+await go('Entertainment');
+await page.waitForSelector('.fun-hero');
+await page.waitForSelector('.vice-list li');
+{
+  const heroT = await page.innerText('.fun-hero');
+  check(/Grand Theft Auto VI/.test(heroT) && (await page.$$('.cd-tile')).length === 4 && /Latest from Rockstar/i.test(heroT), 'Entertainment opens on the GTA VI countdown');
+  check((await page.$$('.vice-list li')).length === 3 && /Test newswire post one/.test(heroT) && !/Older test post four/.test(heroT), 'the three newest posts from the GTA 6 site’s feed');
+  const rel = await page.$$eval('.coming-up .release .bill-name', (els) => els.map((e) => e.textContent));
+  check(rel.join('|') === 'VisionQuest|Call of Duty: Modern Warfare 4|Grand Theft Auto VI|Avengers: Doomsday', `coming up, soonest first: ${rel.join(', ')}`);
+  await page.screenshot({ path: path.join(OUT, 'fun.png'), fullPage: true });
+}
+await page.click('.coming-up .card-head .link-btn');
+await page.fill('.fun-form input[aria-label="Title"]', 'Test Game');
+await page.fill('.fun-form input[aria-label="Release date"]', localDay(10));
+await page.click('.fun-form button[type=submit]');
+await page.waitForTimeout(200);
+let FD = await mod('fun');
+check(FD.releases.some((r) => r.title === 'Test Game' && r.home && r.date === localDay(10)), 'add a release (counted down on Home)');
+await page.click('button[aria-label="Feature Test Game at the top"]');
+await page.waitForTimeout(200);
+check(/Test Game/.test(await page.innerText('.fun-hero-title')) && !(await page.$('.vice-feed')), 'featuring a release moves it to the big countdown');
+await page.click('button[aria-label="Feature Grand Theft Auto VI at the top"]');
+await page.waitForTimeout(200);
+check(/Grand Theft Auto VI/.test(await page.innerText('.fun-hero-title')), 'and back to GTA VI');
+await page.click('button[aria-label="Add 10 to Totenreich Cursed: 500 kills in Cursed Mode"]');
+await page.waitForTimeout(150);
+await page.click('.chal:has-text("500 kills") .link-btn.num');
+await page.fill('input[aria-label="Progress on Totenreich Cursed: 500 kills in Cursed Mode"]', '500');
+await page.press('input[aria-label="Progress on Totenreich Cursed: 500 kills in Cursed Mode"]', 'Enter');
+await page.click('input[aria-label="Rex Infernus main Easter egg"]');
+await page.waitForTimeout(200);
+FD = await mod('fun');
+{
+  const bo7 = FD.playing.find((g) => g.id === 'bo7');
+  const c500 = bo7.challenges.find((c) => c.id === 'cursed-500');
+  check(c500.n === 500 && c500.doneOn && bo7.challenges.find((c) => c.id === 'rex-ee').n === 1 && /Done/.test(await page.innerText('.chal:has-text("500 kills")')), 'challenge counters: +10, set to 500 (done), Easter egg ticked');
+}
+await page.click('.game:has-text("Teamfight Tactics") .link-btn:has-text("+ Challenge")');
+await page.fill('.game:has-text("Teamfight Tactics") input[aria-label="Challenge"]', 'Reach Diamond');
+await page.click('.game:has-text("Teamfight Tactics") .chal-form button[type=submit]');
+await page.fill('input[aria-label="Add a game"]', 'Astro Bot');
+await page.click('.now-playing .add-row button');
+await page.waitForTimeout(200);
+FD = await mod('fun');
+check(FD.playing.find((g) => g.id === 'tft').challenges[0].text === 'Reach Diamond' && FD.playing.find((g) => g.id === 'tft').challenges[0].goal === 1 && FD.playing.some((g) => g.title === 'Astro Bot'), 'add a challenge and a game');
+check(/0 of 91 watched/.test(await page.innerText('.watchlist .dd-progress')), 'watch list starts at 0 of 91');
+await page.click('.wgroup-head:has-text("Phase One")');
+await page.click('button[aria-label="Iron Man: watched"]');
+await page.click('button[aria-label="The Incredible Hulk: skip"]');
+await page.waitForTimeout(200);
+FD = await mod('fun');
+check(FD.mcu['iron-man'] === 'w' && FD.mcu['incredible-hulk'] === 's' && (await page.$$('.wgroup.open .watch-row')).length === 4 && /1 of 90 watched/.test(await page.innerText('.watchlist .dd-progress')), 'watched and skipped titles leave the To-watch list; skipped ones stop counting');
+await page.click('.wgroup-head:has-text("Phase Two")');
+await page.click('.wgroup:has-text("Phase Two") button:has-text("Mark all watched")');
+await page.check('.watch-tools input[type=checkbox]');
+await page.waitForTimeout(200);
+{
+  const rows = await page.$$eval('.wgroup.open .watch-row', (els) => els.map((e) => !!e.querySelector('.tag-key')));
+  check(/7 of 90 watched/.test(await page.innerText('.watchlist .dd-progress')) && rows.length === 2 && rows.every(Boolean), `mark a whole phase watched; key titles only leaves ${rows.length} in Phase One`);
+}
+await page.uncheck('.watch-tools input[type=checkbox]');
+await page.fill('input[aria-label="Add a title to the watch list"]', 'Agents of S.H.I.E.L.D.');
+await page.fill('.watchlist input[aria-label="Year"]', '2013');
+await page.click('.watchlist .add-row button');
+await page.waitForTimeout(200);
+FD = await mod('fun');
+check(FD.mcuMine.length === 1 && /Added by you/.test(await page.innerText('.watchlist')) && /7 of 91 watched/.test(await page.innerText('.watchlist .dd-progress')), 'add your own title to the list');
+{
+  const nt = await page.innerText('.fun-news');
+  await page.click('.fun-news .seg-btn:has-text("Marvel")');
+  const mt = await page.innerText('.fun-news');
+  check(/biggest games still to come/.test(nt) && /Your games/.test(nt) && /Doomsday trailer/.test(mt), 'gaming and Marvel news on the Entertainment tab');
+}
+await page.screenshot({ path: path.join(OUT, 'fun-after.png'), fullPage: true });
+
+// ---------------------------------------------------------------- Guitar
+await go('Learning');
+await page.click('.page-tabs .seg-btn:has-text("Guitar")');
+await page.waitForSelector('.practice');
+await page.click('.practice .log-btns button:has-text("+20m")');
+await page.waitForTimeout(150);
+await page.evaluate(() => localStorage.setItem('dash.guitarTimer', String(Date.now() - 5 * 60000 - 2000)));
+await page.click('.page-tabs .seg-btn:has-text("Certifications")');
+await page.click('.page-tabs .seg-btn:has-text("Guitar")');
+await page.waitForSelector('.practice');
+check(/Stop · 5:0\d/.test(await page.innerText('.practice-acts')), `the practice timer keeps running across pages: ${(await page.innerText('.practice-acts')).split('\n')[0]}`);
+await page.click('.practice-acts button:has-text("Stop")');
+await page.waitForTimeout(200);
+let GD = await mod('guitar');
+check(GD.sessions.length === 2 && GD.sessions.reduce((a, s) => a + s.minutes, 0) === 25 && /1\s*day streak/.test(await page.innerText('.streak-badge')), 'log practice with a button and the timer; the streak starts');
+await page.click('.course .seg-btn:has-text("Grade 2")');
+await page.click('button[aria-label="Next module"]');
+await page.fill('input[aria-label="Current lesson"]', 'Stuck in the middle');
+await page.press('input[aria-label="Current lesson"]', 'Enter');
+await page.waitForTimeout(150);
+await page.click('.course button:has-text("Finished module 2")');
+await page.waitForTimeout(200);
+GD = await mod('guitar');
+check(GD.course.grade === 2 && GD.course.module === 3 && GD.course.done[0].lesson === 'Stuck in the middle' && GD.course.lesson === '', 'JustinGuitar course: grade, module, lesson, finish a module');
+await page.fill('input[aria-label="Changes between A and D"]', '31');
+await page.click('.changes-log button');
+await page.fill('input[aria-label="Changes between A and D"]', '35');
+await page.click('.changes-log button');
+await page.waitForTimeout(200);
+GD = await mod('guitar');
+check(GD.changes.length === 2 && /best 35/.test(await page.innerText('.pairs')), 'one-minute changes: two A–D scores, best 35');
+await page.fill('input[aria-label="Song title"]', 'Wish You Were Here');
+await page.fill('input[aria-label="Artist"]', 'Pink Floyd');
+await page.click('.songs .add-row button');
+await page.waitForTimeout(150);
+await page.selectOption('select[aria-label="Wish You Were Here status"]', 'can');
+await page.waitForTimeout(150);
+GD = await mod('guitar');
+check(GD.songs.length === 1 && GD.songs[0].status === 'can' && GD.songs[0].learned, 'songs: add one, then mark it Can play');
+await page.click('.tools .seg-btn:has-text("Metronome")');
+await page.click('button[aria-label="5 faster"]');
+await page.click('.metronome .btn.block');
+await page.waitForTimeout(700);
+const beatOn = (await page.$$('.met-dot.on')).length;
+await page.click('.metronome .btn.block');
+check(/85/.test(await page.innerText('.met-n')) && beatOn === 1 && /Start metronome/.test(await page.innerText('.metronome')), 'metronome: tempo up to 85, beats light up, stops');
+await page.screenshot({ path: path.join(OUT, 'guitar.png'), fullPage: true });
+
+// ---------------------------------------------------------------- Sourdough
+await go('Cooking');
+await page.click('.page-tabs .seg-btn:has-text("Sourdough")');
+await page.waitForSelector('.starter');
+check(/No feedings logged yet/.test(await page.innerText('.starter')), 'a new starter has no feedings');
+await page.click('.starter button:has-text("Fed it now")');
+await page.waitForTimeout(200);
+check(/Rising/.test(await page.innerText('.starter-state')) && /peak around/.test(await page.innerText('.starter-state')) && !!(await page.$('.rise-bar')), `feeding starts the rise: ${(await page.innerText('.starter-state')).replace(/\n/g, ' · ')}`);
+await page.selectOption('select[aria-label="Feeding ratio (starter:flour:water)"]', '1:5:5');
+await page.fill('input[aria-label="When you want the bread done"]', `${localDay(3)}T17:00`);
+await page.waitForTimeout(250);
+let SDD = await mod('sourdough');
+{
+  const when = await page.$$eval('.timeline .tl-when', (els) => els.map((e) => e.textContent));
+  check(SDD.starter.ratio === '1:5:5' && SDD.plan.ready === `${localDay(3)}T17:00` && when.length === 9 && /5:00 PM$/.test(when[8]) && when.every((w) => /:\d[05] (AM|PM)$/.test(w)), `bake planner: ${when[0]} → ${when[8]}`);
+}
+{
+  const out = () => page.$$eval('.calc-out tr', (els) => els.map((e) => e.innerText.replace(/\s+/g, ' ')));
+  const a = await out();
+  await page.check('.dough-calc .check-line input');
+  await page.selectOption('select[aria-label="Loaves"]', '2');
+  await page.waitForTimeout(200);
+  const b = await out();
+  check(/Flour 500 g/.test(a[0]) && /Dough 985 g/.test(a[4]) && /Flour 900 g/.test(b[0]) && /Water 650 g/.test(b[1]) && /Dough 1770 g · 885 g a loaf/.test(b[4]), `dough calculator: ${a[4]} → ${b[4]}`);
+}
+await page.click('.bakes .link-btn');
+await page.click('.bake-form button[aria-label="4 stars"]');
+await page.fill('.bake-form textarea', 'Good oven spring');
+await page.click('.bake-form button[type=submit]');
+await page.waitForTimeout(200);
+SDD = await mod('sourdough');
+check(SDD.bakes.length === 1 && SDD.bakes[0].rating === 4 && SDD.bakes[0].hydration === 75 && SDD.calc.loaves === 2 && SDD.calc.adjust === true, 'bake log saved; calculator settings kept');
+await page.screenshot({ path: path.join(OUT, 'sourdough.png'), fullPage: true });
+
+// ---------------------------------------------------------------- Home: guitar, starter, birthdays, portfolio
+await page.click('a.nav-item:has-text("Home")');
+await page.waitForSelector('.money .big');
+await page.waitForSelector('.portfolio .tk');
+{
+  const lc = await page.innerText(learnCard);
+  check(/Guitar/.test(lc) && /🔥 1/.test(lc) && /25m today/.test(lc) && /Grade 2, module 3/.test(lc), `Home learning card has guitar: ${lc.split('\n').slice(-2).join(' ')}`);
+  check(/Sourdough starter/.test(await page.innerText('.home .card:has(h2:text-is("Cooking"))')), 'Home cooking card shows the starter');
+  const chipsT = await page.innerText('.chips-row');
+  check(/to MW4/.test(chipsT) && /to GTA VI/.test(chipsT) && /to Doomsday/.test(chipsT) && /to Test Game/.test(chipsT), `release countdowns on Home: ${chipsT.replace(/\n/g, ' ')}`);
+}
+{
+  await page.waitForTimeout(400);
+  const tks = await page.$$eval('.portfolio .tk', (els) => els.map((e) => e.innerText.replace(/\s+/g, ' ')));
+  const pf = await page.innerText('.portfolio');
+  check(tks.length === 7 && tks.every((t) => /\$\d/.test(t) && /[+-]?\d+\.\d\d%/.test(t)), `portfolio prices: ${tks.slice(0, 3).join(' | ')} …`);
+  await page.click('.portfolio .seg-btn:has-text("Energy")');
+  const en = await page.innerText('.portfolio .pf-news');
+  check(/GOOG test headline/.test(pf) && /on average today/.test(pf) && /nuclear deals/.test(en), 'portfolio headlines: your tickers plus the energy/quantum/robotics themes');
+  await page.click('.portfolio .seg-btn:has-text("Quantum")');
+  const qs = await page.$$eval('.portfolio .pf-news .story-title', (els) => els.map((e) => e.textContent));
+  check(qs.length === 1 && /quantum computer/.test(qs[0]), 'quantum headlines on their own');
+  await page.screenshot({ path: path.join(OUT, 'home-portfolio.png'), fullPage: true });
+  await page.click('.portfolio a:has-text("Markets news")');
+  await page.waitForSelector('.news-page');
+  const tabOn = await page.innerText('.news-tabs .seg-btn.on');
+  const mk = await page.innerText('.news');
+  check(/Markets/.test(tabOn) && /Warehouse robots/.test(mk) && /Robotics/.test(mk), 'Markets news opens from the portfolio card, tagged by theme');
+  await page.click('.news-tabs .seg-btn:has-text("NYC")');
+  check(/deputy mayor for housing/.test(await page.innerText('.news')), 'NYC politics in the News tab');
+  await page.click('a.nav-item:has-text("Home")');
+  await page.waitForSelector('.money .big');
+}
+await page.click('.birthdays button:has-text("Add or import birthdays")');
+await page.waitForSelector('.bday-sheet');
+{
+  const d = new Date();
+  d.setDate(d.getDate() + 3);
+  await page.fill('.bday-form input[aria-label="Name"]', 'Test Person');
+  await page.selectOption('.bday-form select[aria-label="Month"]', String(d.getMonth() + 1));
+  await page.selectOption('.bday-form select[aria-label="Day"]', String(d.getDate()));
+  await page.fill('.bday-form input[aria-label="Birth year"]', '1990');
+  await page.click('.bday-form button[type=submit]');
+  await page.waitForTimeout(150);
+  const vcf = ['BEGIN:VCARD', 'FN:Val Entine', 'BDAY:1985-02-14', 'END:VCARD', 'BEGIN:VCARD', 'FN:Sam Fourth', 'BDAY;X-APPLE-OMIT-YEAR=1604:1604-07-04', 'END:VCARD', 'BEGIN:VCARD', 'FN:No Birthday', 'END:VCARD'].join('\n');
+  await page.setInputFiles('input[aria-label="Import birthdays file"]', { name: 'contacts.vcf', mimeType: 'text/vcard', buffer: Buffer.from(vcf) });
+  await page.waitForSelector('.bday-sheet .ok-note');
+  const m1 = await page.innerText('.bday-sheet .ok-note');
+  await page.setInputFiles('input[aria-label="Import birthdays file"]', { name: 'friends.csv', mimeType: 'text/csv', buffer: Buffer.from('Name,Birthday\nVal Entine,2/14/1985\nCasey Csv,March 3\n') });
+  await page.waitForFunction(() => /friends\.csv/.test(document.querySelector('.bday-sheet .ok-note').textContent));
+  const m2 = await page.innerText('.bday-sheet .ok-note');
+  const BDD = await mod('birthdays');
+  check(BDD.people.length === 4 && /2 added/.test(m1) && /1 added/.test(m2) && /1 already here/.test(m2), `birthdays: added one, imported a .vcf (${m1.replace(/.*: /, '')}) and a .csv (${m2.replace(/.*: /, '')})`);
+  const [dl] = await Promise.all([page.waitForEvent('download'), page.click('.bday-io button:has-text("Add to Calendar")')]);
+  const ics = fs.readFileSync(await dl.path(), 'utf8');
+  check(dl.suggestedFilename() === 'birthdays.ics' && (ics.match(/BEGIN:VEVENT/g) || []).length === 4 && /Test Person’s birthday/.test(ics), 'calendar file with every birthday');
+  await page.click('.bday-sheet button[aria-label="Remove Casey Csv"]');
+  await page.waitForSelector('.toast-btn');
+  await page.click('.toast-btn');
+  await page.waitForTimeout(200);
+  check((await mod('birthdays')).people.length === 4, 'removing a birthday can be undone');
+  await page.screenshot({ path: path.join(OUT, 'birthdays.png') });
+  await page.click('.bday-sheet .btn.primary.block');
+}
+await page.waitForTimeout(200);
+{
+  const chipsT = await page.innerText('.chips-row');
+  check(/3\s*days to Test’s birthday/.test(chipsT), 'a birthday this week shows in the header');
+  check(!!(await page.$('.slot.o4 .birthdays')) && /Test Person turns \d+/.test(await page.innerText('.birthdays')), 'and the Birthdays card moves up next to the to-do list');
+}
+
 // settings sheet
 await go('Settings');
 check(/Only this account/.test(await page.innerText('.sheet')), 'settings sheet');
@@ -1101,7 +1414,8 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   const names = Object.keys(docs).sort().join(',');
   const y = String(new Date().getFullYear());
   check(b.historyVersion === 2 && b.configVersion === 28 && b.config.categories.length === 11 && Object.keys(b.months).length >= 8, `demo budget: ${Object.keys(b.months).length} months, current versions (so the budget module adds nothing of its own)`);
-  check(['home', 'auto', 'learning', 'cooking', 'health', `health-${y}`, 'health-hk', `health-hk-${y}`, 'health-hk-ecg', 'health-hk-routes'].every((n) => docs[n]), `demo documents: ${names}`);
+  check(['home', 'auto', 'learning', 'cooking', 'health', `health-${y}`, 'health-hk', `health-hk-${y}`, 'health-hk-ecg', 'health-hk-routes', 'fun', 'guitar', 'sourdough', 'birthdays'].every((n) => docs[n]), `demo documents: ${names}`);
+  check(docs.fun.releases.every((r) => !/GTA|Grand Theft|Modern Warfare/i.test(r.title)) && !docs.fun.playing.some((g) => /Black Ops|Teamfight|Pokémon/i.test(g.title)) && docs.guitar.sessions.length > 20 && docs.sourdough.starter.feeds.length && docs.birthdays.people.length >= 5, 'demo person has their own games, guitar practice, starter and birthdays');
   check(docs.home.place.name === 'Seattle, WA' && docs.auto.car.make === 'Tesla' && docs.auto.state === 'WA' && docs.health.profile.sex === 'female' && docs['health-hk'].workouts.length > 100, 'demo person: Seattle, a Tesla, a year of Apple Health');
   const takeHome = b.config.incomes.reduce((a, i) => a + i.biweekly, 0) * 26;
   const fixed = b.config.bills.reduce((a, x) => a + x.amount, 0);
@@ -1147,7 +1461,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   check(/[?&]demo/.test(tp.url()) && /Good (morning|afternoon|evening), Jordan/.test(await tp.innerText('.hero')), `demo opens without signing in: ${(await tp.innerText('.hero-title')).trim()}`);
   check((await tp.$$('.lring')).length === 4 && /Seattle, WA/.test(await tp.innerText('.weather')) && /2024 Tesla Model Y/.test(await tp.innerText('.main')), 'demo home: rings, Seattle weather, the sample car');
   const chips = await tp.innerText('.chips-row');
-  check(!/GTA/.test(chips) && !/inspection/.test(chips) && /AIF-C01 exam/.test(chips), `demo countdowns are the demo person's: ${chips.replace(/\n/g, ' ')}`);
+  check(!/GTA/.test(chips) && !/inspection/.test(chips) && /AIF-C01 exam/.test(chips) && /to Dune/.test(chips) && /Maya’s birthday/.test(chips), `demo countdowns are the demo person's: ${chips.replace(/\n/g, ' ')}`);
   const spentBefore = await tp.innerText('.money .muted.small.num');
   await tp.fill('.qa input[aria-label="Amount"]', '12.34');
   await tp.fill('.qa input[aria-label="Description"]', 'Demo test lunch');
@@ -1155,10 +1469,18 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(300);
   const spentAfter = await tp.innerText('.money .muted.small.num');
   check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
-  for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news']]) {
+  for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news'], ['fun', '.fun-hero'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
     await tp.goto(`${base}?demo#/${route}`);
     await tp.waitForSelector(sel, { timeout: 8000 }).catch(() => {});
     check(!!(await tp.$(sel)) && !!(await tp.$('.demo-bar')), `demo #/${route} renders`);
+  }
+  await tp.goto(`${base}?demo#/fun`);
+  await tp.waitForSelector('.fun-hero');
+  {
+    const ft = await tp.innerText('.fun');
+    const np = await tp.innerText('.now-playing');
+    check(/Dune: Part Three/.test(await tp.innerText('.fun-hero')) && !/My GTA 6 site/.test(ft) && /Mario Kart World/.test(np) && !/Black Ops/.test(np) && /\d+ of \d+ watched/.test(ft), 'demo Entertainment is the demo person’s own');
+    await tp.screenshot({ path: path.join(OUT, 'demo-fun.png'), fullPage: true });
   }
   await tp.click('a.nav-item:has-text("Budget")');
   const frame = await (await tp.waitForSelector('iframe.frame')).contentFrame();
