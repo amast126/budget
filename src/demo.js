@@ -110,8 +110,9 @@ export function enterDemo(fromAccount = false) {
   }
   location.href = `${location.pathname}?demo#/`;
 }
-// The link to share: the demo on this site, no sign-in needed.
-export const demoLink = () => `${location.origin}${location.pathname}?demo`;
+// The link to share: demo.html next to this page, which gives Messages and other apps a designed preview card
+// (demo-preview.jpg) and then opens the demo. No sign-in needed.
+export const demoLink = () => `${location.origin}${location.pathname.replace(/[^/]*$/, '')}demo.html`;
 
 // Same shape as the Firebase backend (backend.js), backed by the "demo:" documents.
 export function createDemoBackend() {
