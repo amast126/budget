@@ -1,43 +1,148 @@
 {
- "generated": "2026-09-27T06:56:40.241Z",
+ "generated": "2026-09-27T12:55:48.916Z",
  "sources": {
   "ap": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T06:56:40.241Z"
+   "checked": "2026-09-27T12:55:48.916Z"
   },
   "reuters": {
    "ok": true,
-   "count": 14,
-   "checked": "2026-09-27T06:56:40.241Z"
+   "count": 12,
+   "checked": "2026-09-27T12:55:48.916Z"
   },
   "reddit": {
    "ok": true,
    "count": 25,
-   "checked": "2026-09-27T06:56:40.241Z"
+   "checked": "2026-09-27T12:55:48.916Z"
   },
   "tech": {
    "ok": true,
-   "count": 87,
-   "checked": "2026-09-27T06:56:40.241Z"
+   "count": 93,
+   "checked": "2026-09-27T12:55:48.916Z"
   },
   "ai": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T06:56:40.241Z"
+   "checked": "2026-09-27T12:55:48.916Z"
   },
   "pop": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T06:56:40.241Z"
+   "checked": "2026-09-27T12:55:48.916Z"
   },
   "music": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T06:56:40.241Z"
+   "checked": "2026-09-27T12:55:48.916Z"
   }
  },
  "politics": [
+  {
+   "id": "ap-1bkiwlz",
+   "title": "Kean returned to Congress after an unexplained absence. Now it's time for his first and only debate",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNQ1hZbXQwQ081U1dwTWEwZG5zLXlZcFVMbzdvaXRVd2loUVlxVjJpN0Z2NENZamJiRmd2VFV1N3BCU0RrVnJzVE5QWTdjdFBSNmN6a2pGM3FUSjEwLUdhcFh3QmI0R1lNdkFJdHhZa1FkSzFkVjhRdUIwY0dGMllqQ2hCVUlEblctZDU4ODQ4VF9OeWVoOUhlc3FKQVhaeDFZdHc2cGl1U21WTFg5NWszNg?oc=5",
+   "date": "2026-09-27T11:58:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-89zgqe",
+   "title": "Supreme Court vote shadows Maine Sen. Susan Collins in her first bid after abortion rights decision",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQcmxoVV82QjVuWnVJbnVreWhHeHo0eXAwU1pZQnY3VW9CbzVQRW5IODBKT1pyRjF1dTV3Q0NGMTBBQnlTRVZRcFVMa2l5S0RoWWUzRTJDVHVDZDcxcjhTaGNGVXRnNUJ1dTdDT3JsYWVhUy1Mb2t6NC1oenM4UFd2ekdaWHdRRnRBaHo0VHY4NHFzTWtZRGs4WFQ5TGhpSjJsYzVQOVlOYnBydFR5ZzhnQ3R2bWY?oc=5",
+   "date": "2026-09-27T11:54:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-pdahc0",
+   "title": "87-year-old’s eviction sparks encampment in Madrid plaza to protest housing crisis",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPajVfLXo0QUJYM3FjWldGS25aQ2dsYnJ5QXB0NFpuQWFETmRGcVdhTFpfZTRaeENKTktaVHZ6RF8tcTBoZGozTmYtdWRTR3JkbXdoelZXblVHMEN6UlVpSmhteFV6YUx3dTByN255b0NhU2VXNjRmUkcxcC1QdWJkc3E3SkVvWmg4cjNGM1lqOXhUNkJiWkh0T21abXpKNUE?oc=5",
+   "date": "2026-09-27T11:28:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-lrlvx3",
+   "title": "Anthropic and OpenAI sound the alarm on AI safety — and seek to shape how it’s controlled",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNa1V4cHRDMlBrTDlxNlRReXJ5S2lkWFZWRmpFY3g3ZUlHbENldDRnRGRhTVhsZnU4bTZPLUNvbmlQenhqSndSSEtDVEVHQXU1VWpMSThJVWlVbHBTMkpScFVZUUdkSk1jZHJwaDhlQV9BR2dwUlNDVnlmY1Rtd0xuTWxxLVl2Y2M5NEhlWHp6Q2UwNXJSZVE3LWV3WF9ad21iSS1r?oc=5",
+   "date": "2026-09-27T11:23:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1vzpnck",
+   "title": "UK police evacuate homes near air base used by US and detain men on suspected explosives offensives",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOcERWNlhSekhlZGNhNVZ4dTZra2o2b3ZEdGFOeFhYWi02T2JlZ2VPNlZ6ZUQ1ODI1MHc3WElaaVRnV2RlZTlUeHhSR1pSN1NOanZiZkEyNnNtaXhPWS1qYXNrSDlIb1M0S3dwMktBNUJUd244MlZuTHJrNk12SGNCckdRSXBCZWxQWml1MHZHdEkwYjVlSEsyX0FOLTRWYlRZ?oc=5",
+   "date": "2026-09-27T10:27:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1e5qfnq",
+   "title": "Rio residents find their own way to tackle gangs as crime dominates Brazil’s election",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQU0xDZlRYRGJZY2dDanUwd3ZpRDhBblJLN2pZb1IxM2NLazI2NGM0RzBzZ0VKT2dBUUdTVWRIc0FFQTFuUUpONG9WbEQ4b1F4a2RTNTBZU3Z0THFyc3U1SkV3YXBhTkhFemlpR0JZLUtIcTJlbzZxTDk0dVdCT2c5Wm9KY1BtVlFFR2JnSVdZTlhMWEpJNkE?oc=5",
+   "date": "2026-09-27T10:06:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-d1t3lk",
+   "title": "Pope urges protection of weakest at French shrine at Lourdes known for miraculous cures",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNeGNkWi1oNWFZak1oTmlybWllMDVHMXlMMzhCYUxGMGhJeWNqbHBFaHV6eHNBZGdhaUNlWjVpcFdTdXNtTDZVLWR3bTRJcHlXR1VZV3JqLWpXbS15WXduWmdjdThmeFQ1Qkh4eVZaZ3BrdzZGRWxEaGJOaU1vWHI4VVREbThpM0V6OV9uZ2Y1WTNya0toZVZzblB4YTN1NGR1Y2hqcHd5Szg?oc=5",
+   "date": "2026-09-27T10:02:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-p6cy0r",
+   "title": "Tensions run high in Northern Ireland after contentious march given go-ahead",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOQ3doRTNLTTJvTUx5ajJQbHpnMGtKVWp2SFA2NDZHaEJLSFlRa1ZYRGh3d0M3aGlrWWxsTXRVbERVWXdIb0ZGYV9kcFhRMVVWN3hpZkhWUm9iQW14VS1LRk55bUdaLU9UMVpIQW40alFoRjVGY0Y5WHFrYjVqOU05YlRjcmw1cjZtQ2NBUTQwQWFyLXBMU3NzbWRJcHdFWUZNVG9md3VpVkhsUQ?oc=5",
+   "date": "2026-09-27T09:30:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-t8oy0y",
+   "title": "Hurricane Nolo skirts Hawaii but could still unleash powerful winds, flash flooding",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaFVfUjJkdUtyOVZ6SGkyOWVzYnNZLXJ3bXpScGNjVTZ2Tm9mTzY5ZU9ZQTBuS2VlNzFKbm9tRmtSSFZsQXZ2djkzNjgzVHd4TUVFQjg1ZFpzdWozdUprZi1QSjJaVEEyLUFvdUZmZTAwT2J5eHl2SlVvRHFnQXJ4Q2JGZndCLUxo?oc=5",
+   "date": "2026-09-27T07:40:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1ur467g",
+   "title": "Oregon QB Dante Moore leaves field in ambulance after late hit. His Ducks rally for a stirring win",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQbkp1OXU2SUc5bnotcnUzWnc3UC1UWlp4dmE5bnEzVkVqbjVPWU5NSElkVUhtZ0xIMEFVbmVMUDBwRWxSb0lYdkVaYzFlTjFFdllnSjlHZDBYdXVwb1FuTnEySldoaFg0bGZ6TlM4M3o1Qi1tLTZ6R1A0eDlxZTNlVGlzelVLajJ1Qi1yV2Zrczc1cDQ?oc=5",
+   "date": "2026-09-27T05:58:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-10m0mtq",
+   "title": "Voters in Switzerland decide on right-wing party’s proposal to tighten neutrality rules",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPSXFyNkpXRHJzY0NPaEJRcG1rREF5ZkZ4d1Ftb3d2c2pqQjlPSml2NFVCS3RNMml2dVd1ME1iQ0QtMDJoVnhqRWVvcFJ2VnA5NGpiNmdKbG1HQVdHdUFDV1MtN2h3OWtsTUp2bTdWbmJoX2Y0T1RMRzFVTjE3bXpWMFhyMkdaSkktNFBVS3BNNnZIUElhTHBtcDdmNDMwQVVpaWViNHJ0T2ZqOXdEblQ2N2VSYnQySG8?oc=5",
+   "date": "2026-09-27T05:12:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-miedza",
+   "title": "2 giant pandas set off to Atlanta zoo from China after Xi-Trump summit",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQbnFTY09PTzdnQlc3TEl5dTFwajExdllpLUx4ZlVBenlIbVFYcEtfV1FVWDZRZF9wZG9zY2tRVWNVUUNudldnVXR1bDNJb2tXWmh6TTFtVzE1Y0xZUFBSS21WUXIxQ3RZWWE5OFdTUEZxanhuRWkzQzc4RjE5T1loa2JrSWphc3ZzSmZiRU1zX1E5X3RwZF9jWE9lNHE1YnUzZ1dmOQ?oc=5",
+   "date": "2026-09-27T04:47:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1hr3sgx",
+   "title": "Phillies can salvage a late collapse and take final NL wild card in season finale",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOdFoyWXBjaDJBaXBzd2FaODJteWZhMk5aR3ktdlE5ckFkeXhaYUNycjV3Z1RwLUE4Mlo1V0ZwUXF2aG5zNWYwTjFrVTB6c25XV21rYjd4aHBmV09hOXdjMnNZcXc1TmU4NWdlNkhZR0E0N0pCeXVidEVPdEhhM1pIdDhPbUFKU0ZnMHA5cWxsbw?oc=5",
+   "date": "2026-09-27T04:35:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-2tg03t",
+   "title": "Gunmen target ambulance in Pakistan after suicide bombing at checkpoint killed 12",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOd1JTRGdCNzVjMUkzSmE4cTA3Szh6WE8zNlpLQlRmSGdIRDVoTkVSN1VvS3dqZlBQSUlXSVVwX2xwV0tOVTZ6aUlySExzR2w4RzhwZHlwQlhlVmFfdDZTTWNSSW9KdkpYdGRkeVpXcmgyNzZuZ3FxUm9qbUtCalcwaVNEcm1meS1GU1lJ?oc=5",
+   "date": "2026-09-27T04:19:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1fa5hz5",
+   "title": "The MTV VMAs are here with Taylor Swift making history and Madonna leading the nods: How to watch",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNc29LNjU2WGtLN0FVSWF3c01hQmw0M013X0V1U2N3TjNZQTVwdkVlMDh3bkgwQng2T3FRMFFkblFRNnktMjFwZ2VBbnd2SjR2TTBIN0tNUkVBempHWk5TN3lvYlN5OGNRNjUxaktuU1hQUnExeW5hbk5YaEVVU1lRcEQ3UFRTOE5xRmxjV2diSGtPTXBXdDdMWmln?oc=5",
+   "date": "2026-09-27T04:06:00.000Z",
+   "source": "AP"
+  },
   {
    "id": "ap-31kcab",
    "title": "No. 21 Florida serves notice to the rest of the SEC with its takedown of No. 4 Ole Miss",
@@ -67,10 +172,24 @@
    "source": "AP"
   },
   {
+   "id": "ap-peemvt",
+   "title": "Russia's top diplomat rejects German calls to ease off its `dangerous' escalation toward the country",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNSU14aTYxS3I5YTNMLVhSTEljNmc1cExlcmhSZ3hVa2NmQ0JlVkRCbEo2NFJ4QTlBXzhqU181WjBrUEFyYzc4dnpOamZDOTRNRGdDbnBCZV9xaWE0YUJBUkJQRHVxMHlHbk9aRmd1bG9LRTlxSWtRZlBOSkhtUDdOR29EVGQ3bXBPbWFjZ3pXYzhXaEl5cDkwejlOX3dpSzAyd3pPV01OMUNuQVM4RGc?oc=5",
+   "date": "2026-09-27T02:14:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "ap-su92vu",
    "title": "Justin Verlander makes teary farewell to 21-year career as Tigers rally to beat Pirates 4-3",
    "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNT3NJdnRGdDdHQ0FJZzVwdjBId09ZT2RfOHh5dXA4S0U3dGd6dndrMVNURUEyN3JYdnN2MUVrUWN2NXJKQW1hWWNVWTRDdlJKUTNidF92SnBkSXpaUlhtc1JobmN6d2NabzBqb0IxRGZkelFWeGY2TVo4eXZqRjVKZUZ3eGJrdE0?oc=5",
    "date": "2026-09-27T00:58:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-1iidzto",
+   "title": "Internationals finish strong to lead Presidents Cup. Now they have to find a way to close it out",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPLUR4akpGU1Q0NWhBeUhsQ2Jnal9Od0NvTFhTTEEtZ3ljckxlX1BRLU5BSUt4c3V1SkRYbTZaQVYtV0UzOWJCaTJOUU1RYWVUSTJTaTU5LWdzVFpuYTRkdG1xRy1lN3NUTzREQmVkcldEMWdfN0w5VGU1QmtpWllDeTJDM2J0ZGVsNnYyRnFYYm92RFQyRUJyN2FMQjRseGozN1E?oc=5",
+   "date": "2026-09-27T00:56:00.000Z",
    "source": "AP"
   },
   {
@@ -88,17 +207,24 @@
    "source": "AP"
   },
   {
+   "id": "ap-eoinfv",
+   "title": "Jadan Baugh and No. 21 Florida run roughshod over 4th-ranked Ole Miss, 52-28 in the Swamp",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOY0JyWTd3WlRweXE4a2ZVUkRZVXNhMVBkNUVkWnk1Zkg5SWRtRjZKS2QyRU1rMC1GdDdRUnpySlc0NnRUbjY0V2FHbGx3UTJjLUIxajRrQndjeU9lZnZXSV9qU3hzNW5JajNnOG13MnhKanprMGYtQkhSWXpLQmhpSUtUN2NlMWVQaVBYX0JR?oc=5",
+   "date": "2026-09-27T00:00:55.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-wktjya",
+   "title": "Verlander leaves final start of 21-year career as 7-year-old daughter sprints to the mound for hug",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQZ1V3cnA1WUVZa1l3Z3Jpc2F4b2lTREFuUGhVelhBbXotQXl0LVRaQkR2UGF4enJoYlJBOE1aSjNVUVpua0dXSUpoU2hDZ2UwZ3pQWnNIbV9USTBNQmVHNkZQaWZJMW54dmJ1My1fSndIMTM5a010c2JSOFg0ZWhlVmM3TDNvdjA?oc=5",
+   "date": "2026-09-26T23:46:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "ap-1nb7a71",
    "title": "No. 1 Texas outlasts No. 14 Tennessee 20-17 in Knoxville as Simmons gets 5 sacks with Trump watching",
    "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOMHFGM3JHV3huV2ZNeVM5TV9NZGkxRHZKelh5WW9nbXlWWms5NGNOQnJIY1QxNVBsZ293V1VJcE1VMEM1ZnN2TnI2NFJaUjFYODUwd0hBaFB0dC1fazFVZXJyUWRCdE1ZcG9KaFhKdV9Ed2haYWtCalhENHg5MHlpMWFiT3BHbnhI?oc=5",
    "date": "2026-09-26T23:33:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-isamdh",
-   "title": "Trump attends Texas-Tennessee game with no apparent disruption to coaches' communications",
-   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPd1AzOWE4UHVlQ0JDbzhvU1JJVlBISXRYNTNhdUI1aWl3aHcyMkQzbV9hYVVtY29mazlUMzU3YWkxQjMtdGpST290RV9nTWh0RXNmYmhLRUxsa1BnRHk2cHQ1bFpRZ2lRbmREX21MS3g0d29rZ3FwMENCVTR5LVBzOGc2czR5ZUYtSUNvWF9iUDlWWWZUQU5wNmpR?oc=5",
-   "date": "2026-09-26T23:26:00.000Z",
    "source": "AP"
   },
   {
@@ -151,13 +277,6 @@
    "source": "AP"
   },
   {
-   "id": "ap-wktjya",
-   "title": "Verlander leaves final start of 21-year career as 7-year-old daughter sprints to the mound for hug",
-   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQZ1V3cnA1WUVZa1l3Z3Jpc2F4b2lTREFuUGhVelhBbXotQXl0LVRaQkR2UGF4enJoYlJBOE1aSjNVUVpua0dXSUpoU2hDZ2UwZ3pQWnNIbV9USTBNQmVHNkZQaWZJMW54dmJ1My1fSndIMTM5a010c2JSOFg0ZWhlVmM3TDNvdjA?oc=5",
-   "date": "2026-09-26T21:32:00.000Z",
-   "source": "AP"
-  },
-  {
    "id": "ap-jsk310",
    "title": "Where things stand after Iran’s new pitch for a deal to open the Strait of Hormuz",
    "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNV0FIQkFKX0N0Z3ktdjZjYXAxMWFURERJWVhjREFrZGNkZFlGVlQ4VzVSQm40Rl9XMjBqeVNxQ0xMQllyYmVKUmpSMFVtZEFQVWdDRWY3djgxcHFnanZsS2g0SXBnUFJJdk01NHdJQnoxOExMUEUtTHpEMDZCTXZ4R0s3LXZPeGw1c0piMHd1R1I0aU00S0szVjdHMmktSXlPS1hBdnhR?oc=5",
@@ -169,20 +288,6 @@
    "title": "Trump rejects Iran’s proposal to reopen the Strait of Hormuz and other Mideast news",
    "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOY3FURU1ld09YM0czSERoLWEtWEQwR1FSZm96NmpURkowVXNHQkRna0gzZEJXTWlKLUE5QW51U24tRFVHX2JDNUpvWVFyNWdGYVhaYThBVmJZMndzM1Z2eDVkVVViRG00M1k3YUpYdDE2azVBcmo4SmlhNDRSLW9Ra0taSTY1V0w3ektQdFpzQXhjTzNBNmxSalgxT0xGbC1y?oc=5",
    "date": "2026-09-26T21:30:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-t8oy0y",
-   "title": "Hurricane Nolo expected to unleash powerful winds, flash flooding on Hawaii",
-   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPaFVfUjJkdUtyOVZ6SGkyOWVzYnNZLXJ3bXpScGNjVTZ2Tm9mTzY5ZU9ZQTBuS2VlNzFKbm9tRmtSSFZsQXZ2djkzNjgzVHd4TUVFQjg1ZFpzdWozdUprZi1QSjJaVEEyLUFvdUZmZTAwT2J5eHl2SlVvRHFnQXJ4Q2JGZndCLUxo?oc=5",
-   "date": "2026-09-26T21:18:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-peemvt",
-   "title": "German, Russian foreign ministers have rare meeting at UN",
-   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNSU14aTYxS3I5YTNMLVhSTEljNmc1cExlcmhSZ3hVa2NmQ0JlVkRCbEo2NFJ4QTlBXzhqU181WjBrUEFyYzc4dnpOamZDOTRNRGdDbnBCZV9xaWE0YUJBUkJQRHVxMHlHbk9aRmd1bG9LRTlxSWtRZlBOSkhtUDdOR29EVGQ3bXBPbWFjZ3pXYzhXaEl5cDkwejlOX3dpSzAyd3pPV01OMUNuQVM4RGc?oc=5",
-   "date": "2026-09-26T20:27:00.000Z",
    "source": "AP"
   },
   {
@@ -263,13 +368,6 @@
    "source": "AP"
   },
   {
-   "id": "reuters-xng3u3",
-   "title": "On Michigan doorsteps, Republicans sell Democrats-as-extremists message with mixed success",
-   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOeTJfNzN3Z3RrVUYyUHozd3Q0Z3JhRnp2aDU4aC02bjE5cGFxbFFDX0dDWTA3U3BzbVRFbVVnMEhXT3hVY19BXzJERkw3b2NEZThvX0RBVWdTZ0IxSVRVcnl2bXd1OGtGSXg0UTdmdVBmSUdqOU1iODVtZ2QtckZ3VHhyTU93TWFCYnpxME1kazc3djVQZWlMZTRXdnZ5S0RBZE1tcmFCU2V2VjVuVnlzanJzQ0t3RWd0VUFIYnJFZjU?oc=5",
-   "date": "2026-09-26T17:15:10.000Z",
-   "source": "Reuters"
-  },
-  {
    "id": "ap-1m54vq4",
    "title": "America In Focus: Money pressures climb as mortgage rate tops 7%, bond yields rise",
    "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNZ2EyOVZNRklrMHRKYmdma3BZT01YenNWRkdISXJCV0RvWGxteHdLbVFPSTJES0pLOVN3VldrS3JUY2RvUzM4ellZaHRJRnBLNnZ1NGwzcGwyOXcyREtlc2ZLQWRsVEpNdWpUSTdxTGwwYlhpaU9ESm5NOWFaUzdXNG85Rkg4MEtJbVNZSkdR?oc=5",
@@ -277,24 +375,10 @@
    "source": "AP"
   },
   {
-   "id": "ap-15i0gxt",
-   "title": "House Democrats plan vast oversight of Trump administration. Impeachment is an option",
-   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPcy10ZFE2SGc4eGtIcnVnWUNmQ0I3YTZJc3RwX21XNV9BOUpoVFBILURqSy1PRUNxeEtmVWZSRnFDYXBCbHVCdzRKZU9CdHg2bW5qaVhTY0lqTzhDTE0ySlZqaDJnbS1jSlF5aXE1ZzNCdFhUV0xheFY1dV9zLUNJVHZQdXNZcndoV3ZJYmY2SjBSdlJXQUhIeEhJYVJTS2Y2OGt5bXE4cEFBMUdfaDRvRDg0ZzZjMHFaLVB4MDVBLWpZNTFLa29V?oc=5",
-   "date": "2026-09-26T17:09:00.000Z",
-   "source": "AP"
-  },
-  {
    "id": "ap-zd3un6",
    "title": "China has kept its promise to stop funding overseas coal, but loopholes are helping coal expand",
    "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOR1c2N20tTnRKQ1cxbE9NdE42bVVRTEZ6dzRIZWVpcTNHYlNMazJxYzA5d2NmYTlyYUZjTldNc3dobURkQTRvLWdVN19iUk5jODJfbFZDdjlDSlpNYWNDV3puUXJQbTBtMi1SYkQ4c2tHS2RHTmlacFFmcS1uV1p5XzZKNDAzazdVNVNyWjlUcHlwTkI2VktSVTZ3?oc=5",
    "date": "2026-09-26T16:25:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-2tg03t",
-   "title": "Gunmen target ambulance in Pakistan after suicide bombing at checkpoint killed 12",
-   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOd1JTRGdCNzVjMUkzSmE4cTA3Szh6WE8zNlpLQlRmSGdIRDVoTkVSN1VvS3dqZlBQSUlXSVVwX2xwV0tOVTZ6aUlySExzR2w4RzhwZHlwQlhlVmFfdDZTTWNSSW9KdkpYdGRkeVpXcmgyNzZuZ3FxUm9qbUtCalcwaVNEcm1meS1GU1lJ?oc=5",
-   "date": "2026-09-26T16:14:00.000Z",
    "source": "AP"
   },
   {
@@ -347,10 +431,10 @@
    "source": "AP"
   },
   {
-   "id": "ap-1heucco",
-   "title": "One shot or two? What to know about HPV vaccination recommendations",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQRTdsWVF3SGxHZXZoRUFmR21zWldoc19zUk9sY3NjSWNadllRbHFZX3dMSHBkMHBDcVNUTnFJbGk1N1hXVGRhX0Z5eFhOeEsxUWxiYWlZTWZ2THZXWDhHaTNzQTVzWGhNQUJrRFlWVm1aVktvVUhCNWM3YTBJdjRuR1lySW5OcDBJalBFb1RnRldKNVE?oc=5",
-   "date": "2026-09-26T14:13:25.000Z",
+   "id": "ap-15i0gxt",
+   "title": "House Democrats plan vast oversight of Trump administration. Impeachment is an option",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPcy10ZFE2SGc4eGtIcnVnWUNmQ0I3YTZJc3RwX21XNV9BOUpoVFBILURqSy1PRUNxeEtmVWZSRnFDYXBCbHVCdzRKZU9CdHg2bW5qaVhTY0lqTzhDTE0ySlZqaDJnbS1jSlF5aXE1ZzNCdFhUV0xheFY1dV9zLUNJVHZQdXNZcndoV3ZJYmY2SjBSdlJXQUhIeEhJYVJTS2Y2OGt5bXE4cEFBMUdfaDRvRDg0ZzZjMHFaLVB4MDVBLWpZNTFLa29V?oc=5",
+   "date": "2026-09-26T12:54:39.000Z",
    "source": "AP"
   },
   {
@@ -368,10 +452,24 @@
    "source": "AP"
   },
   {
+   "id": "ap-1heucco",
+   "title": "One shot or two? What to know about HPV vaccination recommendations",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQRTdsWVF3SGxHZXZoRUFmR21zWldoc19zUk9sY3NjSWNadllRbHFZX3dMSHBkMHBDcVNUTnFJbGk1N1hXVGRhX0Z5eFhOeEsxUWxiYWlZTWZ2THZXWDhHaTNzQTVzWGhNQUJrRFlWVm1aVktvVUhCNWM3YTBJdjRuR1lySW5OcDBJalBFb1RnRldKNVE?oc=5",
+   "date": "2026-09-26T12:12:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "ap-odj1on",
    "title": "Roads flood in New Jersey, inundate some homes, as major signs of nor’easter take shape",
    "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQdGRqdGEzMGFJUjh3UDU4cDJaaGdaWnNMYVpJS1Fid19ueFRYeXRMTGtJODdIeGE4RlYwZnpzU2JWYTdaQnk5LW5KRGluRjVjX2U5cS11UzY4Q0FDQXdWRVJENnluUHBMT1hKa0NRUDlUNU9pVVR0MXN0MFRNLV94WjduYUVkODlBNTdoQUtHUDNvNHp1REV3NWZXQ2c?oc=5",
    "date": "2026-09-26T12:11:00.000Z",
+   "source": "AP"
+  },
+  {
+   "id": "ap-isamdh",
+   "title": "Trump attends Texas-Tennessee game with no apparent disruption to coaches' communications",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPd1AzOWE4UHVlQ0JDbzhvU1JJVlBISXRYNTNhdUI1aWl3aHcyMkQzbV9hYVVtY29mazlUMzU3YWkxQjMtdGpST290RV9nTWh0RXNmYmhLRUxsa1BnRHk2cHQ1bFpRZ2lRbmREX21MS3g0d29rZ3FwMENCVTR5LVBzOGc2czR5ZUYtSUNvWF9iUDlWWWZUQU5wNmpR?oc=5",
+   "date": "2026-09-26T12:06:56.000Z",
    "source": "AP"
   },
   {
@@ -396,6 +494,13 @@
    "source": "AP"
   },
   {
+   "id": "reuters-xng3u3",
+   "title": "On Michigan doorsteps, Republicans sell Democrats-as-extremists message with mixed success",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOeTJfNzN3Z3RrVUYyUHozd3Q0Z3JhRnp2aDU4aC02bjE5cGFxbFFDX0dDWTA3U3BzbVRFbVVnMEhXT3hVY19BXzJERkw3b2NEZThvX0RBVWdTZ0IxSVRVcnl2bXd1OGtGSXg0UTdmdVBmSUdqOU1iODVtZ2QtckZ3VHhyTU93TWFCYnpxME1kazc3djVQZWlMZTRXdnZ5S0RBZE1tcmFCU2V2VjVuVnlzanJzQ0t3RWd0VUFIYnJFZjU?oc=5",
+   "date": "2026-09-26T10:04:00.000Z",
+   "source": "Reuters"
+  },
+  {
    "id": "ap-1gu2gxj",
    "title": "Pick a free bouquet, stay for the community at a flower garden on Butterfly Lane",
    "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNanN3ejRoRjBCYlZLa3FsSEU2U0t4ZGY0VzNTMFJiLW80VzZXRS1nYWxicGxwemhVMmRwbGJYT2V6NkQxdmlkYTdmb0lwVFg3RUdnaFd4bDZaR2NhQXdqUUhpaXFCb0RsdkhpZjByaF9YekV6TWQwYmtwTTFBT0ZRa1M3UHh4Y2k2NjZsRA?oc=5",
@@ -407,13 +512,6 @@
    "title": "Photos of new amputee soccer league as it kicks off in Bucharest",
    "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPSlFCRGRwOVIzRmU3ZFoxVjQ3OWVOSF8xOUxsQkdFU0NmZkhrSElmR2JmVGxSLVhHWndVSWtUOUQ5bHVSUl9sM0ZscmFHdkVENmtiUEhJZU9SeDVVUlBYRVBTNjZjWElZYWlvWTlKVm5EQkd3am1oWjVWaG9fSlRud3hycHlmZVVyMzF3V0ZQM0piYXF5WmRsejJxZFlCYWF3eW5qcXhn?oc=5",
    "date": "2026-09-26T09:57:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-mizbnm",
-   "title": "Far-right settlers divert West Bank spring water as Israel backs heritage site takeovers",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQOW9xcUJzN1dCTWx6TlJ6NWEwWlN4X3ZmZkR3MHNjdmJLQUc0bUV2bC1VX1V2d2xRMFotQVMybFJDRjhkQmF0X3doeWktbjAyaXd2RVFjZWl6aTN5NGxzNnlzLTMxeEt2aEpqOUpHb01RaWk4T05SajFOZXVDYk5CdC1UbXA3UTQwaXkxQmpWSm9RWUpwcWtmdEZzN2hJYkJPV2g0eGo0YWx2QzUwTHc2a0ZRdXo5dw?oc=5",
-   "date": "2026-09-26T06:39:51.000Z",
    "source": "AP"
   },
   {
@@ -480,6 +578,13 @@
    "source": "AP"
   },
   {
+   "id": "ap-mizbnm",
+   "title": "Far-right settlers divert West Bank spring water as Israel backs heritage site takeovers",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQOW9xcUJzN1dCTWx6TlJ6NWEwWlN4X3ZmZkR3MHNjdmJLQUc0bUV2bC1VX1V2d2xRMFotQVMybFJDRjhkQmF0X3doeWktbjAyaXd2RVFjZWl6aTN5NGxzNnlzLTMxeEt2aEpqOUpHb01RaWk4T05SajFOZXVDYk5CdC1UbXA3UTQwaXkxQmpWSm9RWUpwcWtmdEZzN2hJYkJPV2g0eGo0YWx2QzUwTHc2a0ZRdXo5dw?oc=5",
+   "date": "2026-09-26T04:08:00.000Z",
+   "source": "AP"
+  },
+  {
    "id": "ap-6ded36",
    "title": "A month after Nepal floods, thousands are still missing and families face a long recovery",
    "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNd1pDQkZjajhqTERTMGFkakhHdHQ3bnl6MWlmQ3huazd4QU9wM0RsN0lYT1lMRmhkU0VNQnhCM2xpU245QU9yc1Eta2l6QmltQ3JQb2hEVTIzQy1uYk5jUDBlaktMc0wzRzJYSGRWXzNxNVJZUFFiWWlZay13aWhnOUN3em43bkRlUW5aRWRB?oc=5",
@@ -543,13 +648,6 @@
    "source": "AP"
   },
   {
-   "id": "reuters-1wustw3",
-   "title": "US immigration crackdown hits Kansas, disrupts beef processing",
-   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPelhvVS1hSW45b1B5V2gtVzRhNkcwRXVfMFhPTU5fSy1JSk9CZ0xrck1PVnR1emM3aUNoVlcwZUFfOVNtTXp5ajVWeXdvWHZnSE9Fbm1NeF93MzZyYVg0dDlLUmx1Nk9VYVQyYlg3X1R6dUhHNmRYVHFXT3JDOWJDNUNVd21xSTdrTWV5RjhZaWpkVG5XVGxqM3I4dTZIODNWR0tuWE5XSlZvUQ?oc=5",
-   "date": "2026-09-26T00:32:58.000Z",
-   "source": "Reuters"
-  },
-  {
    "id": "ap-1lwofow",
    "title": "Prosecutor accused of misconduct in 'Broadview Six' case resigns, says US attorney 'scapegoated' her",
    "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxON1BGRW5WaWVDbUVob1pldHFtZnBpaW9ZUFl3dklGTm5SVzVQTnZ0VFNmYkRYUmlIanFBZzBZYmFxZVhGSUpDam5YSkRVV0ZJVEFKaERjai1MQXVyVWRnWHMzVGNIVDF3Qm5yRldEclpFZDZjNEp0aXB3YjQ4bTRCRE42MlRZN3NGUjdrYzROU1hfbWR1RTZUMVpnd2labnVtclMyN3l0SzlvWWRTbUl6ejBCRnhpcUM2QnVOOFFHblRjdw?oc=5",
@@ -569,148 +667,148 @@
    "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQVFQzZzgzMER4cWRxMS1ncXE3U29RMlhuc3pxT2Mya3pjZjFCeHRGNjZMREs0WkNucTJPa0ZZMjBwVTZxaG00VFJrVVA5OVNsbFlCcVkwXzB2VTlSSG9ISHNXaUtQQUhyTWYyTEtnT2oyZmhrR3RkMWRTSUJyR1BhZ25UVGJwc0JfbWxkdFZqMVkySGt3ZWVJelZHVzFsY3gtd1dwVmt3?oc=5",
    "date": "2026-09-25T23:48:00.000Z",
    "source": "AP"
-  },
-  {
-   "id": "ap-1n5nej0",
-   "title": "Supreme Court lets Trump administration use revamped federal voter eligibility database for now",
-   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNTjdiQ0dkQkV2V1J1Z19HdURxN0pmMlI3d1dRN2N6QmZpUjFRbUZYd1hMM1JuN0tnaW9Fd1kzRFVwUFh4SGdCVzFpZHJkZDgtV0pRVHd5NzNpZUtGa0xTcnc3VlNwVVZabDZWVDVvU1h2a2luY2NMNkFpWUluMWJHTlhpZXdJUUFTTXFwTTRqS3hvTGI4SFJ2WmxUeGt1cHA0bGVEQXlUbmtNeGZpdmlzeQ?oc=5",
-   "date": "2026-09-25T23:33:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-1kln57v",
-   "title": "Bill Giles, longtime Philadelphia Phillies owner and executive, dies at 92",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPWjhJY2ZaR1ZZQlZjVWFVN041NUVweDFlQmRLaHZSRTljRFZMNmlPc3RpejYzSGp3ZV9STGdWYkt3QzRuRTZOaEd2WVh0Mkp3bUtSLUhyTGgtRE4xYlVzN1kzYUNFMmlOeG05eVpSOGMzaWxMbGI4cUhycDN3TThLT1FHY0JUZw?oc=5",
-   "date": "2026-09-25T23:29:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-1xq20oy",
-   "title": "Meatpacking groups say ICE arrests could lead to higher prices and revenue loss",
-   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQbVQ3ZTdLWXdfemxUTDJUZEswa2wyOWN6UENlMEd3T25kUlZvVlpRdlplNFhfeW8tRmh0OVhQRVVRd2JpNkNyaWxuc3Z0QmlsRTk4ejJzbE9iNmZhT2NNeGhtM0JaVzdITGthRXlOSG9UekhLWnBJYmQtdUJ1YjFtYVRRNTRNeWFqY0hkR0dSM3NpbzhuaEREeEp0djdRS3hpaDA4dldpWWRfR24tSlc4MlVzenRLQTc1dFI1OQ?oc=5",
-   "date": "2026-09-25T23:25:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-rsqhs6",
-   "title": "US coach Pochettino regrets his limited role in Balogun red-card appeal at the World Cup",
-   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPNmJGTldabG1iTlpERGhLcDQzTTVENTBhbFBmM0R1bVRvbVViQ1dpQWliUHJObXpqQVNXLVJveklaYi1wd2pVaXp5MmVrN1pvS3QxcUtPZ2FMa01nRW5ZN0pmUlZzVmtTWlZKZlJYN0txcmNHTmIxdkxmbU11NXoyRjFHaXVEMi1LTkJKRHpGTGFqbEsyN2dYeEhlNEpVZw?oc=5",
-   "date": "2026-09-25T23:12:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-13oi4py",
-   "title": "Small bites from the UN: Terminator, outside meddling, more on that ‘annihilate’ comment",
-   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPNTV4ZnVUaXR2cDJMeUFPX3l6cUt6LVlJZ0JTNHRsdDhBWWFTeVB1QVk3bnJ2bi1wNDFwZXB4dldYQ3NUS2t6TXhfYzdySm54b1FaUWJrTTZjTXEwRUE5a1JtSW5samIyMTNwRkhJSVVGS2dsZEo4UG1JVWpITDF4djNVRUhyWjVBd3NhdGZPSHMtcUF1UE5fMW1XdlpEUFl6b2tB?oc=5",
-   "date": "2026-09-25T23:10:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-1xcavgm",
-   "title": "Report finds many security deficiencies at Utah university where Charlie Kirk was killed",
-   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQa2luNUtOU0JXSE13WVUwZEJCcGpSUVdWVXU1bXpPWjJpX1d4M2NVcV9BeHlEOEoxTU5ZeTRyVEhyb1RJUUhVM2paT3hOcmpXTzY5TVlYRWQzSHBxVzZRVFpnRmVJOE5fUEo2NXBHRklrcW5WcTJRZEVybm1xRFJNTnNlSnlnaHlrRjcwbEdjUE9udWlTQjFtei1QeWpfalZicFEtX08wRQ?oc=5",
-   "date": "2026-09-25T23:09:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-15yd1ce",
-   "title": "UN refugee chief urges action from Security Council so displacement no longer crosses generations",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPOTJDdTQ4RV9HV1pmTEVLQWVfaW9pVXZBaFluX0p1SDJ5OFJfbUN4aTcxRUZ6a3VhVE5scWpIOUpxazdBbDlfRFJPSHUwOFdqVE1tLUpZaWZrTlNuOE83R1ZvZzlYTWNib0FmcUNBc0JYTHktRHpqcEZ3NFk0ZE1USjhBbEhvckl4R0Z3WDlpMWhVdjdTV0VVeWw1ZHlYeTBFaF95X05fRkI2ckc3MHhz?oc=5",
-   "date": "2026-09-25T23:08:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-i3svvn",
-   "title": "UN tries to build momentum on pandemic preparedness, but hits a speed bump",
-   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNRkZOQ0tCTzkwWHUxd00xLVc1cXVubUpYS3lKa3JxdEZqd3pkZ2VLMDRXX2F5MV9kaDZVdExzWDRpNUdOaWZ6VXdicURYUlZqUkpHYmpSNHpRNnluUXEzY1I3bUUxbUxsR0ROckluR1RMSmFaU0FmeVV1dGZPYXRabkp3cExlellzTG9RNFNOd1NaUXBOdElLaGtnNDRlYndMcVZQMmE5RGM4MjQ0clE?oc=5",
-   "date": "2026-09-25T22:57:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "reuters-ee4oz8",
-   "title": "TikTok settles with Alabama ahead of first state trial over claims of teen harms",
-   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNdzBzYTY1WUhwQ0hyamZXX1A3V1o4TlVaeXQ3c1hBUzhTY3ZGdm11UjhhMWJLRmYzZjF4eWVfTXlZeU5aSDNGREYwZ2hnTVNwd1F2M2ZURXhHalNpNjMyblUtR09mcUd4M0tJY3ZhZE5FTGtfODQyNGExYTYtcUZ5QlZqQU83RzdmX1VpcXRrdUNGSHR4cVZmMHZWTURqSHU4TEJDMWpIMTY1R3lzY1hBbC0xY1F6QXNybnFN?oc=5",
-   "date": "2026-09-25T22:55:26.000Z",
-   "source": "Reuters"
-  },
-  {
-   "id": "ap-75y2zj",
-   "title": "Tim Tebow pauses relationship with Christian organization accused of using predatory sales tactics",
-   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQRDBVUGthUHhCQ1pVQUd6dGQ4ODlwaWN3OW5vcjBTa0sxaENvcVc1VDdGNWRYRVE0ajA0enhCOWNraXFYTFM5aC1HaGRQQTVpZTZ2LWNmalhZalJCUVRxZWQ0TjJvNTNCcFE0dWlZSnRPbGJ1TkY0SU5VdktYWGJsbG5jOUJVZzg?oc=5",
-   "date": "2026-09-25T22:48:30.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-1yrj9h7",
-   "title": "Congo plane crash kills 14, including 2 senior military officials",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOdWxRTk5SUGdabGFfdF8yMEVxaWx2NVlIVHFBVTQ5V2hKaW02NUpYRTNGN0RrNEVUdEowVkV0YjliT3F4Vy16d2ZDaUhiaFdjWHdQUzM1VkhRcEtfQVVFZS03Wkx5WHVETlZLVjBzSFpfcGpLRXNVaURzVXRVZEE3a3F3VDI4RkZjUTdMdDRFbDVMRldTWEtnYTBIdzhJWm1qSHZjQTFxS2tpa2lhQmlN?oc=5",
-   "date": "2026-09-25T22:48:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "reuters-1li0b01",
-   "title": "Fear of democratic socialists drives November turnout plans for some Trump voters",
-   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPRTNzOF9OZ29MVF8zU25jSXRjZDY3ZUNDcU9rd19nNTVlVzlhSHpzdmRXXy0yV0VUS2gxYU5ScmE0cG1jY2hMbzJ2TWc0R2U3dTYyak5pLXh1QVRTSVpiUmRkWkQxZW9kaDRyRDBzZHBRU1RLMEZnOFVrWk16cS1nNmgtNVM3Y3FmaGNuT1FYSnJyX3dXVzQxYlJHaGpXT05PazRDeTJHTTlIUEpoSGoxcFFzQjM3UnJGTTVz?oc=5",
-   "date": "2026-09-25T22:46:54.000Z",
-   "source": "Reuters"
-  },
-  {
-   "id": "ap-q9bfwu",
-   "title": "New Mexico jury finds Facebook liable for deceiving users about privacy protections",
-   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQWG40YndwZnVtdGtfVGxGd01iWWxMcUlSNEVTYzR3bVJETERWMFFlMGVoUnFUWUZZbUVLMTEtTW14VEtLQmdqbVIxQlN6OHdYQkc5ZEZkZlY4VnVzVy1Qemc5WTRIUkFtWjRra0s3UWt0ck1Bblk2WkhtWUxENXNTVTgxMmxUaEpoLTloRzV3eGFCYl9YU0RPd1ZjeFdyck9JMXc?oc=5",
-   "date": "2026-09-25T22:46:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-19wa9xj",
-   "title": "Blue Jays star Vladimir Guerrero Jr. apologizes for comments about his $500 million contract",
-   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPU0VNT0dRWnJmeFRFaTI5T0EzVHFIbVdGRTRYWFlJVVR4dEFQcHB5R1JNNXB4MVFqUXlCUGx3SnBsSThDc2l6RVA2Vjg3cXFkLWdLblVfSkFoajdnOF83MjRTcE9mcWdFVXV1OWFrUEdqWFpQUjhvbVlyc2xlVm9Ta0N6QTd5ZTctbEtsTjhkUXY?oc=5",
-   "date": "2026-09-25T22:36:00.000Z",
-   "source": "AP"
   }
  ],
  "tech": [
   {
+   "id": "tech-120gta2",
+   "title": "OLPC XO-1: The price of free",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPT2xFUXhoUURhcDBoMG5UWExaZzROeldpRFJIMXQxelhmOGJFMGFJOFFtNjhYbzlPUWh6Umx0T2lvMmxqQ3lrUDc0TnRGVTJOcmV0akl1azRLcGRNODhndWRFMDNFYktxelVYZDFiekQyRjZiaXlmTjZUQmRScFN1WF93ZmtQQ3Q0RWc?oc=5",
+   "date": "2026-09-27T12:25:00.000Z",
+   "source": "The Verge"
+  },
+  {
+   "id": "tech-1noatb1",
+   "title": "Googlebooks might be the real deal",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPQTU0eVFxVGF3Ui1wdXBlbGtiNnRRWlR6VTBqMDFCZjFFOEI0MXFlZmVwcmM2NjdVR0ZXUEVaSlIxaGp2OG1RNHZnMFlYa0JwaUtDSGJvMTlsZGJMMG9ZbV9vX3dlRU82c29VLUhZamdDUUROaDRWNE52andLdDFWUTJtajBpc2Z6VWpvWjNUTDkxSzY0U000VkVGU3lNTWxWTk1NT2F6MXZkQnRjU3c?oc=5",
+   "date": "2026-09-27T12:00:00.000Z",
+   "source": "The Verge"
+  },
+  {
+   "id": "tech-1rdz9bk",
+   "title": "The smart home graveyard is getting crowded",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9jYVltaVJHVmFVTGt2VGRfMnFqY2hCalQyTmdNSjJfc1A5aHZCVWNSQUJNd2pkb2hHa1c4TGZRRHdid0VaaEUyRXlqRHl5OHlnbThyQ1RiQTlXdUxxQlk2QXQzR09PUW9pamJfUHMyemxKTjhfX2xoVl93?oc=5",
+   "date": "2026-09-27T12:00:00.000Z",
+   "source": "The Verge"
+  },
+  {
+   "id": "tech-1yk50az",
+   "title": "- The Verge",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9DUGpzV0xPQmI2WUFZNlFwWXlOUXpoTDJYbnNSTlgxLXFvTWRobi1iN3V1NXJ0S2ZGTkYxRnc2Yi1hYUg2aW5qcHpBQmI1MjlYRXhZd1dlNE5DM18wR1NZU1dIcTZodnFDRnVCU1QzdG15cHJBaElF?oc=5",
+   "date": "2026-09-27T11:42:45.000Z",
+   "source": "The Verge"
+  },
+  {
+   "id": "tech-rxgv9n",
+   "title": "Make It Loud With These Tested Party Speakers",
+   "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBLRkVwMV9CUnVSeFV0em44SHFuUWMwcWZTaGJMVUlDQ0ZVaFVLZ3RyNkNkaFFiMXJsLVYxaGZpMGdyb3UyYlJuZ2FTbXVFTWZ3eDBRNWtnXzl0WG8?oc=5",
+   "date": "2026-09-27T11:30:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-7e9sf4",
+   "title": "I Took an At-Home Pet DNA Test Kit and Found Out My Cat Is a Cat",
+   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBDdEpGZXRUMF9wQzR0M2NTS2lTckdmVE1GbGtMNVJqY1RjR0l3MEZBeWRYMjhJN2d1Z01JT0VwNURwaXA4Q2h0SGtGemhyeEV6SVEtVklVREUzOWR3cFBoSA?oc=5",
+   "date": "2026-09-27T11:02:00.000Z",
+   "source": "WIRED"
+  },
+  {
    "id": "tech-v2btlw",
    "title": "Login - The Verge",
    "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1lR3paNlFEdU9OZEJlaWphb3N5ZEk0dG42NGRMYWZIRG96WFJ1RE1qUGVsWS1jQm1sS2tWNkNMb0tITVBQcWhJTEtKSV8tNWJkaHFCZXBEVWlSTXZL?oc=5",
-   "date": "2026-09-27T04:45:12.000Z",
-   "source": "theverge.com"
+   "date": "2026-09-27T10:45:12.000Z",
+   "source": "The Verge"
   },
   {
-   "id": "tech-1gqo8lr",
-   "title": "- theverge.com",
-   "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VZ2VMZVlIbVlNdXMwMkttTGJ4ODBnU1J4dWtBTjVMckVXV0R2em5YZDZqU1NJaDI2UjNRRW9vYkF3SUtFSDVxc2l0WVIxMW5zbFBLbWNNVWFULVIzaXcyWXNsdjFHNjdS?oc=5",
-   "date": "2026-09-27T04:38:28.000Z",
-   "source": "theverge.com"
+   "id": "tech-1gdij2t",
+   "title": "The Big Story",
+   "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1oaDVUbzVNTEc1dlJob3NtN0IyOFl1clhBeWtfUThpZi1QSVoxeE55V05yMllOejR3VnczRE1vc0lYTkp2VjQ2QmEtdEFQTW03VVE?oc=5",
+   "date": "2026-09-27T10:32:35.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-qqoq4",
+   "title": "You Don’t Need to Pay for Distraction-Blocking Software",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQS2pLSlFGc2stc24wU3ItdTVWSGhESEFMaG52N1Z2a0drTUxRNjBpSFRocHpxN0lYcVljVW5qbVAySThhby1Cd3NPclUwMHA3RC1rOF9USFZlTzdrNUV6Vk1wNDN3Qi01cnNXVGR4dXktQks2S2FEVWxwYzdBZm45anRQS083U0lvU0tB?oc=5",
+   "date": "2026-09-27T10:15:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-1anegfc",
+   "title": "Archive - Wired.com",
+   "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBidXQ2QmEyMEJpSDNOWEdWYmNTTl9XcC1GVEhSQUlNTzlLSUs1anNzMTNpN0hDczRHNFRxMVNDWVFXUWRvSHFvTzc5N1Fsb3JXd1o3NXNyTzVNS0ZVUFE?oc=5",
+   "date": "2026-09-27T10:09:25.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-1x81wg7",
+   "title": "The Data Center Backlash Should Also Be a Climate Reckoning. It Isn’t Yet",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1uVnc4QnJ6cmxKaGJYT2tsOVhrc1ZTSzNyVEpzV2ljandobXAzUzc1d0pLWHMzNkk3MDZvUkc5TnFfdDg1bVZOakdvbGxfM1FHVy16ZlljZWZoc3lLZ2VvX3htRnRZeFl1dE9HMWI1UTBmQTV2MWc?oc=5",
+   "date": "2026-09-27T10:00:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-heput1",
+   "title": "Nicotine Is Mounting a Comeback in the Wellness Movement",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPQ0xSeFJkUThxVk9IVUpyUF9NOEdHaVpZN0VkMk9mekNqWFcwUnVucWRxU1RTblVCTll2aTFtR1FYVDd1TFhPd290RGJESGYxa0pycTZaS00xVVd2Z24wZkZrZlNNMFV4UDk2d21qSTEydk1LbDB5Q29BWjlWOEZDS3E1eWdfUHVlak02a3ZR?oc=5",
+   "date": "2026-09-27T09:30:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-414woe",
+   "title": "Prime Day Hasn’t Started Yet, but I’ve Already Found Deals Worth Buying",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1XVDR4MTFzNFVmQnQ5VFd0bkpQQU1fSGlZWTNtOHJxRW01dFowLVAtQmVDR1J2eWY0NnZuT2tXckdvRzlLMFRKMmtQNENNQTNSUlpzbWhXQ09naHEyRVQ2Zzd4LXhVbU1LbUZ2cDE5UmdlWWtCeExr?oc=5",
+   "date": "2026-09-27T09:28:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-bg5hpv",
+   "title": "Some Pancreatic Cells Are Just One Genetic Tweak Away From Treating Diabetes",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxONFpsaHQxaWF1MzRSbllTVE4zLTVpVzlQeHZTX3ZEZlFPY1RvdkNDQ1hNQl90MHVIbEZHbUxlYXgyX3FkWmNKRDRwMkhlV08tZU1FMTN2el9Ed3N6aTQyX3dVUjliQnp2NHlQeGZyOHpNV3VPNk9KeG1VVXBTcmg1QWhzSzVBT25xSkozSjFhcHhNNkUyeU0zM25nWTQ?oc=5",
+   "date": "2026-09-27T09:00:00.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-uwao4",
+   "title": "- WIRED",
+   "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOeU5rNUFrSFpoRnBRdGNnaVp3VXJRY2JlSEZyVHhyUU5JRVRZSVhTN2tsRUJZS0E3QzFDZ3FnNjZaZlNlNGppTmNMRkFnM3RYaXNIcm9LbFZLSHN3ZHBHcnpzQXR4Mm50SE1ZOC1tSkxZVDVLQWFNV1lYdTBKbTBYYk5DSmpBQm9YYXdZU2tUQmhLUVhxVmxtUkdwV25BNmo0VlduTjZ2Ujk2MlhBSTRQNm1SU2U5b1ZpbTc2NFZhSFJ2czNESENmakxmc1JOYVpBMXhaUlp6bTE?oc=5",
+   "date": "2026-09-27T08:39:07.000Z",
+   "source": "WIRED"
+  },
+  {
+   "id": "tech-1mdq0hr",
+   "title": "FS: 2700X, EVGA 1650 Super, GS308EPP 123W POE Switch, HP G4 Thunderbolt Dock, and more local!",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxQeWN5SUlvWUpmWHZkeTlWVkRqOVZaWlIzcjdvQ2t5WUJDWVZCN25QT2JGdmdpdGhWQnhJMkxwS2JDY2N0OWtGQW1mYnlEZjdHbzZ6U2RFVUJBdFJQSjNPcnhmWDdUZHFBa3NyMnFzeDY5eXlvZThLNFQxOFNoX0VaaXV1Z0tXTFQzeEctUFlYN2VBWTJyWjBpVVc2M1lkVGktdW84ckUxMFlraUJMQjhRY0FiTk1DMlh1UklRa2FzSm5ObTZrdjQ1a1lRUkVHNWs?oc=5",
+   "date": "2026-09-27T07:50:13.000Z",
+   "source": "arstechnica.com"
+  },
+  {
+   "id": "tech-11y2vc2",
+   "title": "From wired.com",
+   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNaHdidFFGaklFSmx2YVFRSkg4YlhHeVItdVFId1M1d2ZNclRheGZhSE43RU1YTlFUcEl4aVRDZ3JqaVU5Rl9PSWJ6ekpYMU9Db0JRM2tGODJCVGFRUUZRUFRyQTBhb1ppLWsxSTdfa2k3bldEcUFvMTRBb05EbmhkMS1RR3JBcmNQbTNNUDA3UkcycDVKd3RTQzZFWGFqNlhpb0pIR0x3bjEybHBwUVFOeTB3alJSOGlEYVNCNWttclhrd0Y3ZEtGYmxIVHMwVlI3bTFDVnVtU1M4TXM2SXVCclRDTlRRbUt1Wktn?oc=5",
+   "date": "2026-09-27T07:31:31.000Z",
+   "source": "WIRED"
   },
   {
    "id": "tech-5ahz8c",
-   "title": "- Ars Technica",
+   "title": "- arstechnica.com",
    "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNam1kbkxaVkVFN2FfQ2w5bkhzWGFweTYwSjJLTmVrNE1STS1RNzNYMlM0QzlzcUdiSHV0QzU4SmVRcE5vdmhvZHNWOG1hNk9McTB6alRoLWRRcG1BcFo5UkRVSDJJYWZOVDdIS1hsZ2Q0SFFULTV0MDUyRm1mX3lhLW9hR0FaX21la0U1RXg3V0toV3lrdWphc0M5NUV1R3g5MENGY0RlWWt1aEE0amlXejVR?oc=5",
    "date": "2026-09-27T04:17:44.000Z",
-   "source": "Ars Technica"
+   "source": "arstechnica.com"
   },
   {
    "id": "tech-1llbddr",
    "title": "Is it possible to install a heatsink to SSDs designed to use their own",
    "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNcURkZkdqTHJESGhKd3VqVFF3Z1BzRnViQ1Y4M1lmOFVWaVg0V0JqRkpBZ3dUcjY0ZnM4cmtFNDhHNENTMTBIVjU3WXVMLVZfd3ptVVoxVzdRUGtqa3lFR0FlajZyVE9wTVAzWktSNUxuNnRLQ3NkYmZ2TmZGTHRzVE80UGQxbVRDMXRpc0NWOVlUMmtOTmEyTFZidm52X1BLeHdSZTNMOS02a0RwVWswRGdWbTdPRFdmOV9fZlpCNk9wbDVhUnZ2Tjl3?oc=5",
    "date": "2026-09-27T03:32:30.000Z",
-   "source": "Ars Technica"
+   "source": "arstechnica.com"
   },
   {
    "id": "tech-1lt6oax",
    "title": "Sign In - The Verge",
    "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxObkh1LVZSLTQycUpidDVrRzFqLTMtZFdpUndlNTQ1UDhGQTFZU1k5eXdidXphSW10TTNLbDBkOXBnY200blFUem1yNDJSLTdyeTRPQzlfWENMamFUdk4wZEQwRUdBMERyUGYtbmtTd2xfWE0xU0UzSnhPZXBRdXZZY04yYUxVekVxaE9GZFg1SV9ZMjJIVVYxbl9IX1lGdzVf?oc=5",
    "date": "2026-09-27T02:58:50.000Z",
-   "source": "theverge.com"
-  },
-  {
-   "id": "tech-144lghl",
-   "title": "- WIRED",
-   "url": "https://news.google.com/rss/articles/CBMiigdBVV95cUxPcndlUE5ocVNPcEUzcjE3ZVVrd2Y1VUZFWHhwX0ZkajE3NFlLbnlnOGtkOVNab2EycUZNYkZ1VHZyMzFELTRvUjhydmdmQ3BwX2VGSWNCVlpkaHRzTzNhZXYtNFZWNE9ua01QNWtOTDAxMTRIbWhnOUp4VW9vcUJxbENDclNTRXFyQXVBWExHRm8zOWZUd0w2T2hNV0hmVVktSVkzMDBCdm5jOWlUMHNmbVk1Yjg1Wkc0d05MVDhIdENVZFFWWmZ4bms1R0pOWDU0a0FZSC1yc2ZqVVgzWndoV3RlQVE1N1VjRmV5S2RRSWQ5cnY0b0JLclZkWmllQkFsSDlvbHotRElTR0JxLTBWc3RnSWxDOFpRbmtkMHVyQVk2OHM4Q1JBR2taRFlkdm16eWswS2lLNHlCcTh5emlwNGlteHR4d1d1a290Si1CaGp2WGhhZkhRb3dKYzBFSjB5dk5mVjA3LU1MVlNXTHRlVV9HelM0VFZnMFRLenUycTNfcXliNnhSQ0ZMYVBOaXpBbE9XR1NCUm83ejV6cTBNZTVGTFBRc015MmdtcU9EcTg0ZE9yWkF2LXB4SDJDdmFUYlhtanNyMHgtTWtqSTBqTXdmZU5LYlNEVXVfMDY5ZW12V3duREJ3YnlhLWtGME5XNGdLd3N0X2FiMXdpZ1M5MlJvQjdQbC1acm1BcTljSVoyb0RZMEpiVzVuMmhHUEdQQzIxWHF6NVhCQkd6dVlXeHBlMnNlT0VQM3VDal8xOXo3QVdFckg5enlxaTBmMGNUU2tST25Ia2FNVTJRUHQtdnBkejZFbDZzbzdoSkl5NFpnVW9PaEtPWEpLbDg0LU9ManVDZlhwa3Ewb3p3T1Zzb0R5LVpWNXAybXR5OUxXRExReHNhVS1mZGQyMFhGY1U5OTZhX042bTZBeEROZGpBRGc2SkpZMnRUX0JmWE1YNzVaaWtFMGFkNHJQN0lCaVFfZDNqMzBDazdqYVliTTRYSjJfNkxVQXlwRTJndUF0cHN1Yy1Ob3pZdWUtS211eERvT2tpZFZUUkN0NVgzOWU5VlREemRjcW11Z2ZoUk9jSTRmT2lYUVMwbFk1WmU3Z2hDLWJGWEVsR1NqN3FHM29wWG1tUW5CdDVqekJCbDR2akthUGFCRV9RTXZCV0xoRnY3TVB6TXhPWFBOM0FTbFVDLUMyQmM4MDZjc2c?oc=5",
-   "date": "2026-09-27T02:26:13.000Z",
-   "source": "WIRED"
+   "source": "The Verge"
   },
   {
    "id": "tech-1n2q5g3",
@@ -727,18 +825,18 @@
    "source": "TechCrunch"
   },
   {
-   "id": "tech-414woe",
-   "title": "Prime Day Hasn’t Started Yet, but I’ve Already Found Deals Worth Buying",
-   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1XVDR4MTFzNFVmQnQ5VFd0bkpQQU1fSGlZWTNtOHJxRW01dFowLVAtQmVDR1J2eWY0NnZuT2tXckdvRzlLMFRKMmtQNENNQTNSUlpzbWhXQ09naHEyRVQ2Zzd4LXhVbU1LbUZ2cDE5UmdlWWtCeExr?oc=5",
-   "date": "2026-09-27T01:11:00.000Z",
-   "source": "WIRED"
+   "id": "tech-z5k0rd",
+   "title": "Tech Archive for September 2026 - Page 27",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE41VjljY0NyYkZ2LURpdl9CaFZnZFlvZlFlTVE0MG9zWlNWdjRDYlg0RDYyb0lpeXR2ZHljem5PREJsTnpWM0RvSm9fSjJDZVpzeE5iTTdSYmNQdFdi?oc=5",
+   "date": "2026-09-26T22:28:55.000Z",
+   "source": "The Verge"
   },
   {
    "id": "tech-eg3jhz",
    "title": "Apple hit with $5.7 billion in damages over haptic patents",
    "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQeVJUTnRNZlE5RmtjSmlfZEVuVXVrVU9YRm1VYWdvN3FDbkhlTDlwWmFCRHZfVk8tdTdLZGR5MGNIb0lsbEtBamRkR2RhU1JROER6VWZ2NnUwTTVmZjZuYU9wTHBTcjhsSFVOcEJCSDV3ZGsxMUl4RHc2Y1hVa1pwQkpxek10Z2h3RjFxM201OXhnZG9ldzRpLS12aw?oc=5",
    "date": "2026-09-26T21:30:01.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-s03aoa",
@@ -752,14 +850,14 @@
    "title": "John Goodman joins the cast of The Last of Us.",
    "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQNU1MdDRUYUdjSzdpLWp0dlpvQXctRnBuNmM1aDNHR2hHcDhkaDBsbExBZ1BHal84aEZ1amdmWU1kVmlfQV80ZDRqaEVDbnJ1UDdBVFJFV1dnS0Q0aWZqYVI3Vmg4UFg1a0pkcU1HYTB2ZzliTmFQNXNuYzM2S0hjRjRRM3o4Qk5hdTZXY01GSC1hdEQ2OWo0?oc=5",
    "date": "2026-09-26T20:59:26.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-k4wqv4",
    "title": "Google ads caught delivering convincing scareware ads to unsuspecting users | Page 4 | Ars OpenForum",
    "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOWlFiTHFMa1J2bTQ5NnhOdEVzZ2dSQmFFb1BuTmhDdTBSTHJWcGlLN0lLbGFHai00dXpyTHZNeTVFcmtlYXlpV2w1bkxHV0Y1QmZnNVFQdDhYVFJMVmdMVU1PSm5VR1UyWUdtVnVCR1BBUjNIM25RNEZ0d3BjY3g5aWhiOHcxWndkSFpGampnclVwa3lUbVJzelF0NVYxVFJZLUpsTkVVLWhsLVlSekJYWXFqejZGdVdaY0NJaWc0X09oRlh0NUVv?oc=5",
    "date": "2026-09-26T20:44:52.000Z",
-   "source": "Ars Technica"
+   "source": "arstechnica.com"
   },
   {
    "id": "tech-19cnm9v",
@@ -773,42 +871,49 @@
    "title": "YouTube and Meta now say they’ll run ads for Alex Gibney’s Musk documentary.",
    "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQVTJsa2ZLdjEwUjJuNU9LTkp6NG93VFdjLUJyVy16QzY4X18tOEp0S09ZQWlTbjc1VjJQRWkxZzJOdlB5QldjNkhMdjRZUWh0Zm1UMXQ4b2VEbHZlZTRKa1ZmV3ZIY0dwdVRna2FDcFlBV0hnNzNqOVNrc0FNa1plN2MtT25sdGhkVVp5b0dWTVQ2LWQzc1FyVllsUERKcHViNEU5RXJnb2tUaWE4MGt4MHhZeWxTejB5Y1RVcg?oc=5",
    "date": "2026-09-26T19:58:27.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-1ma9f7w",
    "title": "The drama at Automattic continues.",
    "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE54VmRYcFBmTVFyckVfbFk4SHJsZDA0YmpvbDNJaFl6SW1wbTFUWXY0S1hqUEVpdGNmemZ1c2sxeFNxZER0MDRCRGp5Vy1nbWtXN0I0VjBHOEd2SGlleVFyaTU1NVhBRG02dWJEbTdwSC1ITnA3YWZaLWRVWQ?oc=5",
    "date": "2026-09-26T19:37:12.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-11ceqln",
    "title": "Tesla workers balk at training Optimus humanoid robots as replacements",
    "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPMVlWRHJIQnpOYXYyUUpuWVBDOEUwaDFFTkRKS0Q5UEpmQzFMTUpTR2JjYWZxV2Z5NU5HbVNkM0VqcnRlanNOaVRfcUw3RjNzbTc4M0sxVFI0TEQtOXUwNUhyeC1hSEhfZ0lGdWpudUhLZmdrMjcyOGM4M1YxdmJUdVI1OUJaOTNFZUVLR1h6dktGV01GX3plUW5wY2NVbE1zcGYwMmN6OTAyVHZYckpxWEtVR0pHS001TzgyQ0FwWkc?oc=5",
    "date": "2026-09-26T19:30:22.000Z",
-   "source": "Ars Technica"
+   "source": "arstechnica.com"
   },
   {
    "id": "tech-txu09e",
    "title": "Decap is the man behind the drums behind your favorite song",
    "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5WNlRCVEFFRHExbEJzczJJSFFScjVCWDhVWFVubnoyRzFGWVdiTl9WNmhPcEd0Ui15QVkwVXJ4TXNhODRzUkk0dk5pSThtcVFxbDFsbVN2REl2MXgxX1ptLWphMnhDbVhHblJIYjFfQ2tSRGl6dURKaEQ1Nkc?oc=5",
    "date": "2026-09-26T19:30:00.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-14vu5km",
    "title": "Look at all of the Silicon Valley bigwigs gathered to pay fealty to Trump and Xi Jinping.",
    "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNR2c4QU4zdGFJWV81Szdhd282TmxLYnJlRXc0MmFVT3NXT09Pazh3TzJ3QUFkSTF4b01UVjJ6QVFXb185aDZ5WWYxME5TcERUR3BtVjVtNTBMdlFsUEdpQk9lY3hEUG5EQlhySnRXdi0waHY5ckpaSnVvTnJYZXhwS2Y5SkpfZjg1bUkzbFYxcEFZaU5paEk0VHBzRXdHYWJKVXBmWFM5Wll2ejR4WlFoT1VZX202aDVyaDhLU3hnRlV2RVJF?oc=5",
    "date": "2026-09-26T19:16:44.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
+  },
+  {
+   "id": "tech-1c8f0jp",
+   "title": "Tesla’s big electric truck faces an even bigger infrastructure challenge",
+   "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQYWVNSE9oVV91UmlMcmRidzA3R1RwMXlfdjFCRTNhdWRSalNkVDdlTlNnMGNrd2cyeFNCZ2ZmUE5oTERRS1ljbEZDRnNtbDVNTUFBa1hfTkJZNzcxekFQek9hUkI2TjBqLU9vY011Z204UlZwb3ZSU192SDhvaVFsVDMySkd0NTBCY2F5ZmRrbjRCcU4zQ3ViaTdueUprdFpBT1RadVJ5UDBGQjZEQkk1LTRxVjkwR0JEUjd3Y1RZUWZnMGdXZ0w2VjJMQzRSQQ?oc=5",
+   "date": "2026-09-26T19:05:19.000Z",
+   "source": "arstechnica.com"
   },
   {
    "id": "tech-1w87flv",
    "title": "AI was supposed to hit new grads hard. So far, unemployment data says otherwise. | Page 3 | Ars OpenForum",
    "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNcnlIbS1NVzJGZjFGMWJvMzIweDRVUUZpelVIeXFyY1Q0Um1mQ1NhY0RWc0FUX2ItazlhbnNZcHZuX0RZdGxVcGNQamYyMGlQbjVBTWU3QnZjcFlsdmJLaGpBdUNuVEMzSHUzdHE3Q3d6b1V5dWwzSXBaN1A4Z3B5eHFmajRjaU5LelBVMUpPQ2RSc25kdWYwRDI3eU5NaXEwcHhpTGwzQUJGWjVhRG9zNy1YWUZURk5PRVpKT3lRQ2xObHNkZVR4Q2Nn?oc=5",
    "date": "2026-09-26T19:05:18.000Z",
-   "source": "Ars Technica"
+   "source": "arstechnica.com"
   },
   {
    "id": "tech-1ldcg5v",
@@ -818,11 +923,18 @@
    "source": "TechCrunch"
   },
   {
+   "id": "tech-1x8v7ho",
+   "title": "Looking for niche phones (micro SD, USB video out, unlocked bootloader)",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQcXFaYTFISkJkMTZZVTVQcTA5eFpDUTdrYk5hMVVFT25aY2hPS2FpNkRIV2gweld6eXdtcXM2VzA2cmNxMGxRVHZsUDFuQWt2RlphUUFzR3BGbnc1NnVuRUR4MGZmVnlScnFqb1pOcmhXZ2FOSGE4LVNWY05UV0haZGtTQWdSWk1OYUhMOVY1RnNhM24tOXhlam40WnhtSl9kQ0J3endrd0d0M3hldnI0TmQtSFJDS1VYX3ZQNWloWEpuMmxjS0E?oc=5",
+   "date": "2026-09-26T17:36:40.000Z",
+   "source": "arstechnica.com"
+  },
+  {
    "id": "tech-1he328h",
    "title": "Kids turned the comment section of an NPR podcast into a group chat",
    "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNVHNFR3htZkZkdjNjclV2TEFCSVZ3Ty15ZlBnbno5YTZUWTdzd1cyWTBFTkRvQ2NvUmQza2dJbHhWc3dLM2RMOUNHUG5LTHNHcWIyeVpLREY1MzYtQXJFb2pldUd3ZHBmTHZ4MHc1OUhMZHpTUkE0T1RjOXdFTzVEdHJxalRMbnFwVUh4R082SXpMRGFmN1d3QUhNNWs4MEpJSU1v?oc=5",
    "date": "2026-09-26T17:32:35.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-pfujks",
@@ -836,14 +948,14 @@
    "title": "OpenAI pauses training of its ‘most capable models’",
    "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVzRTdHFhUnFrX3hvZW1ZT0x5NTlpajNJQlhPRmZKUGRfREEtN0ZBVkFYM3pJOGpzeUYwNzh1dV9vVUF0VWE1U0tpZlByQUV5U2lEaFNQMG1rWEVQRUd0OFZFalkzSm93VWRIMGpiOF9JVkNSNVBLN1ctVkRxQ0gtQWQyNFNWdk1j?oc=5",
    "date": "2026-09-26T16:34:59.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-1ppwohi",
    "title": "FS: Apple iPhone 13 Pro Max 512GB unlocked $450",
    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPNjc4QUFGTzRlTGR0ZFlHT3p2OUlhRFlMa3hZQ2kzQUNLUkZvalVtM3AyM2FSOGpnNi1samYtaVVHQ1BHOWxMRVE2YkQybFF0ZXYyWVpSU0RHTVNVTUlWMlhxNzR0REtNVm5MMlBhQTc5VHdjWkdiNlg3TmN3NzFCZVlVcVBYVzJYN0w5RE93ZUhKUFlReEE4bG1adGZHQ2c?oc=5",
    "date": "2026-09-26T15:54:38.000Z",
-   "source": "Ars Technica"
+   "source": "arstechnica.com"
   },
   {
    "id": "tech-198x8ud",
@@ -857,14 +969,14 @@
    "title": "Big Tech is too cowardly to run ads for the ‘Musk’ documentary.",
    "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQNmZKdkNsZmVHbDBLUDlTdVN0V1p2UnFteGVDcXRoOVV1ZUc1YkJZOEMyZ2xhV0hmSWFQd2pqX25mZ1I3d1NVNnEyMUFfdVlzT3p1LUpzNWFzem5TUUhiYkFEV1liMXNXVDhyNjNiTGxXQ2NqRlJ3QUsxenpWQ2J3dFNkM1RmeDZIa2R6TGw0NGJiUnBhZXpRRlYzSTZpOVBhcC1JT1BfLWZLeVp0ZXE4eEVlMlB0ZjNpZE1Ccw?oc=5",
    "date": "2026-09-26T14:31:12.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-15m6e7x",
    "title": "Can Cloudflare CEO Matthew Prince save the web from AI?",
    "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPSzJ3b0trS2xTWEcyWk5wYWVEQ0lqYzJJckV0cEhsX1c4eEtTYnhabXlNYjF1b083VnNzMFpHbUlVMk9URi1Hdk5pVmV6UEZiSjJIbTlWMENaakNoY083VkpFOS1MNXNWT3RoS2NPN1drakZBMlRRbGlDMmF3YklZWUc4QzVYRm05bklpQWFLa0ZrZ0diYVppb2E2Wndudw?oc=5",
    "date": "2026-09-26T14:00:00.000Z",
-   "source": "theverge.com"
+   "source": "The Verge"
   },
   {
    "id": "tech-1ya4tao",
@@ -885,14 +997,7 @@
    "title": "Control Resonant is a great game — it’s even better when you read everything",
    "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOaEg0SWNHWEdRSTFkaTNrOEJVRS16eFRreXFVSXFYekVKT2l2b3dkTXhRMFFWWG42N0R1WHdjYmlQWVk5NXZXNE52V0lSaHNmX2lJVXltRkFNZUxma1Z2Q2tBemR1TXZRUjljdG1mVHJ1WDN5R3YtVy1hTnVUclIyVjRXRVY5NDA5MW1OTWZ0TEUwQm16QlE?oc=5",
    "date": "2026-09-26T13:00:00.000Z",
-   "source": "theverge.com"
-  },
-  {
-   "id": "tech-1rdinwj",
-   "title": "Tesla’s big electric truck faces an even bigger infrastructure challenge",
-   "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNZzRPRWxfYUNVMGdTUF83ajZSMlQxRl81T2Zmb3dvTkQ2b2dZdDZVUkc0ZzVGdDNTWTZXcE9ZM0pTSnhjaW1lM3V3VDhDUkpNNTROMl9nXzY1R242Q3RIMDFYVzFCbzhzYWdtemNOSFB3MjNhMnBLN1lFREFjQW91RHZtWHFMODVvS1VyZ1IxX3RuWjhIT0JqbXBTcldaTFc3ellfM1Y0Q0loNC1zY0tCNk41Um9rSERPeGNYTThPdWhMamFma1FMRE5DM0hqdw?oc=5",
-   "date": "2026-09-26T12:44:18.000Z",
-   "source": "Ars Technica"
+   "source": "The Verge"
   },
   {
    "id": "tech-6uh5yx",
@@ -984,114 +1089,128 @@
    "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5KTFBvTHNTX190MDFZUXB2R3ZLN0lwT04xM25mS2Q5Q1NmdWlIdENsQUQ0aE84Ry1BVEFoNy1VTDF5ZkZteVZnbDl5TkNKa0VKQWpUazkxR0djb25TczBsR0VobER3Zk1EX0E?oc=5",
    "date": "2026-09-26T04:53:37.000Z",
    "source": "WIRED"
-  },
-  {
-   "id": "tech-1u48wc6",
-   "title": "NASA green-lights billion-dollar infrared observatory for launch in early 2030s | Page 2 | Ars OpenForum",
-   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOMXNkZndVY0NEbW5lZXBaZ29qWk1RdGV1UEVROUdremQtMldlUmJ2V2wxSnJZcjdZQUw2d0Jucm44VWNNZFA5M0pZQjN2Q2lHMWtCdmFRUUlXR0dldTdVR0NZUW91RzZIUm12b1F2M1BFNUp0ZnVEOHFsLVpVVi1DczNOVGlsQlg3YkR2d0NHRW1Vc1lHTXNEM21XTnlVRG9jeXhEOEQ4V1h3S2NaSUtEckNQck51LWtzb3JhZlBuajNNSmZLR1pid3hUa2JTN2R1MERucC1R?oc=5",
-   "date": "2026-09-26T03:45:25.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-3sqxy5",
-   "title": "Google ads caught delivering convincing scareware ads to unsuspecting users | Page 3 | Ars OpenForum",
-   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPODBvUVpxZHFjWG5iVTgzVWE0enF3OXNBZDJnSXg1TEpIckNXdFg0eERTZEg1YTVyRXdPd1V3c3F6Um9kTzFUWE5NcUkwZzV4enBhMzRFVzdkV2hRanJZbENMcENvTUJxYmRkZENQSlVTVzJYV3YwSDdpNk9YX2NscWQ3RXpZbXFNbVg2STd0Y3VMcGYwNFNiWWJMQWtSMVhTcmlta0xFb1dLQU5uaXBCWFV1eEN6aVp6c0xRQl9FVnpHQW9IR0Qw?oc=5",
-   "date": "2026-09-26T03:09:38.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-1y5fq26",
-   "title": "Trump admin using AI to deny medical care for seniors in disastrous experiment | Page 6 | Ars OpenForum",
-   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQdVB0SlBfazEzNDVhbS1mNUJtbzNyV2JCbFgybXhzU2J5UjYzTENSUTcxckoxQVhuQkZqQkVvT0FoVXlfd3BOVG9EaFZHNlBOV1ZuZkRJdWhHNmozcXFUT0JXUHhraXh2M0lGcG9McGJhYi1kU1hNbHlYa3d6MU9qd2dNY1ZyVFgwaW9MTkdvRm8xWkVrYzBwSE83UG4yVmRtMDhaVkFXQ3RIMmNyQU1RbkZiZDFoZS1GRXpSR2JkSzJOYVZFazMwOWwybw?oc=5",
-   "date": "2026-09-26T03:09:38.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-82mkur",
-   "title": "Dan’s Mac scam article content blocked",
-   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOaF8yY1FDUWZSTFJUWE1wYVhtNlQ3R2VVYnFWSlFLSVF3NWQtajctRTJ6SEZwYzN1Tmhjb3RvUVI4a0RrbEs2ZlZvOGVlOTJxdm1LekEtbjhaYVVGbTJhWVlRQTVyNlJqX0NiSGMxZzJVREhtRUFHRGlZNzhLNl83a0FSOVJyaXhvdGthVjU3d0d4S2VNZF9mYw?oc=5",
-   "date": "2026-09-26T03:00:46.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-rqku7d",
-   "title": "OpenAI didn’t notice its AI bots trying to hack the Education Department’s website.",
-   "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPeDNIWTNDVXdqVnR2VXFRU3p4YkdwMW1yeDlzQUJMUlNCNzcxZjZEZks1a2lEX2lRY3pkdHZMQ21vOGdIQXZ1MGNlX3hXWl92bU92TldWQWxhZmU4R0g2bFRaOFdoZGprbU9IaUtCNmRyVDR1SDR0U002Z3dtZ0toS0xnWFctdlJxN1UzbUR5Z0dpUU0wZTNNUkRxYm5xT0tySTFfT1gxc3dBNFd3ZVdsZk9UZ2dubU1QdlVmejhVMWx2VDM3UHYyRUYzTms4WERyUVpOd2UwOA?oc=5",
-   "date": "2026-09-26T02:43:00.000Z",
-   "source": "The Verge"
-  },
-  {
-   "id": "tech-v7pcaq",
-   "title": "US being left behind in EV charging speeds as China goes sub-5 min to 70% | Page 5 | Ars OpenForum",
-   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQTGNRLVJSVi03aHFxOXRJTGpId1NtYWJtcFg0eFNzNE9YM19NUWlvU2YzXzYtaUFqUjhJczdmM1FjTzdxQzJSdE5RMkM3bkdQcmI5amRpeU1DZF92S0czTGFFOERNWlhkOXRYdWNMUi1EVUhtRWhuM2c2WEdseWstRjN5MUNmOVdlbjgzTFp1Z0NwZjBiY0FNdWFyU2EwSklaelBZZEdnbkNHNktDV2FuQWlXTnhoMTZFUGZSeVNGWjFGa0x5bC1hdWdLRGk?oc=5",
-   "date": "2026-09-26T01:29:38.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-1koo48l",
-   "title": "403 forbidden while using tmobile 5g home internet",
-   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPeG43Qlg5OVlvZUNPa0RjdVdUMGVlZTluQTk0UTR4UTlkQ3d0d1hKN0VRN2RTcDRXS1Bhc1ROczFVVUxjZnJHWklPX0pQYnA0S2EwWms2RnB6MXhBbjJxVVBVemNfTnc2VVFjRzk3QkxHWVc0WnRoemE4LV9wVnJPOHhoLXVKemhIRG5aVjZwcm1NV0tTQ1FsNldrYjB5TDBfMXZ6UGRyVGdQRVBhVDRB?oc=5",
-   "date": "2026-09-26T01:26:55.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-rm5waz",
-   "title": "At Meta Connect, the company’s smart glasses were everywhere",
-   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNZjFPMGtJUkQzUUZNVFczdGtycGRFeGN0UnlZMVJVWEdsbEpVaUxUbDVLVUpHZkJaeU9aZzZ2aTFRLW1uUnlvb3ltdXRTXzg2VFJQYmNoVVFPNGxTRjNfUmpMT2hrX1luTjI2QkVKeFUzWE16bHhONXNwLTlaUG41VGFTS2ZwQXRLczBuX1R5bldacXhDM0hUTQ?oc=5",
-   "date": "2026-09-26T01:08:57.000Z",
-   "source": "TechCrunch"
-  },
-  {
-   "id": "tech-2t2xlu",
-   "title": "Fraudsters keep finding new ways into the payments system. Here is how Lithic is responding to the latest one.",
-   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNbzRYTlpfbjBodmpwcmtPbE9nVmFsMUxVQ3NHZnpubUFCckk5bUxCbEpTM3U4MEhZU3V4MW9HZzcyZFVXWk9kMWNDUlZrZENZZkpYanpVbkJkaGxoUmlCdWZoRk1PSTZQZF9lemVkVTZMamZacUdRcGpvU3V2WUdYN0RWTm9QX3lNQVg4TDQ4SmdiTDRxT2J5RWVLSXZ5SEJRVGRZNm1LSHNQeHlNRXFyY1NuTFpTR0FXeXhfSXhlcWZBVzh0czNieE9fR3N6QlA4VWpiNFJjTU1nTS1KVzZDTg?oc=5",
-   "date": "2026-09-26T01:08:57.000Z",
-   "source": "TechCrunch"
-  },
-  {
-   "id": "tech-16tzwy5",
-   "title": "Review: Apple’s hyper-pricey M5 Ultra Mac Studio made me into a vibe coder",
-   "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQWlZScndrOHNSMVdBRVJraFhYODJDbjBCVnVSMjJic1d3MVNKemNLcEE3cjRvdnpNeEw5WEpiZzJWZzZPaEpiS3ViZldRUUl2bnNJOFNxSE9CeWxXSVRrQjJ4NWhUUnRJQmVqMHF1QjZPTXU5RkRGTjN2dkZEUHN2QXlTT2g4XzZCcktOMnVPa1J2UUEwZ3lEY2lYYlY3Q2R2aElNdlhFUkdfSzNURXB0dDBmMzltZjBuMXNFQUUtMUdaeW0xVW1NRHhEdjliWXQtY1FPQWJxN24?oc=5",
-   "date": "2026-09-26T00:43:47.000Z",
-   "source": "Ars Technica"
-  },
-  {
-   "id": "tech-l8vaxc",
-   "title": "The great EV pullback: all the obstacles, cancellations, and delays",
-   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQWFdQUlVqQ1d2MWM1UXFaR0o1a0I2U2VRSkpqNW13Q1ZhSVRDWVVRV01mSWJxOEZPOWwyb0s1Wi03VEpyRDkwdmJwYWg0VTZIUkRSVGdBMlBXSVUwVFpSdVdUVG5OMTZ5Z2xFOVZOVlBxUHB0ZEU1Q0E0c2V5N0RkZE15ZTAyQWNp?oc=5",
-   "date": "2026-09-26T00:41:10.000Z",
-   "source": "The Verge"
-  },
-  {
-   "id": "tech-1xolnz3",
-   "title": "Biomedical Scientist Fact Checks Pseudoscience Slop",
-   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE96d1FHU1lTcHBGRFhhZHUxc3NUN3pOUUtiN0lBYXFJRVJ3S1luM1U4cUxILUVDeXdITmFlbFA1Q3dIM3c3bnU4d015TWJXUFJJRWVoLUlmeU1aU3hON3ZMMTJyM1FadDRhY1E?oc=5",
-   "date": "2026-09-26T00:33:51.000Z",
-   "source": "WIRED"
-  },
-  {
-   "id": "tech-1qps7jx",
-   "title": "Why Buy an Away When Quince Is Half the Price?",
-   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFB0SzZPVUZ3eFJTQ1NPR0JSRXp4M0RHQ2oxUEs5cW9IMW9LNmVnZnlHM01ZNlJ4Skp6WVpKQldUYnFOT2YxMFdFcnY1MzZsLWhOTVhpU1NXaEpyXzJ5X0VMSmN5LThQY2xRSmdHdEkxRnljVjNLNldaOQ?oc=5",
-   "date": "2026-09-26T00:02:00.000Z",
-   "source": "WIRED"
-  },
-  {
-   "id": "tech-1wmmp80",
-   "title": "Disrupt 2026 Attendee Portal",
-   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE15MGZyX0d5TFplaUVOYkN2aGZJWnRFX19Nd1ZXSjZVTHBNQ1U5a19XRUZWaUZCV3dSRExCSGlRVmxEWGRscWhXdUJON05uc0F6SXRYNWt6alZGQTNRai1rY21ldnljLXJGb1VBN19yTGs5eXc?oc=5",
-   "date": "2026-09-25T23:22:02.000Z",
-   "source": "TechCrunch"
-  },
-  {
-   "id": "tech-odrhzq",
-   "title": "Crusoe abandons $1.25B plan to use Boom turbines at AI data centers",
-   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNTG1DRm12U1JjYks1dXo2emhyZjJ1Znk2dXBWNXBSQXVrSjI1VTRiTjFNVkxDUVZhaG9QeFdMUGo4eW13aWZ2bHh6c18yakFPVzJQa1JaODBoRjROeDMzdzFuWlFja0ZBanVSZHVFVnZLRTgwUXJuUW5WdVpWU3hVNWFNWTF3R3hqc1FZd1Z5NWg0enFzVDNGa0NVMTMzMkx5anhv?oc=5",
-   "date": "2026-09-25T23:11:10.000Z",
-   "source": "TechCrunch"
   }
  ],
  "pop": [
+  {
+   "id": "pop-1tk5yop",
+   "title": "Martin McDonagh Says 'Wild Horse Nine' Is His Most Political Film",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNX3B0WVplSE5CWElPZGJ0cUhuUVRYN3VhMFd2dkZHcHFqejNtVjduVXhfd0s3XzRpZ0ZPRjNDNTYtdktZQkhiZ0R3c2VzTU5SMzJYRnp0TTVvN3dsdTlfVjd6WTREbHotLU9DTXVfOHRNOUxrVTVPOHRRaWxjdjFHVlhHdl9la2FGRHBVaEgwVndyZTdwdkRPNkYya2hqbVhwXzJpQVQ2Xzg?oc=5",
+   "date": "2026-09-27T11:54:00.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-1ftc9dt",
+   "title": "Page 758 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
+   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPdnpaU1hPVlotWk01REQxVm5MdWJJVzVEWTRQbUdrcllfa29lOFBCMjdZa0ZUNV90THNuNEw0MDMyRjVXU0xVTTFwMnM0Ui1UOVBNcVEzTkxTeG5SakNfQkFhbms3Z1BNWnpyLXoxbGlaUUR1U0hEVkR3MzdmZURDTzdFVWJrQ3lHR0lZZnZvNEdwN2tDUUM2cjU4UGFWSWdFblhZb1p2ZUpNWTRxU2NONHN6cVFKbmEwNFo5Q0o0MXQxenA2NWpsS2pURGZqcGFZa3JWRE1xVFA3dzNxWlNaNA?oc=5",
+   "date": "2026-09-27T11:25:42.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-1kufsdv",
+   "title": "John Turturro on Joining the Oscar Race — and ‘Severance’ Season 3",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNOGxOTVpRUXdEOTV5blU5YTFib0lkSWJ4cllmVUFrYmpTUkZpajcxbW9ETVVhSHlTbktiV3JwY29KWVRoeS04VXl1MnYzN3J1QS1Zb29EX1VYa0lrbXBFUzl2Z1pEVlYwcHZnNGFYNHU1bzZtOXk1MVVSRUUtVG9BSVdqMnNFRHVCcVBKQTBIVkp5NGQxZ0lOd1BWbmRGZ1dOZGdreENXM1NVazY1eGVNOVowR21vY1ZaMW41RQ?oc=5",
+   "date": "2026-09-27T10:39:33.000Z",
+   "source": "The Hollywood Reporter"
+  },
+  {
+   "id": "pop-8c9prq",
+   "title": "Page 756 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNRlVuWTVJQjhxQjAtQVo2R3NGYVNRY3daTnRXNy1ZNVdVbHlNckp4cDhrYmNPNVJwZ2dPOW01MjFjX0d0MWFXX2gxOHZ3Uk9mWHBwbHRaSTZTWXRjeGlBc2x1NDNFVGtKRmZSbGVPYWpadG53UHBoQjNoSEduejRXQXVXd3hINGhNaV9xel81V0U4Y3ZzYmNOejJpVXY3RnVJMFpLdlJHSGwzTVhIQTA0N1g5NWZidmpvWTFZWDBkdVlkb2VuM3hNajdLU3FZV0RycFFOWEp6eUxmUGpzaUtfSlZ2ZWtQblhl?oc=5",
+   "date": "2026-09-27T10:27:26.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-118xt93",
+   "title": "Beyond Frontman Doc 'Because of You Ka Kui' to Open Odyssey Fest",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNd0ZuemJBUW5PTXN5WkMta3pXNmZ6eEF0V2Z6REdyN3ZseDB6MUZDOUtjTDUyX0pUSS1WNUIwdEhGMTQyNk9PNHFqSk1mLU1YckhfcDhoc25jUEg0SkZuU3ZDNUtLdUJyTlNubjZFVXgzZy1CdVNsU2FhUGtOSEpBQVZXME5fMEZNYy1JNzdyQ3czZFp6VDVxTDFpek4zZXJxLXJF?oc=5",
+   "date": "2026-09-27T10:17:00.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-cr5m36",
+   "title": "Page 755 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxPeE1aSDdNd0I4TDZETUIxWktrN0VLaWc2R1BmY2VvMTl3OVBka2V3T1lmS1YwUlJrck43Z0dEM2RhLVB6MGJFZHhxV2FPT2NScFlWdWRCU3NoOEkwdTVzTUNHTUV3SWU2S1QtUHNOUk82eEQxUVI1ald0UFhOX1dUMWJHQm5JLXNxTG1kS0RQblhHXzhqUnFFc0hFbVltWndGUllXRkY0eTFnQ3FlMnFyNzZHSFBvTFVRNE1uSVhtS3V6dFpxaF9ucEVwNUxjLWppLWtXaXE2LVpUT2NiS1k2c2tlVF94Nzg5?oc=5",
+   "date": "2026-09-27T09:42:52.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-xazaoh",
+   "title": "Molly Mandel",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQeXJka25rTkc0YXY0QnlnM21NWHBoTFIwYkNoeDlJeklPVjNvTHVwREdkQl9uSW1vVV9aTmY0NjZXTkRFTnhOY1VWRjRaQWE4UTFkcm0wTEVOUFl2V0xsSElQeXU3VkJJVER2UW5FT29weDBEdWM0dnMtWVgyRE1oVlNpWWdtVVlXeXJaeVJNVDZkVlB3clN0RFA3X0JMY0ZRWlE?oc=5",
+   "date": "2026-09-27T09:39:50.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-1mka9i8",
+   "title": "Isabelle Farina",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9QUE1zN3lESUdOVm5qT2U5M3R0YTBvcUxhM1ZZdFBOQ0V1RHZXUWVfV0NWYXVCak5jcUpuNWpCb1Zub3hpUHlaODJQcjh1aUVNclo5OEFIdEhRcHNST2xj?oc=5",
+   "date": "2026-09-27T09:37:20.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-obc8vf",
+   "title": "Tony Maglio",
+   "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9mUU5kbllwMm9xVVNnSk1fb2JDN2dTeXZpODdCejFnWUQ2OEJPRGk1d19XZUVaZ0ZXSkswc3BpVTFmWkhMeERNT1NSWjZCRXdJNTg5akN6OHpJU0tJMXZGbEp4MA?oc=5",
+   "date": "2026-09-27T09:27:54.000Z",
+   "source": "The Hollywood Reporter"
+  },
+  {
+   "id": "pop-1p0dnc4",
+   "title": "Jia Zhangke Readies Zhao Tao Road Movie ‘Mamma Dunhuang,’ Rules Out AI in Production (EXCLUSIVE)",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPdEFiTGFfaFdpUzlTeU40dTc2enF6ak1iS0d4RzQtT3RkQXVQaFhWN2wydUlIMUxuSERDNHZUMXRuV3p3WTZpeUdhNS1TRFZxa01oZ0U4UzFIQnNRUzJfczh3UnNVdVZJLWJEYzg2Q2xwaUxhWDlCalp4UGFfWDRubHRjZzA4anBlUW12d2RwT3dZV3VqUGZN?oc=5",
+   "date": "2026-09-27T09:19:00.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-8qhzh3",
+   "title": "2026 – Page 159",
+   "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE9Wd0JLWjI0XzZhQ0RSNGJYeHNfNWRac0dwaDRDVTRpcGFsVWdmUzJsd2RGX1pQZUpHMjZzOUZCWTRIZWN1WVRUMUdn?oc=5",
+   "date": "2026-09-27T08:35:31.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-k2fo9w",
+   "title": "Tanya Fedak",
+   "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8tdjFHNV9nZGhWbW9uWWZjWFcyQi01QVBHdV9EWTJRNHlyMHZBZHRCY3EzWHRSXzB0SmQ2TlpybDZYODJNczRjTEEwamxOaDRFOGo3REJFYWl6Zms?oc=5",
+   "date": "2026-09-27T08:19:41.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-djicf8",
+   "title": "Hints of ‘Sex and the City’ and ‘Narcos’: A Look at Literary Works Being Pitched for Screen Adaptations at Iberseries & Platino Industria",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPc0lBRzUtQk56NU5ITWNaWTZ3bzNXb0JlNEZtMmhSNWNTRlp3Tk1KMG5IbnhaZTZ6bGdYa2ljbDFIOTNKWUNVcGV1cFhLTEpGNDNVX2RiNExzRzExdmdwUmxTamhJSExQX3VveXB1bV80TV84dUx2Uy1malBsMXV4UnB5TEJfLUxqQ2lGZm1qaEVpdHNHUHVGV250RmZWa1Iyb2JfLUQzMnlqX1hYS1pIMFV2WllxV3M?oc=5",
+   "date": "2026-09-27T08:00:28.000Z",
+   "source": "The Hollywood Reporter"
+  },
+  {
+   "id": "pop-x37jiq",
+   "title": "Lifestyle",
+   "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBGazh3cWtZUTFMbU5UZ3BzcUJRNnZtTkZuNzhzZmdDZmlOLURmVkN1eUxCYk9vbzVaejdiNVBOS3BKb2h0RWtTTFd2OXpJWUVfNTA3bmdNX2xNdw?oc=5",
+   "date": "2026-09-27T07:45:17.000Z",
+   "source": "The Hollywood Reporter"
+  },
+  {
+   "id": "pop-1758u6x",
+   "title": "Page 754 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOb2UxZWZPR21sbEFvcENsMWF2aEJQQ1cyQnFYS3Z2dlZWWGU5d1BMS3RHcHdvYzAxSDJDbUp3M0VQTnp6Zl81VTlaRkY5bjR5cUVWTnc4eFhSVHZDUDViY2VWSnVnUHFoN0hSZTJHWXhEZnA2bzFRaDgxd0UwZzlhS3BLM1pVQUdBWVRvZUNvWnhlUWZrMFBSWk05aUpMOGVjX1R3S1p5R3Q4aWtPdi1tSmtoVnk2aHpuQ0tjdmdKS2RZT2Q4N01udW5Sa1lVb3kxLWlHY2R4NnVGeGVLNG9ZcTU3aHRYc195?oc=5",
+   "date": "2026-09-27T07:25:50.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-1yudijt",
+   "title": "Page 122 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOZE5sYVdwUUhhaklqUWZnc1Q5OWt3c1VVSVp5b1NvdHkwNXc3XzdsNV8yN3N1cGhkeFlYTl9wMFZnSkgxbnNISU9WSzhOZG5uaXlJckpvUHROMHZEOHpqQW1FT0lGY2djVFVwbVhDSjltelB2MndZY0tFOXE1YTltZlpFSWJBQVhNQjVPRTQ0T0xjNVBLSlQ2STY1bXNQV3lVcGtGWFRabXVxVHY2UG1FLVJBTWtQWjFjM0pxdFRjWnNac1k?oc=5",
+   "date": "2026-09-27T07:24:36.000Z",
+   "source": "Variety"
+  },
+  {
+   "id": "pop-12vi5kc",
+   "title": "Page 753 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQTnVjaUJKZ3h1SXhraU9RUVdscVFGOEJlVUxraWx6RndvdXlZeEJ1WXl1eExUcWJEZExlZ1lIRlYzTnptc21EVlZxZXFTLWN2OVAyclh4RlZvVTJqS3NncE1xUHFySkoyOHZCelFUbklKZlZUR3RRaXgzY2d1al9vZnpQZ3MyT1FWWDY2b0xxQnFXSWdrNFpUc2pQLV9EWFVuWk1ZLUZtLVRkUFV6NHQ4SERqQVFCaXFLdi14YkI1WlVSc2YtS1NPSTlEdmFKNmJIVTkzTVdfel85NmpiY0UySTV5eGMtdnNq?oc=5",
+   "date": "2026-09-27T06:04:37.000Z",
+   "source": "Variety"
+  },
   {
    "id": "pop-1tc9jm1",
    "title": "Jalen Brunson Brings the New York Knicks to the ‘Saturday Night Live’ Season 52 Premiere",
@@ -1104,32 +1223,32 @@
    "title": "Tucker Carlson Returns to ‘SNL’ to Review ‘The Odyssey,’ Gender-Neutral ‘Spider-Man’ and Left-Wing ‘Obsession’",
    "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQOHpWWDduZktqUU1sR1I1OEdrMjZ0V04zUEhHX3A0dkJldlpmU1UwX21DRHd0ckctVEZlVk51MVk4a0wzM1lwRC1ObVFodVRjV2J6WnhacGRPQzlSY3ZnbFFsVTRMWXBramRzUnp4Tmh4SnFnNU9pR2MwZEkyLURxNVR3YXVfMXFPTmFJSFVVYUhtSFZWRGlv?oc=5",
    "date": "2026-09-27T04:58:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-927l82",
    "title": "Here’s Where to Livestream Takuma Inoue vs. Tenshin Nasukawa 2 Boxing Online",
    "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOT0JwaDZSZDFsdldTMWdoS2trU2RSSWZHa2wycDJCQ21rcmU3OXZXc0FSeG5SRzFSTm93Qklua0FXSk81VFZfSXU1QWplblJuUExOQ0s5Z1M4SFAta1I0ME1jLWhlMF9nLVRjMWlsUFdtbW52T2xMeWpKLWZkQlZnWHh5emxxYUY3clVfa2VrU3BrRHNoX0MwRmFnZVRKbzFOSnZJd3Znb3p3blhKNk8xNUswZk1YTFlxYnQtMktwUTRTZUU2eWc?oc=5",
    "date": "2026-09-27T04:30:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-29h4so",
    "title": "‘SNL’ Opens Season With Mamdani Hanging Out With BFF Trump, Natalie Harp Going ‘Obsession’ Over President",
    "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPMVhPNzJUQzFfNGRHbHRBS0NxUHF6MTVDSFQ2ZXhiN2tlM1RkbVM0OFRLZXEwMTYtRHRLcUFQdnZnbmFBYmRnRkR4VDlaeXhzU1pEZ19ucnoycC02TTVTcldYRm4xWG9taDdkZEZJM3hOckxxa2QxejFELWx5Z0k5aHp4Sks2a1lYclczeEd3?oc=5",
    "date": "2026-09-27T03:59:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1dbl5k1",
    "title": "Jalen Brunson’s ‘SNL’ Monologue Sees Knicks Starting 5 Roasting Each Other",
    "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPci1vSkZZeFZPVGViZEJXdzBhSXdla25NOEJ1M1ZKckRqUTlpaWRGYU96T05ZMWhpcEpHcGdQaERVdDkyeW1Pblo1enBEWE1xVUd6aVFlQlVjUkdKci1zOVNzcmNhYnV5QjF4YlF0UlVnSERiaDVFTk53TFE2SnFlMVB0ZVlRQjczRHlYdWplV19WSjYx?oc=5",
    "date": "2026-09-27T03:58:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1d3r1s7",
-   "title": "Aziz Ansari Reveals Kash Patel 'SNL' Sketch Put Together in Days",
+   "title": "Aziz Ansari Reveals Kash Patel ‘SNL’ Sketch Was Put Together in a Week",
    "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNRHJVaHhMY0pnaVRCbEpraEtNdG5QRllkRmdFYVBPV1J3bVBLZERXRHNtX2NnTG91bGFUMVJiS1ZYOWdRQWN4MnR3NVdRN1dHdjRkTnI4NmRUQnl1c1Z4aW5qUDhsajYyX0xGRjg2MUY0ZG93aFVUaU1adkxvWlRuQkdNQmktWVlSTWVnVUZWNGstOEU?oc=5",
    "date": "2026-09-27T03:20:24.000Z",
    "source": "Variety Australia"
@@ -1139,28 +1258,28 @@
    "title": "Jon Watts to Direct Next ‘Star Wars’ Movie",
    "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPVzQ0NWp0Rk1Qb01xUEttOUVuWmZ4aEl4RC11V1dKMTA0RkpsZmpwMmdlaXFpeDdTRHFyUFhLa200MG5neTJNbENsN1VPM0JrUjllVnpBaEduSWNjTG9fak5Fand2cG54dkJEVVJyVElwZVdFcFBUR0tYZnkyelB3ZEt3?oc=5",
    "date": "2026-09-27T02:04:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1ykeo8g",
    "title": "2026 – Page 165",
    "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTFBnNlVQZFBubzZHdmFkMHh6ZElCNzFKcVdWMTFIQzlqWHp0R1piOThDbnIxYkhfSXdickp0TjA3d2JYWnRsSVctSk1R?oc=5",
    "date": "2026-09-27T01:24:47.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-l1zn8b",
    "title": "‘Godzilla Minus Zero’ Director Champions Franchise’s First R Rating as Sequel Rocks NYFF at World Premiere: ‘Censoring’ the Action ‘Was Not an Option’",
    "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQc3FVT2RDYzdLLWlkTGUzdzBjOTdrS0k0MjZpZ0RkOUtOcTE5X2xVSzNfOURCa1g1MmhJTldidXZaZF94QXBHbVVWSXB0NFpxQVVCVUZVNUc0eXVOLVZibVBDSDdWXzhDZGZrdVVDWFp6REZpdmZ1bC00X19QcGF6cDFpaGl0dHg5NW0xSWhpQ29kUTdKM0tOQnJzNmE?oc=5",
    "date": "2026-09-27T01:08:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-yf4mh",
    "title": "Page 750 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
    "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQTXZreFhOMXZaem5sVzdyQS1RZGppZTM5SUU2S3dJLXFFWjRwQmhnc1JNWUZqOW4tSUlDS3VNUjVfdjVyV3NwckdMUXNicWwxMXNJOUFNYldVZWtGam90am9EbHVMZWpfUkJKaFlXVTkzaHpyR1BkcTBMUFM4NElCMUZxaE00dnQ0aGx5cHFJTkl3NU8yWmhMTkdjb05HU3NERXB3NzNVWWtMbHFFbGZ3c1JVZGM4V0pqa0pVMXdFV2h3b2xXV1NKSWVCbzZieUowTTBmQ2pqV0RLZFV0ZjJwYVhyTDJEUFFC?oc=5",
    "date": "2026-09-27T01:02:36.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-rnu3v7",
@@ -1168,13 +1287,6 @@
    "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPYVNnc3ZYdGdBc19yWHVJMThlQ2l2WDN5dUhGb1hhMkdweFlUQkQzZGMyalExX095VWk3YmdEeWdCNG5RcHg5aDFhOXltd3F1dnlzQWFxVlM1NnVnMlJUZjRnY0U1ekNHMGNkakI2ek1xSmVTSWhpSUJPaWhDQVJyY25zcHEydjJkc0MycC1iZFdrREJIdVhON0hVbVNPU2Z4WDdlaDMzdWItb0wxNlZfeg?oc=5",
    "date": "2026-09-27T00:37:17.000Z",
    "source": "The Hollywood Reporter"
-  },
-  {
-   "id": "pop-11uo099",
-   "title": "Tanya Fedak",
-   "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9qcEhtX2VRUW1GXzVNdDA4Wm9GWUhZN3FsZHRtTk5ydzFpU2N3dUN5ZVduYVVtRjhsU3U2S3VmLWlyenNHVlhuM05LY2VKdTBVUHl1bEROUkpqcHM?oc=5",
-   "date": "2026-09-27T00:34:46.000Z",
-   "source": "variety.com"
   },
   {
    "id": "pop-13jych3",
@@ -1188,28 +1300,28 @@
    "title": "‘Godzilla Minus Zero’ Review: Godzilla and King Ghidorah Battle to the Death in the Even Grander Follow-Up to ‘Godzilla Minus One’",
    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNbHRjQXNDZ1pxNDhLUExXRkwyTGlud0VBLTdMbGtGTFRXS0NiMWV6QVR0TkZ1WVdXMnBkbFFjTVB3bjV6c0ZNVUFHeDJyTjV4UVgweGZFRzNKRmVnY3ZPOVdWMVB2eFNQNVRWUTZ1bkRlaThwWGdaY21ZcGxfa0hfUEw2UmxRbDlPMzl6QXhfbEEwbmQtZ0RnQ1BaODRkdUE?oc=5",
    "date": "2026-09-27T00:30:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1l29fah",
    "title": "Robert Pattinson Says It Would Be 'Tough' for His Batman to Exist Within James Gunn's DCU",
    "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNYnZLY1kyYVB2THcyaHRhc3NKWEZPOWlia04tV2duQkhlRF9WTUlsNW5wWU5nRmxCbTNTRWROTFJKbUhZbEstQkwzRmp2dVFFQkZNR19RLTVVVjFUVzc5emJvNTFEUFBHc1JRSnU2S1h2ZFc4bENaWkRWdmFMMTc2bjZaQUpFa1ItOWt6bUZBSzkzVW02?oc=5",
    "date": "2026-09-27T00:04:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-iq5e80",
    "title": "‘Jack & Christine’ Trailer: John Hawkes Turns A Dinner Party Into A Night of Chaos – Film News in Brief",
    "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQZzZ5NEtRaXBGZWkwcFhybzhQeDFVY3I4N1JKNkZsWFRBNEcxX2tPdDBFMWJDUzVJcHo4UVd2V1BSekZjRER6R3poQ2l6S3NJbHdjcXdYSTlnQmNnYTFDSXVNMVlzTk92RHdaa0piRndqVTd1bm9HM2xIbjNiUnhjeUw1T28?oc=5",
    "date": "2026-09-26T23:52:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-11yc6m",
    "title": "2026 – Page 167",
    "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTFBFQXZESGdKUmt0Rmh3QjRIZlpUWXVuVGpMblYybzdkaWVHdXAtSFpZZ0xqaXd5SExCMDY0V3pJaVd6ZEJkNmpkZXhR?oc=5",
    "date": "2026-09-26T23:35:36.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1v1k6oa",
@@ -1223,7 +1335,14 @@
    "title": "‘The Simpsons’ Boss on Season Premiere Guests Emma Thompson and Colin Jost; ‘Treehouse of Horror’ Spoilers; Jack in the Box Meal Easter Eggs and Movie Update",
    "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOM3c2TW9pbjBLdzljM19YUk90VWZ3V2wyMzVDVlJocU92T0N1eGxNZHRVT1VQXzlMTHJJeUstc1habkZKb1E5akttME1JSFlkRGprY1pibW1uVGM5bjl1VnM0aU1oc0l2cmZDMDdROVFYbUFTWEFzS2ZYdFJ6MEMtVm5QanR5OVZyYUEwSFhqRjA0OV8zb3NuMVhCYW1TX19iMHl5Mg?oc=5",
    "date": "2026-09-26T23:00:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
+  },
+  {
+   "id": "pop-dem4r0",
+   "title": "Calls From the Dead, a Madrid Dystopia and Kids Swap Among Writers’ Show Pitches at Iberseries",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPRlRqUTdMTklBclNlZ2R4OXo4Zk1CSHdBMmJWSDAtTXg1OXc5Ujh0aUlsd01RNGlkRjNhdVJoYzJLSC1BT1NCRnpIVVV2d3NOTDNHX3FOU2lTV2VDUlFTUE1PUHdFNXBuaktsNG1SUTFqcjNPb2FVQ0ZDRVlHNFVNRWNLekNqdUJGbldSS2dlRS1ialhCdEtPbFNPRGxuQUhVd2M4OEhsYkQwQUNuTnpaa25tUDU?oc=5",
+   "date": "2026-09-26T22:30:58.000Z",
+   "source": "The Hollywood Reporter"
   },
   {
    "id": "pop-1ifcott",
@@ -1237,21 +1356,21 @@
    "title": "'SNL U.K.' Weekend Update Mocks Trump, Harvey Weinstein and More",
    "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQQkxLNU42MTBJUElDWEZlS1RGN01YZ0xQMTNTVEo5OEUxRk9EaktsaHNuRHJQN2Zsa2YwZW1IQUstazE0T25ucDBQT1c4S3UxczAwR0t0U3cyYlhrdWdFeFhudlhmLW9hYThxNTB1eGxNbFlmVEpvX2JEN3ZtZWxOZUZraUpQSFhrWlRqa29kRWltR1JfZXc?oc=5",
    "date": "2026-09-26T22:23:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1oaj6pw",
    "title": "Emmy Rossum Says Her Nude 'Shameless' Scenes Affected Her Dating Life",
    "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQNlR0dXFiQU4xSkQ0eXdNYUk0YV8yU0c5VXhabHBqZnVHVmRhZ19USGwxWjhYOHc3YzZPOWZvazVyUlJwbkdnOWJBWjdCRjNzcXlta01LYmxLUk1LejVhUWhHc1N0OVRnd2daTG54SnhrNzNWaDRiVndlbmlPVG84RTJpRV8?oc=5",
    "date": "2026-09-26T22:19:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1scac0l",
    "title": "2026 – Page 163",
    "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE4yOXRqZjFOdm14Qm5BM2JSaG45dzBmX2xKLU5PcnE4NFliaTdjS0N5QmxENWlGSjQxMVZwVGhuTkhpYUNxbzFWY2V3?oc=5",
    "date": "2026-09-26T22:18:33.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1lt8khq",
@@ -1265,14 +1384,14 @@
    "title": "‘My Sad Dead’ Review: An Urban Community Gets the Haunting It Deserves in Pablo Larraín’s Superb Modern Gothic",
    "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1lckN6ZEVSX19LdlJDRWkyTEFHRERyS01lcFo4ZVZOOFlMdnZGWUFIZnJGMVVWT1QzbHVGM3FBVWQ3cXl5N3VDWGxQVGNGb0dWT2JmSTYtVmxnLWVyTUp6TGlEakhaVEtMbWpzQTk1V0Q3WGxNQVVr?oc=5",
    "date": "2026-09-26T22:05:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-a6kk1b",
    "title": "'NAZA' Co-Director Yuval Abraham Calls Out U.S. Government for 'Funding' Israel's Destruction of Gaza",
    "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOZ3M1UmFzX3RfbXZoQzJjZVk0c3FTQm9tNkdPUGEzNzNxamhsODRSX1R6MG9tN0VkMVVLRkEzV0lObnA5cDc4UjlfdFF4Mzd6cmIxV21neENMRV9JT2tnNko4TnJfV3BGam9hQ0NIYllJSnJubEpVUUpaanhZRGdtTW5BUlBodmdUWTE4Si1aSnB1Q19QTkxQUEZNcEQ4YkU0?oc=5",
    "date": "2026-09-26T22:01:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-ayf79d",
@@ -1300,14 +1419,14 @@
    "title": "Amelia Dimoldenberg Jokes About 'Chicken Shop Date' Ending on SNL U.K.",
    "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQZFgwZ0w5VUxXbmZLVlBPdmdQR2RuWVNwMnBDZ1hBanVVbDg2dGhjU3QxMHFkbnRkNHIyc1k2SldZV0xQdzV3Mm9JaDhKSi1TR2UtRnJkYkM5TG1NRGFCd0VxblFGaG04SFo0ZTd4QXQ5LTlYdkEyLXZhV1h5VEdWT094a2JDMTlhN2NKSDg4NVhaRkIxXzl4SUlVV2xyUnV3eE9uaVpSVQ?oc=5",
    "date": "2026-09-26T21:45:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-41grah",
    "title": "‘SNL U.K.’ Spoofs Oasis as Russian Hackers Who Trick Prime Minister Andy Burnham by Asking Him to Join the Band",
    "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPRjlhNlNIZE5NbmhTOW90RE1VcVY5bDFxaF9qdFVhQUFNdkVBYWk4SHUzblk3VGc5RFpTTzQ3eU41MW1LNGNQR1pIb0tEQ1prWFM0TUtZYVRXU2lYa3MzcllPcFJUVzUzVXcxaDd0ZVZGdzF2azV0Z0lnOVl5cHVkY2NicnBMVUlWa2l5TzlOd2xaU21oeHFFV2pYY3Fvdw?oc=5",
    "date": "2026-09-26T21:38:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-semhhe",
@@ -1342,14 +1461,14 @@
    "title": "Page 742 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
    "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNZmlUSXNHQlBnZlVFWGFZOF9vYW5jRDA2blF2a2VnZ0tQeW03dGRUaGVlelFISjk3dG5rWUVBV01UTlRlaGxaSUR2eTZoanYxc3Z4VDFMekpUYjJzSGc5NVMxYmU2REpHVGxKeldfZU13Q3FPQk5feTNkMjBLdlI0TnM4bWtoM1E2c3F0VmJBWmZoc25aS2xpdTVhc0ttblB3MGRNZmFFS3RfY2taSlFGcURJcnlUWjlITWlMQmh0M0VuZGFVbEpacV8xd0g2YTN4b3MyN0hPOGs5WEpWSVZTNU5LME95SHVk?oc=5",
    "date": "2026-09-26T20:45:13.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-dh7z40",
    "title": "Israeli Americans Protest ‘NAZA’ by Screening October 7 Footage Outside New York Premiere: ‘Compassion For Palestinian Civilians Doesn’t Require Us to Erase October 7’",
    "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNejJZRlktV2gzbmtyYkVQd1ZhTXlHNldPSDZ4MDI4eG1wem5UM0hvel9TbmtxZVNVSXlzWkNudWp1ZVIyTldxTzdXdjJoeU1uSjJlWnpzQ1hOSHQ2bVJWT0pFOW5CTXJqcmx3cV80aVM2b1ZJdVpSVjZPeHRkYkRHWDRLNUFvZmdRd0M0?oc=5",
    "date": "2026-09-26T20:44:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-17ecay6",
@@ -1360,10 +1479,10 @@
   },
   {
    "id": "pop-ggplbi",
-   "title": "Marine Atlan’s French Oscar Hopeful ‘La Gradiva’ Takes Top Prizes at 30th Queer Lisboa – the Biggest Edition to Date",
+   "title": "Marine Atlan's 'La Gradiva' Takes Top Prizes at 30th Queer Lisboa",
    "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNNXJfT1JsYlQtcnNOci1abkdLUlZ6a0o4aG1OSVUxcWc4NzhWaHo3R1VEZi16RmZFdWREWGZ1UV9hMjBXeE9SajF5YlJiYU9jLWZpaG94OGpUNllTam1jcnBPYld0dnJ2eDJUWEFxRmMzQUlOcENRV2JOTXVETl8xUlNPbl84RXRGYXY3dXNB?oc=5",
    "date": "2026-09-26T20:30:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1yc4sri",
@@ -1377,156 +1496,51 @@
    "title": "Page 740 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
    "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxQajFzNWVVM1lkdW9UR05SOFR1aWM4c3RNS3ZJam5CblN0X0hkdWl4TWJLdUVIMG9ybVBFaHpkQnhYUzNtMHVUeWlhdFRDX1A2eGE1b1ZLNVoycERBempGX3lxV3hJQjN1NkhUV2kyVDlHLWloMHBqS1VrU0ZzRnVEVjVIWTlCUTZOTnd1WHN5Y1liaXQ2QmFrUW0zMlg0VEJ5TE10VmFHbl80aXRsU2ZUN0Y5emNjdk9JekVSZUV0TnhSNlZZMWpQd0syLXVFbkJlcUZhWS1rUnhoWm92LTZFQjVjZ3Z2bXZv?oc=5",
    "date": "2026-09-26T20:23:59.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   },
   {
    "id": "pop-1dfbcxw",
    "title": "Ina Garten Won’t Change Her Life Story for a Biopic Movie",
    "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBxWkNtRnhYU3J0R1YyOTNZOUhUczlUMWVIS3Y3dUJWS0hyczlSd1dTdXl6SnlMOVhUSEVNQjFwRjNZalRUSnNGaWc2dXJ1MVQtM3NqTWVuR256aDlnVFFub25QdGxrd1lsWTZpdzhibHFtdzl0SEE?oc=5",
    "date": "2026-09-26T20:23:10.000Z",
-   "source": "Vulture"
+   "source": "vulture.com"
   },
   {
    "id": "pop-laxkex",
    "title": "Chris Hansen Reacts to ‘Primetime’ and Robert Pattinson’s Portrayal of Him: ‘So Bizarre’ and ‘Detached From Reality’",
    "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQSWd0QWFiOWhYR2I3b3Nmb0JNUHFIcWwydjc4WW9YZUt1U0hRMTF0TFBTZklJUndIWWVTVk1SVVJFb2JVNW5rNG1lUG5XRkxGSnhiWk0zNndGVkVzTWFHOEdrTmx5MGRyVlNRd1dEZzNoQ2RHNE9DcWtEdWRkYVNCeG5sSF9BcjBPQkRMNVlReURxcDhiOE1aVGVhUURWSlpIRXBhdmViQWxGZ1E?oc=5",
    "date": "2026-09-26T20:19:00.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-1vclh7t",
-   "title": "Reba McEntire Reveals She Missed a Call From Dolly Parton Before Her Death: “I’ll Never Know Why She Called”",
-   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQZHJnN2J1VjZPYVU4bDNtQ2pxa1lvbk83eERld2daX3JIelA3c1E5eW5VcU1OX0ZIVi1Jak4tTnpYRnRmY2NnNHFjdS1CR05fZmJvRXE5eVk4MnUwOHlpS3dYQTVDN2Z1aWdWRXFQLWNnRnJrdUhXRmVFcnVlVEp2NnhkVTBTZWxOM1piRGZ1cVA2dFV3U3E3enRsN0hwclZxZVZoZlA1Tm9VNVdlVWloLUlic1M?oc=5",
-   "date": "2026-09-26T20:17:17.000Z",
-   "source": "The Hollywood Reporter"
-  },
-  {
-   "id": "pop-1brt9qg",
-   "title": "More News",
-   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1LX1h5cDdSNVNjUmplTDBTeUk0N1hxWG82ZXBKZEREOVZyck92d2xncUJJTzFzX2plblpTWTIwU1hReE04YVpfVWFsTU5wWFgwY0xqNmFmRDE3ZnBPTzNYZ2o1U083OW1DTnNHNmxMT01jSWNSdGc?oc=5",
-   "date": "2026-09-26T20:15:48.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-6l53co",
-   "title": "Mike Leigh’s ‘Tender Loving Care’ Wins Big at San Sebastián, as ‘La Bola Negra’ and ‘NAZA’ Take Audience Awards",
-   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPZjNrdlU2dmJYVEoycXBxNWdmVzBfd1hHazRKZVlwYWN1UENhRWstTGdFRXFZLUI4VVRGckE1R2kzWE9fYjh5ZVVWQTRJRi1pZXl2MFVmWjZBTnNJMmFJVzBKXzBJR0FlZmhrUEdCNEk0S2h4TGFYbDdnS3V5eC1BaElEaUJybllUc051NnFvU3hIT2ZCS1NxVW9fd1BnT2J2cmdpVlluQ2dLWDhMallWZjJBeG5PM1dLay05RW56andWbUNDQjBlMA?oc=5",
-   "date": "2026-09-26T19:58:00.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-9ona22",
-   "title": "Music",
-   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBYMkJ1TmJrcElIVW5VNmdIeW1NMVZaX1I1VHZiVmF3QVByN3VGeHVkbUQ0Z0l6ZjU3aHF6d29UWjB5a2JsUTlJRDRtR25iOFdEeWliYXVwQjBOMzE0eE5jeA?oc=5",
-   "date": "2026-09-26T19:53:54.000Z",
-   "source": "hollywoodreporter.com"
-  },
-  {
-   "id": "pop-ql9qcu",
-   "title": "2026 – Page 109",
-   "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE9RSHBJcXl5b3ZLaTY5Zl8zRHctYkVLS3hCMkczUEk5NnJkZWpFSmhqaVY3aXhpR0hfVElWcEhUUTZDbVFScGo4dWp3?oc=5",
-   "date": "2026-09-26T19:40:14.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-1v10wv2",
-   "title": "2026 – Page 164",
-   "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE93YmRkRDlybFNlVTRzT19XaFM3VVEyWHJVaWFOdUR5dGNJc0FyU3B6VDdUelpPZVZ3OXBGQkI0NnoyQzlwQWxldHdR?oc=5",
-   "date": "2026-09-26T19:15:55.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-183vdg3",
-   "title": "Chuck Varga, Founding Member of Heavy Metal Band Gwar, Dies at 68",
-   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQOVhqWll3aXQxSFQycUNCVlpaeDcwYUkwNV9mLVVMU0ViNTBGNHJadVFmbnhZYWJVTnp6Rl9TV2NySUwxZ0s0eU9lbmJWeVVkc2YzRzlvX0ROYzdYZVdNYnp4QW54c0FUYUhjRWVmd0VJZ0phdWozNGFMRUFfN2VxdFZPdFgwd2RqNDFuUU53?oc=5",
-   "date": "2026-09-26T19:13:00.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-zuorpd",
-   "title": "How to Watch Henry Cejudo vs. Javon Walton Boxing Live Online",
-   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOOWZTNEpNUjZTWDc4S1c3T1F1Y3V6Z0xObjh2SEFDSU1zTlU0Rng0ZHpJZ2JiSm53TVNFN09aOTIzQ1RCRHlUVnBuRnRNamk5UlNuREZXTEVYXzlWNlA2UmFhNlFpNHFHaWZHR2IxTTVBbVdTNlYzaHlLU0d4d1pqdHI4VXMxcTRCT284b29NYzE1SzcySlg2a3Y2M1BsM0R1SHp2UDBRbnFFYTV2X2p2Y2FpM2JkQzhBSmFNVjVR?oc=5",
-   "date": "2026-09-26T19:00:00.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-1thipi0",
-   "title": "Jamie Lee Curtis details final memories with Rob Reiner and wife Michele: ‘I took some beautiful photographs’",
-   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPZnJ3R0VaUEdfNHF4bm1oOXFKWHpsd1pkMDFEdFJSdkxIQ2ZVN2RFNXdWWDNDWW1PUkkyRHNMc213TEFiZVZ6bFBJRUlEUFVJOWtOWHZjWWlLbDhKVVNUbHBhajBQT3g0YzdaQnF4eXUtM0liSEJ6d1V1RzY5UU1ZMUR4ODdzbFA4T3BFM1lIN1ctUVhnOWk2R3V0S1g?oc=5",
-   "date": "2026-09-26T18:55:17.000Z",
-   "source": "Entertainment Weekly"
-  },
-  {
-   "id": "pop-aynn1m",
-   "title": "YouTube and Meta Reverse Course, Will Accept ‘Musk’ Trailer Ad",
-   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOUldvVTIyQVllb1pfNlQ0MXJUMjUtdHBEeDZ3b0pLZHpXY3ZqVHhXRzNmeldURGhrYWJyc0c3S01EazQyVFJjUHgzRmZqbnRsSWMwVEJjWUk4OG1IWDRWdHk3dHVCWndfQ0tXZVBicWpLY0JfN3Z3dmdEbHpZWHY4UzItYzRUbUlOeVZmTlBSLXZ3WEtsOGc?oc=5",
-   "date": "2026-09-26T18:47:13.000Z",
-   "source": "The Hollywood Reporter"
-  },
-  {
-   "id": "pop-9ftesx",
-   "title": "‘The Red Hangar’ Director on His Timely Fiction Feature Debut About Moral Dilemmas and a “Gesture of Humanity Amidst Barbarism”",
-   "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5kTnlyMG0yeHJCVkJPSjMtNjFFcnR1VHB1S3ZMYXA0bnRsdFR1MEo3Zlo3a1lUYWN6ckpVbHo2YW80NjRTaTBoOUxqWV9HTldrZDAyclNqTTNBZ2M3dnhTYVVn?oc=5",
-   "date": "2026-09-26T18:41:59.000Z",
-   "source": "hollywoodreporter.com"
-  },
-  {
-   "id": "pop-8q9rqz",
-   "title": "Academy CEO Bill Kramer Doubles Down on YouTube Move: “You’ll See a Very Different-Looking Oscars”",
-   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNa1U1ellYV01KbG05b21LSTY4MTlBMFlZUlA0dE1yVVpNMjF2SXFvdlNfT3RKVXZGUENwaTR1MXhRMzR3LWMwa1FySVlka2oya2lwRzYtTEtHUU1Ta1hfX2RYTWExRzhQdWtDbGRLdm94bVZvYUcxeFIyTzV1cUp1dzBIMk9QTFA0RjhuRzJJQUY3cDhVOU40bU96alVNRDhVWVlMaVlDYWVsQlJlWFYtT1hCZ2NNWHVXSnM0bWJFYXI?oc=5",
-   "date": "2026-09-26T18:37:12.000Z",
-   "source": "The Hollywood Reporter"
-  },
-  {
-   "id": "pop-14ds8c5",
-   "title": "Melissa Barrera Says She Would Return to ‘Scream’ Franchise If the Rights ‘Were Ever to Leave’ Spyglass: ‘I Had an Amazing Time Making Those Movies’",
-   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOcV9YZFFsTUJWdEo1SnBQLW9Vbm5DZG02NFhSbkwtMXZGV3NSRUVjU0JXVVFLOEp4NTdXWEhFZmdjOHdTOGNDam51YVBaQUNxbmVRc2N1RFFRWVU5ZEFMbllGQ1BvMEtJcEFOSkdlbUlNZWdOU1RHa2RvN0ppLW0yOFcwQU80OW02NElkZmtR?oc=5",
-   "date": "2026-09-26T18:11:00.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-1ab40ji",
-   "title": "Hayley Kiyoko Wants to Make a Lesbian ‘Pirates of the Caribbean’: ‘Keira Knightley, But Gay’",
-   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPWTctUGhkSzRmOENHazFCTzljdVZyMUY5aFJVUjkwd1JUVlFLQ0VDa3JpcHlXRUJfekM3UEt0a3NxM09fcl9nUklKR1ZaUUNYbTh4eXU3ZWQzWGM0SXdSalJXZFFvVkhuYThpanBkOHVEQUJiSTBKVGxHTTdvbmFnZ0xTVzVrUkRjYWdGZENEdEtfTnJSM2lXUDh6NEVMSDZBZWxodW1aZFlJdEhFX042bEo2cHFNUWNKaC0weDJUcw?oc=5",
-   "date": "2026-09-26T17:53:00.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-1y7hpro",
-   "title": "‘Paper Tiger’ Director James Gray Says He Doesn’t ‘Want to Preach’ Politics To Audiences: ‘Art Is Not Sunday School’",
-   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOekhNVXZuZElodEI5cnM2TFdZVDYtdFh4VjI1YklYd2JuNzY0am5TSmdfdXB2NWZtajNlM1dEWC13YUZNVUo5dHVDbjFhaXBtZHdrQTh1eFJBSFc3SXNtaWFfa2pDRVFkQWNUa3d0RjdZMWJNbF9iazJyU21xUFEzcFFDa1pXQW5TVmZjMVRUSjdELWdLTjY5QWpEVHdHVnR5U0tJ?oc=5",
-   "date": "2026-09-26T17:32:00.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-kv7pfy",
-   "title": "Reba McEntire Says She Missed A Call From Dolly Parton Before She Died",
-   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQNHpxaktqUXNrS29LR2hzVTRRdGVYTUIzUHFXRHlfQXFFVXZMc1c4TFdKSGczSVoyQTFBZ3Z2NlJ4ZUh4WGVtUlpRdl83c0trd3BXcklTUHBHMFdZbVZhZzYyWGhDbUJCTHRmaEx5UHh2WVNIVlBfWEY0M0hqZlVSX2NzZVVxNmR2aTctMWk5MA?oc=5",
-   "date": "2026-09-26T17:27:00.000Z",
-   "source": "variety.com"
-  },
-  {
-   "id": "pop-12rqq4s",
-   "title": "‘Godzilla Minus Zero’ First Reactions Go Crazy for ‘Epic’ and ‘Jaw-Dropping’ Sequel: ‘Should Be Nominated for Best Picture’",
-   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNRkVBb3hPUW1vNzVONlcycGcxZ0V5SkZORjZwbl9QZnVodEFTT3pWME54V0V4TkowNllEUXc3V1E5VDB0UDMxSXcwVlBLRlVKb1o2Rk5ZWW16T0NCOE5SSUdrbUNsWlJvQnlYZlFMOHBNY19heHc3Sy1ZbnR5VXZnMmpOdnhPUVU4Mmc?oc=5",
-   "date": "2026-09-26T17:19:00.000Z",
-   "source": "variety.com"
+   "source": "Variety"
   }
  ],
  "music": [
+  {
+   "id": "music-nfnklz",
+   "title": "Pitchfork",
+   "url": "https://news.google.com/rss/articles/CBMiOkFVX3lxTE5xdWlybzgtNUszMmIxV0F6RUxMbm9ja3U0VXVDQ2RYdmZTdlFYblBmYXdMMkJsZ2JfQ1E?oc=5",
+   "date": "2026-09-27T07:37:06.000Z",
+   "source": "Pitchfork"
+  },
+  {
+   "id": "music-x34t7d",
+   "title": "‘SNL’: Watch Katseye Perform ‘Animal,’ ‘Hootie Frutti’",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOamYzNVgwRzJCQ20yREJWWHlITk4tZ3hYQ18wQ1ExLVJmTGl1R1pidVh6TXlqeDhmODdlb0E1aXNYOEUwWmx6LWVpeHRja0hVZXRZYUxIdG4wXzZkUEtmckZZY2prWTBGeGNoM0N1cWFpbTdXbWY4Z3l3RTlqYUY1aENjc2JjWHFZdk9mT1MwNTlPWFRPNkkyS2FDTV9pQjQ5eDBnSkVZM3lIaEJVOUE?oc=5",
+   "date": "2026-09-27T06:59:11.000Z",
+   "source": "Rolling Stone"
+  },
+  {
+   "id": "music-1yz9cvg",
+   "title": "Sasha / John Digweed: Northern Exposure Album Review",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5zTE1xZU1qVC03LWF2YTVNODRUMjgyemdKVnZ1d2U0dEs3SEtqbXFHWWtDQ0xjZ2ZkZ0J5bnFrbWlFWXdrR3Nub1loY05rNF93X1pCcWw1UEpJcmpSaHhZWlVSeVk4Z0pjMzVHUjhCZnd5SFZocWk3M0pFXzlMZ0E?oc=5",
+   "date": "2026-09-27T04:00:00.000Z",
+   "source": "Pitchfork"
+  },
   {
    "id": "music-2yxigk",
    "title": "“Bruce told me he wanted to sound more like Jeff Beck, so he ended up buying this Gibson. It turns out he’d bought an EB-6!” How Jimmy Fallon’s bassist bonded with Bruce Springsteen over their shared love of 6-string bass",
    "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPSG9mMFVpajVJVzZoZ3gxTFpfS0dqNWlvV3BlbHRrM01BelJXdGNYUEs2YWJza05iZGZHVXpDY2dxWVJmaWNhc0xIWHBoWkhadG1BV0hseUhCckgzNGlZQ1ZYcUYzaU04SDhPTElPeWlGUnVSeURham13NEdLQW9CeW9wLWR4cVRZOHNKNjRULUxuSk1yc0JMblZIV0lxenpxN1liTmtjMmdqcXoxTWRpNWFYWnVKMURPWktHSDRrdw?oc=5",
    "date": "2026-09-27T00:00:00.000Z",
    "source": "Guitar World"
-  },
-  {
-   "id": "music-nfnklz",
-   "title": "Pitchfork",
-   "url": "https://news.google.com/rss/articles/CBMiOkFVX3lxTE5xdWlybzgtNUszMmIxV0F6RUxMbm9ja3U0VXVDQ2RYdmZTdlFYblBmYXdMMkJsZ2JfQ1E?oc=5",
-   "date": "2026-09-26T22:36:36.000Z",
-   "source": "Pitchfork"
   },
   {
    "id": "music-1ogvqfp",
@@ -1557,18 +1571,18 @@
    "source": "Billboard"
   },
   {
+   "id": "music-12gfmvt",
+   "title": "Billboard Hot 100 Top 10 Countdown for Sept. 26, 2026 | Billboard News",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQMUJRZHZRd1Vyb0UxVXhfTUVZTnhaeGtaNW1ERVJ1ZDBMb1RSVzN5ZzZ2NzBVSDQwOEhVa0lmNVB3OFNpejJ4Z2dTdUZMMXNBZlpHYzh6akZvRE1xYVhlWF9pR09KcjhWbVp3aDhkNjdXTWNSaGdfb3JJZVhKYk01NEd3RkVRT21rTHR1RXF3?oc=5",
+   "date": "2026-09-26T18:20:50.000Z",
+   "source": "Billboard"
+  },
+  {
    "id": "music-80yazt",
    "title": "“The most common mistake is thinking it’s an out-of-tune guitar”: What people get wrong about microtonal music",
    "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOeVFjWDZNVTRBRU5nLXFPY0RodTlZOXVscU1ScmhJbk5QVTAyU2o1aWd1QkJjbEttYW13U19JQkJBdmUtOUNZYnpIemFnQWo2NFgyZUI3Rkl3OVljekxuSlpzc1hCeWh2QjJ0akJHcXRieTQ0eU12R2VrT21WbnkyNlRsYksxODNLa0syMlNIWEgtTU9oWlE?oc=5",
    "date": "2026-09-26T18:00:00.000Z",
    "source": "Guitar World"
-  },
-  {
-   "id": "music-12gfmvt",
-   "title": "Billboard Hot 100 Top 10 Countdown for Sept. 26, 2026 | Billboard News",
-   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQMUJRZHZRd1Vyb0UxVXhfTUVZTnhaeGtaNW1ERVJ1ZDBMb1RSVzN5ZzZ2NzBVSDQwOEhVa0lmNVB3OFNpejJ4Z2dTdUZMMXNBZlpHYzh6akZvRE1xYVhlWF9pR09KcjhWbVp3aDhkNjdXTWNSaGdfb3JJZVhKYk01NEd3RkVRT21rTHR1RXF3?oc=5",
-   "date": "2026-09-26T17:47:05.000Z",
-   "source": "Billboard"
   },
   {
    "id": "music-3y5jgs",
@@ -1604,6 +1618,13 @@
    "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNM040Tld4RG1DcjlWNW5aRkU0ZHdLd3Z5RHV2eFpRRTFYQkFEUTVKY0Qtd2djbE56ZkFfSHNULTd6TkZZVHUzanFScFVfUGE5X0VaZkFmaWwyX2szenhsR3hqcm5NZjhsQ3VubGZmYzZtaDFSd0FBSVByWllfVE9ZMkNONUtOb2EzTlhUbmlWNzFkR3FLY0dnMkl2SVlaSkdZc0otbDNtdFgzZjBZcjZLTlMyYktQVFU?oc=5",
    "date": "2026-09-26T15:12:58.000Z",
    "source": "Rolling Stone"
+  },
+  {
+   "id": "music-1wxuc93",
+   "title": "Danz CM Announces New Album The Interdimensional Extraterrestrial Time Travelers Society : Hear Two Tracks",
+   "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNYXVtOXE4WEZhTFFYRHNDMkVkTU9FSnA1aUhRMzBzSmQxUXVDYkpva2tuQzdDQ0ZvaTNlWDd1OFdQcmd2SF9LdzhydXE5MTYtTjdkX0Y3Z3V3Z2ZUT2g2MmNFaXV1OXVNSDN5SnFKTFZTS2MzQklzaDYyVThRV1BIc0MtNnhtMU5YY3J2YXFfbnA3eDYzVnR4WThWME1rYWV0Smp5ZGZ2TUVFNllSaVdwS0NJV2p0NW9XYjJkS2QyT1ZxWEt6NjhQeUI4bERKNTZLU1Fuaml2Zw?oc=5",
+   "date": "2026-09-26T14:13:00.000Z",
+   "source": "Stereogum"
   },
   {
    "id": "music-1qinpeb",
@@ -1788,6 +1809,13 @@
    "source": "Billboard"
   },
   {
+   "id": "music-k53rcz",
+   "title": "Brain Tourniquet Unleash Fearsome New Concept Album Sinking Deeper Into Madness",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNbUZiYnZWZ1p3eVJQdUxycmo1ZE1EZk4zb1NqR1dmM3RvODVMWkpQZW9TV3ZBa2JiQktxQ1ZoQUN2RFBia1hKX0RKOWNwV2ZrRGtmUTcwVGctN3QxZGlpcWJnZG5JX05PenhOQUZVSnMtSHA4ckdfbFZ1ZmRYZDlsZjloNFRpdzE5dFQ0T2x6WWotMVhXYloyb1BNN1hLNHppZWpES0RoYjVUVV9TcU9VU25MSWdpQQ?oc=5",
+   "date": "2026-09-25T20:17:00.000Z",
+   "source": "Stereogum"
+  },
+  {
    "id": "music-1l19w5o",
    "title": "Leon Bridges Shakes Up His Sound Once Again",
    "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPaVdRbW5CcWJFMFdpM0daNzM2ZVY3Q1JfX3hvXzRVMXctQjYwZzlQRWNfYXBZbmJjMk1QdWdhZm42cHNoei1sRVp0UFZsRW1rSTQ4MjJ2SGZOZzBoWmJkTVNOTUo5bllCQkJ0dkhKM0Q5eE9mcVZfVV9sVXRPRlhfWVNaeU56Zy1wUmdNcDktd3pmdG93RU9ZZUhhUVJsV1FzYkg1OEJZRzhMa2RQcENV?oc=5",
@@ -1905,34 +1933,6 @@
    "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNdGxsTmxGY0xLbEdXV1NPdEdhczBWcjYyTnRjb1RncHdLZjlKcjFpN2Jmb3lMRUpVdURmZlhCbmZ1eXlOLVF4UjJFNEF3ZDJOUmVyZFY0TUF0UEp0czY3cXBrZEhBYS1CdWRUS09uVVZ6akVQcTR4STZBdUxvRHhKQ0Fsb3A3b0Z5Y0VkVWlNelJwV0IzbGNZX1pHWlNhWXl3d29wQmxRZndJTEdVNWhsUw?oc=5",
    "date": "2026-09-25T18:17:12.000Z",
    "source": "Billboard"
-  },
-  {
-   "id": "music-1na6xij",
-   "title": "2hollis Announces New Album 'Pirouette': Hear \"Warhorse\"",
-   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQS05jNVU3LU9JYnRYUFQ3N3l0OEFrRmp2VTFPU2V4aW5TZkVNVlNMWHNkVm5ibTI3Qk1RaGFtQ1p4endvcGNmS00yUldjUkFXMjVQVTdoVnZkNEpEbXJfOHhBNlMtcHg1S2tUaGxJWDJ6TGNlWXkyZURJZnR5MlVReVFEUDQ1aWtvSzF2NFdDYmo?oc=5",
-   "date": "2026-09-25T18:15:00.000Z",
-   "source": "Stereogum"
-  },
-  {
-   "id": "music-1w0m0v1",
-   "title": "See U2’s 50th-Anniversary Performance at Their Old High School",
-   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPVXc4ZWxCOERuZ2FWc05rV1AtNEppMjVGZm1BV2luVzBOZUEwdUs3UmVVSTJkRTJkZk5ITE9kY3Rxd01RaEl0dG9Gem1FaC1tZmI4d0MxR0taTVhNaEhhNEs0ZzVScU5wNEhIbVFzTWVDOWgtSGp2RnU0QVhEWnN1a3ZaelkxSXZxUU9YUDM1LXhjRTNUdmRZTmdvYWs?oc=5",
-   "date": "2026-09-25T18:06:25.000Z",
-   "source": "Rolling Stone"
-  },
-  {
-   "id": "music-1pgqemo",
-   "title": "“We were sitting backstage in the Voodoo Lounge, and Mick and I started talking. He said, casually, I'll gladly do some tracks for you”: How Mick Jagger very nearly ended up on a Joe Satriani record – before Satch deleted his performance",
-   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOTGJQbWhLQ1hyN2lQaUJISWxOSXRkUXRTRDUyTTBYTEdFOTlZVFNrU3NON0pGNUhCUkpiWTkwakZFU25taDQ2QXNGVE53YnZaaVBzN3hibDFiNEM0R1FVbmc3Ylg2Rlk4bC1yRW51UjVhckd3SzNuUnpjZWl3MTMzM1pRV0VLRkMtOXAxVC1nRzg5Y2MwYm5IOHZ6cWJPWldmb2J1SjhxWmRJN3Q0V1RHWUc4a1F4UjhSWUE?oc=5",
-   "date": "2026-09-25T18:00:00.000Z",
-   "source": "Guitar World"
-  },
-  {
-   "id": "music-15sdcrw",
-   "title": "Global Citizen Festival in New York Canceled Due to ‘Extreme Weather Forecast’",
-   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNSEdnNXdNQXY0a3JPTml0QmUzbkdPVW9wUVJfM2Z3OXhsS2FSZ1Vnb3RzdjVIUGtDczhERlFNRkxaOXd4WmtEZlJkY2ltSzhMdDh5WFR1QlZQUnJDVGxGUzdMTWlSVzVEbEo4T08xaVpDTVVacUNvQy1zbUhHOF91Wk54UnZyeTZ3ak5jTXN0M2M1bXJhWDdLbThVa3FVdzNsQi1fOWxQTDR0aXFEbEVSTy04RnFtZw?oc=5",
-   "date": "2026-09-25T17:50:50.000Z",
-   "source": "Rolling Stone"
   }
  ],
  "reddit": [
@@ -1945,14 +1945,6 @@
    "image": "https://external-preview.redd.it/cXB6bTZlNzdod3JoMeclfH0NBvTecFx_WGPNzmrcQZxd_Xb8kA6ukxKrg_uC.jpeg?width=640&crop=smart&auto=webp&s=fefb96b01271a5a24045ad8d87a4e7a21b546fdb"
   },
   {
-   "id": "rd-1i4s6vk",
-   "title": "The smoothest escape you are going to see all year",
-   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wqn41i/the_smoothest_escape_you_are_going_to_see_all_year/",
-   "date": "2026-09-26T10:26:08.000Z",
-   "source": "r/interestingasfuck",
-   "image": "https://external-preview.redd.it/cDlqMTFqeHpjdXJoMSaSDecKXfZTVBy-QYg9w47Ouwm4jcAUTgLHz_GeUakZ.jpeg?width=320&crop=smart&auto=webp&s=426fa2683d5e840572370f38baa9390198840f2b"
-  },
-  {
    "id": "rd-yruzqo",
    "title": "Picked this little guy up yesterday",
    "url": "https://www.reddit.com/r/aww/comments/1wqqxsn/picked_this_little_guy_up_yesterday/",
@@ -1961,12 +1953,20 @@
    "image": "https://external-preview.redd.it/dTM4eGl2aWpjdnJoMYwSbKyltHzxgtJ0FoiJ8gPI3rsx6T2yPbzIKgPG9rsC.jpeg?width=320&crop=smart&auto=webp&s=b0ab1877c078c4f76ddc22d658f866af4964c788"
   },
   {
-   "id": "rd-vk302w",
-   "title": "meirl",
-   "url": "https://www.reddit.com/r/meirl/comments/1wr21h8/meirl/",
-   "date": "2026-09-26T21:23:47.000Z",
-   "source": "r/meirl",
-   "image": "https://preview.redd.it/cxjpta8dmxrh1.jpeg?width=320&crop=smart&auto=webp&s=c8a13615441ed6b1dd471d2df83432907b4ea833"
+   "id": "rd-13wj4dq",
+   "title": "Me_irl",
+   "url": "https://www.reddit.com/r/me_irl/comments/1wr1l9m/me_irl/",
+   "date": "2026-09-26T21:04:17.000Z",
+   "source": "r/me_irl",
+   "image": "https://preview.redd.it/5fsc3ykpixrh1.png?width=640&crop=smart&auto=webp&s=31dd6a709e0c8c6f78ad4577bbf40436bb2d67e4"
+  },
+  {
+   "id": "rd-nuk21b",
+   "title": "Poetic justice",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wr5sme/poetic_justice/",
+   "date": "2026-09-27T00:15:38.000Z",
+   "source": "r/SipsTea",
+   "image": "https://preview.redd.it/hi99p4ktfyrh1.jpeg?width=640&crop=smart&auto=webp&s=3d9ca17a044d066fb78210e75f052f7d9b1fce80"
   },
   {
    "id": "rd-1aoaxsq",
@@ -1985,12 +1985,12 @@
    "image": "https://preview.redd.it/4l681x8ofvrh1.jpeg?width=320&crop=smart&auto=webp&s=aa13bdf44b4919436b7c7e07f08937d142277636"
   },
   {
-   "id": "rd-1uihvew",
-   "title": "Donald Trump Hit With 26 Articles Of Impeachment",
-   "url": "https://www.reddit.com/r/politics/comments/1wqpzx2/donald_trump_hit_with_26_articles_of_impeachment/",
-   "date": "2026-09-26T13:01:49.000Z",
-   "source": "r/politics",
-   "image": "https://external-preview.redd.it/LGAow2M798iImLux7J7ke0xjalhhjKi_oKQWTbIe-_Q.jpeg?width=640&crop=smart&auto=webp&s=3cc76b6fcd684be1ba9bf380e189ae33a86abc08"
+   "id": "rd-1g4om9c",
+   "title": "In this restaurant you have to follow the cat and it leads you to the empty table",
+   "url": "https://www.reddit.com/r/BeAmazed/comments/1wqxsyp/in_this_restaurant_you_have_to_follow_the_cat_and/",
+   "date": "2026-09-26T18:28:50.000Z",
+   "source": "r/BeAmazed",
+   "image": "https://external-preview.redd.it/bDhkbXY2MzVyd3JoMeH29jOcnnuzOW1BlPL2-zbr3owrSmOhID7wt-ulWiIc.png?width=640&crop=smart&auto=webp&s=fef40e046a83a3b791cb75ac6e9b6a3ee630dc5a"
   },
   {
    "id": "rd-151h4sr",
@@ -1999,14 +1999,6 @@
    "date": "2026-09-26T14:00:39.000Z",
    "source": "r/Damnthatsinteresting",
    "image": "https://preview.redd.it/p2nhccxafvrh1.jpeg?width=640&crop=smart&auto=webp&s=04a63c0dd5faf64a18e629b85cd57f18b1ae93ed"
-  },
-  {
-   "id": "rd-1fcx7ix",
-   "title": "I nose there's food",
-   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wqr4p9/i_nose_theres_food/",
-   "date": "2026-09-26T13:53:58.000Z",
-   "source": "r/MadeMeSmile",
-   "image": "https://preview.redd.it/497kwuk2evrh1.jpeg?width=640&crop=smart&auto=webp&s=aedb86581468e6da71ab80ddc3bad03ba2a266e4"
   },
   {
    "id": "rd-gn9dnm",
@@ -2025,20 +2017,20 @@
    "image": "https://preview.redd.it/gp8wk1xnivrh1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=7e430ca7a1231fcd7d61e1328e3ecae2e12d62eb"
   },
   {
-   "id": "rd-13wj4dq",
-   "title": "Me_irl",
-   "url": "https://www.reddit.com/r/me_irl/comments/1wr1l9m/me_irl/",
-   "date": "2026-09-26T21:04:17.000Z",
-   "source": "r/me_irl",
-   "image": "https://preview.redd.it/5fsc3ykpixrh1.png?width=640&crop=smart&auto=webp&s=31dd6a709e0c8c6f78ad4577bbf40436bb2d67e4"
+   "id": "rd-1uihvew",
+   "title": "Donald Trump Hit With 26 Articles Of Impeachment",
+   "url": "https://www.reddit.com/r/politics/comments/1wqpzx2/donald_trump_hit_with_26_articles_of_impeachment/",
+   "date": "2026-09-26T13:01:49.000Z",
+   "source": "r/politics",
+   "image": "https://external-preview.redd.it/LGAow2M798iImLux7J7ke0xjalhhjKi_oKQWTbIe-_Q.jpeg?width=640&crop=smart&auto=webp&s=3cc76b6fcd684be1ba9bf380e189ae33a86abc08"
   },
   {
-   "id": "rd-1g4om9c",
-   "title": "In this restaurant you have to follow the cat and it leads you to the empty table",
-   "url": "https://www.reddit.com/r/BeAmazed/comments/1wqxsyp/in_this_restaurant_you_have_to_follow_the_cat_and/",
-   "date": "2026-09-26T18:28:50.000Z",
-   "source": "r/BeAmazed",
-   "image": "https://external-preview.redd.it/bDhkbXY2MzVyd3JoMeH29jOcnnuzOW1BlPL2-zbr3owrSmOhID7wt-ulWiIc.png?width=640&crop=smart&auto=webp&s=fef40e046a83a3b791cb75ac6e9b6a3ee630dc5a"
+   "id": "rd-1fcx7ix",
+   "title": "I nose there's food",
+   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wqr4p9/i_nose_theres_food/",
+   "date": "2026-09-26T13:53:58.000Z",
+   "source": "r/MadeMeSmile",
+   "image": "https://preview.redd.it/497kwuk2evrh1.jpeg?width=640&crop=smart&auto=webp&s=aedb86581468e6da71ab80ddc3bad03ba2a266e4"
   },
   {
    "id": "rd-327wmq",
@@ -2049,52 +2041,12 @@
    "image": "https://external-preview.redd.it/b21tMWd5bmY4d3JoMXfadQ50M3y5sI2gAUWEbi7E0Famgc5EW633LF9Ww8Vc.png?width=320&crop=smart&auto=webp&s=3483bc1bad4bbcb6f63e025da15f551d2532524f"
   },
   {
-   "id": "rd-19k0xto",
-   "title": "TIL Hurricane Katrina permanently displaced so many people along the Gulf Coast that it is considered by most definitions to be a diaspora. 40% of evacuees were unable to return home, resulting in permanent demographic changes. The New Orleans population has still not recovered to pre-Katrina levels",
-   "url": "https://www.reddit.com/r/todayilearned/comments/1wqs409/til_hurricane_katrina_permanently_displaced_so/",
-   "date": "2026-09-26T14:36:16.000Z",
-   "source": "r/todayilearned",
-   "image": "https://external-preview.redd.it/3FS79AD8xJnxkP0BgFoKQ1wf1qsEF_FoJ57-cbx43I0.jpeg?width=640&crop=smart&auto=webp&s=ee1178d2ec656e6eeb63844202bda8d165d51305"
-  },
-  {
-   "id": "rd-1v672bn",
-   "title": "This airport worker made sure this dog wasn’t feeling alone",
-   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wqk79x/this_airport_worker_made_sure_this_dog_wasnt/",
-   "date": "2026-09-26T07:21:42.000Z",
-   "source": "r/MadeMeSmile",
-   "image": "https://external-preview.redd.it/d3ZhcDN4YjRndHJoMRR4vxOscmWNCCZenUIuUWoydAIxPQNCt9OapTeWLN-O.jpeg?width=320&crop=smart&auto=webp&s=140eecf21f51cde5a41bc5286207d7e436ca31b3"
-  },
-  {
-   "id": "rd-1ejyx8a",
-   "title": "Another day, another recall (yes I used this title yesterday)",
-   "url": "https://www.reddit.com/r/clevercomebacks/comments/1wqsijh/another_day_another_recall_yes_i_used_this_title/",
-   "date": "2026-09-26T14:53:36.000Z",
-   "source": "r/clevercomebacks",
-   "image": "https://preview.redd.it/5kzp444rovrh1.jpeg?width=640&crop=smart&auto=webp&s=d2c48e586f4f9a7938a3e3ba70cc8935da93bc95"
-  },
-  {
-   "id": "rd-1bbm49u",
-   "title": "That's a necessity",
-   "url": "https://www.reddit.com/r/Gamingcirclejerk/comments/1wqmthm/thats_a_necessity/",
-   "date": "2026-09-26T10:07:53.000Z",
-   "source": "r/Gamingcirclejerk",
-   "image": "https://preview.redd.it/ydvg8mzr9urh1.jpeg?width=640&crop=smart&auto=webp&s=01e62777369178f0b490e893274d10f5ac223a25"
-  },
-  {
-   "id": "rd-1jz6kyh",
-   "title": "My first time asking here",
-   "url": "https://www.reddit.com/r/PeterExplainsTheJoke/comments/1wqmq7d/my_first_time_asking_here/",
-   "date": "2026-09-26T10:02:02.000Z",
-   "source": "r/PeterExplainsTheJoke",
-   "image": "https://preview.redd.it/yr5emhhq8urh1.jpeg?width=640&crop=smart&auto=webp&s=0c1a04f2ab3f20c7caa62f293e93e30a70656aeb"
-  },
-  {
-   "id": "rd-1xzroch",
-   "title": "CEO who posted 'Lake America' sweatshirt photos is no longer with the company",
-   "url": "https://www.reddit.com/r/PoursTea/comments/1wqq800/ceo_who_posted_lake_america_sweatshirt_photos_is/",
-   "date": "2026-09-26T13:12:18.000Z",
-   "source": "r/PoursTea",
-   "image": "https://preview.redd.it/jjkzqomo6vrh1.jpeg?width=640&crop=smart&auto=webp&s=e9c45e318515ecaf670b859eafe9fecec9f9a34c"
+   "id": "rd-1ch6v0d",
+   "title": "Chubby merman are extremely desirable by mermaids because their chubbiness implies they're a highly successful hunter.",
+   "url": "https://www.reddit.com/r/funny/comments/1wr73q9/chubby_merman_are_extremely_desirable_by_mermaids/",
+   "date": "2026-09-27T01:20:36.000Z",
+   "source": "r/funny",
+   "image": "https://external-preview.redd.it/bTV5b2Z0ZjhzeXJoMdIABvy1xaF23QoSxsUE6IzH26tZVmwSzs0orLLr1ar8.png?width=640&crop=smart&auto=webp&s=a451c6be29c97aaafe33b01cd9cedacc748ad8ef"
   },
   {
    "id": "rd-1fup9yq",
@@ -2105,36 +2057,84 @@
    "image": "https://preview.redd.it/3mv27788rvrh1.jpeg?width=640&crop=smart&auto=webp&s=741c4cff30a12ca95bc329be0eb14e227fba0628"
   },
   {
-   "id": "rd-nuk21b",
-   "title": "Poetic justice",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wr5sme/poetic_justice/",
-   "date": "2026-09-27T00:15:38.000Z",
-   "source": "r/SipsTea",
-   "image": "https://preview.redd.it/hi99p4ktfyrh1.jpeg?width=640&crop=smart&auto=webp&s=3d9ca17a044d066fb78210e75f052f7d9b1fce80"
+   "id": "rd-19k0xto",
+   "title": "TIL Hurricane Katrina permanently displaced so many people along the Gulf Coast that it is considered by most definitions to be a diaspora. 40% of evacuees were unable to return home, resulting in permanent demographic changes. The New Orleans population has still not recovered to pre-Katrina levels",
+   "url": "https://www.reddit.com/r/todayilearned/comments/1wqs409/til_hurricane_katrina_permanently_displaced_so/",
+   "date": "2026-09-26T14:36:16.000Z",
+   "source": "r/todayilearned",
+   "image": "https://external-preview.redd.it/3FS79AD8xJnxkP0BgFoKQ1wf1qsEF_FoJ57-cbx43I0.jpeg?width=640&crop=smart&auto=webp&s=ee1178d2ec656e6eeb63844202bda8d165d51305"
   },
   {
-   "id": "rd-11oqb9c",
-   "title": "The pic of the Trumps reminded me of Joseph Goebbel's glare (1933, pre-WW2)",
-   "url": "https://www.reddit.com/r/pics/comments/1wqowqe/the_pic_of_the_trumps_reminded_me_of_joseph/",
-   "date": "2026-09-26T12:07:53.000Z",
+   "id": "rd-1ejyx8a",
+   "title": "Another day, another recall (yes I used this title yesterday)",
+   "url": "https://www.reddit.com/r/clevercomebacks/comments/1wqsijh/another_day_another_recall_yes_i_used_this_title/",
+   "date": "2026-09-26T14:53:36.000Z",
+   "source": "r/clevercomebacks",
+   "image": "https://preview.redd.it/5kzp444rovrh1.jpeg?width=640&crop=smart&auto=webp&s=d2c48e586f4f9a7938a3e3ba70cc8935da93bc95"
+  },
+  {
+   "id": "rd-sntu7t",
+   "title": "High school in 2004",
+   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wqxlcv/high_school_in_2004/",
+   "date": "2026-09-26T18:20:23.000Z",
+   "source": "r/interestingasfuck",
+   "image": "https://external-preview.redd.it/cnFlcjN6dmxwd3JoMUBkFVLIaJ-d6CCPMYJTWhjtB8Ck24g2VeVL-zeqRe8N.png?width=640&crop=smart&auto=webp&s=da3cb80bd9410aef553e46e657df7f781950ef43"
+  },
+  {
+   "id": "rd-1xzroch",
+   "title": "CEO who posted 'Lake America' sweatshirt photos is no longer with the company",
+   "url": "https://www.reddit.com/r/PoursTea/comments/1wqq800/ceo_who_posted_lake_america_sweatshirt_photos_is/",
+   "date": "2026-09-26T13:12:18.000Z",
+   "source": "r/PoursTea",
+   "image": "https://preview.redd.it/jjkzqomo6vrh1.jpeg?width=640&crop=smart&auto=webp&s=e9c45e318515ecaf670b859eafe9fecec9f9a34c"
+  },
+  {
+   "id": "rd-1iozu0y",
+   "title": "Merged monster rehearsals for Zach Cregger’s RESIDENT EVIL",
+   "url": "https://www.reddit.com/r/nextfuckinglevel/comments/1wqpyyx/merged_monster_rehearsals_for_zach_creggers/",
+   "date": "2026-09-26T13:00:43.000Z",
+   "source": "r/nextfuckinglevel",
+   "image": "https://external-preview.redd.it/ZnUxeW8zNW00dnJoMYZ_I5KMW3b6hIyHzsMWIr7jJCNEgfpVYl2OAvsW2Pjp.jpeg?width=320&crop=smart&auto=webp&s=815b7133b5d9109959867efc1ec9b2a0695d882f"
+  },
+  {
+   "id": "rd-16pg14b",
+   "title": "Justin Verlander's daughter has come out to get her dad from his final MLB game",
+   "url": "https://www.reddit.com/r/baseball/comments/1wqyp3g/justin_verlanders_daughter_has_come_out_to_get/",
+   "date": "2026-09-26T19:04:42.000Z",
+   "source": "r/baseball",
+   "image": "https://external-preview.redd.it/dHQ2NTZ2aWl4d3JoMcy9PQRGdah2SgGxb58JacyedEGQDmBm2ECGbXqtmdTG.jpeg?width=640&crop=smart&auto=webp&s=c9e12a319bade249bfc5a111b8fba46e0b6c7bb6"
+  },
+  {
+   "id": "rd-9vwysu",
+   "title": "Let it be known he lived.",
+   "url": "https://www.reddit.com/r/cats/comments/1wr0bve/let_it_be_known_he_lived/",
+   "date": "2026-09-26T20:10:59.000Z",
+   "source": "r/cats",
+   "image": "https://preview.redd.it/6ls95dyc9xrh1.jpg?width=140&height=105&auto=webp&s=b68e75964626e12f6819f5928c3e67965eb2f3a5"
+  },
+  {
+   "id": "rd-1ga2zp6",
+   "title": "Saw this the other day.",
+   "url": "https://www.reddit.com/r/pics/comments/1wr1ulw/saw_this_the_other_day/",
+   "date": "2026-09-26T21:15:31.000Z",
    "source": "r/pics",
-   "image": "https://preview.redd.it/05q3n1u6vurh1.jpeg?width=640&crop=smart&auto=webp&s=f98f885b16dc774a29793c0b8a4eff681fe6a7eb"
+   "image": "https://preview.redd.it/x64hz52wkxrh1.jpeg?width=640&crop=smart&auto=webp&s=804f6d893cd3217bdc4d80ee60e4bfcb7e856fbc"
   },
   {
-   "id": "rd-rplgli",
-   "title": "Every damn time",
-   "url": "https://www.reddit.com/r/HistoryMemes/comments/1wqkhmh/every_damn_time/",
-   "date": "2026-09-26T07:39:57.000Z",
-   "source": "r/HistoryMemes",
-   "image": "https://external-preview.redd.it/cHlpOWo0cmNqdHJoMZ0d56Q-4IWo1oPhacmiPUCFgFThhDTYB6XJMe5acHT_.png?width=640&crop=smart&auto=webp&s=fab34329aaed5d155dc7a8f125f27ddc79b23c62"
+   "id": "rd-2xr9ig",
+   "title": "one day this will just be a memory too",
+   "url": "https://www.reddit.com/r/wholesomememes/comments/1wquvmr/one_day_this_will_just_be_a_memory_too/",
+   "date": "2026-09-26T16:31:36.000Z",
+   "source": "r/wholesomememes",
+   "image": "https://preview.redd.it/zzhm4kc86wrh1.jpeg?width=640&crop=smart&auto=webp&s=356a6553333f2cc71f6d62592fb56f26cd219bfb"
   },
   {
-   "id": "rd-sohqpw",
-   "title": "Dostoyevsky on the death of his infant daughter.",
-   "url": "https://www.reddit.com/r/whoathatsinteresting/comments/1wqn5y8/dostoyevsky_on_the_death_of_his_infant_daughter/",
-   "date": "2026-09-26T10:29:27.000Z",
-   "source": "r/whoathatsinteresting",
-   "image": "https://preview.redd.it/he1sh96mdurh1.png?width=640&crop=smart&auto=webp&s=82b1ec3b7d5470231ffbed115cdac715c911a710"
+   "id": "rd-1klbytl",
+   "title": "Lmfao this recap would be hilarious. How can we make this happen?",
+   "url": "https://www.reddit.com/r/marvelstudios/comments/1wqwnqk/lmfao_this_recap_would_be_hilarious_how_can_we/",
+   "date": "2026-09-26T17:42:53.000Z",
+   "source": "r/marvelstudios",
+   "image": "https://preview.redd.it/1mlwg3gyiwrh1.jpeg?width=640&crop=smart&auto=webp&s=acd446e02a0baaf30f1826b2200ee59eed95c86b"
   }
  ]
 }
