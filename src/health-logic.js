@@ -293,8 +293,10 @@ export function weightStats(h, today = todayISO()) {
   if (!s.length) return null;
   const last = s[s.length - 1];
   const ago = addDays(today, -30);
-  const past = [...s].reverse().find((x) => x.date <= ago);
-  const first = s[0];
+  // Compare with a weigh-in from about a month ago (not an old imported one from years back).
+  const past = [...s].reverse().find((x) => x.date <= ago && x.date >= addDays(ago, -21));
+  // "Since" counts from the start of your current run of weigh-ins (the last 90 days).
+  const first = s.find((x) => x.date >= addDays(last.date, -90)) || last;
   return {
     latest: last,
     trend: last.avg,

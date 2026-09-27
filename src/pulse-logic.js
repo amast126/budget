@@ -469,7 +469,10 @@ export function skyOf(now = new Date(), sunriseISO, sunsetISO, code) {
   const night = mins > set ? (mins - set) / (1440 - set + rise) : (mins + 1440 - set) / (1440 - set + rise);
   const c = Number(code);
   const kind = c >= 95 ? 'storm' : (c >= 71 && c <= 77) || c === 85 || c === 86 ? 'snow' : c >= 51 ? 'rain' : c === 45 || c === 48 ? 'fog' : c === 3 ? 'cloudy' : c === 2 ? 'partly' : 'clear';
-  return { phase, kind, x: phase === 'night' ? Math.min(1, Math.max(0, night)) : day };
+  // How hard it's coming down, from the WMO code: drizzle is light, "heavy" and showers are heavier.
+  const INTENSITY = { 51: 0.35, 53: 0.5, 55: 0.65, 56: 0.5, 57: 0.7, 61: 0.6, 63: 0.9, 65: 1.3, 66: 0.7, 67: 1.1, 71: 0.5, 73: 0.8, 75: 1.2, 77: 0.4, 80: 0.7, 81: 1, 82: 1.4, 85: 0.7, 86: 1.1, 95: 1.3, 96: 1.4, 99: 1.5 };
+  const drizzle = c >= 51 && c <= 57;
+  return { phase, kind, intensity: INTENSITY[c] || (kind === 'rain' || kind === 'snow' || kind === 'storm' ? 0.8 : 0), drizzle, x: phase === 'night' ? Math.min(1, Math.max(0, night)) : day };
 }
 
 // ---------------------------------------------------------------- heatmap series

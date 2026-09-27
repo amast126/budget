@@ -7,6 +7,8 @@ import { useWidth } from './chart-kit.jsx';
 import { CountUp, celebrate, cheerOnce, reducedMotion } from './fx.jsx';
 import { lifeRings, streaks, countdowns, dayLine, skyOf, weekReview, weekHeadline, mondayOf, insights, HEAT_METRICS, heatValue, binsOf, binOf } from './pulse-logic.js';
 import { fmtMins } from './hk-logic.js';
+import { SkyWeather } from './rain.jsx';
+import { SkyCanvas } from './sky.jsx';
 
 const n0 = (n) => Math.round(Number(n) || 0).toLocaleString();
 const shortDay = (iso) => new Date(`${iso}T12:00:00`).toLocaleString('en-US', { month: 'short', day: 'numeric' });
@@ -31,21 +33,12 @@ export function Hero({ ctx, wx, greeting, name }) {
   const sky = skyOf(now, wx && wx.sunriseISO, wx && wx.sunsetISO, wx && wx.code);
   const lines = useMemo(() => dayLine({ ...ctx, wx, now }), [ctx, wx, now.getHours(), now.getMinutes() >> 4]);
   const cds = useMemo(() => countdowns(ctx), [ctx]);
-  const arc = 72 - Math.sin(Math.PI * sky.x) * 52; // % from the top: low at the ends, high at noon/midnight
+  // The sky itself (color, sun, moon, stars, clouds) is one canvas; rain and snow fall on a second one above it.
   return (
     <header className={`hero sky-${sky.phase} wx-${sky.kind}`}>
       <div className="sky-art" aria-hidden="true">
-        {sky.phase === 'night' || sky.phase === 'dusk' ? <span className="stars" /> : null}
-        <span className={`orb ${sky.phase === 'night' ? 'moon' : 'sun'}`} style={{ left: `${6 + sky.x * 80}%`, top: `${arc}%` }} />
-        {sky.kind === 'cloudy' || sky.kind === 'partly' || sky.kind === 'rain' || sky.kind === 'storm' || sky.kind === 'snow' || sky.kind === 'fog' ? (
-          <>
-            <span className="cloud c1" />
-            <span className="cloud c2" />
-            {sky.kind !== 'partly' ? <span className="cloud c3" /> : null}
-          </>
-        ) : null}
-        {sky.kind === 'rain' || sky.kind === 'storm' ? <span className="rain" /> : null}
-        {sky.kind === 'snow' ? <span className="snow" /> : null}
+        <SkyCanvas code={wx ? wx.code : 0} riseISO={wx && wx.sunriseISO} setISO={wx && wx.sunsetISO} wind={wx && wx.wind} />
+        {sky.kind === 'rain' || sky.kind === 'storm' || sky.kind === 'snow' ? <SkyWeather kind={sky.kind} intensity={sky.intensity || 0.8} drizzle={sky.drizzle} wind={wx && wx.wind} gusts={wx && wx.gusts} day={sky.phase === 'day'} /> : null}
       </div>
       <div className="hero-top">
         <div className="grow">
