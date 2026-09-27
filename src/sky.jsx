@@ -530,7 +530,10 @@ function milkyWay(fbm, W, H) {
 export const skyInternals = { cloudField, makeNoise, lighting, weatherOf };
 
 // ---------------------------------------------------------------- the component
-export function SkyCanvas({ code, riseISO, setISO, wind = 6 }) {
+// `page`: the sky behind the whole app (glass theme) instead of just the Home header. It draws at a lower
+// resolution and frame rate (it sits behind frosted glass), pauses while the page scrolls, and shades only the top,
+// where titles sit on the sky.
+export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false }) {
   const ref = useRef(null);
   // The wind only sets how fast things drift, so a new reading changes the speed without rebuilding the sky.
   const windRef = useRef(wind);
@@ -659,7 +662,7 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6 }) {
       const b = c.getBoundingClientRect();
       if (!b.width || !b.height) return false;
       if (Math.abs(b.width - W) < 0.5 && Math.abs(b.height - H) < 0.5) return false;
-      dpr = Math.min(2, window.devicePixelRatio || 1);
+      dpr = Math.min(page ? 1.25 : 2, window.devicePixelRatio || 1);
       W = b.width;
       H = b.height;
       S = clamp(H / 220, 0.8, 1.2);
@@ -1059,7 +1062,8 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6 }) {
         measureIn = 1.5;
         try {
           pg.clearRect(0, 0, 24, 10);
-          pg.drawImage(c, 0, 0, c.width * (wide ? 0.66 : 1), c.height, 0, 0, 24, 10);
+          if (page) pg.drawImage(c, 0, 0, c.width, Math.min(c.height, Math.round(320 * dpr)), 0, 0, 24, 10);
+          else pg.drawImage(c, 0, 0, c.width * (wide ? 0.66 : 1), c.height, 0, 0, 24, 10);
           const px = pg.getImageData(0, 0, 24, 10).data;
           const ls = [];
           for (let i = 0; i < px.length; i += 4) ls.push(0.2126 * px[i] + 0.7152 * px[i + 1] + 0.0722 * px[i + 2]);
@@ -1073,21 +1077,36 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6 }) {
           shadeA = 0.25;
         }
       }
-      const lg = g.createLinearGradient(0, 0, W * (wide ? 0.8 : 1), 0);
-      lg.addColorStop(0, `rgba(3,12,30,${shadeA.toFixed(3)})`);
-      lg.addColorStop(0.55, `rgba(3,12,30,${(shadeA * (wide ? 0.72 : 0.85)).toFixed(3)})`);
-      lg.addColorStop(1, `rgba(3,12,30,${(wide ? 0 : shadeA * 0.7).toFixed(3)})`);
       g.globalAlpha = 1;
-      g.fillStyle = lg;
-      g.fillRect(0, 0, W, H);
+      if (page) {
+        // a band across the top, where page titles and the Home greeting sit on the sky
+        const band = Math.min(H * 0.5, 360);
+        const vg = g.createLinearGradient(0, 0, 0, band);
+        vg.addColorStop(0, `rgba(3,12,30,${shadeA.toFixed(3)})`);
+        vg.addColorStop(0.55, `rgba(3,12,30,${(shadeA * 0.62).toFixed(3)})`);
+        vg.addColorStop(1, 'rgba(3,12,30,0)');
+        g.fillStyle = vg;
+        g.fillRect(0, 0, W, band);
+      } else {
+        const lg = g.createLinearGradient(0, 0, W * (wide ? 0.8 : 1), 0);
+        lg.addColorStop(0, `rgba(3,12,30,${shadeA.toFixed(3)})`);
+        lg.addColorStop(0.55, `rgba(3,12,30,${(shadeA * (wide ? 0.72 : 0.85)).toFixed(3)})`);
+        lg.addColorStop(1, `rgba(3,12,30,${(wide ? 0 : shadeA * 0.7).toFixed(3)})`);
+        g.fillStyle = lg;
+        g.fillRect(0, 0, W, H);
+      }
     };
 
+    // Behind the whole page, hold still while scrolling so the glass above doesn't have to re-blur every frame.
+    let scrollHold = 0;
+    const onScroll = () => (scrollHold = performance.now() + 220);
+    if (page) window.addEventListener('scroll', onScroll, { passive: true, capture: true });
     const loop = (now) => {
       const dt = last ? Math.min(0.1, (now - last) / 1000) : 1 / 30;
       last = now;
       acc += dt;
-      if (acc >= 1 / 31) {
-        frame(acc, now / 1000); // ~30 fps is plenty for a sky
+      if (acc >= (page ? 1 / 21 : 1 / 31) && !(page && now < scrollHold)) {
+        frame(Math.min(acc, 0.25), now / 1000); // ~30 fps is plenty for a sky (20 behind the page)
         acc = 0;
       }
       if (running) raf = requestAnimationFrame(loop);
@@ -1117,7 +1136,17 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6 }) {
       ro.disconnect();
       if (io) io.disconnect();
       if (minute) clearInterval(minute);
+      if (page) window.removeEventListener('scroll', onScroll, { capture: true });
     };
-  }, [code, riseISO, setISO]);
+  }, [code, riseISO, setISO, page]);
   return <canvas ref={ref} className="sky-canvas" aria-hidden="true" />;
+}
+
+// The live sky behind the whole app in the glass theme (weather `s` from the forecast summary).
+export function PageSky({ wx }) {
+  return (
+    <div className="page-sky" aria-hidden="true">
+      <SkyCanvas code={wx ? wx.code : 1} riseISO={wx && wx.sunriseISO} setISO={wx && wx.sunsetISO} wind={wx && wx.wind} page />
+    </div>
+  );
 }

@@ -83,10 +83,11 @@ function PlaceSearch({ onPick, onCancel }) {
 
 // The forecast for a place, cached on this device and refreshed every 30 minutes (shared by the header and the card).
 export function useForecast(place) {
-  const key = placeKey(place);
+  const key = place ? placeKey(place) : '';
   const [w, setW] = useState(() => readCache());
   const [err, setErr] = useState('');
   const load = useCallback(() => {
+    if (!place) return; // nothing fetched before sign-in
     fetch(forecastUrl(place))
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
       .then((data) => {
@@ -107,7 +108,7 @@ export function useForecast(place) {
       document.removeEventListener('visibilitychange', on);
     };
   }, [load]);
-  const s = useMemo(() => (w && w.key === key ? summarize(w.data) : null), [w, key]);
+  const s = useMemo(() => (key && w && w.key === key ? summarize(w.data) : null), [w, key]);
   return { s, err };
 }
 

@@ -1,0 +1,341 @@
+/* =====================================================================================================
+   Liquid Glass theme (html.theme-glass), light and dark (html.dark). The classic look is styles.css alone.
+   The live sky is drawn once behind the page (.page-sky); every surface above it is frosted glass: a tint
+   (--card, from the Clear–Tinted slider via --tint), a blur of what's behind, a lit rim (bright top-left and
+   bottom-right, the iOS 27 "specular highlight") and a thin dark outer edge (iOS 27's darkened edge).
+   ===================================================================================================== */
+html.theme-glass {
+  --tint: 0.5;
+  --ga: calc(0.56 + 0.36 * var(--tint));
+  --gblur: calc(8px + 20px * var(--tint));
+  --glass: 255, 255, 255;
+  --paper: rgba(255, 255, 255, 0.46);
+  --paper-deep: rgba(22, 42, 34, 0.075);
+  --rule: rgba(22, 42, 34, 0.13);
+  --rule-strong: rgba(22, 42, 34, 0.3);
+  --surface: rgba(255, 255, 255, 0.66);
+  --card: rgba(255, 255, 255, var(--ga));
+  --sheet: rgba(248, 250, 249, calc(var(--ga) + 0.05));
+  --rim-a: 0.95;
+  --rim-b: 0.26;
+  --rim-c: 0.06;
+  --rim-d: 0.55;
+  --edge: rgba(6, 18, 32, 0.2);
+  --lift: 0 16px 36px -18px rgba(6, 16, 34, 0.5);
+  --sheen: rgba(255, 255, 255, 0.16);
+  --lens: rgba(255, 255, 255, 0.62);
+  --on-sky: #fff;
+}
+html.theme-glass.dark {
+  --ga: calc(0.5 + 0.4 * var(--tint));
+  --glass: 20, 25, 34;
+  --ink: #eef2f0;
+  --ink-soft: rgba(226, 235, 231, 0.68);
+  --green: #62d39b;
+  --green-soft: rgba(98, 211, 155, 0.17);
+  --fill: #1f8a5d;
+  --on-fill: #fff;
+  --red: #ff8c7d;
+  --red-soft: rgba(255, 140, 125, 0.17);
+  --amber: #f5bd5f;
+  --amber-soft: rgba(245, 189, 95, 0.16);
+  --blue: #98c1f7;
+  --paper: rgba(255, 255, 255, 0.06);
+  --paper-deep: rgba(255, 255, 255, 0.09);
+  --rule: rgba(255, 255, 255, 0.13);
+  --rule-strong: rgba(255, 255, 255, 0.28);
+  --surface: rgba(255, 255, 255, 0.09);
+  --card: rgba(20, 25, 34, var(--ga));
+  --sheet: rgba(22, 27, 37, calc(var(--ga) + 0.08));
+  --rim-a: 0.42;
+  --rim-b: 0.1;
+  --rim-c: 0.02;
+  --rim-d: 0.22;
+  --edge: rgba(0, 0, 0, 0.55);
+  --lift: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+  --sheen: rgba(255, 255, 255, 0.07);
+  --lens: rgba(255, 255, 255, 0.14);
+}
+/* Reduce Transparency (where the browser reports it): fully tinted, nothing blurred through. */
+@media (prefers-reduced-transparency: reduce) {
+  html.theme-glass { --ga: 0.97; }
+}
+
+/* the sky is fixed behind the page; the root keeps a sky-ish color for overscroll, and body stays clear */
+html.theme-glass { background: #28476f; }
+html.theme-glass.dark { background: #0a1220; }
+html.theme-glass body { background: transparent; }
+.theme-glass .page-sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.theme-glass .page-sky .sky-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.theme-glass.dark .page-sky { filter: brightness(0.68) saturate(0.92); } /* a dimmer sky under dark glass, like a dark-mode wallpaper */
+
+/* ---------------------------------------------------------------- glass surfaces */
+.theme-glass .card:not(.fun-hero),
+.theme-glass .sheet,
+.theme-glass .gate-box {
+  position: relative;
+  border: 0;
+  border-radius: 22px;
+  background:
+    radial-gradient(520px circle at var(--mx, -800px) var(--my, -800px), var(--sheen), transparent 42%),
+    linear-gradient(180deg, var(--sheen), transparent 42%),
+    var(--card);
+  -webkit-backdrop-filter: blur(var(--gblur)) saturate(175%);
+  backdrop-filter: blur(var(--gblur)) saturate(175%);
+  box-shadow: 0 0 0 0.5px var(--edge), var(--lift);
+}
+/* the lit rim */
+.theme-glass .card:not(.fun-hero)::after,
+.theme-glass .sheet::after,
+.theme-glass .gate-box::after,
+.theme-glass .nav::after,
+.theme-glass .hero.on-page-sky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, var(--rim-a)), rgba(255, 255, 255, var(--rim-b)) 30%, rgba(255, 255, 255, var(--rim-c)) 58%, rgba(255, 255, 255, var(--rim-d)));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+/* the budget runs in a frame: one big pane of glass behind it */
+.theme-glass .frame-wrap {
+  background: linear-gradient(180deg, var(--sheen), transparent 30%), var(--card);
+  -webkit-backdrop-filter: blur(var(--gblur)) saturate(175%);
+  backdrop-filter: blur(var(--gblur)) saturate(175%);
+}
+.theme-glass .card { padding: 16px 18px; }
+.theme-glass .grid,
+.theme-glass .col { gap: 16px; }
+
+/* text that sits right on the sky: page titles, the Home greeting */
+.theme-glass .page-head,
+.theme-glass .page-head .muted,
+.theme-glass .page-head a,
+.theme-glass .page-head .inline-select { color: var(--on-sky); }
+.theme-glass .page-head { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 0 16px rgba(4, 14, 34, 0.4); }
+.theme-glass .page-head .muted { opacity: 0.92; }
+.theme-glass .page-head .inline-select { border-bottom-color: rgba(255, 255, 255, 0.6); }
+.theme-glass .page-head .inline-select option { color: #222; }
+.theme-glass .page-title { font-size: 32px; }
+.theme-glass .page-head .btn { text-shadow: none; }
+
+/* the Home header: a clear pane over the page sky (rain and snow still gather on it) */
+.theme-glass .hero.on-page-sky {
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 26px;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+}
+.theme-glass .hero.on-page-sky .sky-art { border-radius: inherit; overflow: hidden; }
+.theme-glass .cd,
+.theme-glass .hero-wx {
+  background: rgba(10, 24, 46, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 14px;
+  -webkit-backdrop-filter: blur(12px) saturate(170%);
+  backdrop-filter: blur(12px) saturate(170%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 14px -6px rgba(0, 0, 0, 0.35);
+}
+.theme-glass .cd.soon { background: rgba(255, 196, 87, 0.22); border-color: rgba(255, 214, 140, 0.55); }
+
+/* colored hero cards keep their colors, with glass corners and rim */
+.theme-glass .fun-hero,
+.theme-glass .auto-hero { border-radius: 24px; box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35), var(--lift); }
+.theme-glass .dd-banner { border-radius: 16px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
+.theme-glass .cd-tile { border-radius: 14px; }
+
+/* ---------------------------------------------------------------- navigation: a floating glass bar */
+.theme-glass .nav {
+  left: 10px;
+  right: 10px;
+  bottom: calc(8px + var(--safe-b));
+  height: 64px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 32px;
+  background: linear-gradient(180deg, var(--sheen), transparent 60%), rgba(var(--glass), calc(var(--ga) - 0.14));
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  backdrop-filter: blur(22px) saturate(190%);
+  box-shadow: 0 0 0 0.5px var(--edge), 0 14px 32px -12px rgba(6, 16, 34, 0.5);
+}
+.theme-glass .nav.has-lens { background: linear-gradient(180deg, var(--sheen), transparent 60%), rgba(var(--glass), calc(var(--ga) - 0.2)); }
+.theme-glass .nav-item { position: relative; z-index: 0; margin: 6px 0; border-radius: 26px; transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1), color 0.2s; }
+.theme-glass .nav-item.active { color: var(--green); }
+.theme-glass .nav-item.active::before {
+  content: '';
+  position: absolute;
+  inset: 0 2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--lens);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 0 0 0.5px rgba(6, 16, 30, 0.1), 0 4px 12px -6px rgba(6, 16, 30, 0.35);
+}
+.theme-glass.dark .nav-item.active::before { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 0.5px rgba(0, 0, 0, 0.4); }
+.theme-glass .nav-item:active { transform: scale(0.92); }
+.theme-glass .main { padding-bottom: calc(100px + var(--safe-b)); }
+.theme-glass .frame-wrap { bottom: 0; border-radius: 0; box-shadow: none; }
+.theme-glass .frame { background: transparent; color-scheme: light; } /* same scheme as the page inside, or browsers paint the frame opaque */
+.theme-glass.dark .frame { filter: invert(1) hue-rotate(180deg); } /* the budget's own dark ink, flipped */
+.theme-glass .toast {
+  bottom: calc(84px + var(--safe-b));
+  border-radius: 18px;
+  background: rgba(22, 26, 34, 0.78);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  backdrop-filter: blur(18px) saturate(170%);
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.15) inset, 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+.theme-glass .brand { color: var(--ink); }
+@media (min-width: 900px) {
+  .theme-glass .nav { top: 12px; bottom: 12px; left: 12px; right: auto; width: 200px; height: auto; padding: 20px 10px; border-radius: 26px; }
+  .theme-glass .nav-item { margin: 0; border-radius: 14px; }
+  .theme-glass .nav-settings { margin-top: auto; }
+  .theme-glass .nav-item.active { background: none; }
+  .theme-glass .nav-item.active::before { inset: 0; }
+  .theme-glass .app { padding-left: 224px; }
+  .theme-glass .main { padding: 28px 32px 48px; }
+  .theme-glass .frame-wrap { top: 12px; left: 224px; right: 12px; bottom: 12px; border-radius: 24px; overflow: hidden; box-shadow: 0 0 0 0.5px var(--edge), var(--lift); }
+  .theme-glass .toast { bottom: 24px; left: calc(50% + 112px); }
+  .theme-glass .demo-bar { left: 224px; }
+}
+
+/* ---------------------------------------------------------------- the demo bar */
+.theme-glass .demo-bar {
+  background: rgba(16, 38, 28, 0.62);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  backdrop-filter: blur(18px) saturate(170%);
+  box-shadow: 0 0.5px 0 rgba(255, 255, 255, 0.18), 0 6px 20px -10px rgba(0, 0, 0, 0.4);
+}
+.theme-glass .app.demo .frame-wrap { top: calc(var(--safe-t) + 38px); }
+@media (min-width: 900px) { .theme-glass .app.demo .frame-wrap { top: 50px; } }
+
+/* ---------------------------------------------------------------- sheets */
+.theme-glass .sheet-bg { background: rgba(4, 10, 22, 0.3); }
+.theme-glass .sheet {
+  background: linear-gradient(180deg, var(--sheen), transparent 30%), var(--sheet);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  border-radius: 30px 30px 0 0;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+@media (min-width: 600px) { .theme-glass .sheet { border-radius: 28px; } }
+.theme-glass .more-item { border-radius: 14px; }
+
+/* ---------------------------------------------------------------- controls */
+.theme-glass .btn {
+  border: 0;
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 0 0 0.5px var(--rule-strong), 0 3px 8px -4px rgba(6, 16, 30, 0.25);
+  transition: transform 0.18s cubic-bezier(0.3, 1.5, 0.5, 1), background 0.15s, box-shadow 0.15s;
+}
+.theme-glass.dark .btn { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 0 0.5px rgba(255, 255, 255, 0.16), 0 3px 8px -4px rgba(0, 0, 0, 0.5); }
+.theme-glass .btn:active:not(:disabled) { transform: scale(0.96); }
+.theme-glass .btn.quiet { background: rgba(var(--glass), 0.32); }
+.theme-glass.dark .btn.quiet { background: rgba(255, 255, 255, 0.06); }
+.theme-glass .btn.primary {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 55%), var(--fill);
+  color: var(--on-fill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 0 0.5px rgba(0, 0, 0, 0.18), 0 8px 18px -8px rgba(20, 90, 60, 0.65);
+}
+.theme-glass .btn:disabled { opacity: 0.5; }
+.theme-glass .input {
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: inset 0 1px 2px rgba(6, 16, 30, 0.06);
+}
+.theme-glass .input::placeholder { color: var(--ink-soft); opacity: 0.85; }
+.theme-glass .input:focus { outline: 2px solid var(--green); outline-offset: 0; }
+.theme-glass.dark .input { box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3); }
+.theme-glass.dark select.input option,
+.theme-glass.dark .inline-select option { background: #1b2230; color: #eef2f0; }
+.theme-glass .seg-btn,
+.theme-glass .chip,
+.theme-glass .pill-btn,
+.theme-glass .low-btn,
+.theme-glass .icon-btn,
+.theme-glass .chip-link {
+  border: 0;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 0 0 0.5px var(--rule-strong);
+  transition: transform 0.18s cubic-bezier(0.3, 1.5, 0.5, 1), background 0.15s;
+}
+.theme-glass.dark .seg-btn,
+.theme-glass.dark .chip,
+.theme-glass.dark .pill-btn,
+.theme-glass.dark .low-btn,
+.theme-glass.dark .icon-btn,
+.theme-glass.dark .chip-link { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 0.5px rgba(255, 255, 255, 0.16); }
+.theme-glass .seg-btn:active,
+.theme-glass .chip:active,
+.theme-glass .pill-btn:active,
+.theme-glass .icon-btn:active { transform: scale(0.94); }
+.theme-glass .seg-btn.on,
+.theme-glass .chip.on,
+.theme-glass .pill-btn.w.on,
+.theme-glass .icon-btn.on {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 60%), var(--fill);
+  color: var(--on-fill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 0 0.5px rgba(0, 0, 0, 0.15), 0 4px 10px -5px rgba(20, 90, 60, 0.6);
+}
+.theme-glass .pill-btn.s.on { background: var(--paper-deep); color: var(--ink); box-shadow: 0 0 0 0.5px var(--rule-strong); }
+.theme-glass .box { border-radius: 8px; border-color: var(--rule-strong); background: var(--surface); }
+.theme-glass .bar,
+.theme-glass .bar.slim { background: var(--paper-deep); }
+.theme-glass .x { color: var(--ink-soft); }
+
+/* section tabs sit on the sky, like iOS's glass segmented controls */
+.theme-glass .page-tabs .seg-btn {
+  color: #fff;
+  background: rgba(10, 24, 46, 0.24);
+  -webkit-backdrop-filter: blur(14px) saturate(170%);
+  backdrop-filter: blur(14px) saturate(170%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 0 0.5px rgba(255, 255, 255, 0.28);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.theme-glass .page-tabs .seg-btn.on { background: rgba(255, 255, 255, 0.88); color: #143a28; text-shadow: none; box-shadow: inset 0 1px 0 #fff, 0 6px 16px -8px rgba(0, 0, 0, 0.45); }
+.theme-glass.dark .page-tabs .seg-btn.on { background: rgba(255, 255, 255, 0.24); color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+
+/* ---------------------------------------------------------------- things with fixed light colors */
+.theme-glass .skeleton .sk { background: linear-gradient(90deg, var(--paper-deep) 0%, rgba(255, 255, 255, 0.35) 50%, var(--paper-deep) 100%); background-size: 200% 100%; }
+.theme-glass.dark .skeleton .sk { background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.14) 50%, rgba(255, 255, 255, 0.06) 100%); background-size: 200% 100%; }
+.theme-glass .hc.b0 { background: rgba(22, 42, 34, 0.09); }
+.theme-glass.dark .hc.b0 { background: rgba(255, 255, 255, 0.08); }
+.theme-glass.dark .hc.b4 { background: #3d8ef0; }
+.theme-glass.dark .hc.b3 { background: #2d6fc4; }
+.theme-glass.dark .hc.b2 { background: #24538f; }
+.theme-glass.dark .hc.b1 { background: #1d3657; }
+.theme-glass .chart .wdot { stroke: transparent; }
+.theme-glass.dark .ring-arc { stroke: #4fcf8e; }
+.theme-glass.dark .ecg-row { background: rgba(255, 120, 100, 0.08); }
+.theme-glass.dark .tk.up { background: rgba(98, 211, 155, 0.1); }
+.theme-glass.dark .tk.down { background: rgba(255, 140, 125, 0.1); }
+.theme-glass .tk { background: var(--paper); border-color: transparent; }
+.theme-glass.dark .tag-key,
+.theme-glass.dark .th-energy { background: rgba(245, 189, 95, 0.18); color: #f5c677; }
+.theme-glass.dark .th-quantum { background: rgba(170, 155, 255, 0.18); color: #c7bdff; }
+.theme-glass.dark .th-robotics { background: rgba(120, 190, 235, 0.18); color: #a9d8f5; }
+.theme-glass.dark .streak-badge.on { background: linear-gradient(160deg, rgba(255, 190, 110, 0.3), rgba(255, 150, 80, 0.2)); color: #ffc98a; }
+.theme-glass.dark .streak-badge.on b { color: #ffd9a8; }
+.theme-glass.dark .star { color: rgba(255, 255, 255, 0.2); }
+.theme-glass.dark .star.on { color: #f0b83a; }
+.theme-glass.dark .starter-jar { background: rgba(255, 255, 255, 0.08); }
+.theme-glass .tuner-face { background: var(--paper); border-color: transparent; }
+.theme-glass .alert { border-radius: 12px; }
+.theme-glass .lring:hover { background: var(--paper); }
+.theme-glass .gate { color: var(--ink); }
+.theme-glass .gate-box { padding: 26px 24px; border-radius: 28px; }
+.theme-glass .settings-look .seg { margin: 6px 0 4px; }
+.glass-slider { display: flex; align-items: center; gap: 10px; margin: 10px 0 2px; }
+.glass-slider input { flex: 1; accent-color: var(--green); }
+.settings-look { margin: 12px 0 4px; }
+/* swipeable to-do rows: clear at rest, a solid pane only while being dragged over the Done/Delete colors */
+.theme-glass .swipe-fg { background: transparent; }
+.theme-glass .swipe-fg.dragging { background: rgba(var(--glass), 0.94); }

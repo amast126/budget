@@ -28,16 +28,17 @@ export function useNow(ms = 60000) {
 }
 
 // ---------------------------------------------------------------- header
-export function Hero({ ctx, wx, greeting, name }) {
+export function Hero({ ctx, wx, greeting, name, pageSky = false }) {
   const now = useNow();
   const sky = skyOf(now, wx && wx.sunriseISO, wx && wx.sunsetISO, wx && wx.code);
   const lines = useMemo(() => dayLine({ ...ctx, wx, now }), [ctx, wx, now.getHours(), now.getMinutes() >> 4]);
   const cds = useMemo(() => countdowns(ctx), [ctx]);
   // The sky itself (color, sun, moon, stars, clouds) is one canvas; rain and snow fall on a second one above it.
   return (
-    <header className={`hero sky-${sky.phase} wx-${sky.kind}`}>
+    <header className={`hero sky-${sky.phase} wx-${sky.kind} ${pageSky ? 'on-page-sky' : ''}`}>
       <div className="sky-art" aria-hidden="true">
-        <SkyCanvas code={wx ? wx.code : 0} riseISO={wx && wx.sunriseISO} setISO={wx && wx.sunsetISO} wind={wx && wx.wind} />
+        {/* in the glass theme the sky is drawn once behind the whole page; the header is a clear pane over it */}
+        {pageSky ? null : <SkyCanvas code={wx ? wx.code : 0} riseISO={wx && wx.sunriseISO} setISO={wx && wx.sunsetISO} wind={wx && wx.wind} />}
         {sky.kind === 'rain' || sky.kind === 'storm' || sky.kind === 'snow' ? <SkyWeather kind={sky.kind} intensity={sky.intensity || 0.8} drizzle={sky.drizzle} wind={wx && wx.wind} gusts={wx && wx.gusts} day={sky.phase === 'day'} /> : null}
       </div>
       <div className="hero-top">

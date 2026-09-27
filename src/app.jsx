@@ -1,9 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import css from './styles.css';
+import glassCss from './glass.css';
 import { createFirebaseBackend } from './backend.js';
 import { IS_DEMO, createDemoBackend, resetDemo, exitDemo, enterDemo, cameFromAccount, demoLink } from './demo.js';
 import { Icon } from './ui.jsx';
+import { applyTheme, useTheme, trackGlassLight } from './theme.js';
+import { PageSky } from './sky.jsx';
+import { Lens } from './lens.jsx';
 import { LearningPage, LearningHomeCard } from './learning.jsx';
 import { defaultLearning, normalize as normalizeLearning } from './learning-logic.js';
 import { CookingPage, CookingHomeCard, FinishShopSheet, tonightPick } from './cooking.jsx';
@@ -39,10 +43,12 @@ import {
   daysIn,
 } from './budget-logic.js';
 
+applyTheme(); // before the first paint, so there's no flash of the other look
+trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css;
+  s.textContent = css + glassCss;
   document.head.appendChild(s);
 }
 
@@ -397,11 +403,10 @@ function NewsPage({ news, read, markRead, markAllRead }) {
 let homeSeen = false;
 // A birthday this week moves the Birthdays card up next to the to-do list on phones.
 const bdaySoon = (b, today) => upcomingBirthdays(b, today, 7).length > 0;
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, guitar, mutateGuitar, sourdough, birthdays, mutateBirthdays, onBirthdays }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, guitar, mutateGuitar, sourdough, birthdays, mutateBirthdays, onBirthdays, forecast, pageSky }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   const place = (home && home.place) || DEFAULT_PLACE;
-  const forecast = useForecast(place);
   const now = useNow();
   const day = todayISO();
   const [week, setWeek] = useState(false);
@@ -417,7 +422,7 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
   // Slots carry a phone order; on wide screens the two columns show as laid out.
   return (
     <div className={`home ${intro ? 'intro' : ''}`}>
-      <Hero ctx={ctx} wx={forecast.s} greeting={greeting(now)} name={first} />
+      <Hero ctx={ctx} wx={forecast.s} greeting={greeting(now)} name={first} pageSky={pageSky} />
       {dataError ? <div className="alert">{dataError}</div> : null}
       <div className="grid home-grid">
         <div className="col">
@@ -537,7 +542,38 @@ function DemoBar() {
   );
 }
 
-function Settings({ user, onClose, onToast }) {
+// Appearance: Liquid Glass over the live sky (with iOS 27's clear-to-tinted slider) or the classic look.
+function LookSettings({ look }) {
+  return (
+    <div className="settings-look">
+      <h3 className="settings-sub">Appearance</h3>
+      <div className="seg" role="group" aria-label="Look">
+        {[
+          ['glass', 'Liquid Glass'],
+          ['classic', 'Classic'],
+        ].map(([k, l]) => (
+          <button key={k} className={`seg-btn ${look.theme === k ? 'on' : ''}`} aria-pressed={look.theme === k} onClick={() => look.setTheme(k)}>
+            {l}
+          </button>
+        ))}
+      </div>
+      {look.theme === 'glass' ? (
+        <>
+          <label className="glass-slider">
+            <span className="small muted">Clear</span>
+            <input type="range" min="0" max="100" step="1" value={Math.round(look.tint * 100)} onChange={(e) => look.setTint(Number(e.target.value) / 100)} aria-label="Glass transparency, clear to tinted" />
+            <span className="small muted">Tinted</span>
+          </label>
+          <p className="muted small">The live sky sits behind everything. Light or dark follows your device’s appearance setting.</p>
+        </>
+      ) : (
+        <p className="muted small">The original paper-and-green look.</p>
+      )}
+    </div>
+  );
+}
+
+function Settings({ user, onClose, onToast, look }) {
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(demoLink());
@@ -557,6 +593,7 @@ function Settings({ user, onClose, onToast }) {
         ) : (
           <p className="muted small">Signed in as {user.email}. Only this account can open the dashboard.</p>
         )}
+        {look ? <LookSettings look={look} /> : null}
         {IS_DEMO ? (
           <button className="btn primary block" onClick={exitDemo}>
             {EXIT_LABEL}
@@ -718,6 +755,10 @@ function App() {
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
+  const look = useTheme();
+  const glass = look.theme === 'glass';
+  // The forecast feeds the sky behind every page (glass) and Home's weather; nothing is fetched before sign-in.
+  const forecast = useForecast(allowed && home ? home.place || DEFAULT_PLACE : null);
   const [fun, funError] = useModuleDoc(allowed, user, 'fun');
   const [guitar] = useModuleDoc(allowed, user, 'guitar');
   const [sourdough] = useModuleDoc(allowed, user, 'sourdough');
@@ -1122,8 +1163,20 @@ function App() {
     }
   };
 
-  if (user === undefined) return <div className="gate"><p className="muted">Loading…</p></div>;
-  if (!allowed) return <Gate user={user} />;
+  if (user === undefined)
+    return (
+      <div className="gate">
+        {glass ? <PageSky wx={null} /> : null}
+        <p className="muted">Loading…</p>
+      </div>
+    );
+  if (!allowed)
+    return (
+      <>
+        {glass ? <PageSky wx={null} /> : null}
+        <Gate user={user} />
+      </>
+    );
 
   // On phones the bar shows Home, News, Budget and Health; the rest sit behind More.
   const EXTRA = ['fun', 'learning', 'cooking', 'auto'];
@@ -1136,6 +1189,8 @@ function App() {
 
   return (
     <div className={`app ${route === 'budget' ? 'on-budget' : ''} ${IS_DEMO ? 'demo' : ''}`}>
+      {glass ? <PageSky wx={forecast.s} /> : null}
+      {glass ? <Lens selector=".nav" id="lens-nav" /> : null}
       {IS_DEMO ? <DemoBar /> : null}
       <nav className="nav">
         <div className="brand">Dashboard</div>
@@ -1195,6 +1250,8 @@ function App() {
             birthdays={birthdays}
             mutateBirthdays={mutateBirthdays}
             onBirthdays={() => setBdaySheet(true)}
+            forecast={forecast}
+            pageSky={glass}
           />
         )}
         {budgetOpened ? <BudgetFrame key={budgetRev} visible={route === 'budget'} /> : null}
@@ -1209,7 +1266,7 @@ function App() {
           ) : null}
         </div>
       ) : null}
-      {settings ? <Settings user={user} onClose={() => setSettings(false)} onToast={showToast} /> : null}
+      {settings ? <Settings user={user} onClose={() => setSettings(false)} onToast={showToast} look={look} /> : null}
       {bdaySheet && birthdays ? <BirthdaySheet data={birthdays} mutate={mutateBirthdays} onClose={() => setBdaySheet(false)} onToast={showToast} /> : null}
       {more ? (
         <div className="sheet-bg" onClick={() => setMore(false)}>
