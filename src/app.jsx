@@ -16,6 +16,13 @@ import { AutoPage, AutoHomeCard, useRecalls } from './auto.jsx';
 import { defaultAuto, normalizeAuto } from './auto-logic.js';
 import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
 import { HealthPage, HealthHomeCard } from './health.jsx';
+import { FunPage } from './fun.jsx';
+import { defaultFun, normalizeFun } from './fun-logic.js';
+import { defaultGuitar, normalizeGuitar } from './guitar-logic.js';
+import { defaultSourdough, normalizeSourdough } from './sourdough-logic.js';
+import { defaultBirthdays, normalizeBirthdays, upcoming as upcomingBirthdays } from './birthdays-logic.js';
+import { BirthdaysCard, BirthdaySheet } from './birthdays.jsx';
+import { PortfolioCard } from './portfolio.jsx';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
 import {
@@ -294,10 +301,12 @@ function WatchCard({ s }) {
 // Sections of the News tab, in order. Keys match news.json (written by scripts/fetch-news.mjs).
 const NEWS_TABS = [
   ['politics', 'US politics', 'AP and Reuters, U.S. coverage', ['ap', 'reuters']],
+  ['nyc', 'NYC', 'NYC politics: Gothamist, THE CITY, City & State, Politico New York, amNY, Daily News, plus Mamdani coverage', ['nyc', 'mamdani']],
   ['tech', 'Tech & AI', 'The Verge, Ars Technica, TechCrunch, Wired, Reuters tech', ['tech', 'ai']],
   ['reddit', 'Reddit', 'Top posts on r/popular today', ['reddit']],
   ['pop', 'Pop culture', 'Variety, The Hollywood Reporter, Vulture, Entertainment Weekly', ['pop']],
   ['music', 'Music', 'Pitchfork, Billboard, Stereogum, Rolling Stone, Guitar World', ['music']],
+  ['markets', 'Markets', 'Energy, quantum computing and robotics from Reuters, CNBC, Bloomberg, Barron’s, TechCrunch and trade press', ['energy', 'quantum', 'robotics']],
 ];
 
 function NewsPage({ news, read, markRead, markAllRead }) {
@@ -360,6 +369,7 @@ function NewsPage({ news, read, markRead, markAllRead }) {
                       {i.title}
                     </div>
                     <div className="muted small">
+                      {i.tag ? <span className={`tag tag-theme th-${String(i.tag).toLowerCase().replace(/[^a-z]/g, '')}`}>{i.tag}</span> : null}
                       {i.source}
                       {i.date ? ` · ${timeAgo(i.date)}` : ''}
                       {i.comments ? ` · ${i.comments}` : ''}
@@ -385,7 +395,9 @@ function NewsPage({ news, read, markRead, markAllRead }) {
 }
 
 let homeSeen = false;
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears }) {
+// A birthday this week moves the Birthdays card up next to the to-do list on phones.
+const bdaySoon = (b, today) => upcomingBirthdays(b, today, 7).length > 0;
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, guitar, mutateGuitar, sourdough, birthdays, mutateBirthdays, onBirthdays }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   const place = (home && home.place) || DEFAULT_PLACE;
@@ -399,8 +411,8 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
   }, []);
   // Everything the rings, streaks, insights and header read from, recomputed only when a document changes.
   const ctx = useMemo(
-    () => ({ data, health, years: healthYears, hk, hkYears, learning, home, auto, today: day, now: new Date(), pick: tonightPick(cooking, recipes), demo: IS_DEMO, sport: IS_DEMO ? 'running' : 'tennis' }),
-    [data, health, healthYears, hk, hkYears, learning, home, auto, cooking, recipes, day]
+    () => ({ data, health, years: healthYears, hk, hkYears, learning, home, auto, fun, birthdays, today: day, now: new Date(), pick: tonightPick(cooking, recipes), demo: IS_DEMO, sport: IS_DEMO ? 'running' : 'tennis' }),
+    [data, health, healthYears, hk, hkYears, learning, home, auto, fun, birthdays, cooking, recipes, day]
   );
   // Slots carry a phone order; on wide screens the two columns show as laid out.
   return (
@@ -449,6 +461,11 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
           <div className="slot o4">
             <TodoCard data={home} mutate={mutateHome} onDelete={onDeleteTodo} />
           </div>
+          {birthdays && birthdays.people.length ? (
+            <div className={`slot ${bdaySoon(birthdays, day) ? 'o4' : 'o15'}`}>
+              <BirthdaysCard data={birthdays} mutate={mutateBirthdays} onManage={onBirthdays} />
+            </div>
+          ) : null}
           <div className="slot o6">
             <HealthHomeCard health={health} years={healthYears} hk={hk} hkYears={hkYears} />
           </div>
@@ -456,11 +473,21 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
             <AutoHomeCard auto={auto} data={data} recalls={recalls} />
           </div>
           <div className="slot o13">
-            <LearningHomeCard data={learning} mutate={mutateLearning} />
+            <LearningHomeCard data={learning} mutate={mutateLearning} guitar={guitar} mutateGuitar={mutateGuitar} />
           </div>
           <div className="slot o14">
-            <CookingHomeCard data={cooking} recipes={recipes} />
+            <CookingHomeCard data={cooking} recipes={recipes} sourdough={sourdough} />
           </div>
+          {data ? (
+            <div className="slot o12">
+              <PortfolioCard data={data} news={news} />
+            </div>
+          ) : null}
+          {birthdays && !birthdays.people.length ? (
+            <div className="slot o15">
+              <BirthdaysCard data={birthdays} mutate={mutateBirthdays} onManage={onBirthdays} />
+            </div>
+          ) : null}
         </div>
       </div>
       {week ? <WeekSheet ctx={ctx} onClose={() => setWeek(false)} /> : null}
@@ -628,6 +655,36 @@ const normalizeYearInPlace = inPlace(H.normalizeYear);
 const normalizeHkInPlace = inPlace(HK.normalizeHk);
 const normalizeHkYearInPlace = inPlace(HK.normalizeHkYear);
 
+// The newer modules (Entertainment, Guitar, Sourdough, Birthdays) share one pattern: a document per module,
+// normalized on the way in and before every change.
+const MODULES = {
+  fun: [normalizeFun, defaultFun, 'Entertainment'],
+  guitar: [normalizeGuitar, defaultGuitar, 'guitar practice'],
+  sourdough: [normalizeSourdough, defaultSourdough, 'the sourdough corner'],
+  birthdays: [normalizeBirthdays, defaultBirthdays, 'birthdays'],
+};
+function useModuleDoc(allowed, user, name) {
+  const [doc, setDoc] = useState(null);
+  const [err, setErr] = useState('');
+  useEffect(() => {
+    if (!allowed) return;
+    const [norm, , label] = MODULES[name];
+    return backend.subscribeModule(
+      user,
+      name,
+      (d) => {
+        setDoc(norm(d));
+        setErr('');
+      },
+      (e) => {
+        setErr(`Couldn’t load ${label}: ${e.message || e}`);
+        setDoc((x) => x || norm(null));
+      }
+    );
+  }, [allowed, user && user.uid]);
+  return [doc, err];
+}
+
 // ---------------------------------------------------------------- app
 function App() {
   const route = useRoute();
@@ -656,10 +713,15 @@ function App() {
   const [autoError, setAutoError] = useState('');
   const recalls = useRecalls(auto ? auto.car : null);
   const [budgetRev, setBudgetRev] = useState(0);
+  const [bdaySheet, setBdaySheet] = useState(false);
   useEffect(() => (backend.onBudgetWrite ? backend.onBudgetWrite(() => setBudgetRev((n) => n + 1)) : undefined), []);
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
+  const [fun, funError] = useModuleDoc(allowed, user, 'fun');
+  const [guitar] = useModuleDoc(allowed, user, 'guitar');
+  const [sourdough] = useModuleDoc(allowed, user, 'sourdough');
+  const [birthdays] = useModuleDoc(allowed, user, 'birthdays');
 
   useEffect(() => {
     if (!allowed) return;
@@ -888,6 +950,21 @@ function App() {
     }
   };
   const saveErr = (e) => showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+  const mutateDoc = (name) => async (fn, msg) => {
+    const [norm, def] = MODULES[name];
+    try {
+      await backend.mutateModule(user, name, (d) => fn(inPlace(norm)(d)), def);
+      if (msg) showToast(typeof msg === 'string' ? { text: msg } : msg);
+      return true;
+    } catch (e) {
+      saveErr(e);
+      return false;
+    }
+  };
+  const mutateFun = mutateDoc('fun');
+  const mutateGuitar = mutateDoc('guitar');
+  const mutateSourdough = mutateDoc('sourdough');
+  const mutateBirthdays = mutateDoc('birthdays');
   const mutateHealth = async (fn, msg) => {
     try {
       await backend.mutateModule(user, 'health', (d) => fn(normalizeHealthInPlace(d)), H.defaultHealth);
@@ -1049,7 +1126,7 @@ function App() {
   if (!allowed) return <Gate user={user} />;
 
   // On phones the bar shows Home, News, Budget and Health; the rest sit behind More.
-  const EXTRA = ['learning', 'cooking', 'auto'];
+  const EXTRA = ['fun', 'learning', 'cooking', 'auto'];
   const nav = (to, icon, label) => (
     <a className={`nav-item ${route === to ? 'active' : ''} ${EXTRA.includes(to) ? 'nav-extra' : ''}`} href={`#/${to === 'home' ? '' : to}`}>
       <Icon name={icon} />
@@ -1066,6 +1143,7 @@ function App() {
         {nav('news', 'news', 'News')}
         {nav('budget', 'budget', 'Budget')}
         {nav('health', 'heart', 'Health')}
+        {nav('fun', 'game', 'Entertainment')}
         {nav('learning', 'learn', 'Learning')}
         {nav('cooking', 'pot', 'Cooking')}
         {nav('auto', 'car', 'Auto')}
@@ -1079,16 +1157,17 @@ function App() {
         </button>
       </nav>
       <main className="main">
-        {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} /> : null}
+        {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} guitar={guitar} mutateGuitar={mutateGuitar} /> : null}
         {route === 'cooking' ? (
-          <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} onLogRecipe={logRecipe} />
+          <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} onLogRecipe={logRecipe} sourdough={sourdough} mutateSourdough={mutateSourdough} />
         ) : null}
+        {route === 'fun' ? <FunPage data={fun} mutate={mutateFun} error={funError} news={news} read={read} markRead={markRead} /> : null}
         {route === 'news' ? <NewsPage news={news} read={read} markRead={markRead} markAllRead={markAllRead} /> : null}
         {route === 'auto' ? (
           <AutoPage auto={auto} data={data} recalls={recalls} mutate={mutateAuto} budget={autoBudget} onAddExpense={(d) => onAdd(newTransaction(d))} error={autoError} />
         ) : null}
         {route === 'health' ? <HealthPage health={health} years={healthYears} hk={hk} hkYears={hkYears} act={healthAct} error={healthError} /> : null}
-        {route === 'budget' || route === 'learning' || route === 'cooking' || route === 'news' || route === 'auto' || route === 'health' ? null : (
+        {['budget', 'learning', 'cooking', 'news', 'auto', 'health', 'fun'].includes(route) ? null : (
           <Home
             user={user}
             data={data}
@@ -1108,6 +1187,14 @@ function App() {
             healthYears={healthYears}
             hk={hk}
             hkYears={hkYears}
+            news={news}
+            fun={fun}
+            guitar={guitar}
+            mutateGuitar={mutateGuitar}
+            sourdough={sourdough}
+            birthdays={birthdays}
+            mutateBirthdays={mutateBirthdays}
+            onBirthdays={() => setBdaySheet(true)}
           />
         )}
         {budgetOpened ? <BudgetFrame key={budgetRev} visible={route === 'budget'} /> : null}
@@ -1123,10 +1210,12 @@ function App() {
         </div>
       ) : null}
       {settings ? <Settings user={user} onClose={() => setSettings(false)} onToast={showToast} /> : null}
+      {bdaySheet && birthdays ? <BirthdaySheet data={birthdays} mutate={mutateBirthdays} onClose={() => setBdaySheet(false)} onToast={showToast} /> : null}
       {more ? (
         <div className="sheet-bg" onClick={() => setMore(false)}>
           <div className="sheet more-sheet" role="dialog" aria-label="More" onClick={(e) => e.stopPropagation()}>
             {[
+              ['fun', 'game', 'Entertainment'],
               ['learning', 'learn', 'Learning'],
               ['cooking', 'pot', 'Cooking'],
               ['auto', 'car', 'Auto'],

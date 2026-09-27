@@ -4,6 +4,7 @@ import { MiniBars } from './spark.jsx';
 import { celebrate } from './fx.jsx';
 import { CERTS, OPTIONAL, TIPS, SOURCES, PRICES_NOTE } from './learning-catalog.js';
 import { IS_DEMO } from './demo-flag.js';
+import { GuitarSection, GuitarHomeRow } from './guitar.jsx';
 import {
   STATUSES,
   STATUS_TEXT,
@@ -76,7 +77,7 @@ function StudyWeeks({ data, goal }) {
   return <MiniBars values={weeks} goal={goal} fmt={(v) => `${Math.round(v * 10) / 10}h`} label="Study hours, last 8 weeks" />;
 }
 
-export function LearningHomeCard({ data, mutate }) {
+export function LearningHomeCard({ data, mutate, guitar, mutateGuitar }) {
   if (!data) return null;
   const cur = currentStep(data);
   const week = hoursThisWeek(data);
@@ -125,6 +126,7 @@ export function LearningHomeCard({ data, mutate }) {
           {r.c.code} renewal is open. Free online assessment, due by {dayLabel(r.expires)}.
         </p>
       ))}
+      {guitar ? <GuitarHomeRow data={guitar} mutate={mutateGuitar} /> : null}
     </section>
   );
 }
@@ -254,7 +256,64 @@ function CertDetail({ id, data, mutate, inPlan, afterId }) {
 }
 
 // ---------------------------------------------------------------- page
-export function LearningPage({ data, mutate, error }) {
+const SECTIONS = [
+  ['certs', 'Certifications'],
+  ['guitar', 'Guitar'],
+];
+function useSection(key, fallback) {
+  const fromHash = () => {
+    const q = (location.hash.split('?')[1] || '').split('&')[0];
+    return SECTIONS.some(([k]) => k === q) ? q : null;
+  };
+  const [sec, setSec] = useState(() => {
+    let saved = null;
+    try {
+      saved = localStorage.getItem(key);
+    } catch {
+      /* private mode */
+    }
+    return fromHash() || (SECTIONS.some(([k]) => k === saved) ? saved : fallback);
+  });
+  const choose = (k) => {
+    setSec(k);
+    try {
+      localStorage.setItem(key, k);
+    } catch {
+      /* private mode */
+    }
+  };
+  return [sec, choose];
+}
+export function SectionTabs({ list, value, onChange, label }) {
+  return (
+    <div className="seg page-tabs" role="tablist" aria-label={label}>
+      {list.map(([k, l]) => (
+        <button key={k} role="tab" aria-selected={value === k} className={`seg-btn ${value === k ? 'on' : ''}`} onClick={() => onChange(k)}>
+          {l}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function LearningPage({ data, mutate, error, guitar, mutateGuitar }) {
+  const [section, setSection] = useSection('dash.learnSection', 'certs');
+  if (section === 'guitar') {
+    return (
+      <div className="home learning">
+        <header className="page-head">
+          <h1 className="page-title">Learning</h1>
+          <div className="muted">Guitar · practice, the course, and your songs</div>
+        </header>
+        <SectionTabs list={SECTIONS} value={section} onChange={setSection} label="Learning sections" />
+        <GuitarSection data={guitar} mutate={mutateGuitar} />
+      </div>
+    );
+  }
+  return <CertsPage data={data} mutate={mutate} error={error} tabs={<SectionTabs list={SECTIONS} value={section} onChange={setSection} label="Learning sections" />} />;
+}
+
+function CertsPage({ data, mutate, error, tabs }) {
   const [picked, setOpen] = useState(undefined); // undefined = follow the current cert
   const open = picked === undefined ? (data ? currentStep(data) : null) : picked;
   const steps = useMemo(() => (data ? projectPlan(data) : []), [data]);
@@ -264,6 +323,7 @@ export function LearningPage({ data, mutate, error }) {
         <header className="page-head">
           <h1 className="page-title">Learning</h1>
         </header>
+        {tabs}
         <section className="card">
           <p className="empty">{error || 'Loading…'}</p>
         </section>
@@ -309,6 +369,7 @@ export function LearningPage({ data, mutate, error }) {
           )}
         </div>
       </header>
+      {tabs}
       {error ? <div className="alert">{error}</div> : null}
       <div className="grid">
         <div className="col">

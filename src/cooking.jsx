@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
+import { SourdoughSection, SourdoughHomeRow } from './sourdough.jsx';
+import { SectionTabs } from './learning.jsx';
 import { fmt, todayISO, dateLabel } from './budget-logic.js';
 import { normalize, covers, STAPLES } from './ingredients.mjs';
 import {
@@ -557,9 +559,45 @@ function AddRecipeSheet({ mutate, onClose }) {
 }
 
 // ---------------------------------------------------------------- page + home card
-export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogRecipe }) {
+const COOK_SECTIONS = [
+  ['kitchen', 'Kitchen'],
+  ['sourdough', 'Sourdough'],
+];
+function initialSection() {
+  const q = (location.hash.split('?')[1] || '').split('&')[0];
+  if (COOK_SECTIONS.some(([k]) => k === q)) return q;
+  try {
+    const v = localStorage.getItem('dash.cookSection');
+    return COOK_SECTIONS.some(([k]) => k === v) ? v : 'kitchen';
+  } catch {
+    return 'kitchen';
+  }
+}
+export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogRecipe, sourdough, mutateSourdough }) {
   const [open, setOpen] = useState(null);
   const [adding, setAdding] = useState(false);
+  const [section, setSec] = useState(initialSection);
+  const setSection = (k) => {
+    setSec(k);
+    try {
+      localStorage.setItem('dash.cookSection', k);
+    } catch {
+      /* private mode */
+    }
+  };
+  const tabs = <SectionTabs list={COOK_SECTIONS} value={section} onChange={setSection} label="Cooking sections" />;
+  if (section === 'sourdough') {
+    return (
+      <div className="home cooking">
+        <header className="page-head">
+          <h1 className="page-title">Cooking</h1>
+          <div className="muted">Sourdough corner · starter, bake plan, dough math</div>
+        </header>
+        {tabs}
+        <SourdoughSection data={sourdough} mutate={mutateSourdough} />
+      </div>
+    );
+  }
   if (!data) {
     return (
       <div className="home">
@@ -582,6 +620,7 @@ export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogR
           {plural(data.kitchen.length, 'thing')} in the kitchen · {plural(data.grocery.filter((g) => !g.done).length, 'item')} on the list
         </div>
       </header>
+      {tabs}
       {error ? <div className="alert">{error}</div> : null}
       <div className="grid">
         <div className="col">
@@ -606,7 +645,7 @@ export function tonightPick(data, recipes) {
   return rankRecipes(listFor(data, recipes), kitchenKeys(data), { course: 'main', limit: 1 })[0] || null;
 }
 
-export function CookingHomeCard({ data, recipes }) {
+export function CookingHomeCard({ data, recipes, sourdough }) {
   const kKeys = useMemo(() => (data ? kitchenKeys(data) : []), [data]);
   const best = useMemo(() => (data && data.kitchen.length ? rankRecipes(listFor(data, recipes), kKeys, { course: 'main', limit: 1 })[0] : null), [data, recipes, kKeys]);
   if (!data) return null;
@@ -641,6 +680,7 @@ export function CookingHomeCard({ data, recipes }) {
       ) : (
         <p className="muted small note">{data.kitchen.length ? 'Add a few more kitchen items for dinner ideas.' : 'Add what’s in your kitchen to get dinner ideas.'}</p>
       )}
+      <SourdoughHomeRow data={sourdough} />
     </section>
   );
 }

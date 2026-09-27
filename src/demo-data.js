@@ -11,6 +11,7 @@ import { defaultLearning, logTime } from './learning-logic.js';
 import { DEMO_PLAN } from './learning-catalog.js';
 import { defaultCooking, addKitchen, addGrocery } from './cooking-logic.js';
 import { defaultAuto, logService } from './auto-logic.js';
+import { MCU } from './fun-logic.js';
 
 export const DEMO_PERSON = { uid: 'demo', email: 'demo@example.com', displayName: 'Jordan Rivera' };
 export const DEMO_PLACE = { name: 'Seattle, WA', zip: '98103', lat: 47.66198, lon: -122.34181 };
@@ -501,6 +502,121 @@ export function demoDocs(now = new Date()) {
   const routes = { version: 1, routes: {} };
   plan.routes(routes);
   docs['health-hk-routes'] = routes;
+  // Entertainment: a Switch 2 and PC player counting down to Dune, partway through the Marvel rewatch.
+  // (Release dates as announced in Sept 2026.)
+  const mcu = {};
+  const skipGroups = ['netflix', 'sony'];
+  MCU.forEach((t, i) => {
+    if (skipGroups.includes(t.group)) mcu[t.id] = 's';
+    else if (['p1', 'p2', 'p3'].includes(t.group)) mcu[t.id] = R() < 0.9 ? 'w' : undefined;
+    else if (t.group === 'p4') mcu[t.id] = R() < 0.55 ? 'w' : R() < 0.3 ? 's' : undefined;
+    else if (t.group === 'xmen') mcu[t.id] = ['x-men', 'x2', 'dofp', 'logan'].includes(t.id) ? 'w' : R() < 0.4 ? 's' : undefined;
+    else if (t.group === 'p5') mcu[t.id] = R() < 0.25 ? 'w' : undefined;
+  });
+  Object.keys(mcu).forEach((k) => mcu[k] === undefined && delete mcu[k]);
+  docs.fun = {
+    version: 1,
+    releases: [
+      { id: 'demo-dune', title: 'Dune: Part Three', short: 'Dune', date: '2026-12-18', kind: 'movie', note: 'IMAX', home: true, pin: true },
+      { id: 'demo-oot', title: 'The Legend of Zelda: Ocarina of Time', short: 'Zelda', date: '2026-11-05', kind: 'game', note: 'Switch 2', home: false },
+      { id: 'demo-metroid', title: 'Metroid Ravenous', short: '', date: '2027-01-28', kind: 'game', note: 'Switch 2', home: false },
+      { id: 'demo-doomsday', title: 'Avengers: Doomsday', short: 'Doomsday', date: '2026-12-18', kind: 'movie', note: 'In theaters', home: false },
+    ],
+    playing: [
+      {
+        id: 'demo-mkw',
+        title: 'Mario Kart World',
+        note: 'Switch 2 · online with the team on Fridays',
+        challenges: [
+          { id: 'demo-mkw-1', text: 'Gold on every 150cc cup', goal: 8, n: 5 },
+          { id: 'demo-mkw-2', text: 'Win a Knockout Tour online', goal: 1, n: 1, doneOn: addDays(today, -4) },
+        ],
+      },
+      { id: 'demo-bg3', title: 'Baldur’s Gate 3', note: 'PC · Honour Mode, Act 2', challenges: [{ id: 'demo-bg3-1', text: 'Finish an Honour Mode run', goal: 1, n: 0 }] },
+      { id: 'demo-balatro', title: 'Balatro', note: 'Phone', challenges: [{ id: 'demo-bal-1', text: 'Win with every deck', goal: 15, n: 9 }] },
+    ],
+    mcu,
+    mcuMine: [],
+  };
+
+  // Guitar: about two months in, most days, on grade 2 of the course
+  const sessions = [];
+  for (let n = 62; n >= 0; n--) {
+    if (n === 0 && hour < 19) continue; // hasn't played yet today
+    if (n > 1 && R() < 0.3) continue;
+    sessions.push({ id: uid(), date: addDays(today, -n), minutes: 10 + Math.round(R() * 6) * 5, what: '' });
+  }
+  const changes = [];
+  [
+    ['A–D', 21, 39],
+    ['G–C', 14, 29],
+    ['Em–C', 28, 42],
+  ].forEach(([pair, from, to], k) => {
+    for (let i = 0; i < 6; i++) changes.push({ id: uid(), date: addDays(today, -40 + i * 7 + k), pair, count: Math.round(from + ((to - from) * i) / 5 + (R() - 0.5) * 3) });
+  });
+  docs.guitar = {
+    version: 1,
+    goalMin: 20,
+    sessions,
+    course: {
+      grade: 2,
+      module: 3,
+      lesson: 'Fingerstyle patterns',
+      done: [
+        { grade: 1, module: 8, lesson: '', date: addDays(today, -33) },
+        { grade: 2, module: 1, lesson: '', date: addDays(today, -19) },
+        { grade: 2, module: 2, lesson: 'Barre chord prep', date: addDays(today, -6) },
+      ],
+    },
+    changes,
+    songs: [
+      { id: uid(), title: 'Three Little Birds', artist: 'Bob Marley', status: 'can', added: addDays(today, -50), learned: addDays(today, -30) },
+      { id: uid(), title: 'Riptide', artist: 'Vance Joy', status: 'can', added: addDays(today, -40), learned: addDays(today, -12) },
+      { id: uid(), title: 'Blackbird', artist: 'The Beatles', status: 'learning', added: addDays(today, -10) },
+      { id: uid(), title: 'Fast Car', artist: 'Tracy Chapman', status: 'learning', added: addDays(today, -8) },
+      { id: uid(), title: 'Little Wing', artist: 'Jimi Hendrix', status: 'want', added: addDays(today, -20) },
+    ],
+  };
+
+  // Sourdough: a starter on the counter, fed this morning, and a few bakes
+  const at = (daysAgo, h, m = 0) => {
+    const d = new Date(ty, tm - 1, Number(today.slice(8, 10)) - daysAgo, h, m);
+    return d.toISOString();
+  };
+  const feeds = [];
+  for (let n = 9; n >= 1; n--) feeds.push({ id: uid(), at: at(n, 8, 10 + Math.round(R() * 30)), ratio: '1:1:1', where: 'counter', note: '' });
+  const fedToday = new Date(now.getTime() - 3.2 * 3600000);
+  feeds.push({ id: uid(), at: fedToday.toISOString(), ratio: '1:1:1', where: 'counter', note: '' });
+  docs.sourdough = {
+    version: 1,
+    starter: { name: 'Clint Yeastwood', where: 'counter', ratio: '1:1:1', temp: 70, feeds },
+    calc: { loaves: 2, flour: 450, hydration: 72, levain: 20, salt: 2, adjust: false },
+    plan: { ready: '', temp: 70, retard: true },
+    bakes: [
+      { id: uid(), date: addDays(today, -23), hydration: 70, rating: 3, notes: 'Tight crumb. Bulk went short; the kitchen was cold.' },
+      { id: uid(), date: addDays(today, -13), hydration: 72, rating: 4, notes: 'Better oven spring. Longer bulk helped.' },
+      { id: uid(), date: addDays(today, -4), hydration: 75, rating: 5, notes: 'Open crumb, blistered crust. Keep this schedule.' },
+    ],
+  };
+
+  // Birthdays: family and friends, spread through the year from today
+  const bday = (name, inDays, year, note = '') => {
+    const d = new Date(ty, tm - 1, Number(today.slice(8, 10)) + inDays);
+    return { id: uid(), name, m: d.getMonth() + 1, d: d.getDate(), y: year, note };
+  };
+  docs.birthdays = {
+    version: 1,
+    people: [
+      bday('Maya Chen', 5, 1993, 'Loves that ramen place in Capitol Hill'),
+      bday('Dad', 19, 1961),
+      bday('Priya Nair', 41, null),
+      bday('Luis Rivera', 88, 1995),
+      bday('Grandma June', 150, 1940),
+      bday('Tomás Ortega', 230, 1991),
+      bday('Mom', 300, 1963),
+    ],
+  };
+
   const stamp = Date.now();
   Object.values(docs).forEach((d) => (d.updatedAt = stamp));
   return docs;

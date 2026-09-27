@@ -7,6 +7,7 @@ import { hkDay, stepsFor, workoutsOn } from './hk-logic.js';
 import { currentStep, projectPlan, hoursThisWeek, certState } from './learning-logic.js';
 import { CERTS } from './learning-catalog.js';
 import { deadlines, carMoney } from './auto-logic.js';
+import { upcoming as upcomingBirthdays } from './birthdays-logic.js';
 
 export const GTA6_RELEASE = '2026-11-19'; // Rockstar Games newswire, Nov 2025
 const n0 = (n) => Math.round(Number(n) || 0).toLocaleString();
@@ -375,8 +376,25 @@ export function countdowns(ctx) {
       }
     }
   }
-  const g = ctx.demo ? -1 : daysFrom(today, GTA6_RELEASE); // a personal countdown; the demo person has their own life
-  if (g >= 0) out.push({ id: 'gta', n: g, unit: g === 1 ? 'day' : 'days', label: 'to GTA VI', text: g === 0 ? 'GTA VI is out' : null, sort: g });
+  if (ctx.fun) {
+    // releases marked "on Home" on the Entertainment tab, up to a year out
+    for (const r of ctx.fun.releases) {
+      if (!r.home) continue;
+      const n = daysFrom(today, r.date);
+      if (n < 0 || n > 366) continue;
+      const name = r.short || r.title;
+      out.push({ id: `rel-${r.id}`, n, unit: n === 1 ? 'day' : 'days', label: `to ${name}`, text: n === 0 ? `${name} is out` : null, href: '#/fun', sort: n });
+    }
+  } else {
+    const g = ctx.demo ? -1 : daysFrom(today, GTA6_RELEASE); // a personal countdown; the demo person has their own life
+    if (g >= 0) out.push({ id: 'gta', n: g, unit: g === 1 ? 'day' : 'days', label: 'to GTA VI', text: g === 0 ? 'GTA VI is out' : null, sort: g });
+  }
+  if (ctx.birthdays) {
+    for (const x of upcomingBirthdays(ctx.birthdays, today, 7)) {
+      const first = x.p.name.split(' ')[0];
+      out.push({ id: `bday-${x.p.id}`, n: x.days, unit: x.days === 1 ? 'day' : 'days', label: `to ${first}’s birthday`, text: x.days === 0 ? `🎂 ${first}’s birthday` : null, tone: 'soon', sort: x.days - 0.5 });
+    }
+  }
   if (ctx.data) {
     const m = carMoney(ctx.data, today);
     if (m && m.loan && m.loan.left) out.push({ id: 'car', n: m.loan.left, unit: m.loan.left === 1 ? 'payment' : 'payments', label: 'left on the car', href: '#/auto', sort: 9999 });
