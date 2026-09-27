@@ -69,6 +69,8 @@ const SECTIONS = {
       },
     },
   },
+  // Google News keeps only so many search terms, so each of these stays short (tested Sept 27, 2026). `intitle:` keeps
+  // the theme searches to stories that are actually about the theme, not ones that mention it in passing.
   nyc: {
     keep: 60,
     maxAgeDays: 5,
@@ -76,9 +78,13 @@ const SECTIONS = {
       nyc: {
         name: 'NYC',
         outlet: true,
-        url: gnews('(site:gothamist.com OR site:thecity.nyc OR site:cityandstateny.com OR site:politico.com/news/new-york OR site:amny.com OR site:nydailynews.com/news/politics) (Mamdani OR mayor OR "City Hall" OR "City Council" OR Hochul OR Albany OR MTA OR NYPD OR rent OR housing OR budget OR election) when:3d'),
+        url: gnews('(site:gothamist.com OR site:thecity.nyc OR site:cityandstateny.com OR site:politico.com/news/new-york OR site:amny.com OR site:nydailynews.com) (Mamdani OR mayor OR "City Hall" OR "City Council" OR Hochul OR MTA OR NYPD OR rent) when:3d'),
       },
-      mamdani: { name: 'Mamdani', outlet: true, url: gnews('Mamdani (mayor OR "City Hall" OR NYC) when:2d') },
+      mamdani: {
+        name: 'Mamdani',
+        outlet: true,
+        url: gnews('intitle:Mamdani (site:nytimes.com OR site:politico.com OR site:gothamist.com OR site:thecity.nyc OR site:apnews.com OR site:reuters.com OR site:nydailynews.com OR site:amny.com) when:3d'),
+      },
     },
   },
   markets: {
@@ -89,19 +95,19 @@ const SECTIONS = {
         name: 'Energy',
         tag: 'Energy',
         outlet: true,
-        url: gnews('("nuclear power" OR "nuclear energy" OR "small modular reactor" OR SMR OR uranium OR "clean energy" OR "power grid" OR "data center power" OR fusion) (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:marketwatch.com OR site:barrons.com OR site:utilitydive.com OR site:canarymedia.com OR site:axios.com) when:3d'),
+        url: gnews('(intitle:"nuclear power" OR intitle:reactor OR intitle:uranium OR intitle:grid OR intitle:fusion) (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:barrons.com OR site:marketwatch.com OR site:axios.com OR site:utilitydive.com OR site:canarymedia.com) when:3d'),
       },
       quantum: {
         name: 'Quantum',
         tag: 'Quantum',
         outlet: true,
-        url: gnews('("quantum computing" OR "quantum computer" OR qubit OR qubits) (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:marketwatch.com OR site:barrons.com OR site:thequantuminsider.com OR site:techcrunch.com OR site:arstechnica.com OR site:axios.com) when:4d'),
+        url: gnews('intitle:quantum (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:barrons.com OR site:marketwatch.com OR site:axios.com OR site:thequantuminsider.com OR site:techcrunch.com) when:4d'),
       },
       robotics: {
         name: 'Robotics',
         tag: 'Robotics',
         outlet: true,
-        url: gnews('(robotics OR robot OR robots OR humanoid OR "warehouse automation" OR robotaxi) (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:techcrunch.com OR site:theverge.com OR site:therobotreport.com OR site:axios.com) when:3d'),
+        url: gnews('(intitle:robot OR intitle:robots OR intitle:robotics OR intitle:humanoid OR intitle:robotaxi) (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:barrons.com OR site:techcrunch.com OR site:theverge.com OR site:therobotreport.com OR site:axios.com) when:3d'),
       },
     },
   },
@@ -114,7 +120,7 @@ const SECTIONS = {
         name: 'Your games',
         tag: 'Your games',
         outlet: true,
-        url: gnews('("Black Ops 7" OR "Modern Warfare 4" OR "Call of Duty" OR "Teamfight Tactics" OR "Pokémon GO" OR "GTA 6" OR "GTA VI" OR PlayStation) (site:ign.com OR site:polygon.com OR site:kotaku.com OR site:gamespot.com OR site:videogameschronicle.com OR site:eurogamer.net OR site:charlieintel.com OR site:dexerto.com) when:3d'),
+        url: gnews('(intitle:"Black Ops" OR intitle:"Call of Duty" OR intitle:TFT OR intitle:"Pokemon Go" OR intitle:"GTA 6") (site:ign.com OR site:polygon.com OR site:kotaku.com OR site:gamespot.com OR site:charlieintel.com OR site:dexerto.com) when:3d'),
       },
     },
   },
@@ -125,12 +131,14 @@ const SECTIONS = {
       marvel: {
         name: 'Marvel',
         outlet: true,
-        url: gnews('("Avengers: Doomsday" OR "Marvel Studios" OR MCU OR "Spider-Man: Brand New Day" OR VisionQuest OR "Secret Wars") (site:variety.com OR site:hollywoodreporter.com OR site:deadline.com OR site:ign.com OR site:polygon.com OR site:theverge.com OR site:empireonline.com OR site:marvel.com) when:4d'),
+        url: gnews('(intitle:Doomsday OR intitle:Marvel OR intitle:MCU OR intitle:Avengers OR intitle:"Spider-Man" OR intitle:VisionQuest) (site:variety.com OR site:hollywoodreporter.com OR site:deadline.com OR site:ign.com OR site:polygon.com OR site:theverge.com OR site:empireonline.com) when:4d'),
       },
     },
   },
 };
 const REDDIT = 'https://www.reddit.com/r/popular/top/.rss?t=day&limit=25';
+// Bump a section's number after changing its searches: stories kept from the old searches are dropped on the next run.
+const SEARCH_VERSION = { nyc: 2, markets: 2, gaming: 2, marvel: 2 };
 
 const nowISO = () => new Date().toISOString();
 const log = (...a) => console.log(...a);
@@ -260,7 +268,8 @@ async function main() {
         log(`${section}/${src.name} FAILED: ${e.message}`);
       }
     }
-    out[section] = fresh.length ? merge(prev[section] || [], fresh, cfg) : prev[section] || [];
+    const kept = ((prev.searchVersion || {})[section] || 1) === (SEARCH_VERSION[section] || 1) ? prev[section] || [] : [];
+    out[section] = fresh.length ? merge(kept, fresh, cfg) : kept;
   }
 
   try {
@@ -277,7 +286,7 @@ async function main() {
   const itemsChanged = keys.some((k) => JSON.stringify(prev[k] || []) !== JSON.stringify(out[k] || []));
   const okChanged = JSON.stringify(Object.entries(prev.sources || {}).map(([k, v]) => [k, v.ok])) !== JSON.stringify(Object.entries(sources).map(([k, v]) => [k, v.ok]));
   if (itemsChanged || okChanged) {
-    fs.writeFileSync(OUT, JSON.stringify({ generated: checked, sources, ...Object.fromEntries(keys.map((k) => [k, out[k] || []])) }, null, 1) + '\n');
+    fs.writeFileSync(OUT, JSON.stringify({ generated: checked, searchVersion: SEARCH_VERSION, sources, ...Object.fromEntries(keys.map((k) => [k, out[k] || []])) }, null, 1) + '\n');
     log(`Wrote news.json: ${keys.map((k) => `${(out[k] || []).length} ${k}`).join(', ')}`);
   } else {
     log('No changes');
