@@ -11,6 +11,8 @@ import * as FUN from '../src/fun-logic.js';
 import * as GTR from '../src/guitar-logic.js';
 import * as SD from '../src/sourdough-logic.js';
 import * as BD from '../src/birthdays-logic.js';
+import * as NL from '../src/news-logic.js';
+import * as NJ from '../scripts/fetch-news.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -168,6 +170,9 @@ async function mockWeather(context) {
       return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ code: '0818290019592', product: { product_name: 'Greek yogurt, coffee', brands: 'Chobani', serving_size: '150 g', serving_quantity: 150, nutriments: { 'energy-kcal_100g': 93, proteins_100g: 7.3, carbohydrates_100g: 10.7, fat_100g: 1.3 } } }) });
     route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ status: 0 }) });
   });
+  // News photos and outlet logos (no network in tests)
+  await context.route('https://img.test/**', (route) => route.fulfill({ contentType: 'image/png', body: fs.readFileSync(path.join(ROOT, 'car.png')) }));
+  await context.route('https://www.google.com/s2/favicons**', (route) => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="16" height="16" rx="3" fill="#2c5b86"/></svg>' }));
   await context.route('https://geocoding-api.open-meteo.com/**', (route) =>
     route.fulfill({ contentType: 'application/json', body: JSON.stringify({ results: [{ name: 'Brooklyn', admin1: 'New York', admin2: 'Kings', country: 'United States', country_code: 'US', latitude: 40.6501, longitude: -73.94958 }] }) })
   );
@@ -299,7 +304,8 @@ check(/sky-(dawn|day|golden|dusk|night)/.test(await page.getAttribute('.hero', '
     }
     return { opaque: opaque / n, spread: hi - lo };
   });
-  check(px.opaque > 0.99 && px.spread > 12, `still sky painted (opaque ${px.opaque.toFixed(2)}, tonal range ${Math.round(px.spread)})`);
+  const night = /sky-(night|dusk)/.test(await page.getAttribute('.hero', 'class')); // a dark overcast night has little texture to show
+  check(px.opaque > 0.99 && px.spread > (night ? 3 : 12), `still sky painted (opaque ${px.opaque.toFixed(2)}, tonal range ${Math.round(px.spread)})`);
 }
 check(/Good tennis weather/.test(await page.innerText('.weather')), `tennis line: ${((await page.innerText('.weather')).match(/Good tennis weather[^\n]*/) || ['none'])[0]}`);
 check((await page.$$('.lring')).length === 4 && /Money/.test(await page.innerText('.rings-card')) && /Mind/.test(await page.innerText('.rings-card')), 'four life rings');
@@ -444,27 +450,185 @@ if (firstBill) {
   console.log('  (no bills in the next 7 days to toggle)');
 }
 
-// news tab: sections + read marks
+// news tab: For you, section front pages, since-you-last-looked, swipes, saves, hides, mutes, follows, search
+await page.evaluate(() => {
+  const t = '2026-09-25T15:30:00.000Z';
+  localStorage.setItem('dash.newsSeen', JSON.stringify(Object.fromEntries(['foryou', 'top', 'politics', 'nyc', 'li', 'tech', 'markets', 'gaming', 'pop', 'music', 'reddit', 'saved'].map((k) => [k, t]))));
+  localStorage.removeItem('dash.newsTab');
+});
 await go('News');
-await page.waitForSelector('.news-page .story');
-check(/Supreme Court lets Trump/.test(await page.innerText('.news')), 'politics renders on the News tab');
-const newsTabs = await page.$$eval('.news-page .tab', (t) => t.map((x) => x.innerText.replace(/\n/g, ' ')));
-check(newsTabs.length === 7 && /US politics/.test(newsTabs[0]) && /NYC/.test(newsTabs[1]) && /Markets/.test(newsTabs[6]), `seven sections: ${newsTabs.join(' | ')}`);
-await page.click('button.tab:has-text("Tech & AI")');
-check(/open-weight AI model/.test(await page.innerText('.news')) && /The Verge/.test(await page.innerText('.news')), 'Tech & AI section renders with the outlet name');
-await page.click('button.tab:has-text("Pop culture")');
-check(/sequel release date/.test(await page.innerText('.news')), 'Pop culture section renders');
-await page.click('button.tab:has-text("Music")');
-check(/vinyl reissue/.test(await page.innerText('.news')), 'Music section renders');
+await page.waitForSelector('.news-page .news-body .st');
+{
+  const chips = await page.$$eval('.news-chips .nchip', (els) => els.map((e) => e.getAttribute('data-sec')));
+  check(chips.join(',') === 'foryou,top,politics,nyc,li,tech,markets,gaming,pop,music,reddit,saved', `twelve sections, For you first: ${chips.join(', ')}`);
+  check(/For you/.test(await page.innerText('.nchip.on')), 'opens on For you');
+  const fy = await page.innerText('.news-body');
+  check(/Nissan recalls some 2021 Altima/.test(fy) && /YOUR ALTIMA/i.test(fy), 'For you: an Altima recall story, marked “Your Altima”');
+  check(/Dix Hills library/.test(fy) && /NEAR YOU · DIX HILLS/i.test(fy) && /LIRR adds weekend trains/.test(fy) && !/Suffolk County opens/.test(fy), 'For you: news from your town (the rest of the Long Island section stays there)');
+  check(/Black Ops 7 Zombies gets a new map/.test(fy) && /YOU’RE PLAYING BLACK OPS 7/i.test(fy), 'For you: news on a game you’re playing');
+  check(/IONQ shares jump/.test(fy) && /YOUR STOCKS/i.test(fy), 'For you: news naming one of your stocks (matched in the browser)');
+  check(!/deputy mayor/.test(fy) && !/Supreme Court lets/.test(fy), 'For you leaves out stories about none of your things');
+  const n = await page.$eval('.nchip[data-sec="politics"] .nchip-n', (e) => e.textContent).catch(() => '');
+  check(n === '3', `section chips count what’s new since you last looked there (US politics: ${n})`);
+  await page.screenshot({ path: path.join(OUT, 'news-foryou.png'), fullPage: true });
+}
+// top stories: Google's order, other outlets' coverage
+await page.click('.nchip[data-sec="top"]');
+await page.waitForTimeout(150);
+{
+  const lead = await page.innerText('.news-body .st-lead');
+  check(/storm heads up the coast/.test(lead) && (await page.$('.news-body .st-lead .st-img img')) && /3 more outlets/.test(lead), 'top stories: the first story leads, with its photo and “3 more outlets”');
+  await page.click('.news-body .st-lead .cov-btn');
+  const cov = await page.$$eval('.news-body .st-lead .cov-list li', (els) => els.map((e) => e.innerText.replace(/\s+/g, ' ')));
+  check(cov.length === 3 && /The New York Times/.test(cov[0]) && /NPR/.test(cov[1]), `other outlets’ coverage opens under the story: ${cov[0]}`);
+  check((await page.$$('.news-body .st-tile')).length === 4 && (await page.$$('.news-body .st-row')).length === 1, 'then four tiles, then the list');
+  check(/1 more outlets|\+1|more outlets/.test(await page.innerText('.news-body .st-row')), 'list rows show their coverage too');
+  await page.screenshot({ path: path.join(OUT, 'news-top.png'), fullPage: true });
+}
+// US politics: the lead is the newest story with a photo; a line marks where the stories you've seen begin
+await page.click('.nchip[data-sec="politics"]');
+await page.waitForTimeout(150);
+{
+  check(/Supreme Court lets Trump/.test(await page.innerText('.news-body .st-lead')), 'politics leads with its newest story that has a photo');
+  const newDots = await page.$$eval('.news-body .st-new', (e) => e.length);
+  const head = await page.innerText('.news-body .sec-head');
+  check(newDots === 3 && /3 new since/.test(head), `new stories are marked (${newDots}) and counted: ${head.replace(/\n/g, ' ')}`);
+  const firstLi = await page.$eval('.news-body .news-list > li', (e) => e.className);
+  check(/since-line/.test(firstLi) && /You’re caught up/i.test(await page.innerText('.since-line')), 'a “You’re caught up” line where the stories you’d seen begin');
+  check(!(await page.$('.nchip[data-sec="politics"] .nchip-n')), 'opening a section clears its new count');
+}
+const dragRow = async (title, dx) => {
+  const el = await page.$(`.news-body .st-row:has-text("${title}") .st-title`);
+  await el.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(50);
+  const b = await el.boundingBox();
+  const x0 = dx > 0 ? b.x + 10 : b.x + b.width - 10;
+  await page.mouse.move(x0, b.y + b.height / 2);
+  await page.mouse.down();
+  for (let i = 1; i <= 8; i++) await page.mouse.move(x0 + (dx * i) / 8, b.y + b.height / 2);
+  await page.mouse.up();
+  await page.waitForTimeout(200);
+};
+const newsDoc = () => page.evaluate(() => JSON.parse(localStorage.getItem('mod:news') || 'null'));
+await dragRow('Governors meet on disaster aid', 150);
+{
+  const d = await newsDoc();
+  check(d && d.saved.length === 1 && d.saved[0].id === 'ap-x2' && d.saved[0].sec === 'politics' && /Saved for later/.test(await page.innerText('.toast')), 'swipe a story right to save it (to your account, so it syncs)');
+  check((await page.$eval('.nchip[data-sec="saved"] .nchip-n', (e) => e.textContent)) === '1' && (await page.$$('.news-body .st-row .st-btn.on')).length === 1, 'the Saved chip counts it and its bookmark fills in');
+  check(page.url().includes('#/news'), 'a swipe doesn’t open the story');
+}
+await dragRow('Supreme Court hears an election case', -150);
+{
+  const d = await newsDoc();
+  check(d.hidden.includes('ap-x3') && !/Supreme Court hears/.test(await page.innerText('.news-body')) && /Story hidden/.test(await page.innerText('.toast')), 'swipe left hides a story');
+  await page.click('.toast-btn');
+  await page.waitForTimeout(200);
+  check(/Supreme Court hears/.test(await page.innerText('.news-body')) && !(await newsDoc()).hidden.includes('ap-x3'), 'undo brings it back');
+}
+// swipe the page (or use the arrow keys) to change section
+const swipeSection = (dx) =>
+  page.evaluate((dx) => {
+    const el = document.querySelector('.news-body .st-lead');
+    const b = el.getBoundingClientRect();
+    const y = b.top + 40;
+    const x0 = b.left + b.width / 2;
+    const mk = (type, x) => {
+      const t = new Touch({ identifier: 1, target: el, clientX: x, clientY: y });
+      return new TouchEvent(type, { bubbles: true, cancelable: true, touches: type === 'touchend' ? [] : [t], changedTouches: [t] });
+    };
+    el.dispatchEvent(mk('touchstart', x0));
+    el.dispatchEvent(mk('touchmove', x0 + dx / 2));
+    el.dispatchEvent(mk('touchend', x0 + dx));
+  }, dx);
+await swipeSection(-150);
+await page.waitForTimeout(150);
+check(/NYC/.test(await page.innerText('.nchip.on')) && /deputy mayor/.test(await page.innerText('.news-body')), 'swipe left on the page: the next section (NYC)');
+await swipeSection(150);
+await page.waitForTimeout(150);
+check(/US politics/.test(await page.innerText('.nchip.on')), 'swipe right: back to US politics');
+await page.keyboard.press('ArrowRight');
+await page.waitForTimeout(100);
+const afterKey = await page.innerText('.nchip.on');
+await page.keyboard.press('ArrowLeft');
+await page.waitForTimeout(100);
+check(/NYC/.test(afterKey) && /US politics/.test(await page.innerText('.nchip.on')), 'arrow keys change section too');
+// the ⋯ menu: mute an outlet (and unmute it in Tune your news)
+await page.click('.news-body .st-row:has-text("Senate rejects resolution") .st-more');
+await page.waitForSelector('.story-sheet');
+await page.click('.story-sheet button:has-text("Mute Reuters")');
+await page.waitForTimeout(200);
+{
+  const t = await page.innerText('.news-body');
+  check(!/Senate rejects resolution/.test(t) && !/Trump told Xi/.test(t) && (await newsDoc()).muteSources.includes('Reuters'), 'muting an outlet hides all its stories');
+  await page.click('button[aria-label="Tune your news"]');
+  await page.waitForSelector('.tune-sheet');
+  check(/Reuters/.test(await page.innerText('.tune-sheet')) && /Your car/.test(await page.textContent('.tune-sheet .fy-explain')), 'Tune your news lists the mute, and what For you looks for');
+  await page.click('.tune-sheet button[aria-label="Remove Reuters"]');
+  await page.fill('.tune-sheet input[aria-label="Add a word or phrase"]', 'Supreme Court');
+  await page.press('.tune-sheet input[aria-label="Add a word or phrase"]', 'Enter');
+  await page.fill('.tune-sheet input[aria-label="Add a topic, like Knicks or Nintendo"]', 'vinyl');
+  await page.press('.tune-sheet input[aria-label="Add a topic, like Knicks or Nintendo"]', 'Enter');
+  await page.waitForTimeout(150);
+  await page.click('.tune-sheet .btn.primary');
+  const d = await newsDoc();
+  const t2 = await page.innerText('.news-body');
+  check(/Trump told Xi/.test(t2) && !/Supreme Court/.test(t2) && d.muteWords.includes('Supreme Court') && d.follow.includes('vinyl'), 'unmuted Reuters; a muted word hides its stories');
+}
+await page.click('.nchip[data-sec="foryou"]');
+await page.waitForTimeout(150);
+check(/vinyl reissue/.test(await page.innerText('.news-body')) && /FOLLOWING · VINYL/i.test(await page.innerText('.news-body')), 'a followed topic shows up in For you');
+await page.evaluate(() => {
+  const d = JSON.parse(localStorage.getItem('mod:news'));
+  d.muteWords = [];
+  localStorage.setItem('mod:news', JSON.stringify(d));
+  window.__modSubs.news.forEach((f) => f());
+});
+// search every section
+await page.click('button[aria-label="Search news"]');
+await page.fill('input[aria-label="Search every section"]', 'deputy mayor');
+await page.waitForTimeout(150);
+{
+  const r = await page.innerText('.news-body');
+  check(/Results for “deputy mayor”/i.test(r) && /Mamdani names a new deputy mayor/.test(r) && /NYC/.test(r) && (await page.$$('.news-body .st-row')).length === 1, 'search finds a story in another section, labeled with its section');
+  await page.press('input[aria-label="Search every section"]', 'Escape');
+  await page.waitForTimeout(100);
+  check(!(await page.$('input[aria-label="Search every section"]')) && /For you/.test(await page.innerText('.nchip.on')), 'Escape closes search');
+}
+// Reddit: scores, comment counts and your subreddits
+await page.click('.nchip[data-sec="reddit"]');
+await page.waitForTimeout(150);
+{
+  const r = await page.innerText('.news-body');
+  check(/r\/pics/.test(r) && /31\.2k/.test(r) && /2\.4k/.test(r) && /Trailer 3 breakdown/.test(r), 'Reddit shows r/popular and your subreddits with upvotes and comments');
+  await page.click('.reddit-subs .chip:has-text("r/GTA6")');
+  const g = await page.innerText('.news-body .news-list');
+  check(/Trailer 3 breakdown/.test(g) && !/r\/pics/.test(g), 'a subreddit chip shows just that subreddit');
+}
+// Tech: a source that failed on the last update says so
+await page.click('.nchip[data-sec="tech"]');
+await page.waitForTimeout(150);
+check(/The Verge didn’t answer on the last update/.test(await page.innerText('.news-body .news-note')), 'a feed that failed on the last update is named under its section');
+// Saved, then removed with a swipe
+await page.click('.nchip[data-sec="saved"]');
+await page.waitForTimeout(150);
+check(/Governors meet on disaster aid/.test(await page.innerText('.news-body')) && /US POLITICS/i.test(await page.innerText('.news-body .st-kick')), 'Saved lists what you saved, with its section');
+await dragRow('Governors meet on disaster aid', -150);
+check((await newsDoc()).saved.length === 0 && /Nothing saved yet/.test(await page.innerText('.news-body')), 'swipe left in Saved removes it');
+// read marks
+await page.click('.nchip[data-sec="politics"]');
+await page.waitForTimeout(150);
+{
+  const readBefore = await page.$$eval('.news-body .st.read', (e) => e.length);
+  await page.evaluate(() => {
+    const a = document.querySelector('.news-body .st-lead .st-link');
+    a.removeAttribute('target');
+    a.addEventListener('click', (e) => e.preventDefault());
+  });
+  await page.click('.news-body .st-lead .st-title');
+  const readAfter = await page.$$eval('.news-body .st.read', (e) => e.length);
+  check(readAfter === readBefore + 1, `opening a story marks it read (${readBefore} → ${readAfter})`);
+}
 await page.screenshot({ path: path.join(OUT, 'news.png'), fullPage: true });
-await page.click('button.tab:has-text("Reddit")');
-check(/r\/pics/.test(await page.innerText('.news')), 'reddit tab renders');
-await page.click('button.tab:has-text("US politics")');
-const unreadBefore = await page.$$eval('.story .dot', (d) => d.length);
-await page.evaluate(() => { document.querySelector('.story').removeAttribute('target'); document.querySelector('.story').addEventListener('click', (e) => e.preventDefault()); });
-await page.click('.story');
-const unreadAfter = await page.$$eval('.story .dot', (d) => d.length);
-check(unreadAfter === unreadBefore - 1, `read mark (${unreadBefore} → ${unreadAfter} unread)`);
 
 // budget module
 await go('Budget');
@@ -992,6 +1156,51 @@ await page.waitForSelector('.health-tabs');
 check(/on/.test(await page.getAttribute('.health-tabs .seg-btn:has-text("Hearing")', 'class')), 'Health reopens on the last view');
 await page.click('.health-tabs .seg-btn:has-text("Today")');
 
+// ---------------------------------------------------------------- the news job and News logic (no browser)
+{
+  const wp = `<rss xmlns:media="http://search.yahoo.com/mrss/"><channel><item><title>Mamdani&#8217;s rent freeze heads to a vote</title><link>https://www.thecity.nyc/2026/09/27/rent-freeze/</link><guid isPermaLink="false">https://www.thecity.nyc/?p=1</guid><pubDate>Sun, 27 Sep 2026 14:00:00 +0000</pubDate>
+<description><![CDATA[<p>The Rent Guidelines Board meets Tuesday, and tenants and landlords are lining up.</p><p>The post <a href="x">Mamdani’s rent freeze heads to a vote</a> appeared first on <a href="y">THE CITY</a>.</p>]]></description>
+<content:encoded><![CDATA[<figure><img src="https://www.thecity.nyc/wp-content/uploads/small.jpg" /></figure>]]></content:encoded><media:content url="https://www.thecity.nyc/wp-content/uploads/rent-lg.jpg" medium="image" width="1200"/></item>
+<item><title>Best dumplings in Queens</title><link>https://www.thecity.nyc/food/</link><pubDate>Sun, 27 Sep 2026 13:00:00 +0000</pubDate><description>Where to eat.</description></item></channel></rss>`;
+  const a = NJ.parseFeed(wp, 'thecity', { name: 'THE CITY', match: /\b(Mamdani|rent)\b/i });
+  check(a.length === 1 && a[0].title === 'Mamdani’s rent freeze heads to a vote' && a[0].image.endsWith('rent-lg.jpg') && a[0].summary === 'The Rent Guidelines Board meets Tuesday, and tenants and landlords are lining up.' && a[0].domain === 'thecity.nyc', 'news job: an outlet’s RSS gives the photo, a clean one-line summary and the site (off-topic stories filtered out)');
+  const atom = `<feed xmlns="http://www.w3.org/2005/Atom"><entry><published>2026-09-27T12:00:00-04:00</published><title type="html"><![CDATA[Apple&#8217;s new thing]]></title><content type="html"><![CDATA[<figure><img alt="" src="https://platform.theverge.com/a.jpg?quality=90&#038;strip=all" /></figure><p>Apple announced a thing today that ships next month, and it costs more than the last one.</p>]]></content><link rel="replies" href="https://www.theverge.com/x#comments"/><link rel="alternate" type="text/html" href="https://www.theverge.com/news/1"/><id>https://www.theverge.com/news/1</id><summary type="html">Short.</summary></entry></feed>`;
+  const v = NJ.parseFeed(atom, 'verge', { name: 'The Verge' })[0];
+  check(v.url === 'https://www.theverge.com/news/1' && v.image === 'https://platform.theverge.com/a.jpg?quality=90&strip=all' && /^Apple announced a thing/.test(v.summary) && v.date === '2026-09-27T16:00:00.000Z', 'news job: Atom feeds too (the article link, not the comments; the photo from the content)');
+  const top = `<item><title>Bomb squad searches vans - NBC News</title><link>https://news.google.com/rss/articles/A?oc=5</link><guid>A</guid><pubDate>Sun, 27 Sep 2026 16:47:53 GMT</pubDate><description>&lt;ol&gt;&lt;li&gt;&lt;a href="https://news.google.com/rss/articles/A"&gt;Bomb squad searches vans&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;NBC News&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;a href="https://news.google.com/rss/articles/B"&gt;5 arrested near base &amp;amp; more&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;The New York Times&lt;/font&gt;&lt;/li&gt;&lt;/ol&gt;</description><source url="https://www.nbcnews.com">NBC News</source></item>`;
+  const g = NJ.parseGoogleNews(`<rss>${top}</rss>`, 'top', { name: 'Top', outlet: true, cluster: true })[0];
+  check(g.title === 'Bomb squad searches vans' && g.source === 'NBC News' && g.domain === 'nbcnews.com' && g.related.length === 1 && g.related[0].source === 'The New York Times' && g.related[0].title === '5 arrested near base & more', 'news job: top stories keep the other outlets covering each one (not the story itself)');
+  const rj = { data: { children: [{ data: { name: 't3_a', title: 'GTA 6 trailer 3', permalink: '/r/GTA6/comments/a/', created_utc: 1790500000, subreddit_name_prefixed: 'r/GTA6', score: 12345, num_comments: 678, preview: { images: [{ source: { url: 'https://i.redd.it/big.jpg' }, resolutions: [{ url: 'https://preview.redd.it/a.jpg?width=108', width: 108 }, { url: 'https://preview.redd.it/a.jpg?width=320&amp;s=1', width: 320 }] }] } } }, { data: { name: 't3_b', title: 'pinned', permalink: '/r/GTA6/b/', stickied: true } }, { data: { name: 't3_c', title: 'nsfw', permalink: '/r/x/c/', over_18: true } }] } };
+  const r = NJ.parseRedditJSON(rj, 'GTA6');
+  check(r.length === 1 && r[0].score === 12345 && r[0].comments === 678 && r[0].from === 'GTA6' && r[0].image === 'https://preview.redd.it/a.jpg?width=320&s=1', 'news job: Reddit JSON gives scores, comment counts and a phone-sized photo (pinned and NSFW posts skipped)');
+  const og = NJ.ogFrom('<head><meta content="/img/a.jpg" property="og:image"><meta property="og:description" content="Officials said Sunday that five men were arrested near the base."></head>', 'https://example.com/story');
+  check(og.image === 'https://example.com/img/a.jpg' && /^Officials said Sunday/.test(og.summary), 'news job: a photo and summary from an article page’s preview tags');
+  const m = NJ.merge([{ id: 'tech-1', title: 'Apple’s new thing', url: 'https://news.google.com/rss/articles/X', date: '2026-09-27T16:30:00.000Z', seen: '2026-09-27T16:31:00.000Z' }], [{ id: 'verge-1', title: "Apple's new thing", url: 'https://www.theverge.com/news/1', date: '2026-09-27T16:00:00.000Z', image: 'https://x/y.jpg' }], { keep: 10, maxAgeDays: 3 }, '2026-09-27T17:00:00.000Z');
+  check(m.length === 1 && m[0].id === 'verge-1' && m[0].seen === '2026-09-27T16:31:00.000Z', 'news job: the same story from a search and the outlet’s feed is kept once, the copy with the photo, first seen when it first showed up');
+  const f2 = NJ.merge([{ id: 'x-1', title: 'Old copy', url: 'https://publisher/x', direct: 1, image: 'https://i/1.jpg', tried: 1, date: '2026-09-27T10:00:00.000Z', seen: '2026-09-27T10:05:00.000Z' }], [{ id: 'x-1', title: 'Old copy', url: 'https://news.google.com/rss/articles/Z', date: '2026-09-27T10:00:00.000Z' }], { keep: 10, maxAgeDays: 3 }, '2026-09-27T17:00:00.000Z')[0];
+  check(f2.url === 'https://publisher/x' && f2.image && f2.tried === 1 && f2.seen === '2026-09-27T10:05:00.000Z', 'news job: a story seen again keeps its photo, real address and when it first showed up');
+  check(NJ.parseGoogleNews('<rss><item><title>Login - The Verge</title><link>https://news.google.com/x</link><guid>L</guid><source url="https://www.theverge.com">The Verge</source></item></rss>', 'tech', { name: 'Tech', outlet: true }).length === 0, 'news job: sign-in pages are left out');
+
+  const topics = NL.buildTopics({ data: { portfolio: { holdings: [{ ticker: 'NVDA' }, { ticker: 'ON' }] } }, profiles: { NVDA: { name: 'NVIDIA Corp' }, ON: { name: 'ON Semiconductor Corp' } }, fun: FUN.normalizeFun(null), auto: { car: { make: 'Nissan', model: 'Altima' } }, home: { place: { name: 'Dix Hills, NY', zip: '11746' } }, follow: ['Knicks'], today: '2026-09-27' });
+  const why = (title, sec) => (NL.matchItem({ title }, sec, topics) || {}).why || '';
+  check(/NVIDIA/.test(why('Nvidia unveils a new chip', 'tech')) && !why('Stocks turn on a dime', 'markets'), 'For you: company names in any case, short tickers only as the ticker (not the word “on”)');
+  check(/playing Black Ops/.test(why('Black Ops 7 Zombies season 2 map revealed', 'gaming')) && /GTA VI/.test(why('GTA 6 preorders open', 'top')) && /Teamfight/.test(why('TFT patch notes', 'gaming')), 'For you: games you play and your countdowns, by the names headlines use');
+  check(/Doomsday/.test(why('New Doomsday footage', 'pop')) && !why('The Doomsday Clock moves closer to midnight', 'politics'), 'For you: “Doomsday” counts in entertainment news, not in politics');
+  check(/Altima/.test(why('Nissan recalls 2021 Altima sedans', 'top')) && /Altima/.test(why('Nissan issues a recall for some sedans', 'top')), 'For you: your car, and recalls from its maker');
+  check(/Dix Hills/.test(why('Dix Hills pool reopens', 'li')) && !why('Long Island weather this weekend', 'li') && /Dix Hills/.test(why('Long Island weather this weekend', 'top')) && !why('Huntington Bancshares beats estimates', 'markets'), 'For you: your town; Long Island stories only from outside the Long Island section');
+  check(/Knicks/.test(why('Knicks sign a guard', 'politics')), 'For you: topics you follow');
+  const prefs = NL.defaultNewsPrefs();
+  check(NL.addTerm(prefs, 'muteSources', 'nypost.com') && !NL.addTerm(prefs, 'muteSources', 'NYPost.com') && NL.isMuted({ title: 'x', source: 'New York Post', domain: 'nypost.com' }, prefs) && !NL.isMuted({ title: 'x', source: 'AP', domain: 'apnews.com' }, prefs), 'mutes: an outlet by web address (added once, whatever the case)');
+  NL.addTerm(prefs, 'muteWords', 'Kardashian');
+  check(NL.isMuted({ title: 'The Kardashians’ new show', source: 'Variety' }, prefs) === false && NL.isMuted({ title: 'Kardashian launches a brand', source: 'Variety' }, prefs), 'mutes: whole words (Kardashian, not Kardashians)');
+  const nf = { tech: [{ id: 'a', title: 'Pokémon GO adds a new raid', date: '2026-09-27T10:00:00Z', source: 'Polygon' }], nyc: [{ id: 'b', title: 'Mayor on the budget', date: '2026-09-27T11:00:00Z', source: 'Gothamist' }] };
+  check(NL.searchNews(nf, prefs, 'pokemon raid').length === 1 && NL.searchNews(nf, prefs, 'pokemon mayor').length === 0 && NL.searchNews(nf, prefs, 'gothamist')[0].sec === 'nyc', 'search: every word must match, accents ignored, outlets searchable');
+  NL.saveStory(prefs, nf.tech[0], 'tech');
+  const un = NL.unsaveStory(prefs, 'a');
+  NL.restoreSaved(prefs, un.item, un.index);
+  check(prefs.saved.length === 1 && prefs.saved[0].sec === 'tech' && !NL.saveStory(prefs, nf.tech[0], 'tech'), 'saved stories: saved once, removed and restored');
+}
+
 // ---------------------------------------------------------------- logic (no browser)
 {
   const f = FUN.defaultFun();
@@ -1236,12 +1445,13 @@ await page.waitForSelector('.portfolio .tk');
   check(qs.length === 1 && /quantum computer/.test(qs[0]), 'quantum headlines on their own');
   await page.screenshot({ path: path.join(OUT, 'home-portfolio.png'), fullPage: true });
   await page.click('.portfolio a:has-text("Markets news")');
-  await page.waitForSelector('.news-page');
-  const tabOn = await page.innerText('.news-tabs .seg-btn.on');
-  const mk = await page.innerText('.news');
+  await page.waitForSelector('.news-page .news-body');
+  const tabOn = await page.innerText('.nchip.on');
+  const mk = await page.innerText('.news-body');
   check(/Markets/.test(tabOn) && /Warehouse robots/.test(mk) && /Robotics/.test(mk), 'Markets news opens from the portfolio card, tagged by theme');
-  await page.click('.news-tabs .seg-btn:has-text("NYC")');
-  check(/deputy mayor for housing/.test(await page.innerText('.news')), 'NYC politics in the News tab');
+  await page.click('.nchip[data-sec="nyc"]');
+  await page.waitForTimeout(100);
+  check(/deputy mayor for housing/.test(await page.innerText('.news-body')), 'NYC politics in the News tab');
   await go('Home');
   await page.waitForSelector('.money .big');
 }
@@ -1309,7 +1519,7 @@ check((await dp.$$('canvas.confetti')).length === 1, 'finishing a to-do sets off
 await dp.waitForTimeout(1600);
 check((await dp.$$('canvas.confetti')).length === 0, 'confetti cleans itself up');
 // every tab opened directly from a fresh load (data arrives after the first render)
-for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.page-title'], ['auto', '.auto-hero'], ['news', '.news']]) {
+for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.page-title'], ['auto', '.auto-hero'], ['news', '.news-body']]) {
   const tp = await desk.newPage();
   const errs = [];
   tp.on('pageerror', (e) => errs.push(e.message));
@@ -1511,7 +1721,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     await rp.close();
   }
   const google = [];
-  dc.on('request', (r) => /googleapis|firebase|gstatic|google\.com/.test(new URL(r.url()).host) && google.push(r.url()));
+  dc.on('request', (r) => /googleapis|firebase|gstatic|google\.com/.test(new URL(r.url()).host) && !/\/s2\/favicons/.test(r.url()) && google.push(r.url())); // (outlet logos in News aren't Firebase)
   const tp = await dc.newPage();
   const errs = [];
   tp.on('pageerror', (e) => errs.push(e.message));
@@ -1539,7 +1749,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(300);
   const spentAfter = await tp.innerText('.money .muted.small.num');
   check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
-  for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news'], ['fun', '.fun-hero'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
+  for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news-body'], ['fun', '.fun-hero'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
     await tp.goto(`${base}?demo#/${route}`);
     await tp.waitForSelector(sel, { timeout: 8000 }).catch(() => {});
     check(!!(await tp.$(sel)) && !!(await tp.$('.demo-bar')), `demo #/${route} renders`);

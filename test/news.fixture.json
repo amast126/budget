@@ -12,6 +12,13 @@
   "reddit": {
    "ok": true,
    "count": 2
+  },
+  "verge": {
+   "ok": false,
+   "section": "tech",
+   "name": "The Verge",
+   "kind": "feed",
+   "error": "HTTP 403"
   }
  },
  "politics": [
@@ -20,35 +27,83 @@
    "title": "Supreme Court lets Trump administration use revamped federal voter eligibility database",
    "url": "https://apnews.com/",
    "date": "2026-09-25T15:43:00.000Z",
-   "source": "AP"
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-25T16:00:00.000Z",
+   "image": "https://img.test/politics-1.jpg",
+   "summary": "The ruling lets the administration use the database while the case continues in lower courts."
   },
   {
    "id": "reuters-1",
    "title": "Trump told Xi that China helping Iran is unacceptable, US ambassador says",
    "url": "https://reuters.com/",
    "date": "2026-09-25T16:03:00.000Z",
-   "source": "Reuters"
+   "source": "Reuters",
+   "domain": "reuters.com",
+   "seen": "2026-09-25T16:00:00.000Z"
   },
   {
    "id": "ap-2",
    "title": "Pro-Trump TV ad paid for by US government continues airing with higher spend",
    "url": "https://apnews.com/",
    "date": "2026-09-25T15:53:00.000Z",
-   "source": "AP"
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-25T12:00:00.000Z"
   },
   {
    "id": "reuters-2",
    "title": "US Senate rejects resolution curbing Trump's Iran war powers",
    "url": "https://reuters.com/",
    "date": "2026-09-24T18:51:00.000Z",
-   "source": "Reuters"
+   "source": "Reuters",
+   "domain": "reuters.com",
+   "seen": "2026-09-25T12:00:00.000Z"
   },
   {
    "id": "ap-3",
    "title": "Trump administration moves to limit fixes for systemic racism in schools",
    "url": "https://apnews.com/",
    "date": "2026-09-25T04:01:00.000Z",
-   "source": "AP"
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-25T12:00:00.000Z"
+  },
+  {
+   "id": "ap-x0",
+   "title": "Fixture: House passes a stopgap spending bill",
+   "url": "https://apnews.com/",
+   "date": "2026-09-25T15:40:00.000Z",
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-25T16:00:00.000Z"
+  },
+  {
+   "id": "ap-x1",
+   "title": "Fixture: Senate confirms a new trade representative",
+   "url": "https://apnews.com/",
+   "date": "2026-09-25T10:00:00.000Z",
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-25T12:00:00.000Z"
+  },
+  {
+   "id": "ap-x2",
+   "title": "Fixture: Governors meet on disaster aid",
+   "url": "https://apnews.com/",
+   "date": "2026-09-25T09:00:00.000Z",
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-25T12:00:00.000Z"
+  },
+  {
+   "id": "ap-x3",
+   "title": "Fixture: Supreme Court hears an election case",
+   "url": "https://apnews.com/",
+   "date": "2026-09-25T08:00:00.000Z",
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-25T12:00:00.000Z"
   }
  ],
  "reddit": [
@@ -58,7 +113,10 @@
    "url": "https://www.reddit.com/",
    "date": "2026-09-25T09:00:00.000Z",
    "source": "r/pics",
-   "image": null
+   "image": null,
+   "from": "popular",
+   "score": 31200,
+   "comments": 2400
   },
   {
    "id": "rd-2",
@@ -66,7 +124,21 @@
    "url": "https://www.reddit.com/",
    "date": "2026-09-25T07:00:00.000Z",
    "source": "r/interestingasfuck",
-   "image": null
+   "image": null,
+   "from": "popular",
+   "score": 1250,
+   "comments": 88
+  },
+  {
+   "id": "rd-gta",
+   "title": "Trailer 3 breakdown thread",
+   "url": "https://www.reddit.com/r/GTA6/",
+   "date": "2026-09-25T12:00:00.000Z",
+   "source": "r/GTA6",
+   "from": "GTA6",
+   "score": 5400,
+   "comments": 610,
+   "image": "https://img.test/rd-1.jpg"
   }
  ],
  "tech": [
@@ -75,7 +147,10 @@
    "title": "Fixture: a new open-weight AI model lands",
    "url": "https://example.com/tech/0",
    "date": "2026-09-25T16:52:20.000Z",
-   "source": "The Verge"
+   "source": "The Verge",
+   "image": "https://img.test/tech-1.jpg",
+   "summary": "The model is small enough to run on a laptop and scores well on coding tests.",
+   "domain": "theverge.com"
   },
   {
    "id": "tech-fx1",
@@ -83,6 +158,14 @@
    "url": "https://example.com/tech/1",
    "date": "2026-09-25T15:52:20.000Z",
    "source": "TechCrunch"
+  },
+  {
+   "id": "techcrunch-1",
+   "title": "IONQ shares jump after a quantum networking milestone",
+   "url": "https://techcrunch.com/",
+   "date": "2026-09-25T09:30:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com"
   }
  ],
  "pop": [
@@ -169,6 +252,131 @@
    "url": "https://variety.com/",
    "date": "2026-09-25T10:00:00.000Z",
    "source": "Variety"
+  }
+ ],
+ "top": [
+  {
+   "id": "top-1",
+   "title": "Fixture top story: storm heads up the coast",
+   "url": "https://news.google.com/rss/articles/T1",
+   "date": "2026-09-25T15:50:00.000Z",
+   "source": "NBC News",
+   "domain": "nbcnews.com",
+   "image": "https://img.test/top-1.jpg",
+   "summary": "Forecasters expect heavy rain and wind through the weekend.",
+   "seen": "2026-09-25T16:00:00.000Z",
+   "related": [
+    {
+     "title": "Storm heads north with heavy rain",
+     "url": "https://news.google.com/rss/articles/R1",
+     "source": "The New York Times"
+    },
+    {
+     "title": "What to know about the storm",
+     "url": "https://news.google.com/rss/articles/R2",
+     "source": "NPR"
+    },
+    {
+     "title": "Storm tracker",
+     "url": "https://news.google.com/rss/articles/R3",
+     "source": "CNN"
+    }
+   ]
+  },
+  {
+   "id": "top-2",
+   "title": "Nissan recalls some 2021 Altima sedans over a hood latch",
+   "url": "https://news.google.com/rss/articles/T2",
+   "date": "2026-09-25T14:00:00.000Z",
+   "source": "Reuters",
+   "domain": "reuters.com",
+   "seen": "2026-09-25T14:05:00.000Z",
+   "related": [
+    {
+     "title": "Altima recall covers 100,000 cars",
+     "url": "https://news.google.com/rss/articles/R4",
+     "source": "AP News"
+    }
+   ]
+  },
+  {
+   "id": "top-3",
+   "title": "Fixture top story three",
+   "url": "https://news.google.com/rss/articles/T3",
+   "date": "2026-09-25T13:00:00.000Z",
+   "source": "CNN",
+   "domain": "cnn.com",
+   "seen": "2026-09-25T14:05:00.000Z"
+  },
+  {
+   "id": "top-4",
+   "title": "Fixture top story four",
+   "url": "https://news.google.com/rss/articles/T4",
+   "date": "2026-09-25T12:00:00.000Z",
+   "source": "NPR",
+   "domain": "npr.org",
+   "seen": "2026-09-25T14:05:00.000Z"
+  },
+  {
+   "id": "top-5",
+   "title": "Fixture top story five",
+   "url": "https://news.google.com/rss/articles/T5",
+   "date": "2026-09-25T11:00:00.000Z",
+   "source": "The Hill",
+   "domain": "thehill.com",
+   "seen": "2026-09-25T14:05:00.000Z"
+  },
+  {
+   "id": "top-6",
+   "title": "Fixture top story six with coverage",
+   "url": "https://news.google.com/rss/articles/T6",
+   "date": "2026-09-25T10:00:00.000Z",
+   "source": "Politico",
+   "domain": "politico.com",
+   "seen": "2026-09-25T14:05:00.000Z",
+   "related": [
+    {
+     "title": "Six, from another angle",
+     "url": "https://news.google.com/rss/articles/R6",
+     "source": "Axios"
+    },
+    {
+     "title": "Six, explained",
+     "url": "https://news.google.com/rss/articles/R7",
+     "source": "Bloomberg"
+    }
+   ]
+  }
+ ],
+ "li": [
+  {
+   "id": "li-1",
+   "title": "Dix Hills library opens a new maker space",
+   "url": "https://www.newsday.com/",
+   "date": "2026-09-25T15:00:00.000Z",
+   "source": "Newsday",
+   "domain": "newsday.com",
+   "seen": "2026-09-25T15:05:00.000Z",
+   "image": "https://img.test/li-1.jpg",
+   "summary": "The space has 3D printers, a recording booth and sewing machines."
+  },
+  {
+   "id": "li-2",
+   "title": "LIRR adds weekend trains on the Port Jefferson branch",
+   "url": "https://longisland.news12.com/",
+   "date": "2026-09-25T13:00:00.000Z",
+   "source": "News12 Long Island",
+   "domain": "longisland.news12.com",
+   "seen": "2026-09-25T13:05:00.000Z"
+  },
+  {
+   "id": "li-3",
+   "title": "Suffolk County opens applications for home energy rebates",
+   "url": "https://www.longislandpress.com/",
+   "date": "2026-09-25T11:00:00.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "seen": "2026-09-25T11:05:00.000Z"
   }
  ]
 }
