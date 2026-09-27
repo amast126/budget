@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { SwipeRow, celebrate, centerOf } from './fx.jsx';
 import { DEFAULT_PLACE, forecastUrl, geocodeUrl, placesFrom, summarize, addTodo, toggleTodo, clearDone } from './home-logic.js';
+import { IS_DEMO } from './demo.js';
+import { DEMO_PLACE } from './demo-data.js';
 
 const CACHE = 'dash.weather';
 const readCache = () => {
@@ -20,6 +22,7 @@ const writeCache = (v) => {
 };
 const placeKey = (p) => `${p.lat.toFixed(3)},${p.lon.toFixed(3)}`;
 const placeLabel = (p) => `${p.name}${p.zip ? ` ${p.zip}` : ''}`;
+const HOME_PLACE = IS_DEMO ? DEMO_PLACE : DEFAULT_PLACE; // the demo's sample city stands in for home
 
 // ---------------------------------------------------------------- weather
 function PlaceSearch({ onPick, onCancel }) {
@@ -66,8 +69,8 @@ function PlaceSearch({ onPick, onCancel }) {
         </ul>
       ) : null}
       <div className="plan-actions">
-        <button className="btn quiet small" onClick={() => onPick({ ...DEFAULT_PLACE })}>
-          Use {placeLabel(DEFAULT_PLACE)}
+        <button className="btn quiet small" onClick={() => onPick({ ...HOME_PLACE })}>
+          Use {placeLabel(HOME_PLACE)}
         </button>
         <button className="btn quiet small" onClick={onCancel}>
           Cancel

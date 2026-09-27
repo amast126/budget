@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client';
 import css from './styles.css';
 import { createFirebaseBackend } from './backend.js';
+import { IS_DEMO, createDemoBackend, resetDemo, exitDemo, enterDemo } from './demo.js';
 import { Icon } from './ui.jsx';
 import { LearningPage, LearningHomeCard } from './learning.jsx';
 import { defaultLearning, normalize as normalizeLearning } from './learning-logic.js';
@@ -38,8 +39,10 @@ if (!document.getElementById('dash-css')) {
   document.head.appendChild(s);
 }
 
-// Tests inject a stand-in backend; the live site always uses Firebase.
-const backend = window.__DASH_BACKEND__ || createFirebaseBackend();
+// Tests inject a stand-in backend. Demo mode (?demo) runs on sample data in this browser and never touches Firebase;
+// otherwise the live site uses Firebase.
+const backend = window.__DASH_BACKEND__ || (IS_DEMO ? createDemoBackend() : createFirebaseBackend());
+const budgetSrc = IS_DEMO ? 'budget-demo.html' : 'budget.html';
 
 // ---------------------------------------------------------------- helpers
 const lsGet = (k, d) => {
@@ -466,7 +469,41 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
 function BudgetFrame({ visible }) {
   return (
     <div className={`frame-wrap ${visible ? '' : 'hidden'}`}>
-      <iframe className="frame" src="budget.html" title="Budget" />
+      <iframe className="frame" src={budgetSrc} title="Budget" />
+    </div>
+  );
+}
+
+// A slim bar across the top in demo mode: what this is, start over, or leave.
+function DemoBar() {
+  const [ask, setAsk] = useState(false);
+  return (
+    <div className="demo-bar" role="region" aria-label="Demo mode">
+      <span className="demo-tag">Demo</span>
+      {ask ? (
+        <>
+          <span className="grow">Start over with fresh sample data?</span>
+          <button className="demo-btn" onClick={resetDemo}>
+            Reset
+          </button>
+          <button className="demo-btn" onClick={() => setAsk(false)}>
+            Cancel
+          </button>
+        </>
+      ) : (
+        <>
+          <span className="grow">
+            <span className="demo-long">Sample data for a made-up person. Try anything: changes stay in this browser and nothing is real.</span>
+            <span className="demo-short">Sample data</span>
+          </span>
+          <button className="demo-btn" onClick={() => setAsk(true)}>
+            Reset
+          </button>
+          <button className="demo-btn" onClick={exitDemo}>
+            Exit demo
+          </button>
+        </>
+      )}
     </div>
   );
 }
@@ -476,18 +513,44 @@ function Settings({ user, onClose }) {
     <div className="sheet-bg" onClick={onClose}>
       <div className="sheet" role="dialog" aria-label="Settings" onClick={(e) => e.stopPropagation()}>
         <h2 className="card-title">Settings</h2>
-        <p className="muted small">Signed in as {user.email}. Only this account can open the dashboard.</p>
-        <a className="btn quiet block" href="budget.html" target="_blank" rel="noopener">
+        {IS_DEMO ? (
+          <p className="muted small">This is the demo: sample data for a made-up person, kept only in this browser. Nothing is saved to an account.</p>
+        ) : (
+          <p className="muted small">Signed in as {user.email}. Only this account can open the dashboard.</p>
+        )}
+        <a className="btn quiet block" href={budgetSrc} target="_blank" rel="noopener">
           Open budget in its own tab <Icon name="ext" size={16} />
         </a>
-        <button className="btn quiet block" onClick={() => backend.signOut()}>
-          Sign out
-        </button>
+        {IS_DEMO ? (
+          <>
+            <button className="btn quiet block" onClick={resetDemo}>
+              Reset the demo data
+            </button>
+            <button className="btn quiet block" onClick={exitDemo}>
+              Exit demo
+            </button>
+          </>
+        ) : (
+          <button className="btn quiet block" onClick={() => backend.signOut()}>
+            Sign out
+          </button>
+        )}
         <p className="muted small">Build {window.__BUILD || 'dev'}</p>
         <button className="btn primary block" onClick={onClose}>
           Done
         </button>
       </div>
+    </div>
+  );
+}
+
+function DemoOffer() {
+  return (
+    <div className="demo-offer">
+      <p className="muted small">Just looking? The demo shows everything with sample data. No sign-in needed.</p>
+      <button className="btn quiet" onClick={enterDemo}>
+        Try the demo
+      </button>
     </div>
   );
 }
@@ -504,6 +567,7 @@ function Gate({ user, error }) {
             <button className="btn quiet" onClick={() => backend.signOut()}>
               Sign out
             </button>
+            <DemoOffer />
           </>
         ) : (
           <>
@@ -514,6 +578,7 @@ function Gate({ user, error }) {
             >
               Sign in with Google
             </button>
+            <DemoOffer />
           </>
         )}
         {msg || error ? <p className="alert">{msg || error}</p> : null}
@@ -566,6 +631,8 @@ function App() {
   const [more, setMore] = useState(false);
   const [autoError, setAutoError] = useState('');
   const recalls = useRecalls(auto ? auto.car : null);
+  const [budgetRev, setBudgetRev] = useState(0);
+  useEffect(() => (backend.onBudgetWrite ? backend.onBudgetWrite(() => setBudgetRev((n) => n + 1)) : undefined), []);
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
@@ -967,7 +1034,8 @@ function App() {
   );
 
   return (
-    <div className={`app ${route === 'budget' ? 'on-budget' : ''}`}>
+    <div className={`app ${route === 'budget' ? 'on-budget' : ''} ${IS_DEMO ? 'demo' : ''}`}>
+      {IS_DEMO ? <DemoBar /> : null}
       <nav className="nav">
         <div className="brand">Dashboard</div>
         {nav('home', 'home', 'Home')}
@@ -1018,7 +1086,7 @@ function App() {
             hkYears={hkYears}
           />
         )}
-        {budgetOpened ? <BudgetFrame visible={route === 'budget'} /> : null}
+        {budgetOpened ? <BudgetFrame key={budgetRev} visible={route === 'budget'} /> : null}
       </main>
       {toast ? (
         <div className={`toast ${toast.error ? 'error' : ''}`} role="status">

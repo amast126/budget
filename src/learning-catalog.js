@@ -259,7 +259,7 @@ export const TIPS = [
   ['Take the practice assessment early', 'Do it in week one to see the gaps, then again near the end. Book the exam once you score 80% or better twice in a row (a rule of thumb, not a Microsoft requirement).'],
   ['Book 3–4 weeks out', 'A booked date turns "studying" into a deadline. Mark it here and it shows on Home with a countdown.'],
   ['Get hands-on', 'AZ-104 and AI-103 include interactive tasks. Do the labs in a free Azure account, not just the reading.'],
-  ['Ask about reimbursement', 'Check with your manager or HR whether Alliant covers exam fees or training time before you pay.'],
+  ['Ask about reimbursement', 'Check with your manager or HR whether your employer covers exam fees or training time before you pay.'],
   ['Watch for free vouchers', 'Microsoft ran a free-voucher AI Skills Fest in June 2026 and a 50%-off challenge in early 2026. Similar events come back; check before booking.'],
   ['Renew for free', 'Associate and expert certs expire yearly. A free, open-book renewal assessment opens 6 months before expiry. This tab reminds you on Home.'],
 ];
