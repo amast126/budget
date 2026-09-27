@@ -187,6 +187,26 @@ check(/Good (morning|afternoon|evening), Alec/.test(hero) && /68°/.test(hero), 
 check((await page.$$('.hero .hero-line')).length === 1 && (await page.innerText('.hero-line')).length > 10, `header line: ${await page.innerText('.hero-line')}`);
 check(/to GTA VI/.test(hero) && /to payday|Payday today/.test(hero), 'countdown chips: payday and GTA VI');
 check(/sky-(dawn|day|golden|dusk|night)/.test(await page.getAttribute('.hero', 'class')), `sky phase: ${await page.getAttribute('.hero', 'class')}`);
+// with "reduce motion" the sky is painted once, still, but complete: opaque, with an overcast deck's texture
+{
+  const px = await page.evaluate(() => {
+    const c = document.querySelector('.hero canvas.sky-canvas');
+    const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+    let opaque = 0;
+    let n = 0;
+    let lo = 255;
+    let hi = 0;
+    for (let i = 0; i < d.length; i += 4 * 97) {
+      n++;
+      if (d[i + 3] === 255) opaque++;
+      const l = (d[i] + d[i + 1] + d[i + 2]) / 3;
+      lo = Math.min(lo, l);
+      hi = Math.max(hi, l);
+    }
+    return { opaque: opaque / n, spread: hi - lo };
+  });
+  check(px.opaque > 0.99 && px.spread > 12, `still sky painted (opaque ${px.opaque.toFixed(2)}, tonal range ${Math.round(px.spread)})`);
+}
 check(/Good tennis weather/.test(await page.innerText('.weather')), `tennis line: ${((await page.innerText('.weather')).match(/Good tennis weather[^\n]*/) || ['none'])[0]}`);
 check((await page.$$('.lring')).length === 4 && /Money/.test(await page.innerText('.rings-card')) && /Mind/.test(await page.innerText('.rings-card')), 'four life rings');
 check((await page.$$('.money .spark .spark-line')).length === 1, 'money card sparkline');
@@ -387,7 +407,12 @@ check(L.log.length === 1 && L.log[0].cert === 'ai-901' && L.log[0].minutes === 6
 // book AI-901 for a date and check the roadmap label
 await page.click('.learning .seg-btn:has-text("Exam booked")');
 await page.waitForSelector('.learning input[type=date]');
-const exam = new Date(Date.now() + 20 * 86400000).toISOString().slice(0, 10);
+const exam = (() => {
+  // local date 20 days out (toISOString would give tomorrow's UTC date late in the evening)
+  const d = new Date();
+  d.setDate(d.getDate() + 20);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+})();
 await page.fill('.learning .cert-detail input[type=date]', exam);
 await page.waitForTimeout(200);
 L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
@@ -752,6 +777,15 @@ await page.waitForSelector('.health-home');
 const hh = (await page.innerText('.health-home')).replace(/\n/g, ' ');
 check(/calories left|calories over/.test(hh) && /Steps 9,500/.test(hh) && /Weight/.test(hh), `Home health card: ${hh}`);
 check((await page.$$('.health-home .mb-bar')).length === 7, 'Home health card: 7 days of calories');
+{
+  // An old weigh-in from years ago (e.g. an Apple Health import) must not count as "30 days ago".
+  const { weightStats, normalizeHealth } = await import('../src/health-logic.js');
+  const iso = (d) => d.toISOString().slice(0, 10);
+  const t = new Date();
+  const h = normalizeHealth({ weights: [{ date: '2020-12-06', lb: 154.8 }, { date: iso(new Date(t.getTime() - 2 * 864e5)), lb: 158 }, { date: iso(t), lb: 158.4 }] });
+  const st = weightStats(h, iso(t));
+  check(st.change30 == null && st.since && st.since.date !== '2020-12-06', `weight trend ignores years-old weigh-ins (${JSON.stringify(st.since)})`);
+}
 const rt2 = (await page.innerText('.rings-card')).replace(/\n/g, ' ');
 check(/Body/.test(rt2) && /(workout|steps)/.test(rt2) && /Food logged/.test(rt2), `rings after logging: ${rt2}`);
 await page.screenshot({ path: path.join(OUT, 'home-health.png'), fullPage: true });
@@ -901,6 +935,162 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   const ok = !!(await tp.$(sel));
   check(ok && !errs.length, `#/${route} loads directly${errs.length ? ': ' + errs.join(' | ') : ''}`);
   await tp.close();
+}
+// rain: drops on a canvas that animates, no moon or stars behind the cloud
+{
+  const tp = await desk.newPage();
+  await tp.route('https://api.open-meteo.com/**', (route) => {
+    const f = forecastFixture(40.8);
+    f.current.weather_code = 63;
+    route.fulfill({ contentType: 'application/json', body: JSON.stringify(f) });
+  });
+  const t = new Date();
+  t.setHours(22, 0, 0, 0);
+  await tp.clock.install({ time: t });
+  await tp.clock.resume();
+  await tp.goto(base, { waitUntil: 'networkidle' });
+  await tp.waitForSelector('.hero canvas.precip');
+  await tp.waitForTimeout(600);
+  const sample = () =>
+    tp.evaluate(() => {
+      const c = document.querySelector('.hero canvas.precip');
+      const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+      let lit = 0;
+      let hash = 0;
+      for (let i = 3; i < d.length; i += 4 * 7) if (d[i] > 20) (lit++, (hash = (hash * 31 + i) % 1e9));
+      return { lit, hash };
+    });
+  const a = await sample();
+  await tp.waitForTimeout(250);
+  const b = await sample();
+  check(a.lit > 200 && a.hash !== b.hash, `rain draws and moves (${a.lit} lit samples)`);
+  check(!!(await tp.$('.hero canvas.sky-canvas')) && (await tp.$$('.hero .sky-art canvas')).length === 2, 'rain falls in front of the sky canvas');
+  await tp.locator('.hero').screenshot({ path: path.join(OUT, 'hero-rain.png') });
+  await tp.close();
+}
+// the sky engine: astronomy, weather mapping, and clouds that fit their sprites and tile seamlessly
+{
+  const { buildSync } = await import(path.join(ROOT, 'node_modules/esbuild/lib/main.js'));
+  const file = path.join(OUT, 'sky-test.mjs');
+  buildSync({ entryPoints: [path.join(ROOT, 'src/sky.jsx')], bundle: true, format: 'esm', platform: 'node', jsx: 'automatic', outfile: file, logLevel: 'error', absWorkingDir: ROOT });
+  const { sunState, moonPhase, moonArc, weatherOf, skyInternals } = await import(file);
+  const at = (h, m = 0) => new Date(2026, 8, 27, h, m);
+  const sun = (h, m) => sunState(at(h, m), '2026-09-27T06:43', '2026-09-27T18:43');
+  const noon = sun(12, 43);
+  check(noon.alt > 0.99 && Math.abs(noon.dayFrac - 0.5) < 0.01, `sun highest midway between sunrise and sunset (${noon.alt.toFixed(3)})`);
+  check(sun(0, 43).alt < -0.99, 'sun lowest at solar midnight');
+  const dusk = sun(19, 10);
+  check(dusk.alt < 0 && dusk.alt > -0.2 && dusk.evening, `dusk just after sunset (${dusk.alt.toFixed(2)})`);
+  const pFull = moonPhase(new Date(Date.UTC(2024, 8, 18, 2, 34)));
+  const pNew = moonPhase(new Date(Date.UTC(2024, 9, 2, 18, 49)));
+  check(Math.abs(pFull - 0.5) < 0.03 && Math.min(pNew, 1 - pNew) < 0.03, `moon phases: full Sep 18 2024 → ${pFull.toFixed(3)}, new Oct 2 2024 → ${pNew.toFixed(3)}`);
+  const fm = moonArc(sun(0, 43), 0.5);
+  check(fm != null && Math.abs(fm - 0.5) < 0.1 && moonArc(noon, 0.5) == null, 'full moon: high at midnight, down at noon');
+  check(moonArc(sun(20, 0), 0.25) != null && moonArc(sun(4, 0), 0.25) == null, 'first quarter: up in the evening, set before dawn');
+  const kinds = [0, 1, 2, 3, 45, 53, 63, 81, 95, 73, 86].map((c) => weatherOf(c).kind).join();
+  check(kinds === 'clear,mostly,partly,cloudy,fog,rain,rain,rain,storm,snow,snow', `weather codes → skies: ${kinds}`);
+  const fbm = skyInternals.makeNoise(7);
+  let clipped = 0;
+  let body = 0;
+  for (let seed = 1; seed <= 12; seed++) {
+    const cu = skyInternals.cloudField(fbm, 'cumulus', 160 + seed * 14, (160 + seed * 14) * 0.5, seed, 0);
+    let cov = 0;
+    for (const d of cu.dens) if (d > 0) cov++;
+    if (cov / cu.dens.length > 0.15 && cu.lt && cu.lbl && cu.lbr) body++;
+    for (let x = 0; x < cu.cw; x++) if (cu.dens[x] > 0.05) clipped++;
+    for (let y = 0; y < cu.ch; y++) if (cu.dens[y * cu.cw] > 0.05 || cu.dens[y * cu.cw + cu.cw - 1] > 0.05) clipped++;
+  }
+  check(body === 12 && clipped === 0, `cumulus: 12 of 12 have a lit body (${body}), none cut off at the sprite edge (${clipped} edge pixels)`);
+  let seam = 0;
+  for (const type of ['strat', 'cells', 'fog']) {
+    const dk = skyInternals.cloudField(fbm, type, 600, 200, 5, 600);
+    for (let y = 0; y < dk.ch; y++) seam += Math.abs(dk.dens[y * dk.cw] - dk.dens[y * dk.cw + dk.cw - 2]) + Math.abs(dk.dens[y * dk.cw + dk.cw - 1] - dk.dens[y * dk.cw + 1]);
+  }
+  check(seam < 0.01, `decks tile seamlessly (edge mismatch ${seam.toFixed(4)})`);
+}
+// the sky, live: fair-weather clouds drift; a clear night has stars; snow settles on the chips
+{
+  const open = async (code, hh, mm = 0) => {
+    const tp = await desk.newPage();
+    const errs = [];
+    tp.on('pageerror', (e) => errs.push(e.message));
+    await tp.route('https://api.open-meteo.com/**', (route) => {
+      const f = forecastFixture(40.8);
+      f.current.weather_code = code;
+      f.current.wind_speed_10m = 10;
+      route.fulfill({ contentType: 'application/json', body: JSON.stringify(f) });
+    });
+    const t = new Date();
+    t.setHours(hh, mm, 0, 0);
+    await tp.clock.install({ time: t });
+    await tp.clock.resume();
+    await tp.goto(base, { waitUntil: 'networkidle' });
+    await tp.waitForSelector('.hero canvas.sky-canvas');
+    return { tp, errs };
+  };
+  const skyPx = (tp, sel = '.hero canvas.sky-canvas') =>
+    tp.evaluate((sel) => {
+      const c = document.querySelector(sel);
+      const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+      let white = 0;
+      let bright = 0;
+      let hash = 0;
+      let n = 0;
+      for (let i = 0; i < d.length; i += 4 * 5) {
+        n++;
+        const l = (d[i] + d[i + 1] + d[i + 2]) / 3;
+        if (l > 200) white++;
+        if (l > 150 && d[i + 3] > 0) bright++;
+        hash = (hash * 31 + d[i] + d[i + 1] * 3 + d[i + 2] * 7) % 1e9;
+      }
+      return { white: white / n, bright, hash, w: c.width, h: c.height };
+    }, sel);
+  {
+    const { tp, errs } = await open(2, 13);
+    await tp.waitForTimeout(2000);
+    const a = await skyPx(tp);
+    await tp.waitForTimeout(1200);
+    const b = await skyPx(tp);
+    check(a.white > 0.01 && a.hash !== b.hash && !errs.length, `partly cloudy: clouds drawn (${(a.white * 100).toFixed(1)}% white) and drifting${errs.length ? ' · ' + errs.join(' | ') : ''}`);
+    await tp.locator('.hero').screenshot({ path: path.join(OUT, 'hero-partly.png') });
+    await tp.close();
+  }
+  {
+    const { tp } = await open(0, 23, 30);
+    await tp.waitForTimeout(600);
+    const stars = await tp.evaluate(() => {
+      const c = document.querySelector('.hero canvas.sky-canvas');
+      const d = c.getContext('2d').getImageData(0, 0, c.width, Math.floor(c.height * 0.6)).data;
+      let n = 0;
+      for (let i = 0; i < d.length; i += 4) if ((d[i] + d[i + 1] + d[i + 2]) / 3 > 140) n++;
+      return n;
+    });
+    check(stars > 30, `clear night: stars and moon (${stars} bright pixels)`);
+    await tp.locator('.hero').screenshot({ path: path.join(OUT, 'hero-clear-night.png') });
+    await tp.close();
+  }
+  {
+    const { tp, errs } = await open(73, 13);
+    await tp.waitForSelector('.hero canvas.precip');
+    await tp.waitForTimeout(3500);
+    const ledge = await tp.evaluate(() => {
+      const c = document.querySelector('.hero canvas.precip');
+      const cb = c.getBoundingClientRect();
+      const r = document.querySelector('.hero .cd').getBoundingClientRect();
+      const k = c.width / cb.width;
+      const y = Math.round((r.top - cb.top - 1.5) * k);
+      const x0 = Math.round((r.left - cb.left + 12) * k);
+      const x1 = Math.round((r.right - cb.left - 12) * k);
+      const d = c.getContext('2d').getImageData(x0, y, x1 - x0, 1).data;
+      let snow = 0;
+      for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 150 && d[i] > 180) snow++;
+      return snow / (x1 - x0);
+    });
+    const f = await skyPx(tp, '.hero canvas.precip');
+    check(ledge > 0.6 && f.bright > 50 && !errs.length, `snow falls (${f.bright} bright samples) and lies on the chips (${Math.round(ledge * 100)}% of a chip's top)`);
+    await tp.locator('.hero').screenshot({ path: path.join(OUT, 'hero-snow.png') });
+    await tp.close();
+  }
 }
 // the sky at different times of day
 for (const [label, hh, want] of [['night', 22, 'sky-night'], ['golden', 18, 'sky-golden'], ['morning', 9, 'sky-day']]) {
