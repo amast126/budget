@@ -89,6 +89,7 @@ const SECTIONS = {
   },
   markets: {
     keep: 90,
+    perSource: 30, // so one busy theme (The Quantum Insider posts a lot) can't crowd out the others
     maxAgeDays: 5,
     sources: {
       energy: {
@@ -101,7 +102,7 @@ const SECTIONS = {
         name: 'Quantum',
         tag: 'Quantum',
         outlet: true,
-        url: gnews('intitle:quantum (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:barrons.com OR site:marketwatch.com OR site:axios.com OR site:thequantuminsider.com OR site:techcrunch.com) when:4d'),
+        url: gnews('intitle:quantum -"First Quantum" (site:reuters.com OR site:cnbc.com OR site:bloomberg.com OR site:barrons.com OR site:axios.com OR site:thequantuminsider.com OR site:techcrunch.com) when:4d'),
       },
       robotics: {
         name: 'Robotics',
@@ -138,7 +139,9 @@ const SECTIONS = {
 };
 const REDDIT = 'https://www.reddit.com/r/popular/top/.rss?t=day&limit=25';
 // Bump a section's number after changing its searches: stories kept from the old searches are dropped on the next run.
-const SEARCH_VERSION = { nyc: 2, markets: 2, gaming: 2, marvel: 2 };
+const SEARCH_VERSION = { nyc: 2, markets: 3, gaming: 2, marvel: 2 };
+// Pages that aren't stories: stock quotes, filings and profile pages that finance sites publish under news searches.
+const NOT_NEWS = /(\bSEC Filings\b|\bStock (Price|Quote)\b|\bProfile and Biography\b|\bPrice Data\b|\b(Annual|Quarterly) (Income Statement|Balance Sheet|Cash Flow)\b|^Restrict to |^[A-Z.]{1,6} \| .*\b(Profile|Filings)\b)/i;
 
 const nowISO = () => new Date().toISOString();
 const log = (...a) => console.log(...a);
@@ -199,7 +202,7 @@ async function getGoogleNews(key, { name, url, outlet, tag: label }) {
       if (label) item.tag = label;
       return item;
     })
-    .filter((i) => i.title && i.url);
+    .filter((i) => i.title && i.url && !NOT_NEWS.test(i.title));
 }
 
 async function getReddit() {
@@ -232,18 +235,24 @@ function readJSON(file) {
 }
 
 // Merge fresh items into a section's list: newest first, no repeats (same story from two searches), trimmed.
-function merge(old, fresh, { keep, maxAgeDays }) {
+function merge(old, fresh, { keep, maxAgeDays, perSource }) {
   const cutoff = new Date(Date.now() - maxAgeDays * 86400000).toISOString();
   const byId = new Map();
   for (const i of [...old, ...fresh]) byId.set(i.id, i);
   const seen = new Set();
+  const per = new Map();
   return [...byId.values()]
-    .filter((i) => i.date >= cutoff)
+    .filter((i) => i.date >= cutoff && !NOT_NEWS.test(i.title))
     .sort(byDateDesc)
     .filter((i) => {
       const k = normTitle(i.title);
       if (seen.has(k)) return false;
       seen.add(k);
+      if (perSource) {
+        const src = i.id.split('-')[0];
+        per.set(src, (per.get(src) || 0) + 1);
+        if (per.get(src) > perSource) return false;
+      }
       return true;
     })
     .slice(0, keep);
