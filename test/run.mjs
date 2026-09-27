@@ -187,12 +187,13 @@ const check = (cond, msg) => {
   console.log(`${cond ? '✓' : '✗'} ${msg}`);
   if (!cond) process.exitCode = 1;
 };
-// Phone nav shows Home, News, Budget, Health; the rest are under More.
+// Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
-  const direct = page.locator(`.nav a.nav-item:has-text("${label}")`);
+  const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
   if (await direct.isVisible()) return direct.click();
-  await page.click('.nav-more');
-  await page.click(`.more-sheet .more-item:has-text("${label}")`);
+  await page.click('.menu-btn');
+  await page.click(`.nav.open .nav-item:has-text("${label}")`);
+  await page.waitForTimeout(80);
 }
 
 await page.goto(base, { waitUntil: 'networkidle' });
@@ -203,6 +204,48 @@ check(/Left to spend|Over budget by/.test(txt), 'money card renders');
 check(/Next payday/.test(txt), 'payday shown');
 check(/Bills this week/.test(txt), 'bills card renders');
 check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news is off the home screen');
+// phone navigation: a menu button (bottom left, naming the tab you're on) opens a sidebar with every tab
+{
+  const navShown = () => page.locator('.nav').isVisible();
+  check((await page.isVisible('.menu-btn')) && /Home/.test(await page.innerText('.menu-btn')) && !(await navShown()), 'phones: a menu button instead of a tab bar, sidebar closed');
+  await page.click('.menu-btn');
+  await page.waitForSelector('.nav.open');
+  const items = await page.$$eval('.nav.open .nav-item', (els) => els.map((e) => e.innerText.trim()));
+  check(items.join('|') === 'Home|News|Budget|Health|Entertainment|Learning|Cooking|Auto|Settings' && (await page.getAttribute('.menu-btn', 'aria-expanded')) === 'true' && /Home/.test(await page.innerText('.nav .nav-item.active')), `the sidebar lists every tab: ${items.join(', ')}`);
+  await page.screenshot({ path: path.join(OUT, 'phone-sidebar.png') });
+  await page.click('.nav-scrim', { position: { x: 360, y: 400 } });
+  await page.waitForTimeout(450);
+  check(!(await navShown()), 'tapping outside closes it');
+  await page.click('.menu-btn');
+  await page.waitForSelector('.nav.open');
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(450);
+  check(!(await navShown()), 'so does Escape');
+  await page.click('.menu-btn');
+  await page.waitForSelector('.nav.open');
+  await page.evaluate(() => {
+    const nav = document.querySelector('.nav');
+    const t = (x) => new Touch({ identifier: 1, target: nav, clientX: x, clientY: 400 });
+    nav.dispatchEvent(new TouchEvent('touchstart', { bubbles: true, touches: [t(220)], changedTouches: [t(220)] }));
+    nav.dispatchEvent(new TouchEvent('touchmove', { bubbles: true, touches: [t(150)], changedTouches: [t(150)] }));
+    nav.dispatchEvent(new TouchEvent('touchmove', { bubbles: true, touches: [t(90)], changedTouches: [t(90)] }));
+    nav.dispatchEvent(new TouchEvent('touchend', { bubbles: true, touches: [], changedTouches: [t(90)] }));
+  });
+  await page.waitForTimeout(450);
+  check(!(await navShown()), 'and swiping it to the left');
+  await page.click('.menu-btn');
+  await page.click('.nav.open .nav-item:has-text("Entertainment")');
+  await page.waitForSelector('.fun-hero');
+  await page.waitForTimeout(450);
+  check(!(await navShown()) && /Entertainment/.test(await page.innerText('.menu-btn')), 'picking a tab opens it and closes the sidebar; the button shows where you are');
+  await go('Home');
+  await page.waitForSelector('.money .big');
+}
+{
+  const edge = await page.evaluate(() => ({ tone: document.documentElement.style.getPropertyValue('--sky-top'), bg: getComputedStyle(document.documentElement).backgroundColor, meta: document.querySelector('meta[name="theme-color"]').content, h: document.querySelector('.page-sky').getBoundingClientRect().height, vh: innerHeight }));
+  const nums = (c) => (c.match(/\d+/g) || []).slice(0, 3).join(',');
+  check(/^rgb/.test(edge.tone) && nums(edge.bg) === nums(edge.tone) && edge.meta === edge.tone && edge.h > edge.vh + 100, `the sky reaches past the screen's edges and the page color matches its top (${edge.tone})`);
+}
 // phone order: rings (and the weekly recap on Sun/Mon), weather, to-do, then money
 const order = (await page.$$eval('.home-grid .card .card-title', (els) => els.map((e) => [e.textContent, Math.round(e.getBoundingClientRect().top)]).sort((a, b) => a[1] - b[1]).map((x) => x[0]))).filter((t) => !/^(Your week|Last week)$/.test(t));
 check(order[0] === 'Today’s rings' && order[1] === 'Weather' && order[2] === 'To-do', `phone order starts ${order.slice(0, 4).join(', ')}`);
@@ -376,7 +419,7 @@ if (firstBill) {
 }
 
 // news tab: sections + read marks
-await page.click('a.nav-item:has-text("News")');
+await go('News');
 await page.waitForSelector('.news-page .story');
 check(/Supreme Court lets Trump/.test(await page.innerText('.news')), 'politics renders on the News tab');
 const newsTabs = await page.$$eval('.news-page .tab', (t) => t.map((x) => x.innerText.replace(/\n/g, ' ')));
@@ -398,7 +441,7 @@ const unreadAfter = await page.$$eval('.story .dot', (d) => d.length);
 check(unreadAfter === unreadBefore - 1, `read mark (${unreadBefore} → ${unreadAfter} unread)`);
 
 // budget module
-await page.click('a.nav-item:has-text("Budget")');
+await go('Budget');
 const frame = page.frameLocator('iframe.frame');
 await frame.locator('body').waitFor();
 await page.waitForTimeout(1500);
@@ -406,12 +449,12 @@ const btext = await page.frames().find((f) => /budget\.html/.test(f.url())).inne
 check(/Budget Tracker|Month|Settings/.test(btext), 'budget module loads inside the app');
 check(/Dashboard test bagel/.test(btext), 'quick-add shows up inside the budget module');
 await page.screenshot({ path: path.join(OUT, 'budget.png') });
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.money .big');
 
 
 // ---------------- learning
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.money .big');
 const learnCard = '.home .card:has(h2:text-is("Learning"))';
 const homeLearn = await page.innerText(learnCard);
@@ -457,14 +500,14 @@ await page.waitForTimeout(200);
 L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
 check(L.plan.includes('sc-300'), `SC-300 added to roadmap at position ${L.plan.indexOf('sc-300') + 1}`);
 await page.screenshot({ path: path.join(OUT, 'learning-after.png'), fullPage: true });
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.money .big');
 check(/exam in 20 days/.test(await page.innerText(learnCard)), 'Home learning card shows exam countdown');
 await page.screenshot({ path: path.join(OUT, 'home-learning.png'), fullPage: true });
 
 
 // ---------------- cooking
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.money .big');
 check(/Cooking/.test(await page.innerText('.col:nth-child(2)')) && /Grocery list/.test(await page.innerText('.col:nth-child(2)')), 'Home shows the Cooking card');
 await go('Cooking');
@@ -553,7 +596,7 @@ const b2 = await stored();
 C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
 check(b2.months[key].transactions.length === k0 && C.grocery.filter((g) => g.done).length === 2 && !C.kitchen.some((i) => i.name === 'Cilantro'), 'undo removes the expense and restores the list');
 await page.screenshot({ path: path.join(OUT, 'cooking.png'), fullPage: true });
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.money .big');
 const homeCook = await page.innerText('.col:nth-child(2)');
 check(/Tonight:/.test(homeCook), 'Home Cooking card suggests tonight’s dinner');
@@ -561,7 +604,7 @@ await page.screenshot({ path: path.join(OUT, 'home-cooking.png'), fullPage: true
 
 
 // ---------------- auto
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.auto-home');
 let autoHome = await page.innerText('.auto-home');
 check(/2021 Nissan Altima SL/.test(autoHome) && /NYS inspection (due|expired)/.test(autoHome), `Home auto card: ${autoHome.replace(/\n/g, ' | ')}`);
@@ -617,7 +660,7 @@ await page.waitForTimeout(150);
 A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
 check(A.odo[A.odo.length - 1].miles === 52500, 'mileage update saved');
 await page.screenshot({ path: path.join(OUT, 'auto-after.png'), fullPage: true });
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.auto-home');
 autoHome = await page.innerText('.auto-home');
 check(/1 recall to check/.test(autoHome) && !/NYS inspection/.test(autoHome), 'Home card updates (inspection done, one recall left)');
@@ -630,12 +673,10 @@ const hDoc = () => page.evaluate(() => JSON.parse(localStorage.getItem('mod:heal
 const yDoc = () => page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-' + y) || 'null'), Y);
 const localToday = await page.evaluate(() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; });
 const dayFood = async () => ((await yDoc()).days[localToday] || { food: [] }).food;
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.health-home');
 check(/Set up your target/.test(await page.innerText('.health-home')), 'Home health card asks for setup');
-const navLabels = await page.$$eval('.nav .nav-item', (els) => els.filter((e) => e.offsetParent !== null).map((e) => e.innerText.trim()));
-check(navLabels.join(',') === 'Home,News,Budget,Health,More', `phone nav: ${navLabels.join(', ')}`);
-await page.click('a.nav-item:has-text("Health")');
+await go('Health');
 await page.waitForSelector('.health .targets');
 await page.selectOption('select[aria-label="Sex"]', 'male');
 await page.fill('input[aria-label="Age"]', '29');
@@ -797,7 +838,7 @@ if (copyBtn) {
   check((await dayFood()).some((e) => e.name === 'Chipotle-style steak'), 'copy yesterday’s dinner');
 }
 // Home card
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.health-home');
 const hh = (await page.innerText('.health-home')).replace(/\n/g, ' ');
 check(/calories left|calories over/.test(hh) && /Steps 9,500/.test(hh) && /Weight/.test(hh), `Home health card: ${hh}`);
@@ -916,11 +957,11 @@ check(/Headphone audio/.test(act) && /72 dB/.test(act) && /Hearing test/.test(ac
 check((await page.$$('.audiogram .ag-o')).length === 6, 'audiogram points drawn');
 await page.screenshot({ path: path.join(OUT, 'health-hearing.png'), fullPage: true });
 // the view is remembered
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.health-home');
 const hh2 = (await page.innerText('.health-home')).replace(/\n/g, ' ');
 check(/Slept 7h 15m/.test(hh2), `Home health card shows last night: ${hh2}`);
-await page.click('a.nav-item:has-text("Health")');
+await go('Health');
 await page.waitForSelector('.health-tabs');
 check(/on/.test(await page.getAttribute('.health-tabs .seg-btn:has-text("Hearing")', 'class')), 'Health reopens on the last view');
 await page.click('.health-tabs .seg-btn:has-text("Today")');
@@ -1146,7 +1187,7 @@ check(SDD.bakes.length === 1 && SDD.bakes[0].rating === 4 && SDD.bakes[0].hydrat
 await page.screenshot({ path: path.join(OUT, 'sourdough.png'), fullPage: true });
 
 // ---------------------------------------------------------------- Home: guitar, starter, birthdays, portfolio
-await page.click('a.nav-item:has-text("Home")');
+await go('Home');
 await page.waitForSelector('.money .big');
 await page.waitForSelector('.portfolio .tk');
 {
@@ -1175,7 +1216,7 @@ await page.waitForSelector('.portfolio .tk');
   check(/Markets/.test(tabOn) && /Warehouse robots/.test(mk) && /Robotics/.test(mk), 'Markets news opens from the portfolio card, tagged by theme');
   await page.click('.news-tabs .seg-btn:has-text("NYC")');
   check(/deputy mayor for housing/.test(await page.innerText('.news')), 'NYC politics in the News tab');
-  await page.click('a.nav-item:has-text("Home")');
+  await go('Home');
   await page.waitForSelector('.money .big');
 }
 await page.click('.birthdays button:has-text("Add or import birthdays")');
