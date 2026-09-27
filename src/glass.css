@@ -339,3 +339,16 @@ html.theme-glass body { background: transparent; }
 /* swipeable to-do rows: clear at rest, a solid pane only while being dragged over the Done/Delete colors */
 .theme-glass .swipe-fg { background: transparent; }
 .theme-glass .swipe-fg.dragging { background: rgba(var(--glass), 0.94); }
+/* dark-mode versions of the few text colors that were fixed for a light page */
+.theme-glass.dark .streak.on { color: #ffd08a; }
+.theme-glass.dark .streak.on svg,
+.theme-glass.dark .streak.keep svg { color: #ffa45c; }
+.theme-glass.dark .delta.good { color: #62d39b; }
+.theme-glass.dark .lg-o { color: #ff8c7d; }
+.theme-glass.dark .ring-move .ring-name,
+.theme-glass.dark .tile.t-move b { color: #ff8c7d; }
+.theme-glass.dark .ring-ex .ring-name,
+.theme-glass.dark .tile.t-ex b { color: #6fdc9a; }
+.theme-glass.dark .ring-stand .ring-name,
+.theme-glass.dark .tile.t-stand b { color: #6ccdf0; }
+.theme-glass.dark .streak-mini { color: #ffb36b; }
