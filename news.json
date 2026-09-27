@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-27T23:35:45.349Z",
+ "generated": "2026-09-27T23:53:06.095Z",
  "searchVersion": {
   "nyc": 2,
   "markets": 3,
@@ -10,15 +10,15 @@
   "ap": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "politics",
    "kind": "google",
    "name": "AP"
   },
   "reuters": {
    "ok": true,
-   "count": 4,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "count": 3,
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "politics",
    "kind": "google",
    "name": "Reuters"
@@ -26,7 +26,7 @@
   "reddit": {
    "ok": true,
    "count": 25,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/popular",
@@ -35,7 +35,7 @@
   "tech": {
    "ok": true,
    "count": 97,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "tech",
    "kind": "google",
    "name": "Tech"
@@ -43,7 +43,7 @@
   "ai": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "tech",
    "kind": "google",
    "name": "AI"
@@ -51,7 +51,7 @@
   "pop": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "pop",
    "kind": "google",
    "name": "Pop culture"
@@ -59,7 +59,7 @@
   "music": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "music",
    "kind": "google",
    "name": "Music"
@@ -67,7 +67,7 @@
   "nyc": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "nyc",
    "kind": "google",
    "name": "NYC"
@@ -75,15 +75,15 @@
   "mamdani": {
    "ok": true,
    "count": 9,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "nyc",
    "kind": "google",
    "name": "Mamdani"
   },
   "energy": {
    "ok": true,
-   "count": 94,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "count": 95,
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "markets",
    "kind": "google",
    "name": "Energy"
@@ -91,7 +91,7 @@
   "quantum": {
    "ok": true,
    "count": 24,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "markets",
    "kind": "google",
    "name": "Quantum"
@@ -99,7 +99,7 @@
   "robotics": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "markets",
    "kind": "google",
    "name": "Robotics"
@@ -107,7 +107,7 @@
   "games": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "gaming",
    "kind": "google",
    "name": "Gaming"
@@ -115,7 +115,7 @@
   "mygames": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "gaming",
    "kind": "google",
    "name": "Your games"
@@ -123,7 +123,7 @@
   "marvel": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "marvel",
    "kind": "google",
    "name": "Marvel"
@@ -131,15 +131,15 @@
   "top": {
    "ok": true,
    "count": 38,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "top",
    "kind": "google",
    "name": "Top stories"
   },
   "gothamist": {
    "ok": true,
-   "count": 0,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "count": 11,
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "nyc",
    "kind": "feed",
    "name": "Gothamist",
@@ -148,7 +148,7 @@
   "thecity": {
    "ok": true,
    "count": 7,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "nyc",
    "kind": "feed",
    "name": "THE CITY",
@@ -157,7 +157,7 @@
   "lipress": {
    "ok": true,
    "count": 10,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "li",
    "kind": "feed",
    "name": "Long Island Press",
@@ -166,7 +166,7 @@
   "verge": {
    "ok": true,
    "count": 10,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "tech",
    "kind": "feed",
    "name": "The Verge",
@@ -175,7 +175,7 @@
   "ars": {
    "ok": true,
    "count": 20,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "tech",
    "kind": "feed",
    "name": "Ars Technica",
@@ -184,7 +184,7 @@
   "techcrunch": {
    "ok": true,
    "count": 20,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "tech",
    "kind": "feed",
    "name": "TechCrunch",
@@ -193,7 +193,7 @@
   "wired": {
    "ok": true,
    "count": 30,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "tech",
    "kind": "feed",
    "name": "Wired",
@@ -202,7 +202,7 @@
   "li": {
    "ok": true,
    "count": 100,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "li",
    "kind": "google",
    "name": "Long Island"
@@ -210,7 +210,7 @@
   "gamespot": {
    "ok": true,
    "count": 30,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "gaming",
    "kind": "feed",
    "name": "GameSpot",
@@ -219,7 +219,7 @@
   "vgc": {
    "ok": true,
    "count": 10,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "gaming",
    "kind": "feed",
    "name": "VGC",
@@ -228,7 +228,7 @@
   "polygon": {
    "ok": true,
    "count": 10,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "gaming",
    "kind": "feed",
    "name": "Polygon",
@@ -237,7 +237,7 @@
   "variety": {
    "ok": true,
    "count": 10,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "pop",
    "kind": "feed",
    "name": "Variety",
@@ -246,7 +246,7 @@
   "thr": {
    "ok": true,
    "count": 10,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "pop",
    "kind": "feed",
    "name": "The Hollywood Reporter",
@@ -255,7 +255,7 @@
   "billboard": {
    "ok": true,
    "count": 10,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "music",
    "kind": "feed",
    "name": "Billboard",
@@ -264,7 +264,7 @@
   "pitchfork": {
    "ok": true,
    "count": 29,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "music",
    "kind": "feed",
    "name": "Pitchfork",
@@ -273,7 +273,7 @@
   "reddit-GTA6": {
    "ok": false,
    "error": "HTTP 429",
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/GTA6"
@@ -281,7 +281,7 @@
   "reddit-CODZombies": {
    "ok": false,
    "error": "HTTP 429",
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/CODZombies"
@@ -289,7 +289,7 @@
   "reddit-TeamfightTactics": {
    "ok": false,
    "error": "HTTP 429",
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/TeamfightTactics"
@@ -297,7 +297,7 @@
   "reddit-nyc": {
    "ok": false,
    "error": "HTTP 429",
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/nyc"
@@ -305,33 +305,38 @@
   "reddit-longisland": {
    "ok": false,
    "error": "HTTP 429",
-   "checked": "2026-09-27T23:35:45.349Z",
+   "checked": "2026-09-27T23:53:06.095Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/longisland"
   },
   "photos": {
    "ok": true,
-   "count": 21,
-   "checked": "2026-09-27T23:35:45.349Z",
+   "count": 16,
+   "checked": "2026-09-27T23:53:06.095Z",
    "kind": "enrich",
-   "decoded": 33,
-   "tried": 36
+   "decoded": 28,
+   "tried": 29
   }
  },
  "top": [
   {
-   "id": "top-mfmkx9",
-   "title": "Five arrested as counter-terror police investigate major incident near RAF Fairford",
-   "url": "https://www.bbc.com/news/articles/cqrm99mm9l84o",
-   "date": "2026-09-27T20:10:51.000Z",
-   "source": "BBC",
-   "domain": "bbc.com",
+   "id": "top-10wzwl1",
+   "title": "5 arrested in U.K. near base used by U.S. on suspicion of planning terror act",
+   "url": "https://www.washingtonpost.com/world/2026/09/27/5-arrested-uk-near-base-used-by-us-suspicion-planning-terror-act/",
+   "date": "2026-09-27T21:36:01.000Z",
+   "source": "The Washington Post",
+   "domain": "washingtonpost.com",
    "related": [
     {
      "title": "5 Arrested on Suspicion of Terrorism Near U.K. Air Base Used by U.S.",
      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNdFRIdDJNYmMyTW1VV2Uwak04eUdTNVFjbTNEaFdCT0JYZV9kV3paMDJWWUJmVlF2OE8xQUdmb3gzSVJyQ0VTWDFqS0x6ckt2Skw0LWk2RG1aQUNHaXpIZ0VOZW1jZ28tVXFzQWVUQ3BYeXlFandLYjVjVjV0Z1dDY01nZ0pFelh3?oc=5",
      "source": "The New York Times"
+    },
+    {
+     "title": "Men accused of planning terrorist attack near RAF base used to strike Iran",
+     "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQdUtIYXFhRDM0Mk5hRDdKVTllcHlmMktmYTZiOWNvSkc0WGkwZmFLS29nRjNjWnUzN3dablIxZHBDWS1PZDBMOGlVaTNuX3MxVl9lYUtVR3Z5bmcycWo5MXplTVYtUGd1Tm1hcG1zNlVDVHBQODBJYmU5a19HOUE2NUR3SzkzRGdWbHV2bkhmdUhHMU9ZS0NfWm5oUHZ6UWpTbE1pMHlncWQ2SEZfTkZHRg?oc=5",
+     "source": "ABC News & Headlines – Australian Broadcasting Corporation"
     },
     {
      "title": "Bomb squad searching vans near U.S. air base in Britain as five men arrested on terror charge",
@@ -342,18 +347,11 @@
      "title": "GOP rep believes Iran was involved in thwarted terrorist plan on US air base in the UK",
      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPUXBZTEduUGplWGdoQll5RHU4R3FwU1NzUkh0WDlieEtyNnNLdkg0bmV2MlJCUWFDQWJkM1pWNTZVN2hQWlc3eWt4ZUJYZUxBR3JmQjlaMmFfNG5JZmtNd3ZxMmZMdHV5bWZ3c1phZHZfeWdWT0pTLTE3Umh1LVBsb3hPSTfSAYoBQVVfeXFMTlV2bDM2R0MwTng1THEzbjMxUXQyTlJ2NmxNeEktSDEwRk1IMlY1TG1jTWFzODJ2RUJGYUNCaG5GTlRfbTFXWUswUHdLRVhHSHBsM2VTNGwzdnZPVmlhQ2c3Tkh1bU1ueHY4NUo1N3lYbXNOelIxNHo4Z0x1czU2LWtJQkRiMlJUWFV3?oc=5",
      "source": "The Hill"
-    },
-    {
-     "title": "Security Alert: U.S. Embassy London, United Kingdom (September 27, 2026)",
-     "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNWnJlRXFVVS1HVk1DaDQxcFlLd3J0UXBwcUQwMFFDTGlSYUxDWWYwWEdXQU9paGtZTjhQZVZuajhqM1FUQWd5cHZGWTNHakdiVjNqUFNxRjZ0SHI3azAwaW45LWtzWDEzT0NlMHd2Y21JZHc1ckZuS0pPNG9XZm5BV3AxSGFpeDVfN0twNG1YVU44NVJYWDhV?oc=5",
-     "source": "U.S. Embassy and Consulates in the United Kingdom (.gov)"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z",
+   "seen": "2026-09-27T23:53:06.095Z",
    "direct": 1,
-   "tried": 1,
-   "image": "https://ichef.bbci.co.uk/news/1024/branded_news/81eb/live/0d9d7aa0-bab4-11f1-bb00-3d60b0ebadb6.jpg",
-   "summary": "The men have been detained on suspicion of preparation of a terrorist act after three suspicious vehicles were reported to be travelling towards the base."
+   "tried": 1
   },
   {
    "id": "top-1jpr8xa",
@@ -364,9 +362,9 @@
    "domain": "theguardian.com",
    "related": [
     {
-     "title": "Oil rebounds after Trump rejects Iran peace deal",
-     "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOU3FBcU1hWkxSdzlSbHdGdkJEbDR0REJsckozLWtuZGRwbXJvNU1kVnFMendhelM2Q3plNUFlUm1yZTljZDFiMEQwZjVDcWt2X011c193RWUtWTVlcEE4bjBKSWtYZ1A5MnhXS2hUSlVCN0lPcjhTRmNBc2V4ZERrclRaVW45NUl0cmtsb1g2d0s3SFB5NDRPc0lnRzVSZHZ2S0E?oc=5",
-     "source": "Reuters"
+     "title": "Exclusive | Trump Rejects Iran Ceasefire, Expects Renewed Bombing After Midterms",
+     "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPbGVxM0NSSkVPVjdHTGNlUHBLbTdGTmh3OWZsTFRXVGVReHZGWmxEM2xjdUt4Y25KMVVyYlJ6WkdKZFVWdEFSVzFmcGx1X2lKTjd0MmxLak01UzgwYU5Iek1zazA1RzlhRXE0cGdhQzNtNFpUTVdhTWQ1Vk5DMWFxbHNEVTFLMTJRUFBFZjRNNU1UaHFoaDZqLWotX1RvUEhCVVotMElmMDdCRHB2RWFQVjMxNGs?oc=5",
+     "source": "WSJ"
     },
     {
      "title": "‘Better deal’: What’s behind Trump’s rejection of Iran’s truce offer?",
@@ -374,54 +372,21 @@
      "source": "Al Jazeera"
     },
     {
-     "title": "Trump calls Iranian plan to reopen Strait of Hormuz not 'acceptable'",
-     "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNbFFIUk9GUUctYjB3UzR4VmZGTTU0S2VKSm5paEYtbHNZSFAtSXl6TlgwRWxfREkyOXpkbTNTd0lyeTdfTW5kMlhnQmVhWUo0YnZydlRCVGFrVlZVellxTFlidFFTS2FiS3piUW8yVFlmVjVuN2FuWWR4bjB2ZDltWVpJTmFuVURhNXdaXzZHMDY2QQ?oc=5",
-     "source": "NPR"
+     "title": "Trump Rejects Iran’s Cease-Fire Proposal to Reopen Strait of Hormuz",
+     "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNd05MclZBYUtuVUpfVUlFdW9ZbkVodzBIaU1RakxWVlVBV1p4V2Q4Z3NGRml2Q0t5S3VoMUhTOWNkWVdadDZVNGlabXBlWW84OWNUWnRTTFk0ZG54M1k4bFZtcVo2UnFoWUxUYkV0aUhPQURXWkhzNy15X0tkbDgxVTZR?oc=5",
+     "source": "The New York Times"
     },
     {
-     "title": "Waltz says Iran wanted sanctions relief up front in rejected deal; Tehran pushes back",
-     "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPc0x6amVtdW1pZ0V3VjZYZXd1NElzX2xTMUZjSXZpX0s3VHdPa0xHSmVyMWNBRmwxYk53Q3IyRjhYNnhNQ2FQY3JvbUZOM3B4dFlGN1lXRXdMdzdUX1hXMzhPRG5vZ0hUdTFyTDJ1NGpTWWtWbnp6eVU0aXljU3JCcngxWTcxMXFtT19QdXRIaWo1TkU?oc=5",
-     "source": "politico.com"
+     "title": "Trump says he rejected Iranian proposal to reopen Strait of Hormuz",
+     "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxONTdRUng1MXkxdWhDRWVhdnpwZXpnSF84a0NSdHdfcUVVaFVTaFZsQmdwWXc5Z05TMEpIRS1kc1BUT1RyRVVObzVRUUVRR1YyMDZoYmxTZjlmUHJVX3ZiQVBpRkhYWHBUbzJCRFd4MklfUUVZNFRtck4zS2hsTkJSeXNtVmx2azY0R1pYbGZ3?oc=5",
+     "source": "yahoo.com"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://i.guim.co.uk/img/media/0bed143a1c10b4bad660d01ef03e690f7be9e5fd/500_0_5000_4000/master/5000.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=a963cfa94d873d3ef56bc206bc8c3166",
-   "summary": "Waltz says Trump rejected Iran’s proposal to end war because they ‘were asking for everything up front’"
-  },
-  {
-   "id": "top-etreyr",
-   "title": "Bill Gates says an AI ‘kill switch’ isn’t enough",
-   "url": "https://www.politico.com/news/2026/09/27/bill-gates-ai-kill-switch-01094236",
-   "date": "2026-09-27T17:35:00.000Z",
-   "source": "politico.com",
-   "domain": "politico.com",
-   "related": [
-    {
-     "title": "Bill Gates says unchecked AI could ‘cause a billion deaths’ in call for regulation",
-     "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNX3U0dW9FbGNsVVd0bGt4MlRzRTBZMkE2NWZOYUZlUkxOd3puUEwxdkR1YXNIaHdFNUtaYzJ3cGlOTHM2ckdBbHhLZmYtbUlnalJ2QmZYVS00RFROaksyY01xUnRCSXFzcEppNElYd1NOV21KNWJXVEVPVHBVZUppSEZPRVQzVmhtdlA4ZWp4emlaQmwxblpxVjRVWGM0dw?oc=5",
-     "source": "The Guardian"
-    },
-    {
-     "title": "Bill Gates Says Trump Is Wrong to Hold Out Against AI Safeguards",
-     "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNd2JTZmRZXy1VcHl1NEtvYzhHRDhWd3RyNmo2UFlmVGZ1SnFSZEJ0dDRaLVZZcmNhTk4zQ2RGUnJqUFQzM3BMTGh1SF9Pd3FiVGFLbTVTeS1uZlRFMm0wWE1rS291RkwyOXNZLTJwVzhHM3d2R3Q1dHVvdnFJM0EyVENmVjNSMkp5amtKMkRrckZNVHhWV09UMG4yVm03bHRkZDI3b2ZJYVB1c2FMbG1rYUJ6MUZCQQ?oc=5",
-     "source": "Bloomberg.com"
-    },
-    {
-     "title": "Bill Gates Says He Will Not ‘Socialize’ in a Friendly Manner with AI: ‘I’m Not Like, Hey, Do You Like Me?’",
-     "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPVGlHOVZNWGI2T2pHdkJTb1gzaHRTeW5lMTZadFNnMU0zeG1EMDNKWjVmdElUYnJRYnBYakUwdXBOUEViWWRvejlQWWtSYjN4S2xEVnFHcmJTcTdkYkRQMnRaWVZlN0NReUxjR25mc2VKV2ZyaWZvbEppUWVsUUhJRkpiWW1iVE50cjVLdlZkSUFvM3BlOUwwV2xR?oc=5",
-     "source": "People.com"
-    },
-    {
-     "title": "Bill Gates says getting countries to agree on AI regulations will be harder than Cold War-era nuclear negotiations",
-     "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxORXpqejBESDFab0V0cC1EaEFFN0pVdk5SanJRcXRMMnhWSk5xdURna1ZadUdSUkFCSFExMGxOckNxQWctSzgzcU1adDFJcGxtUC1ndC03UDJ0WWtRaTZ3SG1UcVZDQzVPaXk1ZW1sNEViSmlEdUZGTE5FbWRmTTRHVTVGMGNHdWpIVEU3U0lZeGRGeDcwckl3cGxNbjE2RE10MXRWcGdCc3lkX2s5amc?oc=5",
-     "source": "NBC News"
-    }
-   ],
+   "summary": "Waltz says Trump rejected Iran’s proposal to end war because they ‘were asking for everything up front’",
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1
+   "direct": 1
   },
   {
    "id": "top-1d6x5a2",
@@ -437,31 +402,64 @@
      "source": "CNN"
     },
     {
-     "title": "White House expands taxpayer-paid ad campaign boosting Trump",
-     "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPNXhWMktSSF9XWkdfZm92cWticXh4YjRrdnBSRDE3UzdlQ2FZUG9MMS1TaGJ4NDNJNHRrY2gydS1oNVlSd29TTWxZdTVESXhCTERWMlJBSjhSeE9scy1reWtLOGJpZUdKLUNpN1dUaFh4bGg4ZlVWVFFIZXJEaW9xbWdueFBKQ2xjZEhqaFEzdFVjeUxheWdsY2JSNE1YLV81Q0FjWU5TaHJ1cnJ1NnBKQXNn?oc=5",
-     "source": "The Washington Post"
-    },
-    {
      "title": "Taxpayer-funded Trump ads draw bipartisan scrutiny ahead of midterms",
-     "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9nREFXWWx6MEZHN2E1ZlY5dVRXbE1VUEx3bVJ0MXBlYWs1ak9LVlMxR3ZFXzZzWG11YUthQ3g1eENnMWtlMlFyeElrQ2E5bEpqbHkzYUlxMXZwX2I4LW12WVdwMDdadlVtZUhDMFRDQlZCdnR6TDVQbW1rZXVIZw?oc=5",
+     "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9nREFXWWx6MEZHN2E1ZlY5dVRXbE1VUEx3bVJ0MXBlYWs1ak9LVlMxR3ZFXzZzWG11YUthQ3g1eENnMWtlMlFyeElrQ2E5bEpqbHkzYUlxMXZwX2I4LW12WVdwMDdadlVtZUhDMFRDQlZCdnR6TDVQbW1rZXVIZ9IBgwFBVV95cUxQSDlVM29MMHdJa3RCZ2FvRWlZeWxERHlHZ3JLRmIxUWFSb2xYUWFmRDJTUi1UYjIxZkJZTWFvcEQzdWMzTDU4S1BEdUZkeUhDNjcybDFNTHUyenc0a21LeXBmTUxoYXRZRUwtcG5TNUlRRnNnQ19PVURVMU9Pb0hSb1Zjdw?oc=5",
      "source": "CNBC"
     },
     {
      "title": "Kennedy suggests ‘rule’ that no politician should have a building named after them while alive",
      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQc1o2Y0hPTnVDQ0tfbXBoRF9lZ1dCeVAtUWRkRnd0Q0lMZWk1dTdHTW04QWtXSHBGdFdHNVZQclRpTDdOLUltbm84a0M0RVFlMVI0MVlVSmlzZmo0SmV3b0hndXA2Q3k5aHdRZFZOQ1dyTkYyYTg5c0tWeC1TbncyTzE3blhJUzRUdnJoMzRoVdIBlAFBVV95cUxPVWRxcW1IX0NWNHh1Ylh1Nks3dlhZWmZBcEw3QjctTHJSNlM5S0dSUVdlNktWZmo2SnZmVE13Si1LcS04ek5VR1RUd1BHLS1Fd3dlNmJodkQ3aEEyeFd3TTdsdmlmVmFFS3FodXZvVkJnWDA3VFh4Q05hUGhvMGJDWTNsOFAzTHNXMHFmZDhmdEJPbUVR?oc=5",
      "source": "The Hill"
+    },
+    {
+     "title": "Trump administration begins airing 2024 Trump campaign ad in latest taxpayer-funded messaging",
+     "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNY1BHcVRDQzJGODlhbllfWXN5VWl1clotX3NEaWZ1Zm5IRGF2T0EwRllfNlI3Tm9qSm83RG54NTVzV2hxNjhKRno4d3phREFWZktsOTBFc0hYRWMwWG1UZUVWWnJjSkVEa0tYWXFvLWpJRXR3NEJ1WXZKNmJSd1FVM2FhQlY2UFUtUDc5MzRMSDU3VWV0cTRPVVJOWEJlWGM?oc=5",
+     "source": "apnews.com"
     }
    ],
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1
+   "direct": 1
+  },
+  {
+   "id": "top-etreyr",
+   "title": "Bill Gates says an AI ‘kill switch’ isn’t enough",
+   "url": "https://www.politico.com/news/2026/09/27/bill-gates-ai-kill-switch-01094236",
+   "date": "2026-09-27T17:35:00.000Z",
+   "source": "Politico",
+   "domain": "politico.com",
+   "related": [
+    {
+     "title": "Bill Gates says unchecked AI could ‘cause a billion deaths’ in call for regulation",
+     "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNX3U0dW9FbGNsVVd0bGt4MlRzRTBZMkE2NWZOYUZlUkxOd3puUEwxdkR1YXNIaHdFNUtaYzJ3cGlOTHM2ckdBbHhLZmYtbUlnalJ2QmZYVS00RFROaksyY01xUnRCSXFzcEppNElYd1NOV21KNWJXVEVPVHBVZUppSEZPRVQzVmhtdlA4ZWp4emlaQmwxblpxVjRVWGM0dw?oc=5",
+     "source": "The Guardian"
+    },
+    {
+     "title": "Bill Gates says global AI rules will be harder than nuclear talks",
+     "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQMk5Pb1A5RTlZSWp1Ukw2UzlsUWdkN3VfV0tyUDlENms0amN4emczVGN2dl9DWGpxcm5zaWVMTmRIUmItUWk2RW03UUlKbFlpM2V1V0JBYXJvdGN5ZEYtRE9ieXpuRkRVbGxLQVRfbkRmVFo5ekFlWkZnd0k4c25HU2NXd1RpcnNiWHc?oc=5",
+     "source": "yahoo.com"
+    },
+    {
+     "title": "Bill Gates Says Trump Is Wrong to Hold Out Against AI Safeguards",
+     "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNd2JTZmRZXy1VcHl1NEtvYzhHRDhWd3RyNmo2UFlmVGZ1SnFSZEJ0dDRaLVZZcmNhTk4zQ2RGUnJqUFQzM3BMTGh1SF9Pd3FiVGFLbTVTeS1uZlRFMm0wWE1rS291RkwyOXNZLTJwVzhHM3d2R3Q1dHVvdnFJM0EyVENmVjNSMkp5amtKMkRrckZNVHhWV09UMG4yVm03bHRkZDI3b2ZJYVB1c2FMbG1rYUJ6MUZCQQ?oc=5",
+     "source": "Bloomberg.com"
+    },
+    {
+     "title": "Bill Gates Says He Will Not ‘Socialize’ in a Friendly Manner with AI: ‘I’m Not Like, Hey, Do You Like Me?’",
+     "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPVGlHOVZNWGI2T2pHdkJTb1gzaHRTeW5lMTZadFNnMU0zeG1EMDNKWjVmdElUYnJRYnBYakUwdXBOUEViWWRvejlQWWtSYjN4S2xEVnFHcmJTcTdkYkRQMnRaWVZlN0NReUxjR25mc2VKV2ZyaWZvbEppUWVsUUhJRkpiWW1iVE50cjVLdlZkSUFvM3BlOUwwV2xR?oc=5",
+     "source": "People.com"
+    }
+   ],
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "top-1s7ggbf",
    "title": "Powerful nor’easter floods Northeast again, causing problems from New Jersey to New England",
    "url": "https://apnews.com/article/noreaster-storm-death-northeast-f4b86959733c021315e87ea1ed58459b",
-   "date": "2026-09-27T19:28:00.000Z",
-   "source": "AP News",
+   "date": "2026-09-27T20:59:00.000Z",
+   "source": "apnews.com",
    "domain": "apnews.com",
    "related": [
     {
@@ -471,7 +469,7 @@
     },
     {
      "title": "Nor'easter leaves beach erosion, damage in Brigantine, New Jersey",
-     "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPdG5rdzZ0M0paNW15XzBLWVVFbE1oR1NEX0VTYVJuWE5hR1d6REkyeFB2LS1QR0NfMmFlbE5ubkVYWEJNRUllRFRyQm9FdHBYb05RRUk3Q2daVTRhR2R1SVJLNUFBcjlCZDJZc1NZSlVUSWxaZk5iQ25ZMXlHYmd3dFc5dmJ2cFVtd20zRVNMR1gzY0NEMHc?oc=5",
+     "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPdG5rdzZ0M0paNW15XzBLWVVFbE1oR1NEX0VTYVJuWE5hR1d6REkyeFB2LS1QR0NfMmFlbE5ubkVYWEJNRUllRFRyQm9FdHBYb05RRUk3Q2daVTRhR2R1SVJLNUFBcjlCZDJZc1NZSlVUSWxaZk5iQ25ZMXlHYmd3dFc5dmJ2cFVtd20zRVNMR1gzY0NEMHfSAZsBQVVfeXFMTW4tUEZMVFB1RzJ1X1JMU3NrMmpLZklNWGR1QTI0OWpwQWxqNy1Gd3RXYS1VQ3ZEZndwTUhEOEpWVjdGSGlfN3FBRWZtbDVBbHVOT1dSSUg4UWJGQmozQnpfTG83YzZFd2s3ZThpYlNlQ0JRUHNjbDFfazAxd28wQWJ4NW1oakVuaXJ0dFg1SE5mdjVsWlVjY1JvUWs?oc=5",
      "source": "6abc Philadelphia"
     },
     {
@@ -480,45 +478,45 @@
      "source": "The New York Times"
     },
     {
-     "title": "Powerful nor'easter slams tri-state, flooding coastal areas",
-     "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQSVJTQmRBSmYySU04U2tiZGFRSU9Ta1ZacTk4Y2xzTVM0c05uRld4YXR0WUJsWHJpQXJfcmdZaFpuTzVCS3dYTXFZdGdDcHBSbHlfYkF0R2hZQ3FSQ2drRms3dXQyMmVacGR5dHo1SDNPakx3T2xLR0ZpaHFtcGlCN0R5Zm9MQndyMlI3dVBUM2NxaU41allJdnZPdlphcTQ2bTdORFB5SW1zSGJYT3ZPOVJR0gG6AUFVX3lxTE10T2huZ0l1TmJyX0V3dUFacVFucGRpS2NITXhQdlNPcTRMYVdjcVZvazd6dVZ6M0VhZmM0c1B5OVlia1lnelBlMHpCQnVTa0F5Z3FlNnRYRUROalloekRyeDRDNmZuLU5sSG1FMl9pc1ktVnBxUi1zNzlFdEhLeFlTWngtVUl5dW9hZUZaVTZPaExfWlZ3U0lyN3JieVpOS1Q0U1ZGMXgtOWlxMnlrbzRYSVNJNUhpXzhwUQ?oc=5",
-     "source": "NBC 4 New York"
+     "title": "Shoreline residents bear brunt of nor’easter hitting Connecticut",
+     "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQNW1uNFI0bUt4bWlyZmdtbjROWWN5QWJKMkRvU3BJNkZ4Ty0waUpGczlpQnBsM25GdXFWWkU4TGdmcERmNVFrQTdQdFBVQ0Y0MGJ1QmpwRXRuLUtRdTVDejZTXzJVbG0ySkdlUDZrVnh6amZ1SkxfSm9fZUJvd1VBSl9PdHJkcXVzTEduNG1JZ1EyeTM3b1lsV083UFVKM0RXcDMzaFpjTEJTaGFPUmw3Ujln0gG3AUFVX3lxTE1oSklIVENqSFMwZDI3Y2l4TjNHOEtGTmc4NFRkaTBNOXpzX01pLUlRNUJQNTN6NXQ3LVZ0Mk55UkdOT1FKVFNEYmRxQnR1Q1lCTHZRTWh4RllqdmdvRThHdjlyQ0w2bXRLdUVnRkVRaktrQllWVWI3WS12QlRGYm5fRkxiLUgxZGtDMHJLMFVQcDNvcEJQYU44a1FsQjZfeTJHeHFUOUEzb1V4WU1maWVzWEJPM1pLWQ?oc=5",
+     "source": "WTNH.com"
     }
    ],
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1
+   "direct": 1
   },
   {
-   "id": "top-irumwq",
-   "title": "Republicans pour money into dozens of US House races previously considered 'safe'",
-   "url": "https://www.reuters.com/legal/government/republicans-pour-money-into-dozens-us-house-races-previously-considered-safe-2026-09-27/",
-   "date": "2026-09-27T11:24:46.000Z",
-   "source": "Reuters",
-   "domain": "reuters.com",
+   "id": "top-1jnlxhd",
+   "title": "Some Republicans Issue a New Call on Trump’s War With Iran: End It Now",
+   "url": "https://www.nytimes.com/2026/09/27/us/politics/iran-war-republicans-midterms-trump.html",
+   "date": "2026-09-27T15:16:23.000Z",
+   "source": "The New York Times",
+   "domain": "nytimes.com",
    "related": [
     {
-     "title": "Where Republicans are playing offense ahead of the midterms",
-     "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQVkRBOWxYRW5uVDRaZkxoMDFDd2ZBLXNuSGN5S0dHa05wMVBMaENGZDFUeFZaS0ZmZ3ZjN1FRZXRiRExpeVZxZE5QaUVPTWJaQWwwaFpHclV3M0cwWnhkdVNKdDJIanZWcXhQdTJrbkNuUmtVMEtDZElBZDB4S1drcWMzYw?oc=5",
-     "source": "CNN"
+     "title": "US Senate rejects Democratic-led resolution to curb Trump's Iran war powers",
+     "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNMU45a3FvODBzSXpndWg1QUVuQzlqUmVJWjZEWUFXNWltVUx0Sm4zbDE1X3lFSnFYd2hQeGotT1YtejB1NU9lZDJKcnJjeEZqNkJtZkQ0anhFUG92V3pWLXlyQzhIalFwTzRuVnVvd3BGQ2tfYTJ3RUxMRlhlWTdTUFE3MnAzMUxmallxcE9SZU5ldmxJeE1fYnhyT0c5eG9lVXVydVg2TFhnbnFJYUFsOE56U194eTltTnc2bGFR?oc=5",
+     "source": "Reuters"
     },
     {
-     "title": "Trump Is Predicting Midterms Success but Republicans Are Starting to Panic",
-     "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNbHROZDdncUFtdmY1NXBMeEdmZzhIanR6UndsZ2pfb3JDeUI0aUd6Vm1MVW9kZnZJN2NJM2NQd18tWXRFMEdBREc1Uk5IU2taY3hiZ0ZmeTZWVVF6ZU5DT1hwVmVqazNUQ2E1M1gxY3NHWF9OeWVuWnp1SzVRRkxuQUFzSFd1dVRwU29pSk5fTmZUZC1ESDAxRWZtSmlIME1DQTB1LVdsX2l1Z19BYU5LZEVPSXJFZzdjUTg1Q3RIZw?oc=5",
-     "source": "WSJ"
+     "title": "How every senator voted on the Iran war powers resolution",
+     "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPam9taGdWcUM0TV9za3VfOHRSY2F3YVExYWxOdzVKdU5rYTVQeFBlemFJOEhoSGxrU2drZFgwQ1hoUDU3dzZnbUY4SEwwNDg5Q24zZERXTUxlV2pCY3dUOWN5SmVocTNLZFN1c1phT08xcW1FcVZVSG1SYXlEWmJlazF5UmxWYWMyN0cxR1V4UThlYlZHNlpnNXExd2w2QXVSNU92c1o1cFQtbk9JcUI1RGkyZ1Y?oc=5",
+     "source": "The Washington Post"
     },
     {
-     "title": "Republicans fear a blue wave, but the midterms could be a tsunami",
-     "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPSHNSOFFEN1hiSlZiUE9FSVZrazE4VEJGdjVNV0lMZDc3TXZJOXJ2S2M2dDFIVkR1TE94MVpUcEpQMDZpRk10NGdHekgzOFRzREZlaXB3X21zTFFGX3ZKblZxVkpDWnBLVDFxVEdBQmx0d0JUMmNBYXJMVTBRcVAzY201X0V2czlxZkhYS2h4TW5jNFFUQWNwQ1R1c1ZLUlFWNm1wV3dmSEJTSExoUUMwZUppSU5LUGE1WWZv?oc=5",
-     "source": "thetimes.com"
+     "title": "Republicans Had 690 Days to Oppose Trump",
+     "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1YZ0dGNXcxVWw2M3IyZ0d5cURIYkVrM21MdFpzbWxsS21OU19zWmlhUEhJZDhsOU90OVA3dHhFS295YjVYNF9DX2V6Z0FGZDBnTDlJRThQXzBLMVV3TUVDMVFLdlJiUjF6NmF4Yk5ucG41Sk55VHVCTy0wdGVvZw?oc=5",
+     "source": "The American Prospect"
     },
     {
-     "title": "Latest Midterm Polls Reveal Bright Spots for Republicans",
-     "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxORzFCQTVyNThJRkREd1NXb1g1dlhMRUl2RDNSRHkxVFBnR0phSnQzVFdHVEJlbldIV21DQ3o3MkxVRHhfV216SUp4TkoxR3dfTVJheGg0blV3a2pXU2U1X3ljcnRCV0Q5U19MWWM2aWNoYUZxS3ZINkRLRzZ3cEJ1OGxMY1UwcjJ3WDV0azJ3?oc=5",
-     "source": "The New York Times"
+     "title": "Sen. Jon Husted: Iran war ‘needs to come to an end as quickly as possible’",
+     "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOMTdVMDFtVHlqNm5hTmMwaGJYN1dBUDlpbm9rckE0OFZSV25qUWY4aWdoRlBjbU9LUDBySExmYVlIZ29CQkJMZTh2OTVsbWpYbHQ5R0tuSmVXOGhHNjdrX0Zub2tyTFBUYUVmc1otYjdFMTNzTmNqdHdkWmdOSVhrVENNVEI5NWVkQ3dybHVR?oc=5",
+     "source": "Politico"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z",
+   "seen": "2026-09-27T23:53:06.095Z",
    "direct": 1,
    "tried": 1
   },
@@ -527,13 +525,18 @@
    "title": "Georgia park mass shooting wounds 11 teens at birthday party",
    "url": "https://www.cbsnews.com/news/carolyn-crayton-park-georgia-shooting-teens-wounded/",
    "date": "2026-09-27T20:25:29.000Z",
-   "source": "cbsnews.com",
+   "source": "CBS News",
    "domain": "cbsnews.com",
    "related": [
     {
      "title": "12 teens shot at birthday party at Macon park, no arrests made",
      "url": "https://news.google.com/rss/articles/CBMihAJBVV95cUxNdUVZbjZlUU4zU2J1dmFQampLVE9yaDdMWGJqR0FtR3BlZmhPYlNkRGdYX2xFaWVqZEtqT2JFcVpsQjkteUtKY1MyYnVHRUZlY3ZiOEYwWVBQUmFxV3Z1clVUYlJKQWNyYjdTS1pxenUyVlJwSEtxSkRoMnFPS05PRldlLWItUEZ1WlduWXVESVFWNUtyQnRqTnZJWkNwUllVeHI0b3QxaVI1UEdwT1pSeGFaMUd4UzVObDBDenF0Yzk4cEYwUmdsQ1p4RVhnWkdRc3dVa2tKMElNTnZ2N1lOYzFfYjI4RnpBaVZYdEFDWjA5TDZYTkRadTZwVk9HUVczcGxHRg?oc=5",
-     "source": "13WMAZ"
+     "source": "13wmaz.com"
+    },
+    {
+     "title": "Sheriff: 12 teens wounded in a shootout at a birthday party in Georgia park",
+     "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPZUNKUjVLODdlTEVYTlNHbFlNUGNCX0FYZEdkODVXOGYyUVJFOXg5N0hKUVpVS3dIa1otc0NucVAtMEZic0JWRFRQRHd5a0t0VEdpMzA4aXBxU2g2cjk0UGt6R01TNnRWMUc2akxLeWYyVEtKcElqTFRLQW5RQVNPcWpVTVNqMUFaR2V5dHUxdXNMQWJYSTNBQVJscnhvYXl30gGmAUFVX3lxTE5ESFE2X0pXVExHQ25jVmNMOWhLdWxobjZpak01SDgyUk5HYUx1X2MwY2FoemZybkhncnpFYjc5QWFqMGJWS3BRNTlSMzhmRzR4ZTNfNERBVzU3TkZsNFRoNnA0TVNrSklIUi1fX28xOHFOb08yRFBfb3NQNmo1MXBKYTV3cVVrckRzb3d6SUhTMm1RbTd1R21ad1huY2t5VmJEUkZQbkE?oc=5",
+     "source": "ABC News - Breaking News, Latest News and Videos"
     },
     {
      "title": "11 wounded in mass shooting at Georgia park",
@@ -541,28 +544,23 @@
      "source": "WSB-TV"
     },
     {
-     "title": "Sheriff’s office: 11 wounded at Macon park; two teens in critical condition",
-     "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOLUFnTTVqRGI4TXNnbGRNZEQ3TVRtbmdkY2xQS0dZWk1MWWctSlllOGoxMHEzUHZGLXVJYUtKMnI5eGhyTzNzaWxpSTBIYzd2dlM2UmxST1Y5amMxUkhwV19PSkxseDIteHotRnoyQ0lTUHhyWjRSYi1NNWo3UWdQc1JvRldBaXZtV3IxekgzYXhzU3ltVFhCVTRZTFlMSmt3?oc=5",
-     "source": "WGXA"
-    },
-    {
      "title": "Macon park shooting leaves 12 injured, forces hospital lockdown",
      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPNXJndXdiWFlGMGZ5SFRpaTRZNnhMcWlHTVZIQmlNbmJKWTAwZWctZl9OSlJjRGNpcWJ2NHVxNkhUUzFqY3NwZ0xZdTZ3VzdBSnE2aEdpQ2J3MUNDQllEQzN6bUoyUUlvaXF5b0lHemlicGttSkZlZ29FT0lOOWNSQTV3R3RuSC1xcm9rRXZ3?oc=5",
      "source": "FOX 5 Atlanta"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://assets1.cbsnewsstatic.com/hub/i/r/2026/09/18/1e6ae70f-612d-41a1-b745-833461941637/thumbnail/1200x630/9fa7b5a9697fa9583838ca3fae4125d0/police-lights-night.jpg",
-   "summary": "The wounded victims were identified as four 18-year-old men, five 17-year-old boys and two 18-year-old women, according to the sheriff's office."
+   "summary": "The wounded victims were identified as four 18-year-old men, five 17-year-old boys and two 18-year-old women, according to the sheriff's office.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "top-sxvimz",
    "title": "Trump’s latest Mamdani lovefest comes at a bad time for Republicans",
    "url": "https://www.politico.com/news/2026/09/27/trumps-latest-mamdani-lovefest-comes-at-a-bad-time-for-republicans-01093811",
    "date": "2026-09-27T18:00:00.000Z",
-   "source": "politico.com",
+   "source": "Politico",
    "domain": "politico.com",
    "related": [
     {
@@ -586,42 +584,9 @@
      "source": "citylimits.org"
     }
    ],
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1
-  },
-  {
-   "id": "top-1cyu8yl",
-   "title": "Saturday Night, No Mask Required, at the Last Ditch Lesbian Bar in Massachusetts",
-   "url": "https://www.nytimes.com/2026/09/27/us/last-ditch-lesbian-bar-covid-masks-massachusetts.html",
-   "date": "2026-09-27T19:08:52.000Z",
-   "source": "The New York Times",
-   "domain": "nytimes.com",
-   "related": [
-    {
-     "title": "Greenfield takes stock of viral attention: Businesses, officials weigh in after coverage of lesbian bar Last Ditch takes national spotlight",
-     "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5iOThIc0hNOHlqSU5DSjZ3R0FHbHNXTUcxbW1qVVhzZk40bGVYVzRsQXVKNlpLclNKbW1fRi1PRml1d2hZSlVubHRhUVA2d3hTWGg1TE9hOHRiMnI0MURnT3dURzdMVWdUMGNmaEIycTNPV2NfS1ZOM2E5T0c?oc=5",
-     "source": "Greenfield Recorder"
-    },
-    {
-     "title": "Opinion | The Great Awokening is over. This lesbian bar shows why.",
-     "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNOGc2SWVJYkkzQ2YxcXk2Sk56eUdGNkNudU1yY3oxY0ZSM3MxZTdnd3NkUGk3cXhISHU0blgwa3VRTVViOTFtRzBBWGhYOEJvaEQ3QXJ0SUd5THBncFozT3JhSkVFY1JsaDJtR2VsQmdCUXNnZXZjN0d4ZHk5Zl92SV9KZmZHQnU1VDFERmdXRDVpU1k5dWtZMkozT1ZnNnZLS29mb2Nqd0tNeG1GQVBtdDlfSGE?oc=5",
-     "source": "The Washington Post"
-    },
-    {
-     "title": "Viral Lesbian Bar Article From Boston Globe Is Piquing Hollywood’s Interest",
-     "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNbElJdGw2dmZFNjBBb0dvdUpFeDJLeHlKRFU1Yng5YVFfTXN6YWlZZE5ORjdUS0NmT3d2WXA1VEVtc2szcmZncEJNV21fandSaGcyMEU3eVNac3B2aG9JMDJpUkhRV2Z6SFJndU1QeWhuSkNkb3htWVRyTGlvRElKNUJEX25Ecmw4VDhTUjRFci1OcGxQNkdjdDZ4T2hCZ19Bdmp3WDBUU1RTSDVXRmUzX1Zn?oc=5",
-     "source": "The Hollywood Reporter"
-    },
-    {
-     "title": "A Western Mass. lesbian bar required KN-95 masks. When it changed the rules, all hell broke loose.",
-     "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOYVNCTkx1VUViMUU0Q0FwazFRRkpNWjI4eHVvcVFPZzgycTF5ZzNrMm0waUhlMEhEc0xGY0tVTGVRNUJ4ZmRrUmRtZUxMZTVIWjFqTEpRZ0pINTBlclhTUUw0NDBONnZWOVJTN2lidXg2dkxMM1Fham1CbElpQlIzT0FpTXFwN1FweFJV?oc=5",
-     "source": "The Boston Globe"
-    }
-   ],
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1
+   "direct": 1
   },
   {
    "id": "top-qy2oao",
@@ -634,7 +599,7 @@
     {
      "title": "Serving at his pleasure: What it’s like to be in Trump’s Cabinet",
      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNaXZ1N1B6RnFrLWZHVVUySTVsVDZJREVvakdNWXFyUkxRVHJyc1l6M3NDc0IxZkw0b1o4RUNRQ2VxTFNENXhfeGNqUkpJV293NW9YNUstOGI1TFdFZnpOSldfam4wU3V2N2VETlpHd21LMi1OMk9DX0dzZ3cybGl0YmtVSjJmaUk?oc=5",
-     "source": "politico.com"
+     "source": "Politico"
     },
     {
      "title": "Kennedy Center Shelved Repairs Now Cited for Closure, Whistle-Blowers Say",
@@ -652,7 +617,40 @@
      "source": "WSJ"
     }
    ],
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
+  },
+  {
+   "id": "top-1l1y85m",
+   "title": "Tillis: Trump endorsing Paxton over Cornyn was ‘colossal mistake’",
+   "url": "https://thehill.com/homenews/senate/6113713-tillis-blasts-trump-paxton-endorsement/",
+   "date": "2026-09-27T15:14:00.000Z",
+   "source": "The Hill",
+   "domain": "thehill.com",
+   "related": [
+    {
+     "title": "Republican says Trump’s support of Ken Paxton in Texas primary was ‘colossal mistake’",
+     "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPaklnMnhXRFhpMTgwZkhMZm5nRkVWU3RFOTI0OVVkYWx3MGtwcUJJV2d6RVhwcU9aelplM0ViRXkweEpoc0xvR3oyNVBGdmtNRk14akYyX2ptcklPelAtTUFPaElKNEpCc3RWc21JQmFCX0EtUUdPeXRyazJHNUJjRGJkd2g?oc=5",
+     "source": "The Guardian"
+    },
+    {
+     "title": "Thom Tillis Says Trump Made 'Colossal Mistake' By Not Supporting Cornyn In Texas",
+     "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE16NV9kMTYzaTBqOXZ6Y0pNSmZtNEpJNHNzRXlVVjQtYjFqaHBDd3I3R216N1BONUEwR0JhekNRZ09ZS3pVbmlWdzRvMDRzVzNQNEdPWjVsXzhEU0poY3Y1Y3pfVFhwZDhKMGw1LWdGMHE1czdta1ZZ?oc=5",
+     "source": "sg.news.yahoo.com"
+    },
+    {
+     "title": "Senator Tillis criticizes President Trump’s endorsement of Paxton — The Guardian",
+     "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQRUR3Wlg1YWRtZ20xRHR1V0FtZlJIMTQ3OWc4aG5vWEFVOUl5VTZWZU5teXh6YkVXRmJPeGdvakxsWmdLWWs4OTNLQkpRZUdtOVl4VUhmc3h0b2thVVJDVnA0ak1IbjdZY05ZY1R4ZmFKMlc5NnEzM25uTVQyYWlLeFhWeWtudGZyVnpQcU84blpwLUJVZXgtTGdSOVR0TFUwQTlzTFhvQXA?oc=5",
+     "source": "UA.NEWS"
+    },
+    {
+     "title": "Thom Tillis Criticizes Donald Trump Support for Ken Paxton in Texas",
+     "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1BN25aVld1a1c0VTBfd3BBYTVvaFQzZlBKZXVhZXlOU0l2YWwzTmxTbFFtSkpLcmdvSnlBTzNwOFRkZlpXY1hOOXo4V21iY0NMUEh5NDJHdGtrQUxZMldjMWZIeWxYYUJQVDlOWXgtdnRoc0lk?oc=5",
+     "source": "SuaraGarut.ID"
+    }
+   ],
+   "seen": "2026-09-27T23:53:06.095Z",
    "direct": 1,
    "tried": 1
   },
@@ -685,11 +683,11 @@
      "source": "Reuters"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://s.france24.com/media/display/bbadf4d4-ba6f-11f1-92a2-8f3418d01115/w:1280/p:16x9/d993f9ad0c332534d5079604b8f3152ba7f0e398.jpg",
-   "summary": "At least 27 people were killed in separate mass shootings in Cape Town and Johannesburg, police said Sunday. No suspects have been arrested in either shooting, and the motives for the attacks remain…"
+   "summary": "At least 27 people were killed in separate mass shootings in Cape Town and Johannesburg, police said Sunday. No suspects have been arrested in either shooting, and the motives for the attacks remain…",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "top-a1p9dw",
@@ -705,33 +703,38 @@
      "source": "BBC"
     },
     {
-     "title": "Serbia’s Longtime President Aleksandar Vucic Resigns Post",
-     "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNNXJ1bXJBeEp0c1ZTTXVwcXhUbHdyVzJsN2IyZnVpck9hXzRVNmVnZm1aX2p3R2thWkcyaTBvNVU1WVU4bllzTWxwcHdvX2kydmpVLXRfRHpqRFAtUk84YVNfQWMwWHpORFlHNkk5RnJFd1B2VC1La2IxdEUxWk9Gc01vUlozQkNTUWxaRGZNTTNnX0g1Vl9BZml2NVk?oc=5",
-     "source": "The New York Times"
-    },
-    {
-     "title": "Serbian President Aleksandar Vucic resigns amid prolonged protests",
-     "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQTzg1cldkNGxsNm9JSVNKc1FrQl81V1B0TjRsVDRmQ3Z1dzNRd1dwbjl0U1hqTzhqN21CZjhQd1hWOVJGZkV3YnhEc2o5T1Q4bHEwZEtGRnhqdTE0RFEzMkNsSF9najRqcEVUQks0OTRvS2dJWEl5SnR2M0tLNlB3M3h0MFFkcFJkWnV1R2xnME9PRWphelh0NzlTMXBqSGxKZ1o4bHljZ05nM1nSAbABQVVfeXFMT2MwcnpKaTZQdnFwTjdOVDFIQXl5cHhTN1Z4YkNHWXpiWnZ5aHpwZTg5UDE0d011aG9YSC04UkJicW9FblFxd3JlRmNzYkw5SmFBOC1OYlRXSVF6MGNfRExKM25ETHpsLUY0TXVBTUJnUF9fQ2FLYUp3ZnI1NGpBRE8xV3hYc0NZQWhMZW1iT21TM29aempwQnQzRTJFN0JyZFZBQVdya2EwclhFMG43OGc?oc=5",
-     "source": "Al Jazeera"
+     "title": "Serbia’s populist president Aleksandar Vučić resigns to run for prime minister",
+     "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQMG5TWHBUdlI4NTdWZlJ2cDFvaG1yYW5peXJDd2prTVZORjRmOUlMUUstb0JxSjdIazdpOWZoVjNmUjgtb1NITnhPVW10TWs5Nl9aZk9vZDMyR1d1cnZqV3hEMzNQeEhDamJ4TllVX0FVMDVQLWd4T2hoaVd6Z2dscDhSY0tuQTlMaHU2Z2hCVktfTkZqUHYzSkdTeEp0d1I2MlpQUUp5WVQ3QQ?oc=5",
+     "source": "The Guardian"
     },
     {
      "title": "Serbian President Aleksandar Vucic announces resignation",
      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQQ05SczRhZUx6dEJrSXN6T3g5eldJTUFSZ2pnTnNYZzgzcXg5Z3VpVEVKQWo4OXRSM3NMLWw3R2d0aEVXY1l5dG5DN0dCWUZZbTVEdEFvdGt4eGJ1MkhHZFdJY0o4ZjBjOW1fdFlwRE44bDNsZnIwT091NlVTSkhjOVkzQXlYRjViOTJIQ3FtZDZzQXPSAZMBQVVfeXFMUFVpbUFIZGFxXzZ5WXh5NjAwcU5ZNU0zQkFCRVY5MTk0aXhkN0RJMTR2TDJuX204cE5lZnJVV2hzWW1ZeUE5R01wVXBCVHA0UWcwNUJlZVJpRHctNTMwYUpaOW9KdTNBTzNWVXV6Z0p6VDh4TzU3NkdOQmRlN3pCNUNHSEVFWEg2Wmtkdm80SG1NLU5N?oc=5",
      "source": "DW.com"
+    },
+    {
+     "title": "Serbia’s Longtime Leader Looks to Extend His Influence by Swapping Posts",
+     "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNNXJ1bXJBeEp0c1ZTTXVwcXhUbHdyVzJsN2IyZnVpck9hXzRVNmVnZm1aX2p3R2thWkcyaTBvNVU1WVU4bllzTWxwcHdvX2kydmpVLXRfRHpqRFAtUk84YVNfQWMwWHpORFlHNkk5RnJFd1B2VC1La2IxdEUxWk9Gc01vUlozQkNTUWxaRGZNTTNnX0g1Vl9BZml2NVk?oc=5",
+     "source": "The New York Times"
     }
    ],
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1
+   "direct": 1
   },
   {
    "id": "top-1oxhzua",
    "title": "Egypt Warned Netanyahu of Impending Attack on Israel Before Oct. 7",
-   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNaTZVb3hzWXBQeHRhaVVONlNmN1hHZXpwWVl2c085NnlhWlVwaFNvd2pFclRpZDhvTWd1aDhpU0N3cFd3LWxCb01SQnY0MHUzMnpPZHRTd2xvRUFkOUQyUnBlZ0lSemNjQXhQM0dVYnZFX3NfTnA0ZjEyTmZhNUZUNXI4Rk1rVFFvQjlrMVBJSEo5TTgyVHYtQWFfOWNwY2RSekdpZ0prUHRXOTZUc2lCUkhn?oc=5",
-   "date": "2026-09-27T21:21:48.000Z",
+   "url": "https://www.wsj.com/world/middle-east/egypt-warned-netanyahu-of-impending-attack-on-israel-before-oct-7-8e3d5ae0",
+   "date": "2026-09-27T21:21:00.000Z",
    "source": "WSJ",
    "domain": "wsj.com",
    "related": [
+    {
+     "title": "Benjamin Netanyahu received three warnings from Egypt including days before October 7",
+     "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1uY2VCb3V6MU5tUmFmV3phWUVpUnJxYzQwZ00tZmZVN1Y4YUJDdy1tS2NoaENPUWZxWGFRX2cweGF3U3lIMm1SdElMbnZ6YTloQWVfMmVRM21vcDc4?oc=5",
+     "source": "The Jerusalem Post"
+    },
     {
      "title": "Israel's Netanyahu visited Abu Dhabi on Sunday, Israeli official says",
      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQY0pGMVlCUkt6b01MNWJkNlc5WlA2dlV1bUs3MDl2LXhhWFU3MGVEenBLQk1SaHNSMU1LNlh1SUpDWUloTzROY0pvb3JnWjJOUmlFSXdiNDVEeXBsRDFZb3gyVUlOY1B3UWc2MVZFLXllN1BkVlV6SXNKWWx0ZVV2azFEOVRmSE84THhKX0lLZTMyanowSnNNb0ItOGc5blhxOVR6UDQwdXVpNVljMnpwbHJBRkEzYk9mQWc?oc=5",
@@ -743,22 +746,19 @@
      "source": "The New York Times"
     },
     {
-     "title": "Netanyahu flew to the UAE to meet Emirati President Mohammed bin Zayed, source tells 'Post'",
-     "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOWlJxaHRmQWxZRWVmZEhXVDR0ZUxBc0FmTkhtbmdpZ2JWQ05TQ3NWMGRQMGFlbkxUaHZPOG1YX0M3VUFzc3p2RHplcUVMUTVRd1NMZHktalc3Vk1QRkFCQXhIY2pDWkZJbFdvTVFmaDFOOGhqZW5nZEowSGNuNXZpS19DMzUxclc5Q0dKM0xmRkNfQQ?oc=5",
-     "source": "Yahoo"
-    },
-    {
      "title": "Egypt’s Warning to Israel",
      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOQklxVDJCUzBwV1hzOGVhWUpCeVl3VUoxMWs0NkpqdFp5dmJlUGtfazlyejMyU1BHX2hFYkNhZ2JWeEZTMHpOUThHQTJFUVkxWVV3QU5ZNkRpMXFSb3F1YTRnczQ0eWhOWmNVZVFPQ0lUNkhoVkkzdGhoWHEwemJZenlDZl9jSGgwS1lsREh3RXpPZzZhWGw3aWFPZjJOckg4dFpTM2dpNW9lekE?oc=5",
-     "source": "The Atlantic"
+     "source": "theatlantic.com"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1
   },
   {
    "id": "top-iybfc3",
    "title": "‘Please fight’: How an elderly woman’s eviction put Spain’s housing crisis in the spotlight",
-   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPUmhtdG5WUVNGLUdnMTE5cVU3dEJsWktGUVZySlMwZmNGcHpNZ2gyQjJ2UzRBLTQ3YlpPdUNzVGYzN3RPSkw1bENDSFhieDFaNDAtT0UwV05LWnhDbUY2b2RDMWt2ZnczVms0bG54cVdPQ2xfWklLakh4NjVOUUlXUVFMWTEycTNTVnc?oc=5",
+   "url": "https://www.cnn.com/2026/09/27/europe/spain-maricarmen-housing-eviction-intl-latam",
    "date": "2026-09-27T21:09:11.000Z",
    "source": "CNN",
    "domain": "cnn.com",
@@ -776,7 +776,7 @@
     {
      "title": "Eviction of 87-year-old sparks encampment protest in Madrid over housing crisis",
      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPajVfLXo0QUJYM3FjWldGS25aQ2dsYnJ5QXB0NFpuQWFETmRGcVdhTFpfZTRaeENKTktaVHZ6RF8tcTBoZGozTmYtdWRTR3JkbXdoelZXblVHMEN6UlVpSmhteFV6YUx3dTByN255b0NhU2VXNjRmUkcxcC1QdWJkc3E3SkVvWmg4cjNGM1lqOXhUNkJiWkh0T21abXpKNUE?oc=5",
-     "source": "AP News"
+     "source": "apnews.com"
     },
     {
      "title": "Eviction of 87-year-old puts Spain’s deepening housing crisis in the spotlight",
@@ -784,12 +784,16 @@
      "source": "The Guardian"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2296708012.jpg?c=16x9&q=w_800,c_fill",
+   "summary": "If there’s one name on people’s lips in Spain this week it’s Maricarmen."
   },
   {
    "id": "top-1qs7d63",
    "title": "OpenAI agents tried to ‘bruteforce’ a UN website",
-   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPbVRjTmdjdnpYT3VIdE14OEh1QmNSc041UkN6NFVuMjJlUFBQdVlVVTB1TFVwenFWa01BMFJMd0VGNnJ0b0x6RXJ1ck52VUUwMDYzWEloQlFFa0NObmVHUklDTnFwdklsaTRXc09EUlNWamdNM3Bkd3cxbnptUXVzWHZ6MEgtUVhjM0I1UzZnN2tRMVBwaFJXdXJGOA?oc=5",
+   "url": "https://www.theverge.com/ai-artificial-intelligence/1001178/openai-agents-bruteforce-un-website",
    "date": "2026-09-27T17:21:07.000Z",
    "source": "The Verge",
    "domain": "theverge.com",
@@ -810,19 +814,58 @@
      "source": "Axios"
     },
     {
-     "title": "EXCLUSIVE: OpenAI works to understand full scope of agent activity as user data leak emerges",
-     "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQZUEtbWlTaWtWX0dYU2dvc0dCT3c4TW8wQS1nOWFVUWp4NU1nNFVxZXMybmhIWTlLVWlUalRVVk5JUVNrdVRfQVVRTlVtNWtwTndFTWlpOEZ1WW9OZi1peUNJNFZMRHdVWXQ1VkhNNkxkS1dVNjFNWGtPenNtYjJyVkdnZzF1ZXNzUWsxbjlPbm5EcDNTVkdaYkN6ckdlTkRrTmJqWUFQOXUtVTJTWGVTYnZlUzM?oc=5",
-     "source": "Reuters"
+     "title": "World in Brief: Dozens more OpenAI hacks; Trump rejects Iran ceasefire offer",
+     "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPbFZ0MDB0TEpOaHFmeE0wWU1OR2dLYlA1Q3EtQUZ0M2ZRdUVySXV3NmdtV1AxX2JSMWZENTA5S2tvM3pySWdqS1JYVUtwM2JyRXc5bDhNYVJESFUtd0Z0RjlpY3NKTlJ6OXpTRDc2V0xFdHBPQ01wZzlnWUlpLU03RnZuN2U4anBDTXp5SlJmQ2tELTJ4NDVR?oc=5",
+     "source": "The Economist"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/gettyimages-2236154957.jpg?quality=90&strip=all&crop=0%2C10.736911387474%2C100%2C78.526177225052&w=1200",
+   "summary": "OpenAI’s agents resorted to increasingly aggressive tactics when they couldn’t immediately get what they wanted."
+  },
+  {
+   "id": "top-wzk47n",
+   "title": "Anthropic CEO Amodei set to meet with Trump after missing state dinner",
+   "url": "https://www.cnbc.com/2026/09/27/dario-amodei-set-to-have-dinner-with-trump-after-missing-state-dinner.html",
+   "date": "2026-09-27T19:10:34.000Z",
+   "source": "CNBC",
+   "domain": "cnbc.com",
+   "related": [
+    {
+     "title": "AI Breaches Add to Safety Fears as Trump Meets Anthropic Chief",
+     "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNT2JXcVRMWWc5ajJLNTNIdzdYeTNPellCdm5Pd3FKTjhUdTRGcmRMY1ZlOUZGM3RrcUxJdEFKeFRiaWRSYnVPWVVBbmdOY0U5OVdXNHppMEZ2QkY0T0ZhX3dBOUxyMnp0R0Y0VmZJVkNCTHQtd1lNRUJ1MUpITkVHUkVfUXEwbUEzSmJMVk96bkVSNnJ4djRCNTdvRTFTcW90VkI3bjd2X2otdTM3WTFMaWxiNA?oc=5",
+     "source": "Bloomberg.com"
+    },
+    {
+     "title": "Dario Amodei of Anthropic to Dine With Trump at White House",
+     "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQOUVEUkVPXzdxVUc2VXA2LW1nS3hRWVM4U3hwWmptYnRQdEZJbWZjeXZEczJ2NFpmWWMyNDNOSHl0Y0thUTFJd05aZTRRTDRqNFUzSTZMNnFYU08yMzh3Q3JMNF80SlVjR0FnRFJfcFRNN0tTdE1kamFYc2xrd0FVWmZObHdDdmFldnU3MmJBaERob045a190QmNkN1JyZXc?oc=5",
+     "source": "The New York Times"
+    },
+    {
+     "title": "Anthropic’s CEO is about to have dinner with President Trump",
+     "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOWUhaZ0QyUEIyRFpKalV4WHdSU05uU3ZZVVpFenpKNk9aNEgwT19kVTJXLXZpR192RFhPUkxKLXVFZHlmSzM1SmFrSGFfdnUzWXJFNjRfVHpoRGZkaDY3c0dJak44LXRiT2pCMHk1SDJaUElPaDVIT3V3UWxBWmRFRW9kYVJHVEN6Zk1uamNWcGxFcVJNWHJLMDBn?oc=5",
+     "source": "TechCrunch"
+    },
+    {
+     "title": "Amodei critics target Trump with hit piece before White House dinner",
+     "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOc1BGNXMwVjN2cld4Y1lKNDVDUXFkUnhobW50SE5xaDlJWjhWeHFnR2Yxc29IcVZjdEFiWkd6cFpRZjBqRFcwdTZjaXd5VVh6OG42azdkaTdsZ0JjRXVwcERod1FhdDZ5TGVMRjVfRmNRSl8wbnBPaFhDSkpkODE4UnZR?oc=5",
+     "source": "Axios"
+    }
+   ],
+   "seen": "2026-09-27T23:53:06.095Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://image.cnbcfm.com/api/v1/image/108342843-1785448090042-gettyimages-2280291466-ANTHROPIC_CIRCUIT.jpeg?v=1785448353&w=1920&h=1080",
+   "summary": "As top tech CEOs rubbed elbows at President Trump's glitzy dinner for Chinese President Xi on Thursday, Anthropic's CEO was noticeably absent."
   },
   {
    "id": "top-1ybui8w",
    "title": "Walmart says it's not using personal information to set prices as it expands digital shelf labels",
    "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOQm5IeVVqMlkzLWFCbm1VbXJ1YmxidUdsVDVEQjNwQmR1dHgtTXNkblRpbzJ0N0drSnRBVkNHREZiMUIyWUE1WTdEc0Y2NXhoLW8xamFtcGdSYzZBRzlmTWFMTzhfRGdsbmIyajd4TTJJN3ZURDZXb2M4Sk5LeWdyNmtteDdVekxKWFRldFl1X1ZVcnZYVEE?oc=5",
    "date": "2026-09-27T19:59:00.000Z",
-   "source": "AP News",
+   "source": "apnews.com",
    "domain": "apnews.com",
    "related": [
     {
@@ -833,7 +876,7 @@
     {
      "title": "Walmart pricing patents reignite fears that shopping data could influence what customers pay",
      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQbHl0Z1dFR040bmFCQXkwcWNPd3lEN1dIWkwtT004WElQV0k3RjBjengyM1VHZlZRckY3R3dxSE16WjkxMl9lQy1abEpraGVHNUFFaDJ3MWJxbHNfOFFiS2hmTFpaNURvZWl2WUl2UXE5UFlXQUVjTkdONTdUWUdsSjJ0NExmVlVNSktLNmtWRnJBZEF0MzJFWkdiLXNpTlU?oc=5",
-     "source": "Yahoo"
+     "source": "yahoo.com"
     },
     {
      "title": "Walmart chief rules out personalised pricing as AI transforms retail",
@@ -841,74 +884,43 @@
      "source": "Financial Times"
     },
     {
-     "title": "Ticker: Walmart expands digital price labels; Court OKs Pentagon ‘risk’ tag on Anthropic",
-     "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOdjZBUlZvZnZ5d3h1ZzV4RnV2bXM4ejRxWXFuQ3d3NEc4VWRCOE44LWYwUDNMMEg0ZHRyM3Izb1NRZ3ZOYVBRNDF1UUdtaUktR2pfMFVXRDhmTHVyR0tocEFYV0pmeDBoZ3NSUWdtVzQzRzhEUmxoVDdVc3Jmb0N0STV6ZVBfN0l0cHZCLVhobGZMN1pwRUI1NDlHMy1fM2ZfZ0ZBaXpacmJFNWZxQ3VMMU1QYk90VGRsdWw1ZXJOWkxXSEE?oc=5",
-     "source": "Boston Herald"
+     "title": "Walmart CEO Says No to Personalized Pricing",
+     "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxONlhpOWlDcEkxOV80aUNfRDJUME1VRnVsN1g5SWZLTVZFcW4yTnUyVHFYMzRXTG5McjRWZ196ajVuSi04Z1h1ZWhwcUlwOG05bDNUUUJuNlljYWhCd2ZYXzRmUXpnUnIxWE5tOS1CZldhRklfR09kN2NDWWJaanRXTTZ6Z21Tb1E?oc=5",
+     "source": "PYMNTS.com"
     }
    ],
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
-   "id": "top-1jl6efx",
-   "title": "China is playing a different game when it comes to AI",
-   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNM0Jrdm05el9wTV82MnJHMmZpeEhJNFU1OGZUTERCRk9NQlZWMTdQWndTeXpvS0pUaFlzYms5TGRmMEV6VVZ3WWVCZG5VaXhSRTVtTFY2Y2xBZzJ0bDk0b1RJd0VxcDY2UEM0RElDS1N5QkcxckpEcGlvaFBEay01RXN5cExMN19EUHM1X0lVa25xLUloMm00c1IwaEM?oc=5",
-   "date": "2026-09-26T12:30:00.000Z",
-   "source": "MarketWatch",
-   "domain": "marketwatch.com",
+   "id": "top-zuigo9",
+   "title": "Oil rebounds after Trump rejects Iran peace deal",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOU3FBcU1hWkxSdzlSbHdGdkJEbDR0REJsckozLWtuZGRwbXJvNU1kVnFMendhelM2Q3plNUFlUm1yZTljZDFiMEQwZjVDcWt2X011c193RWUtWTVlcEE4bjBKSWtYZ1A5MnhXS2hUSlVCN0lPcjhTRmNBc2V4ZERrclRaVW45NUl0cmtsb1g2d0s3SFB5NDRPc0lnRzVSZHZ2S0E?oc=5",
+   "date": "2026-09-27T22:25:29.000Z",
+   "source": "Reuters",
+   "domain": "reuters.com",
    "related": [
     {
-     "title": "The Chinese AI Infrastructure Boom: Introducing the SemiAnalysis China Datacenter Model",
-     "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5lRGJYX0NXcnNPdXdvcU1FSDUyUWVKbTE3dmNDZWJVR1YyM3dGa1Rjb3RfSjNrQ3B0ZGd3cUMtSlpkUmpNME40bHlEZnBxdmZjMWxscFFVZE1zWk9NVkk5M1Q5bjBJZU1lbVJpSkNzeVhQVmpkNUtTZHVwc3c?oc=5",
-     "source": "SemiAnalysis"
+     "title": "Oil Up, Stock Futures Slip as Iran Offer Rejected: Markets Wrap",
+     "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNVGEzeTM5UEZjTzRrYWs4T0hyTTAtRVpvWkJ3UFhUVUNxNF9fQTZBM0JHcHh2WFk4MlFQemNVM1RWMW9RQUh0ZUlEZlYwZ21obEJnRXVjOE5QM2ZFYVEtbHNVNmZ4bUdCRU9FaDRUa3Y3VGpsVHk2MzU1LVU2TmJSY3dGR05mdUhsQ2lnZGQzVndvR1dr?oc=5",
+     "source": "Bloomberg.com"
     },
     {
-     "title": "China's AI ambitions: automated factories, free models and a growing challenge to the U.S.",
-     "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOcFRHeFRveE01Wkp1SjRQNUoyamxqWlMxaC1UcEluN0V6RDAwWXVQTERkc3QzM1VFY0J6R1hkSjRUa2ZzMnB2ejdvT0tSRWZDMkVPOWllTXVGeDZtRnRzcFljRExsY2RyaGRkN0x2X3lwZi1YYUw4YjYzYmM5a1lDSHBxeHlFejlhYWhaYlpiNnNBZw?oc=5",
-     "source": "Yahoo"
+     "title": "Crude Prices Fall Sharply in Hopes of a Deal to Reopen Hormuz",
+     "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQXzBIbnhvWElnOU41SGpnUHBSRnJ2a2hReXNJcVNMTmR2dEJGanhtb0Q1MF83T0dXZVBfUng5SnBEZUw4QnN6SF85Qzl3czYyeDcyREExZE81U1ZKLUNVdElzZFhLc0RDeEZ5cUhMRHVMQWZKUWIxZTBtdXNJbTB0UHB2U0ZpRzluVllZcmJrdnR3NXFvTHRJTGNRRDQtWVZkd003M3owaW0?oc=5",
+     "source": "barchart.com"
     },
     {
-     "title": "Inside China's mind on AI ahead of the Trump-Xi meeting",
-     "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5OYnlnSGhuVlFKSUN1VXZkcjJqU1ZkeV96SmFZa2VIQkthQU14dGJURmdZaXpxVUF4MnZ2eTJ6VnQwNFk5MHRsQmVfUzNaV19tbUJwRHlXNmtSVUpEeEFQb0JzbExUNEVJWFpDNWhR?oc=5",
-     "source": "Axios"
+     "title": "U.S. crude oil falls nearly 8% for the week after Tehran and Washington hold talks at the U.N.",
+     "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOLWg0NGc2SjdwRnlqUG1pTU9kcnh0TmFINnBMd3ZiQ0hFcWZ2YkVONmpBS200djlScGE1cXhzUEJxTDBrV25QZ0hpNkFlbWNpbUtBTkhjOFBvWWZRd1NKMl9uODRYN0t5QWpFNl9zS1dvTEhTRjVNdzV2aS1xbkRZWmZYTURad1VQNFFjMGJKMXpXN01keVdyd2FremNrb3g4WTJSUGtR0gGrAUFVX3lxTE1kSlMwMkNPZ2F6TWdPM1F6bi02TXAzRzNkeTVUMG5oOWxlRTVONXNBdGstbklQLVhRcVdLMjdfMFFPM0lyOTBUU3hwdnVvc1kzN0xFYjJ1MWMtRG5YQWJ4MTBqekhfTFlxS3lOc1hHVktCV0h5UXI4NTh0d1FmaDJ5all3ZVdNVUd0cnplWUdlQjlnZDRxZmRWbXlNZ2xnUGRaSGtwTzBsWndJSQ?oc=5",
+     "source": "CNBC"
     },
     {
-     "title": "NEWSLETTER: Funding frenzy, chip wars, and robot dreams: Inside China‘s AI boom",
-     "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQQ1hSZVA3UXRLNWE3RU8wUWRTN3Z5SGRTQWkzRGRScVVHdDhfWFliZXdLSXlDdzdoX3NhN3BjdzNEUTJ2NmJRMVYyN2RteUdidHd0ejNtS1hZSlFPUWw5Si1GblRRQktKM055MDQ3V2kzWlVuREpNSmJZelozbFZuVGU2MW1STXdqN09mUEJRa3hHUkNXbEdRUEhBV0gzVHg4RjRmQ0VRcExrNURXZnExcURyWmVheEQwSTVDTEhCODJGZUNWV09OSUFn?oc=5",
-     "source": "Reuters"
+     "title": "Oil prices back up as U.S. and Iran trade fresh threats to expand 7-month war",
+     "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPSWU4WXp4UDJYb25pa3BRYTNqSW1rcFhDdF9vMXdoekszMG1JbEttak9SWDhnWnotU21ucFhVYlByOGQwaFdoRE1DeU04WXVjTVN2a0dmSzJoR3VsNGozZi0zQ0tNbkdMRkVRd0Z3MzE3QnFNWkNpYTgycTBqLUJ3QUNYN1hWVFA5NGdnS2JycV9KUTE1VnBQcQ?oc=5",
+     "source": "CBS News"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "top-mbdwuv",
-   "title": "JPMorgan doubles down on diesel as record prices test inflation",
-   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxONEV0R3ZqUzF0NzA0M2xkaDllM1k5VmRGVTh0ZE9Hc1BuV1NmdU5ELTJra3RSTUNPVERPMmtVNUN3QW5RQ2Z3d2JUSTZucGZ4VkxLa19oODBiYks1cUJoMEZ3c2hGMUhrSHE2eEpCdHFIXzVJallCU2xQeWNRVThzdE5VZ2FmcGpTQnFnU0VxRnZTc2JGYWRjR0lBa0h3QQ?oc=5",
-   "date": "2026-09-27T16:37:00.000Z",
-   "source": "thestreet.com",
-   "domain": "thestreet.com",
-   "related": [
-    {
-     "title": "Utah truckers fear cost of diesel fuel may run them out of business",
-     "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxONGlJdjg1SkVoVVU2emN1VENENDJ3LWxYZkdGdlpoeW9XS3VFbDktMGpoeHc1OHEyQUJhaENRcXNWZTBSbTUzR21SU2swLUdOUzk0WjNGRzRTdnE2Z29zYVZiZUJyQTFsVEpvWVppcjE0YjdRTDRuWEpSUG5wWVE2V051aGtyMS1YZ1lQMlA1eWQtR0pueDhndW5CcEVsV0tqZXViS3J2NA?oc=5",
-     "source": "KSL.com"
-    },
-    {
-     "title": "The surprise winners from record-high diesel prices",
-     "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOaU1DV3gtNXl5VFlPODd3bzYyXzViZkZhSDF1MjgxU0tGc3hSaXdEcWF3eHJSdFB3aDJDczF0ZnFZdG5mWVhHTTk0TWFVcHhKNVpTRUJ4NVFkbkRSbGdNdVd4OUF0cnluYTZGRGFDdUprbDZOSGJvLWFqVTZtdVlzclVVYThvY2dvWE9haVhiMmNhdW1SZVBFZ2tKWTBPMkhQUWc?oc=5",
-     "source": "The Washington Post"
-    },
-    {
-     "title": "GOP rep says Americans feel ‘fatigue’ in diesel prices increasing",
-     "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNdnpTYmV6M2NTVzVOdEdWZVRCR1pDMEN0aEtraHpSMVpYbGRTa0VWeG1FSEl2T2xaekxtd0VHbHZxT0JvU1NfMU5wbmdqM0JwWHMzZ0ZaUE4ta3dzbUxTbWZKVmp5TDhrTFJLVkxDWDRtZTl4MjA1dVNfOW5vM1h2WtIBhgFBVV95cUxOMndrR0hSNnRBcEhBdGhYQ242MkxmWjM0aHRJMTBQVkJHUGEyb2xHT3hfSVhCZVFpSzhXLXpqUjFwQk5vODhxMlJGRGtDSjJtaGFST0tZZkYzcHcwUmdJUE50M2l0ZXV6ZDd0ZGhmTG9sXy1sclpmUjlMRFJZMWhKczBNZ180Zw?oc=5",
-     "source": "The Hill"
-    },
-    {
-     "title": "Global diesel shortage likely to last into 2027 as storage tanks drain",
-     "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOLUROTUZDbzRZN3VncG9haUs0bGR6TFhhQ3JZTEYzZzUtVE5BV3c2SGE3dVFzN2JRS0xfYUcxdW9zay1yXzBXakItRDM4SnhYb3FudmdISGlhVGsycDhhY0FxazdVU21HdW9oQXFSckF6YlVETl9wSzJhbEM1LVlFZGM2VEpJbUZlcVY4bGs4aV94Qmh4Z3ZpTFRibVItNHFfWk8tSXhlb3hMRng2VHlmdHBMYnEwVWs?oc=5",
-     "source": "Reuters"
-    }
-   ],
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
    "id": "top-1y8vp9g",
@@ -946,7 +958,7 @@
    "title": "Amazon Just Knocked $900 Off Apple's Latest 16-Inch MacBook Pro",
    "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE12OEJtUWIxNlFmV1pnM2h6ZDJLdUhibmZ3ajVGeUV5UHRhZndSRlQ4ekJEaXVxMFA3bmhzYXVnRXNIcV9HNnlIOW1MLXhiX1J5aWRGaGc4amRQZks3SmRneVlCTTRaVV96VF9OUXNWZw?oc=5",
    "date": "2026-09-27T15:30:26.000Z",
-   "source": "MacRumors",
+   "source": "macrumors.com",
    "domain": "macrumors.com",
    "related": [
     {
@@ -1004,43 +1016,43 @@
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
-   "id": "top-160ekmh",
-   "title": "Report: Apple working on new Vision Pro, with different form factors on the table",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQb0c0alNSQlhpM3pLNXoyR1VNSHh5QlVUQXMxYTVNdzBRLTF4LWNYelBFNHpUaHB1clFZLVg4YzZMSmYtRlJrMGpEWmdIU1d2bTAtd0dZUkgyempzS1FyOE1CTjdOZ0VqUTFrT1EySEdzb1lEcFYtZUJLVlhCYTZPaUY5ZEQwQQ?oc=5",
-   "date": "2026-09-27T14:47:00.000Z",
-   "source": "9to5Mac",
-   "domain": "9to5mac.com",
+   "id": "top-2pcl24",
+   "title": "Here's the Apple HomePod Mini 2 in all its colors - GSMArena.com news",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5RNVMwT1BUTFFVYXlUMnhidEhKXzVhVXM2c0JaN0NWenZrQ2F4SlphOWFGTVFHeWFvMnVWQWhpZEQxX1FGdlNYVzN4OGpYcld4YlQxOW9MenoyM1d1eGdodU8xNTV2MHp4d3FzNmFXQ0luNmNFRktvOTJNQ2R4TXfSAXtBVV95cUxPNFZYOGo4XzNWMDFlX3I3ZkNPQ2ZDVFRUWWpGaU5pQWhUS3dfeTNMR1J5eFNmSjc1bERJVm9WMlp2eExWTEJNX3YtNzdDUVVXOVpjYzB6UGJsQU1rTDZRTFRCR3NyOHcyX1dndjVPVnRjTlBmM1ZrZGlKTFE?oc=5",
+   "date": "2026-09-26T16:01:02.000Z",
+   "source": "GSMArena.com",
+   "domain": "gsmarena.com",
    "related": [
     {
-     "title": "Apple Vision Pro's development graveyard exemplifies Apple's '1,000 no's to every yes'",
-     "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNdUt6ZlJVUW5mSTJRYi1aM3p0SU13RE96TFFPQ0I0WlZjcjU3dlIzR213ajBUZUVNN2I2TEFxbm5RRkxFQWhWVjlIY2xDelg2ejRHSFhvN2p4SHNaNWtOV2JNdlp5ZXZOY1ZqdVhnbkFGeUFITGZkWnNuOUVPM2p3ZDV1a2pSWGpTQ0pGYXBWQklpTTUwUndiNmtMaGJJd2Y5OTZRcmRjSnBuZmxIWjZzdmYySE9aWGNZUDJ6NWtwajU?oc=5",
+     "title": "Leaks reveal a new Apple HomePod mini, iPad mini, and Apple TV 4K",
+     "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOTjRsYU1ZeTBnNGNFSVBZdDNFZmZPNm9OVUhaMThtWWoyeW8zUUs5eVV4X0Ytamd3U2xvcFdiOEw1bHJUMGZKbTF1cFZkMWFub0tmcmdhUHBSNkNtQURIdUFLQk5FLU5lY2NWa1RvNnEtZjdJVS1vZ0VxU1N4X09OTC1nUTNyeFNXWmhyZk1NeGhFRkljLXdn?oc=5",
+     "source": "The Verge"
+    },
+    {
+     "title": "Apple Code Confirms iPad 12 Specs: A19, 8GB RAM, N1, C1X Modem",
+     "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBpSGk5N2V5VFVtb2dLWG1QeW1wbWdYdloyNDRmMkVhZUlIdTNyVUxCTEFVZ3hnZXpnSkp5WWxuWlVIVTJBUGFsUThxWEs4UjA1UnRpTy1FRDRtbURDQm5sOHhsbHc3REx5U3c?oc=5",
+     "source": "macrumors.com"
+    },
+    {
+     "title": "New Apple TV 4K leak confirms a very familiar form factor",
+     "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPSG1PQmdPVUJKbXFXaDVPdmpRSkljU2RUQjBKajdUWTgtNlZmbjNvNVRjUDA2M3U5eFFZVU9GNnlpUEU1UktVOVRoQlVvUC1USHFGTUFIWXNfdjUxSmRSc0lxUDVKLTNHUG1IVUEyWjVrZTJhbUNacFhESjBOV3BMRi11bm5jcDFvNVlCTmhvSm5wdnZaTmdOQ2FqRnR1bW9KVWc?oc=5",
      "source": "AppleInsider"
     },
     {
-     "title": "Apple's N224 Headset Is Testing a Meta-Style Puck That Some of Its Own Executives Oppose",
-     "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQYVU1N0VGTE5kVFRCX0JFVVdPOHJGRjl3amo1QnhxR0tCQ3NpbDBfc0kzOVMyVG5ZbDlEN0hiZjl3YlhxVXk4WW1IUHZTOXh6OWpPSkNIS1NkbnVKUjhnTGU0YmlCa3pSMWoyVFpWMzZyZXZMQUw1Z0xnRjN4NWJZOWhkeTlIUQ?oc=5",
-     "source": "vr.org"
-    },
-    {
-     "title": "Work continues on lighter Apple Vision Pro successor, report says",
-     "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQcmZGMDFNb1loQkZmNXNGWTU4UU1mS2JfVk5tU28yUEhHekVCaFJmWlppdkJpVTFCblpVUmxhY2JJam40eFdiWFdzNDBGbHMzUEV5UHlnRnUzeGdYc0NhQ1YxZktkV2xON0FIZmRsMjh6dTdRcHVUdXpzdjlUNlpOX1h0T1FXSkVJTDBBTWJDQkhwc2J0aHhNbTA0dEFfbFlOU1huX0RrekV3Ykt0ZzY5X9IBtgFBVV95cUxQLVNPenpqY2RGSGdnbEU2X2ZQVkpxS2ZINVVFNXliTnFmTzFxU1p4OGgxWVlvQ3B4eHhfQUJ6NHZqbEpIdEhsalg4Rm1kUGwwbmxIZldZSVYyV0diaDBCYkVkVTN0Q0tFV1FpU2ZhRUdPV3ZxTEx2eGp1Zm8zT3RWbk4xbXFaSm1ZSEhHWUhSTmlxXzEtd3pIMG1PRFBiUkswLXh4aXVVN25YV0ROdlc3cHVqWm02Zw?oc=5",
-     "source": "The Apple Post"
-    },
-    {
-     "title": "Apple's XR headset plans are supposedly on life support, as it experiments with new design ideas",
-     "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNV2FBOWt0WTBxX3VTZWVEMEVCYXBTSW5YTVp3YUdSckJZV0FoU2JGcmNxSDNfdk41TldReXd4NGtKYnVBVW9idWNDdGlpNWVNYW01cEN3dFo1b2daMi1ZMkRpZVgyT29CMU9OX18wdlQzTjNNMGItU2t2ZTUwRUFrRDJhanZLSDVHYkxzRURkN3ppY0tBY2FRbmhLbWUxZzdQd3hNTzF2NXNQZ05VS2xpUk1odGFWVE9qWFF3SzNUamxGUQ?oc=5",
-     "source": "Digital Trends"
+     "title": "The next iPad mini is shaping up to be a monster upgrade",
+     "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQT2VlYS1UdVNZSE9GQjRiRVhGTl9JY3hQV0FWdU5GRTlOZkNRYlFHbXlNNzlNdmJ2MmNTSDZvQnFLT1czSUl4c1NCOEY1QWtOYXBvbzNoNE56dEFXbnB6VXZGMjlrRW5ja1h2UTF6RGFxY3N2Y3JFNjNSN1F6a1hnLUg5U2dCUmliaWtoeUxNVXpXcm01MGFXN0xLMDY5THhUcU1xeG5B?oc=5",
+     "source": "Macworld"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
-   "id": "top-9cpzu6",
-   "title": "Where to Watch the 2026 VMAs Free Online Without Cable",
-   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNc2ZTcmsyLWZ4bGFEYWlHWloxeHZsbTZqVUE1dTdRWmg0bnNHXzMxXzlWbDlnQ05GNmFITy01Umh4bF9DN1RlQVpQN196ejhVWjI3enFmc1d3d3RoQjhaWUk2S2dyZDNXWjBOYjhIbEVBektJdlhKckljVDQtODF6UE42RVlXYU5TRFdZbDhVMktPV2JaZ01qdHVJUHBiSXRVcmxSYzBLWTU1UzFCdnhxWmxJOUxXTXBHS0E?oc=5",
-   "date": "2026-09-27T18:00:46.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com",
+   "id": "top-1fn92o",
+   "title": "MTV VMAs 2026 Red Carpet Outfits: See What the Stars Are Wearing",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNWHhNOWxOaENELTk5dHNtSVIzck5JRF83RmNTY1Vxb2txbGl0SVdzOXZMbjBjTU5RZTlTV3loZzFuT0dWWE5yNTJ6ZmRLU0RrVzVqbzhvM1g5VHE4X0tKcXNRU0gzUjBCQlJxcUNVb29adDU5SkJ1NFBtR2pEYVBXYW1MSm53aE5RbllEcXlB?oc=5",
+   "date": "2026-09-27T23:29:58.000Z",
+   "source": "TODAY.com",
+   "domain": "today.com",
    "related": [
     {
      "title": "See All the Stars Arriving on the Red Carpet at the 2026 MTV VMAs",
@@ -1048,19 +1060,50 @@
      "source": "People.com"
     },
     {
-     "title": "The MTV VMAs are here with Taylor Swift making history and Madonna leading the nods",
-     "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOTGNvTURKLThDYTdwbW03OUhTZ0syQWhwMGdfU2FnZGZvbnl1THhZMlpXakxPMlA4cUNma1VIbjg4MVk1VGtPQWNweXprUzBkWU11WXhzQUQtSkNnV0J0R2d6QWlPeG93cGlsZkw0M1kxS2Z1T0ZLMkpsbk9nbnc1bUl3?oc=5",
-     "source": "kcci.com"
+     "title": "2026 VMAs: How to watch live, who’s performing, full nominations list and more",
+     "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxPNDZteGoyWUM5bDRSR3lWcG04dFE4YzFfWUluaFYyRl9LdlItRXRoSGczSk1kNFMzLWtaZW9rMFptSkJra0NUaEtuMlI5MU9uOXFJLUQ1NGY4VHg1NFVIWVJaUDRNRHpmTEE0NmJXRXlsaTI4VkM3OGJlY2tpS19hZkZWeUhjaFRmUFdzUmF3a1pmQ3o2M1JVZUpUcnFhbnM4OVlkTkpqWkdjSkVONndFRWJnYTdjajlrSjhHQnBacFE2QnBvWVZSNTJPSnFVUFBpTlBFMjJqT1JkekotcVhBT3NSZHdGa29OT21BUWNKTTJaY2s?oc=5",
+     "source": "yahoo.com"
     },
     {
-     "title": "Here Are the Performers & Presenters for the 2026 VMAs",
-     "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQVDk4cGp4dnhsLXlYOHhCSU45M0UtVFF5MGZhQ29tNFhBZnJwY0FVYUNFYVV1dXkzQlNqOFF5T2psbVE5ZURYOTJ0ekNTNEg2UTFXRnJETTQ2Y0R4WlZrczhYbXM5VzFfa01WNFlaV0hKZm9ob0JaMTJfOVEwdmFlam13UUhSZEdLUGJxVVhWVnJBR1JtNFRR?oc=5",
-     "source": "Billboard"
+     "title": "Madonna set to perform at the 2026 VMAs today. Here's what to know and how to watch this year's MTV awards.",
+     "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1iTy0yUmVwNF9XalJlTTF0ckdHUnAtSk1WeUx3SzlzYXg0OVZ1NlJTbzN2eGFBck9xYnczYjduVl81WkJETEItUkF4RFpxSlhocmNHVHZCZHZmcnBYaGthejM4eWhvNklfMzRjX1BBWTU?oc=5",
+     "source": "CBS News"
     },
     {
-     "title": "Things Are Getting Spooky Scary on the 2026 MTV VMAs Red Carpet",
-     "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNOW5nbHdXcGpmVUZHcS1fWVh3bXlaYm1oMTRoN0k4VnBmTTI3LUVuVUFDd2JsSHpzLVVFZWU5SGJtTTlyb0VoWGRWR1JSYjB5dW1OODRRZWhZcnV5M2RPYjdkMWRIVE5ISDZ2RlZoTm5icS10Y2Qyb2lOSjhxYWpJa0RBQk9iNV91Z1E?oc=5",
-     "source": "Vogue"
+     "title": "2026 VMAs Performers And Presenters: Full List For MTV Awards Show",
+     "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNcGxCS1kwelhqRkVFSkRpeDFWb01lMnF6N1FhbFNETGNVSm5sdlpxRWFDazhndW54R04tOEctRXlXaVZkVDVVXzU4S1hDaHNHcjFTdUNUNEFxR01jaGZPdGp4TzZwMGhOcGVYNUR1SEpQTkljaXVxTElxajYwWFNiNzZmclU4NG5reVlkSFF1US1fR3RTMXZvM1BOTWN5RkozdHpocTVYa3YxY3piWkx5NEwxVEc0blE?oc=5",
+     "source": "Forbes"
+    }
+   ],
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
+   "id": "top-1ipzit4",
+   "title": "'SNL' spoofs Trump and Mamdani bromance, skewers Natalie Harp",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxONVRrbE5CYzlRazczV1ExaF9ySHQwWDhIYk5wczhPbWxuaWJicWZwcXViVUZqU210c0YyOGlNcUVCRVFvc3BiOGk4SXNQWTBrdVFuWE5PWkZkMXZHNUxmbFdGS0x3RE9HV3Rfd3gyWEEwMEwydkFvd29BUjlHdk56OEdnTm9KeVhRYmFuR2NmVUpUclFVRXRocWpBdnpmS3pQdWFlMU5DY005RDBZMXZrOGQ2RUtmTF9ITTdCc0d0XzhHQWdSbVkxcVo0d3U?oc=5",
+   "date": "2026-09-27T19:57:00.000Z",
+   "source": "USA Today",
+   "domain": "usatoday.com",
+   "related": [
+    {
+     "title": "‘S.N.L.’ Season Premiere: Buckets of Rain, With Jalen Brunson Reigning",
+     "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQeWlMZ2xXY0UyTE4tNmFyWXp5MUhBZEhRQ2tna2hQZEhBQUx1dDdhc3ZEQjJMOTJFQWtnM1pCWlhuWmc1YVZvN3EzQ2ZmbWc3NU1Jd183NDFZWU1wS3lkWWFMMzI2a0N3R3hhT1VvcDU1TzVYd3N5N3VMdFE5RlpHOFNmUHYzMVcxNjFFN0NvWUpLZU5FYUtRcVRLRnUtSGdWVnc?oc=5",
+     "source": "The New York Times"
+    },
+    {
+     "title": "Saturday Night Live: Jalen Brunson makes for stiff host in underwhelming season premiere",
+     "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOTkVOSkhPS2YxSmF3LUZaSk1DdzBpeVJrUVJRaE5URVhVdTdNWF9ETkR2R2Vza0tYd3d5YlhPZVU3MHpiNlI1VDRqZnN2T1lLZ3NKU3dQZGlIaGx6V1EyZ1kwWjVqQlNCZ0dyV2h6RjBPUVBuRmpWdE1BSFZiUFBLOVg0UWFieC1UVExUZkJvcm81ZkdYbGxPVTltZVdMSzAyZ2Y3cQ?oc=5",
+     "source": "The Guardian"
+    },
+    {
+     "title": "‘SNL’ Cold Open: ‘Totally Normal’ Natalie Harp Threatens Mamdani Over Trump",
+     "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOWFJzRkltbkdhRHZyTlNLa1NqSmdYRjgyTUtSbEN1OHhySzJoYWdmTEhVUXJaNEtYR3Q1STJpTmYxdFNtdkpIbFFSWjN4eTA5WkNZTnBoN1dfTU5pd3dseG12eGMzd2dudDZLemo3OUJFZ0lHcnpnV25teFlBb3pmMVBsWDZTanVjY0RCR01GZHk5OGlMZ0xVT2dyN21iOXBpVi03M2dSNnR0eldJY29wZHd6Z0N4VlFBcUFEV0NCV1RaOEl3WU4yc1Jn?oc=5",
+     "source": "Rolling Stone"
+    },
+    {
+     "title": "SNL pokes fun at Mamdani-Trump relationship in season premiere",
+     "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNYzJEQWY4aUtlN0RZU0Z3VUNmQVh0UUtkeC0yWXVObGNKTWlYcTV2RjZjOGZyTklIQ0tKWGJYZFJPT05nT2h1V20tcGxFblhCWG5VdjdLc3FoQzBPTXUzR2NBdHFRRTBrSUwzRGw3ZE5Sd3g0Vm03LUpCQjhYUDczWkZlTzEwSlRnTmNEeTZQUzRTQzBGbGx4a05Uc1o1ZWdyZ0F2ODVzLVM1QXptbWFYVkZBejZsdw?oc=5",
+     "source": "The Washington Post"
     }
    ],
    "seen": "2026-09-27T23:35:45.349Z"
@@ -1097,42 +1140,11 @@
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
-   "id": "top-1ipzit4",
-   "title": "'SNL' spoofs Trump and Mamdani bromance, skewers Natalie Harp",
-   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxONVRrbE5CYzlRazczV1ExaF9ySHQwWDhIYk5wczhPbWxuaWJicWZwcXViVUZqU210c0YyOGlNcUVCRVFvc3BiOGk4SXNQWTBrdVFuWE5PWkZkMXZHNUxmbFdGS0x3RE9HV3Rfd3gyWEEwMEwydkFvd29BUjlHdk56OEdnTm9KeVhRYmFuR2NmVUpUclFVRXRocWpBdnpmS3pQdWFlMU5DY005RDBZMXZrOGQ2RUtmTF9ITTdCc0d0XzhHQWdSbVkxcVo0d3U?oc=5",
-   "date": "2026-09-27T19:57:00.000Z",
-   "source": "USA Today",
-   "domain": "usatoday.com",
-   "related": [
-    {
-     "title": "‘S.N.L.’ Season Premiere: Buckets of Rain, With Jalen Brunson Reigning",
-     "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQeWlMZ2xXY0UyTE4tNmFyWXp5MUhBZEhRQ2tna2hQZEhBQUx1dDdhc3ZEQjJMOTJFQWtnM1pCWlhuWmc1YVZvN3EzQ2ZmbWc3NU1Jd183NDFZWU1wS3lkWWFMMzI2a0N3R3hhT1VvcDU1TzVYd3N5N3VMdFE5RlpHOFNmUHYzMVcxNjFFN0NvWUpLZU5FYUtRcVRLRnUtSGdWVnc?oc=5",
-     "source": "The New York Times"
-    },
-    {
-     "title": "Saturday Night Live: Jalen Brunson makes for stiff host in underwhelming season premiere",
-     "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOTkVOSkhPS2YxSmF3LUZaSk1DdzBpeVJrUVJRaE5URVhVdTdNWF9ETkR2R2Vza0tYd3d5YlhPZVU3MHpiNlI1VDRqZnN2T1lLZ3NKU3dQZGlIaGx6V1EyZ1kwWjVqQlNCZ0dyV2h6RjBPUVBuRmpWdE1BSFZiUFBLOVg0UWFieC1UVExUZkJvcm81ZkdYbGxPVTltZVdMSzAyZ2Y3cQ?oc=5",
-     "source": "The Guardian"
-    },
-    {
-     "title": "‘SNL’ Cold Open: ‘Totally Normal’ Natalie Harp Threatens Mamdani Over Trump",
-     "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOWFJzRkltbkdhRHZyTlNLa1NqSmdYRjgyTUtSbEN1OHhySzJoYWdmTEhVUXJaNEtYR3Q1STJpTmYxdFNtdkpIbFFSWjN4eTA5WkNZTnBoN1dfTU5pd3dseG12eGMzd2dudDZLemo3OUJFZ0lHcnpnV25teFlBb3pmMVBsWDZTanVjY0RCR01GZHk5OGlMZ0xVT2dyN21iOXBpVi03M2dSNnR0eldJY29wZHd6Z0N4VlFBcUFEV0NCV1RaOEl3WU4yc1Jn?oc=5",
-     "source": "Rolling Stone"
-    },
-    {
-     "title": "SNL pokes fun at Mamdani-Trump relationship in season premiere",
-     "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNYzJEQWY4aUtlN0RZU0Z3VUNmQVh0UUtkeC0yWXVObGNKTWlYcTV2RjZjOGZyTklIQ0tKWGJYZFJPT05nT2h1V20tcGxFblhCWG5VdjdLc3FoQzBPTXUzR2NBdHFRRTBrSUwzRGw3ZE5Sd3g0Vm03LUpCQjhYUDczWkZlTzEwSlRnTmNEeTZQUzRTQzBGbGx4a05Uc1o1ZWdyZ0F2ODVzLVM1QXptbWFYVkZBejZsdw?oc=5",
-     "source": "The Washington Post"
-    }
-   ],
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
    "id": "top-1d29j41",
    "title": "Why Taylor Swift Isn’t at Travis Kelce’s Chiefs-Dolphins Game in Miami",
    "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPZVY2ZVJNc2wwbVozTDlfbElrTkpwUHBmZEl3RmFUNGVPaVhOcUVzaDh0Wl9TM2RTYzZxQjNlb1FmZF9VSW1xOUZDcEpHWEVkSDB1dTEzWHUwZkNGWmJiZVRGcmlIcEdXT28yU3ZMYWRNQlAyT29HbFdkYllzb2Z2LTlBYnRuVGZXX3loSlJHbk9zNGlmM2pn?oc=5",
    "date": "2026-09-27T17:27:04.000Z",
-   "source": "Yahoo",
+   "source": "yahoo.com",
    "domain": "yahoo.com",
    "related": [
     {
@@ -1141,14 +1153,14 @@
      "source": "People.com"
     },
     {
-     "title": "Why Is Travis Kelce Not Going to the 2026 VMAs? His Absence, Explained",
-     "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNX1lLNzFvTHRrRXlMem5jY2d3QWpXYWZjWlAwbXBFTEVSRjhjQlZIWXNWbFdFTnlVWndIS3EtQ1JCTEFhdzB4bWRoTkp0cE9aTDBuT3ZiV1NqSGR2amNScGJWTDBCNDlRRUtjZEJ1eV9mNW8tUHhZRmIwRlgtOFBpcVZNLTE2Z21OdUY4NFpjTjUtbVpNUUgw?oc=5",
-     "source": "TODAY.com"
-    },
-    {
      "title": "Why Travis Kelce isn’t attending the MTV VMAs 2026 with wife Taylor Swift",
      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOcXhxVEpBNHBNY3dfY3o5V2ZEckxNV0dzcDNBeVJOaFJzRWFpNlhmWm1lLVM4emJKSERQeXZuZHV0TW9pVlJlUHF1R2tOUlBFX3ZqZDdMb3IwVG1kS3dMRFdtRUl6dlRNVUN1dlBESDU1ZEYtc3pyR09TMDd6OFhHMWlKd3Z6WHFmSWplMEg4R05MZHhzLUFGbFhBempxbVpKbmd6OVdFT2NNNzljazJRdi10OUdtM3V4Q0E?oc=5",
      "source": "Page Six"
+    },
+    {
+     "title": "Why Is Travis Kelce Not Going to the 2026 VMAs with Taylor Swift?",
+     "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNX1lLNzFvTHRrRXlMem5jY2d3QWpXYWZjWlAwbXBFTEVSRjhjQlZIWXNWbFdFTnlVWndIS3EtQ1JCTEFhdzB4bWRoTkp0cE9aTDBuT3ZiV1NqSGR2amNScGJWTDBCNDlRRUtjZEJ1eV9mNW8tUHhZRmIwRlgtOFBpcVZNLTE2Z21OdUY4NFpjTjUtbVpNUUgw?oc=5",
+     "source": "TODAY.com"
     },
     {
      "title": "Is Taylor Swift at the Chiefs game today? Status for Week 3 vs Dolphins",
@@ -1167,24 +1179,24 @@
    "domain": "foxnews.com",
    "related": [
     {
-     "title": "Drake Maye: Patriots offense, own play 'unacceptable'",
-     "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQOTBKT0FEZm5GWE5TaDFpLXdzV3BuQ2o4RTB0LUpreC13WGgwbU0xYVNUQkd6M2I5eTc0Rl8wX3BYTlFkV2lXeWluekctMWFpVGp2a2tMWlRNT3d1TmY2M0Y1ZExrQTNnR0JJS3pjVGI4alNsY0xYT0RVNmM5LU1WdUsyU2h6NTlCb2N3R01ZQmZ4VlRxeW5SWjVn?oc=5",
-     "source": "ESPN"
-    },
-    {
-     "title": "Jaguars defense led by DaVon Hamilton, interior line dominance over Patriots",
-     "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQb3VzWlNpMHNSV2I5bGRHWDY0R2xaSnh6UFdrbkdHNUVESUhmOEdhTnFFNmFyXzN2LXVPSXhJVHFtT0hLTUk0ei1GdDc5UnYwSDExV3IxS2NhUEcxVE10dnBybnY5Tm1rSEdncER2SFlTY2FGbGhTWHZNUzJFeXNBelFpLWItNjBtZlprY0VTNmQ5UzJ2a0xjeDJmSWNTeTdOZldoRUJ0X1J4TTNYRzNjNVowdUd5T3NFWEFFZXZJdm9vTnlUckFNREQtSE1IMzZhVFA5a1ZvTFg3QTJFOXVZQi0tZ0xBcTVmYXBkOE1R?oc=5",
-     "source": "FL Times-Union"
-    },
-    {
-     "title": "Drake Maye: This has to be a turning point",
-     "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOWk0wSnNzc2lQWEEweDBrV3VWVzZiRE1sVHhlRTAzLTNqVWhDWWhVcFFpeGdSejFaNklUb1BfOG8tRW84TnE5UVJxRVBuZENTQ3JMMHl2aFZQbzJKZXBsMklmZ1cwVDBPVVFCMHJkN3lpWDEwMUtHVGMycnlsNnI0Q1BVaFFfc3ZLcW9qbXBkdGd0VzNybTJJdlNONlJDbzdhejhQTEdB?oc=5",
-     "source": "NBC Sports"
-    },
-    {
      "title": "‘I can’t get out of my own way.’: Drake Maye’s confidence appears shaken. Can he get it back.",
      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBYeDhISUxqd0V2cGtBQXd1elotQWFhNXVoVVJXZ3QtN2IwM2ZfZndyOUZQeGNHSkk2U2I0Sk9pbzRZWlUzakxCTXlZYmR4M0V5RkZfZ3NXUGtIVm0yS2NJeEQyelUyMERuT05peC1zZ1MyV1Mx?oc=5",
      "source": "The Boston Globe"
+    },
+    {
+     "title": "Game Observations: 8 takeaways from the Patriots loss to the Jaguars in Week 3",
+     "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQT2RoWTdsZnQ0RXh3M1J5Sm5kbzhEazV0MTU2aXpCa0kzLVNNbkduQWVOOFNqUkh3ZzEwalZMUC1zcnJZUnNia3c5Mi1pVUFNQ3d4bWZOYmo3ZzR4RmhwVEhvSEx5eEoyYlNNS2t2LU9nOGV5TjU2NWdPM1ljWEljaHZQNVVxTnNxSUhKanQxbnFSOXAtMHNjcFlWaHNWanBFUUFla3lwaXNtaE0?oc=5",
+     "source": "New England Patriots"
+    },
+    {
+     "title": "Mike Vrabel: My concern level for this team is very high",
+     "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPSGYxNkszVVpITzlvQVFZVlJUbEZoYU5OODhiaENzOXVQcHNmblV3UFBOY3NtbmpvdzA2S19IaDl6LWdLN1JPQmhFREY1M1IxSlh1ZTVQT0dOY05QSjliNDJScWc1QXcxaDZGSVBnMy1nSEZvdkZIY0tlU01kU1ItR0c1RWVZek9iTElDMGZyMWVKOFo5ZTFtckFTN0NxYXVXMVhxUXZoU1g2QlNndlpNUHJrV1o1MHlP?oc=5",
+     "source": "NBC Sports"
+    },
+    {
+     "title": "Drake Maye is falling apart and it’s not clear where the Patriots go from here",
+     "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPMkFmNlZBdE5aQTZkTXpfcUlDOG1zbTA2VTdaX0NjR3dhamMzaW8xc2pnX0xiTnBRRUVkTkJtSUZYWGZncG84OEg2aFlrNDJsZFpQbnNRenhDZHlDWDUxMllFSFJCbWxxeWoxdXhGNHJnODhxT1M4cFdTNWVLS25yckVBRHBLRG1UQ1dEUzNtMERjay1z?oc=5",
+     "source": "The New York Times"
     }
    ],
    "seen": "2026-09-27T23:35:45.349Z"
@@ -1221,65 +1233,74 @@
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
-   "id": "top-myslp5",
-   "title": "USC suspends LB Stephens one game after hit on Oregon QB Moore",
-   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUWhDa0lfOU04M2dHU0FuNEt0b3Z5QWJub29XZXJLaXRXbVhsUmxYa21PeElMWkRfMUg2Zng5ZmtrY0l2R1RZOEkyMVY3SWJzWEliREpFSmFveUFvRU1HN242WDhwbXhmVHlGbERtYTkwSkUyYTRJeTk0UVRKcHhleVRxanFWY2MybnN3c1V6dURmLVdSc0VTM1VPSm92VTh1TW5KRWk4R0NXWWFNRmd0Uw?oc=5",
-   "date": "2026-09-27T18:30:00.000Z",
+   "id": "top-ctfcv2",
+   "title": "Phillies go from collapse to clinch, secure wild card berth",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOckhKWnY4dkgxaG9JNS1IVlRPeXQzYVltbENtR1Z2NEpHSU1qNnRITzZtWklkWjZQc2lZdHMtTUgyZkF2MC1pLVA1eDhVc0kwdVQ4aW9nX0s3WW5EVExJZTN6cWhhZEI4Z2xmaXpaLXZfTmoyeVJlT0FpbnhZT1lpLUk2d1ZVaFhGRFU1NWNGQl91VE85VzZWLS1XNA?oc=5",
+   "date": "2026-09-27T22:01:00.000Z",
    "source": "ESPN",
    "domain": "espn.com",
    "related": [
-    {
-     "title": "A backup with trust? A lopsided rivalry? Defensive woes? 10 takeaways from the Oregon Ducks victory at USC",
-     "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNWEdpOVBPZlhnMGVCc0VwSVlBMzVLRlNyLTZGX1gxd3BlME5sWmh4Q2tWRDdzLUxid3NjaDB1Skh4VWx4WGVHYVRPMmpQMVVNMl8wR0tfbW1UWE8wc0RLLVREZlZuN1JiQUdJMENfb1hvWGIwcG82bHo5a1BoaXJkSFJDT2k0c2NwbTRjaWxhdHVia0FIREhCMUNHRQ?oc=5",
-     "source": "OregonLive.com"
-    },
-    {
-     "title": "Commentary: USC didn't just lose to Oregon. Lincoln Riley fumbled away the Trojans' integrity.",
-     "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPcVZTZWNuRUpjRVRYUGNOelJaVWFfQXFCRUhiTm1qdmM2Nzl5ZnNNdFRpU1VsS2lwWWJndU8xMERyRDJDZWJtdjU0MmdEQXdfRG1jNHpibnpvdWVhT1RMQmdNdkRfVnNSTWtEaGhhQU5wcFkxZF9vQ0Iwek9NdlZ2bkp2bkRvb2ljZzc0RFJpZGRuUDhHYTR6a0duQ01WOHZ0VFZtWi1jeU8?oc=5",
-     "source": "Los Angeles Times"
-    },
-    {
-     "title": "Dan Lanning on hit that knocked Oregon QB Dante Moore out: ‘It’s a disgusting play’ - The Athletic",
-     "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNdE5ieDlES2NYM0c1ZXZJd0I0MGw3cFA5UnNJa29NZ1JoUF93YWV2TG5Gd05IV2YwcGRmcDR5b1dfT09DdEoxYWhKX1EtcmpGWVdQMlp1WmZEc2UtdThPeDJXY2EwdnhkWXJTVnU1bVV2OFNYRVpBWHh1cWNwQzk1cnpoQjJfNXdKYlpLTmtLWk9jRkoyU1E?oc=5",
-     "source": "The New York Times"
-    },
-    {
-     "title": "Oregon QB Dante Moore leaves field in ambulance after late hit. His Ducks rally for a stirring win",
-     "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQbkp1OXU2SUc5bnotcnUzWnc3UC1UWlp4dmE5bnEzVkVqbjVPWU5NSElkVUhtZ0xIMEFVbmVMUDBwRWxSb0lYdkVaYzFlTjFFdllnSjlHZDBYdXVwb1FuTnEySldoaFg0bGZ6TlM4M3o1Qi1tLTZ6R1A0eDlxZTNlVGlzelVLajJ1Qi1yV2Zrczc1cDQ?oc=5",
-     "source": "AP News"
-    }
-   ],
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "top-165xjfg",
-   "title": "Phillies avoid disaster, clinch NL's final wild-card spot after near-collapse ahead of D-backs",
-   "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNUHdWRXFxc2cxNWxORkgxWXZTS21PRndncHppTXlBTmtodGpGRTdVLWlETlcxVzNLZTZEYVZXMmNWQWg3X1dxSF9MRzU4bHU0ZGpMX1hoUlU0TFVpbVVNRGR6aVpUYjFFNWdNbEhwOVJUMXpYRl94bU5WbzdQYTRBbXpxUlhCV25yeDRTMU9aN21YUjhCaFVfSDFiSS1vOTJpRVB5TmhvaGZNeERiYzByNl9uTndjVldadk0xZ05IT3dPU3BNSmt3TDdvRUJwNmtTd2JoTUxCcVZZblEt?oc=5",
-   "date": "2026-09-27T21:20:01.000Z",
-   "source": "Yahoo Sports",
-   "domain": "sports.yahoo.com",
-   "related": [
-    {
-     "title": "Phillies at last punch playoff ticket after tumultuous week",
-     "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5ncXhfTnluNEJSakF2SXE2WWhnZVBZcXpOaXFEc2xadFZEYkhiVTFVTlRLdzVPcGd0bWVUR2JlZzViWjNTTlJuTHl3UXJ2N21hLWxvMGwxLVZ6RGlaNzJ2RlRNcUx2VW15U0xvTnc2TQ?oc=5",
-     "source": "MLB.com"
-    },
-    {
-     "title": "From collapse to clinch, Phillies survive ‘living hell’ of last week and win final NL wild card",
-     "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQSDRDejAyZTVWSG5BTXdpQXR5anZVN3VCRl9mVzlQOURjOWJuWDVSVWZzNUotZmR4aDNnRzBQYkFEdnZwUzBmaUhtY3lMUHpVZEJHZTllZDBfN0x3ZXVuc0RPaTRNZko0c2MwbkRrMUIwVlY1RkJRSG1yUzdKTWR6UkV3N1BKNjBvZ3k3dWd6UFZVbzNRU0hHaktpMzZaeFlFWEFXTkFqM2RlSUJLdV9zbVMzZUo3OHdwemJvd0VKVnBfMkJ3UncxWXBBQS1XRmNTTXc?oc=5",
-     "source": "Orlando Sentinel"
-    },
     {
      "title": "Phillies enter final day of MLB regular season on verge of unfathomable choke in playoff race",
      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOMi10RHQydWJVZTZleklYdFVrU3BCRlo2M3VhVlVpN0J3eFlEbFZCRDkzVUdEV2R1NVU5M1BlbnA2QWp3c1kwMmlKT2F4OW1IdXVkb0tzM21XWElucXhORzBNeVF0bG1rYUlHeXA1TWh6ZExfRS1qeTVXTEtmUlN4R195eUVhZG0yeUVqMDNkalZvZkNrT3Z2RUlZR0xkZS05REFRSWN5SFdXSHFCazZwcTM3aE9WV2tzVHFsOV94RkpRNjdXT0otZGstOE9RZnlJYlA0M0pwUFFsU2hoWlE?oc=5",
      "source": "Yahoo Sports"
     },
     {
-     "title": "Phillies turn to Wheeler to right ship, get them in playoffs",
-     "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNSWFoazRIb0FoRjJlcTJuZWZKTl9zby1jT2lUSURUdDNyTFhiTm1hZ3RHSUVKVFJiWUI3a1FsVTRCQnFfRFhjVGRzdFFMZ1NzVGZwZHowMVJWTUhMc2RieDR4dTNJYWV5cUg1UnRTZWk2SXZWcFlVZ1g3MEhkcWZQRHpoTTJ3dDhEaEphYzVKU3ZJQ3BOdUtIZld5RnVNRGxVRUdKRG9NQjM3N3dEU1hXUk96V0pVQjZ3WVl5SjlCcw?oc=5",
-     "source": "ESPN"
+     "title": "Phillies at last punch playoff ticket after tumultuous week",
+     "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5ncXhfTnluNEJSakF2SXE2WWhnZVBZcXpOaXFEc2xadFZEYkhiVTFVTlRLdzVPcGd0bWVUR2JlZzViWjNTTlJuTHl3UXJ2N21hLWxvMGwxLVZ6RGlaNzJ2RlRNcUx2VW15U0xvTnc2TQ?oc=5",
+     "source": "MLB.com"
+    },
+    {
+     "title": "Phillies lose 4th straight, Diamondbacks stay alive in NL Wild Card race",
+     "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQVktMUlc1eFVHOW0xbXg3TlVnbVVvd29sSDF2Qkh0ODRqWkpTZUZyYzVpVXMtYjlwU0g1d28tQ2FLMS1DRTRzS2NIMEM0SHBaM1d1S1F3UXlldklsYmlqLWprcFhnbm8wUEpRZmJlWVV5TlhZM2VoMFZZRWp1aVpsR1lRc2xDQmk3OVV6c3hMYXlNUFNhcXhXQ0dhdWpRN0syTHY0cHln?oc=5",
+     "source": "Arizona Sports"
+    },
+    {
+     "title": "Phillies halt collapse, enter postseason through the front door",
+     "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOY3lQN1loYTA1cVFtX0xGdlUxTVc1VGdjZWlwVS1JMkx4Tm5iTlB0THY1WDQ5bUM5R0doTEZwMFBmcmlLQ01wWklFcjIySndjVVNMZ3o2MzVxYnFhQ24xMExWbWp1ZjJMczNPWWUyVUdReE83T2NYaFhnOTVUU0ozWlFNN0tza0VNT2s2T1BWNTdmVW56cVoxa1g1RlRFeWtyY0VmQmJjeUJQMW1qcG5IS29ZazFPZTlLdGRnLU9RcVbSAcgBQVVfeXFMT1c0dU1sd2thY2xTeVBFR2tjcTg1b0JNT1ZEY0duSUJsblo3Z1JQTHNteVY4UXlfOXNiNWo5eFJvQ2hMdDJaeTRwM29MUkdNbWtDZEtZWWNFMldTczhOeXJoM09mN29LNHBqTnVfR3UyZlpGNWY3WnhDWWpoc1N4Ym1fMDFoaUFxT3A2LXhCRUlpTWFjNmc2ZnEzSlBCODNUSXBBSHF4dUtHNjBiQUw3ejRpQjBhdTBkRG9lX05jWWw4TFZzcGhvQk4?oc=5",
+     "source": "NBC Sports Philadelphia"
     }
    ],
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
+   "id": "top-1cff80q",
+   "title": "USC suspends Desman Stephens II one game for Dante Moore incident",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNdXN6LU5RT19xb3NrdXZUTEwtWmtWT3V1S1Q2MVVtZFVVX2Z5SlpBTjRMTG9PYmlnNVdreE1PWEQzUms3c2R3M05hLVdBeWw2U19zMHZOUVl0djVqVnd1cklXWDRzVzlGLUI4OXJxWi1kVThlSWZGZFI0cXFXSmVTYVg2RGU0aXYxX24tQTNlQ0dpMWJjUWhaRUJERWw5YlFXSGhiRDRKcEFBcEMzLWl3YnRUdEFFRlJueFJaN05zaWhadTQ3eHc?oc=5",
+   "date": "2026-09-27T21:03:53.000Z",
+   "source": "NBC Sports",
+   "domain": "nbcsports.com",
+   "related": [
+    {
+     "title": "USC suspends LB Stephens one game after hit on Oregon QB Moore",
+     "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUWhDa0lfOU04M2dHU0FuNEt0b3Z5QWJub29XZXJLaXRXbVhsUmxYa21PeElMWkRfMUg2Zng5ZmtrY0l2R1RZOEkyMVY3SWJzWEliREpFSmFveUFvRU1HN242WDhwbXhmVHlGbERtYTkwSkUyYTRJeTk0UVRKcHhleVRxanFWY2MybnN3c1V6dURmLVdSc0VTM1VPSm92VTh1TW5KRWk4R0NXWWFNRmd0Uw?oc=5",
+     "source": "ESPN"
+    },
+    {
+     "title": "A backup with trust? A lopsided rivalry? Defensive woes? 10 takeaways from the Oregon Ducks victory at USC",
+     "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNWEdpOVBPZlhnMGVCc0VwSVlBMzVLRlNyLTZGX1gxd3BlME5sWmh4Q2tWRDdzLUxid3NjaDB1Skh4VWx4WGVHYVRPMmpQMVVNMl8wR0tfbW1UWE8wc0RLLVREZlZuN1JiQUdJMENfb1hvWGIwcG82bHo5a1BoaXJkSFJDT2k0c2NwbTRjaWxhdHVia0FIREhCMUNHRQ?oc=5",
+     "source": "OregonLive.com"
+    },
+    {
+     "title": "USC suspends Desman Stephens II for 1 game after Dante Moore hit",
+     "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQV2NOdVFVeVRpUE1ndjI3ZzVPSUxQTUxEY0dLSkhIeU5PR0VqOXZlcUlFTENENjVGZ1I0aElVaXJPX1JGSmd3SEh0R2czeVU4RFBFTWpWYTBQUnJsT2N2YXNtaXBPV20xeldyWUstYlIwa1lLd2VFaUpoc2VFNk1qejI5Y1BBWTktRmx0NGR2RldzV1V5ZTZZQnJSOXU1ZHJqaDd3ZGRyc28?oc=5",
+     "source": "The New York Times"
+    },
+    {
+     "title": "Dante Moore Injury Update Gives Oregon Clear Answer on Season-Ending Concern",
+     "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQdHZmWFNIUTlyUUJWUUtVNVNzOEhJQXNOTFp3VXBqZDg4Y0pfZExNYWtVc3k3TXQ2WmlibjI3Q09QVDY5SkRFcU1CNkptOXBvVUZiVXVubUNXb0ZabkZHbVBzaU1xNFdYQVZpajRldUNxMGd4YnY2Nmh3RzdvN0dvaDZGd19xaDQ?oc=5",
+     "source": "Yahoo Sports"
+    }
+   ],
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
+   "id": "top-1b81nka",
+   "title": "A scientist turned an $80 motel room into a makeshift lab; then she discovered two new species of microsc",
+   "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxQTWNMS2RXQ0hBWmdGWmNzNDdHSnNhaHVUVEV4YjVGRGN5T3pqLWc0dEl6RXBqbXBxLUU1dEZkOGZ3VGxpcVJqNGtnNXFTY0Ixa05JNE1OWXVHNUpYUHB3dUVEc01CeEJ3ZnktbzI4bmQ0S1AwNXA3SVdjcmFSNGRLZV8xT2JMUHVMVjMtNW1acHFLZlVWR0t0dU1fN1J0VGwwNTNtb1AtYkwwR0pYU1F0ZHZndjVlRGVqY3BUbk9ZMXRZMFNYZTZDMmpHVElyS0Nka1c4OVVwaDNSWmFGVlkxMXlNQlRqZlBncElxWllScWhPZVF4YVhiU09hREJWRTZaV1RCVElzUUFrZy0tYU92bnFrcnRRa0ZXSzBSYdIBogJBVV95cUxPdGlKVEhqRUZZeDdLT1BKNkREUmpUSXFCZm5vZUd4WHcyTkRkbWZPSlhKclhSY05Ta240N0lad2xJcWQxSElaVk54eF9UOFlTMGZsMURqM2kwSmF5d2M3ZzhXbXR1MXdENmpoNG1teXNwcDVWVVVvRnN1ZUtHTEJNV1RiWlNodlZSNFdKM0x5cG51ZzBSc2dVV2pQaHc4T2xMc3BGWTlLX01BV2czUDROZ1dQSXEzeDhKcWRpNVVLemdVWDJEcVFtbUJjMzZHTkpfRFlEdDJpRHV0eFdYMGtSaDZ3X2Q4VHlieTlFSUFIdXhBUHU2RUR0QXM5Y1dmdkNpUThKU3BMam5odTk1NnVXS3lVbk94UERoZGJkQlJJT1pOZw?oc=5",
+   "date": "2026-09-27T10:53:00.000Z",
+   "source": "The Times of India",
+   "domain": "timesofindia.indiatimes.com",
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
@@ -1287,13 +1308,18 @@
    "title": "SpaceX's Starship megarocket launching to orbit for 1st time ever on Sept. 28: Watch it live",
    "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNSW1hM2d1MVJYcU5vUTBGNmhUSWZKak1QZEpLd082Z2pGOTZwS3pucHVheV9hMWdFWnprNkIzbGRWUUxPZGdMOFNfWG9BRUU3QTU3QnlxTktKc1lsQTJfQkd1N0RGU0tYYjhqaVJWUkRXX0JRNkRTVnpVeHJHVWtIb1c4NTVzS25pdG04RTBXZjlEejJiLUc3Wm1qaDFzWkNkandZdEFSRy1ydUg0Q2tLOE9LMnBTZHZZMmtfMHZSVUZrLUY4WG9QQkRUWlplNy1ySkh1dUVVVWoxWG9iSk5KY3Mwdw?oc=5",
    "date": "2026-09-27T16:00:00.000Z",
-   "source": "space.com",
+   "source": "Space",
    "domain": "space.com",
    "related": [
     {
      "title": "The most powerful rocket ever built is on the verge of its biggest — and riskiest — test yet",
      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFByaHpFUXhJVWk5S250Wkw3S1pRemY4T2Q0NTVkVS0wNk9sT1U0V0RaWFZqSUk4NFlXalViYWJ0TzdHaHVUY3ZsbXhFZUpZbjZLUTg0dDN6ZDJtTG1ZUjY0ejRPS2g3R0ZwYThGY3hzbE1XeFNPTFBobw?oc=5",
      "source": "CNN"
+    },
+    {
+     "title": "FAA Clears SpaceX For Starship 14 Flight",
+     "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNNE15MS11STUtSFRabk5fTU9NajEtT3UtX0hDTlp3SEhXN2JrSEhfcHA3dnBlRzlybjlGMGpOSGJjSG44dHJ5bW1uVllSbi05UFpJZTJJTmM2VExkelNMZklSNmh1TXhVcVVYd3N6am5oUjN2Z0c2bFdxeEVOSDFPdEN5bXBuSG1RTG9uVHVyQS03TWY2bUhubTZR?oc=5",
+     "source": "Aviation Week"
     },
     {
      "title": "SpaceX’s Starship Rocket Is Heading To Orbit–With A Lot On The Line",
@@ -1304,11 +1330,6 @@
      "title": "SpaceX's Starship is about to attempt a 10-hour spaceflight: Watch live.",
      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9MVGdJZlk0cU8xVldtMmxjLVFVRlBkNVlubkY4X2xGU2dSUGhnalYxX243aUJKa05XZl9vTEh6bXRBeFVjdno3WDF5MzdyNktQb1NnQzlzeXE2NHprWHZKVlIzellVR3hObjFlTlBjMHl4aEJZVTBtZkhB?oc=5",
      "source": "Mashable"
-    },
-    {
-     "title": "SpaceX's Next Starship Launch Will Generate Revenue -- Sort Of",
-     "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNSWxTQTUxQncyZl9QcGlHUXZOMVEtc3JZeVBmdEtDWUl3Y0E4eDQ2S1NlbEJFVE5WSFp1dHpySnVPd0F0dm1IUV9pUkJ3YU5BSzB1cXJ5SHF4dUhlZDhfSHp2Wm92QlU0cW9PYUhDaE5Ja001TDNZR2puanQ5S1E2T0RuUHlvMGlrbk5NMHZpZHVkLTB3TEU2UHVZeEVmVWM?oc=5",
-     "source": "Yahoo Finance"
     }
    ],
    "seen": "2026-09-27T23:35:45.349Z"
@@ -1351,15 +1372,6 @@
      "source": "Popular Science"
     }
    ],
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "top-1b81nka",
-   "title": "A scientist turned an $80 motel room into a makeshift lab; then she discovered two new species of microsc",
-   "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxQTWNMS2RXQ0hBWmdGWmNzNDdHSnNhaHVUVEV4YjVGRGN5T3pqLWc0dEl6RXBqbXBxLUU1dEZkOGZ3VGxpcVJqNGtnNXFTY0Ixa05JNE1OWXVHNUpYUHB3dUVEc01CeEJ3ZnktbzI4bmQ0S1AwNXA3SVdjcmFSNGRLZV8xT2JMUHVMVjMtNW1acHFLZlVWR0t0dU1fN1J0VGwwNTNtb1AtYkwwR0pYU1F0ZHZndjVlRGVqY3BUbk9ZMXRZMFNYZTZDMmpHVElyS0Nka1c4OVVwaDNSWmFGVlkxMXlNQlRqZlBncElxWllScWhPZVF4YVhiU09hREJWRTZaV1RCVElzUUFrZy0tYU92bnFrcnRRa0ZXSzBSYdIBogJBVV95cUxPdGlKVEhqRUZZeDdLT1BKNkREUmpUSXFCZm5vZUd4WHcyTkRkbWZPSlhKclhSY05Ta240N0lad2xJcWQxSElaVk54eF9UOFlTMGZsMURqM2kwSmF5d2M3ZzhXbXR1MXdENmpoNG1teXNwcDVWVVVvRnN1ZUtHTEJNV1RiWlNodlZSNFdKM0x5cG51ZzBSc2dVV2pQaHc4T2xMc3BGWTlLX01BV2czUDROZ1dQSXEzeDhKcWRpNVVLemdVWDJEcVFtbUJjMzZHTkpfRFlEdDJpRHV0eFdYMGtSaDZ3X2Q4VHlieTlFSUFIdXhBUHU2RUR0QXM5Y1dmdkNpUThKU3BMam5odTk1NnVXS3lVbk94UERoZGJkQlJJT1pOZw?oc=5",
-   "date": "2026-09-27T10:53:00.000Z",
-   "source": "The Times of India",
-   "domain": "timesofindia.indiatimes.com",
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
@@ -1484,15 +1496,36 @@
  ],
  "politics": [
   {
+   "id": "ap-10tijrw",
+   "title": "3 people are killed and 4 are injured in shooting at Detroit after-hours strip club, police say",
+   "url": "https://apnews.com/article/shooting-crime-detroit-ef32bed9c42cdd6e1e2fc3ade37cca3b",
+   "date": "2026-09-27T22:53:00.000Z",
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-27T23:53:06.095Z",
+   "direct": 1,
+   "tried": 1
+  },
+  {
+   "id": "ap-1fa5hz5",
+   "title": "The MTV VMAs are here with Taylor Swift making history and Madonna leading the nods: How to watch",
+   "url": "https://apnews.com/article/mtv-vmas-2026-taylor-swift-madonna-2b6b26f83f6f5d3bd36d0ce9824e11c0",
+   "date": "2026-09-27T22:50:00.000Z",
+   "source": "AP",
+   "domain": "apnews.com",
+   "direct": 1,
+   "tried": 1
+  },
+  {
    "id": "ap-4kzm58",
    "title": "Americans rally in singles to win the Presidents Cup for the 11th straight time",
    "url": "https://apnews.com/article/presidents-cup-medinah-usa-internationals-8560f0866f9bc603ee26f7e0dbd6239f",
    "date": "2026-09-27T21:59:00.000Z",
    "source": "AP",
    "domain": "apnews.com",
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1
+   "direct": 1
   },
   {
    "id": "ap-19lzxf4",
@@ -1501,19 +1534,19 @@
    "date": "2026-09-27T21:46:00.000Z",
    "source": "AP",
    "domain": "apnews.com",
-   "direct": 1,
-   "tried": 1
+   "tried": 1,
+   "direct": 1
   },
   {
    "id": "ap-fiaqa3",
    "title": "Sheriff: 12 teens wounded in a shootout at a birthday party in Georgia park",
    "url": "https://apnews.com/article/park-shooting-georgia-238c406ad5668f152d09422b382bdd20",
-   "date": "2026-09-27T21:43:33.000Z",
+   "date": "2026-09-27T21:44:15.000Z",
    "source": "AP",
    "domain": "apnews.com",
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1
+   "direct": 1
   },
   {
    "id": "ap-twzwua",
@@ -1522,16 +1555,29 @@
    "date": "2026-09-27T21:19:00.000Z",
    "source": "AP",
    "domain": "apnews.com",
+   "tried": 1,
+   "direct": 1
+  },
+  {
+   "id": "ap-p4sycv",
+   "title": "Dolphins’ star RB De’Von Achane hurts knee vs. Chiefs; team awaiting word on severity",
+   "url": "https://apnews.com/article/dolphins-devon-achane-hurt-f33998dcc6d2856fc64acf35de33136c",
+   "date": "2026-09-27T21:17:00.000Z",
+   "source": "AP",
+   "domain": "apnews.com",
+   "seen": "2026-09-27T23:53:06.095Z",
    "direct": 1,
    "tried": 1
   },
   {
    "id": "ap-s3hw86",
    "title": "Hurricane Nolo still threatens Hawaii as Mexico’s Baja braces for major Hurricane Polo",
-   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPWkVfdWVCUjVtNkdnYVNkVFNyRE5hS25qNThhZzE0YVdQdWtxMENrS0NnamF1X1htU09qQWVicWl2NEtnaW1SbXAwclpsZUg2WURCaWRNQ0M2c1NKQjBPVGZjRVV0eFc3QjRxeVRDYjdRajY5Q09KX1NsZjVSZUNWV1gxQ3d4VmwxRElOYVRCVDBSV2pkN0FzbA?oc=5",
+   "url": "https://apnews.com/article/hurricane-nolo-hawaii-polo-mexico-d73e0ef1c833228af48a3e45d863162c",
    "date": "2026-09-27T21:12:00.000Z",
    "source": "AP",
-   "domain": "apnews.com"
+   "domain": "apnews.com",
+   "direct": 1,
+   "tried": 1
   },
   {
    "id": "ap-1s7ggbf",
@@ -1927,14 +1973,6 @@
    "domain": "apnews.com"
   },
   {
-   "id": "ap-1fa5hz5",
-   "title": "The MTV VMAs are here with Taylor Swift making history and Madonna leading the nods: How to watch",
-   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNc29LNjU2WGtLN0FVSWF3c01hQmw0M013X0V1U2N3TjNZQTVwdkVlMDh3bkgwQng2T3FRMFFkblFRNnktMjFwZ2VBbnd2SjR2TTBIN0tNUkVBempHWk5TN3lvYlN5OGNRNjUxaktuU1hQUnExeW5hbk5YaEVVU1lRcEQ3UFRTOE5xRmxjV2diSGtPTXBXdDdMWmln?oc=5",
-   "date": "2026-09-27T04:06:00.000Z",
-   "source": "AP",
-   "domain": "apnews.com"
-  },
-  {
    "id": "ap-1lgex1v",
    "title": "A perfect day for Florida teams, with Canes, Gators, FSU, UCF, USF, FIU and FAU all winning Saturday",
    "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQNjE3ODh6bUtrbTNLTUVpOWtjTG9ieUdadGc0VWVsLWw1NjNRNTFGV1VJT3ZEaEJRNEQ4QjZPckR4LUhNVFIwRVItWTZUenJaMmtTQ1A0OVFmMjBmVkUyYTN5UU05VmJ4a2ZRNE03UV91T0hCUVRXeDJSWjdKcno1QnNTd1ZJQ2wxazlBcg?oc=5",
@@ -2192,34 +2230,29 @@
    "source": "AP",
    "domain": "apnews.com",
    "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "ap-1gqeuag",
-   "title": "Heavy rain and flooding in Bangkok disrupts traffic and prompts evacuations",
-   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOWXlKVUxEWGNGYktRN01VOE1CbVY4SDhlemprYWVZUmVkdy1BZTh4UGp1TEMwc2tRb2JJTHZtWkRreXliLTBQbDNnUlNleWNxbGZNMUlabEZXd29QUDI4aUduQ1MyVE1mLXNJcnQ1QS11UHpzYWxSdVNiWExGbG9OcFFiTEZRZldwaUduRWdlUWpDWHFSLVQtUTA0RENHNUdLUXNhVg?oc=5",
-   "date": "2026-09-26T18:50:00.000Z",
-   "source": "AP"
-  },
-  {
-   "id": "ap-s4414v",
-   "title": "Pope Leo XIV visits France, in photos",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNSklkV1lkdFhZMmZLa0R4d2J4WWhHQktlQ01MQkpGanVVdXRSQ093Q3FtbTlpT3hKQ2MyN0x4eWlCN0VJbjVSVVVFR2ltVEFUc1N4VVlyMy01aE9DWTJCOTdjc09vbVI2bWVrNkNfVmxBS0g1NU5LQ3JTSklpa25GV1NTdUZRLWpvQ0FZaEs0eWpKVGtlZEw3c0NBQkY1ekZx?oc=5",
-   "date": "2026-09-26T18:33:00.000Z",
-   "source": "AP",
-   "domain": "apnews.com",
-   "seen": "2026-09-27T23:35:45.349Z"
   }
  ],
  "nyc": [
+  {
+   "id": "gothamist-11ljkr9",
+   "title": "NYC Council considers new rules for e-bikes, scooters and mopeds",
+   "url": "https://gothamist.com/news/nyc-council-considers-new-rules-for-e-bikes-scooters-and-mopeds",
+   "date": "2026-09-27T22:03:00.000Z",
+   "source": "Gothamist",
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/GettyImages-2289248813.jpg",
+   "summary": "Electric bicycles sit parked in Manhattan. Council members will take up a sweeping package of proposals Wednesday aimed at making the increasingly crowded world of micromobility safer. [ more › ]",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
   {
    "id": "mamdani-sxvimz",
    "title": "Trump’s latest Mamdani lovefest comes at a bad time for Republicans",
    "url": "https://www.politico.com/news/2026/09/27/trumps-latest-mamdani-lovefest-comes-at-a-bad-time-for-republicans-01093811",
    "date": "2026-09-27T18:00:00.000Z",
-   "source": "politico.com",
+   "source": "Politico",
    "domain": "politico.com",
-   "direct": 1,
-   "tried": 1
+   "tried": 1,
+   "direct": 1
   },
   {
    "id": "nyc-5hnqyg",
@@ -2228,10 +2261,10 @@
    "date": "2026-09-27T15:25:00.000Z",
    "source": "Gothamist",
    "domain": "gothamist.com",
-   "direct": 1,
-   "tried": 1,
    "image": "https://api-prod.gothamist.com/images/359357/fill-1200x650|format-webp|webpquality-85/",
-   "summary": "The weather forecast now anticipates potential flooding and stronger wind gusts as officials warn of possible downed trees and power outages."
+   "summary": "The weather forecast now anticipates potential flooding and stronger wind gusts as officials warn of possible downed trees and power outages.",
+   "tried": 1,
+   "direct": 1
   },
   {
    "id": "nyc-1xffyjs",
@@ -2240,11 +2273,11 @@
    "date": "2026-09-27T08:00:15.000Z",
    "source": "New York Daily News",
    "domain": "nydailynews.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://www.nydailynews.com/wp-content/uploads/2026/08/AP26184515025276-e1785791577761.jpg?w=3908&h=2400",
-   "summary": "The war of words between Mayor Mamdani and Israeli Prime Minister Bibi Netanyahu over Gaza reached a fever pitch last week at the United Nations with Netanyahu, facing reelection, leveling sharp attacks against the…"
+   "summary": "The war of words between Mayor Mamdani and Israeli Prime Minister Bibi Netanyahu over Gaza reached a fever pitch last week at the United Nations with Netanyahu, facing reelection, leveling sharp attacks against the…",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "nyc-16uumaj",
@@ -2253,43 +2286,45 @@
    "date": "2026-09-26T22:46:00.000Z",
    "source": "Gothamist",
    "domain": "gothamist.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://api-prod.gothamist.com/images/359333/fill-1200x650|format-webp|webpquality-85/",
-   "summary": "Hochul made the comments on the new WNYC pop-up politics show, \"Who's Running This Place?\""
-  },
-  {
-   "id": "nyc-1cku4n",
-   "title": "How Trump's trade war with Canada is squeezing a farm cidery in Albany",
-   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNcU5nM3dJdzlXOUFuVFBMcy1XYVhfWktaa1hTRFp5aDRPRGVlYnRTdWZJZGp4bWl0Mm5zei1hNXVTdW5XRFU3dk1QVWNRTG5hTU5qU05jeDJTTndTTDZjZGJrRkNyTUdjZ1VUcjNXN0w2YXVYR29LZGo0alBXYVB1RlM2czJjdjNiLUhrZlVWV296RmJlQ0RYM1hIVVU?oc=5",
-   "date": "2026-09-26T22:46:00.000Z",
-   "source": "Gothamist",
-   "domain": "gothamist.com"
+   "summary": "Hochul made the comments on the new WNYC pop-up politics show, \"Who's Running This Place?\"",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "nyc-5m2oto",
    "title": "Man, 56, killed by falling tree in storm winds in Brooklyn was beloved NYCHA worker",
-   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQdmQ0ZmxFMmJRWWxJVDBMRVJCWWZWZjlsaHVVR2xnZnNTMF94YnJPV0FmRVFJaXY0RWZTcDg0Q1JjTHUxdGJVZEtRbmxsSFBOQmVWZEVLTW9NTVNBelV5cF9seC1DOXZMQ1J1cEpWd1RvaHZRVjhHcWJUM1FyVGhDcjlsaGJGOVpHNURWMHZqbTM0ZGhRaG9V?oc=5",
+   "url": "https://www.nydailynews.com/2026/09/26/man-killed-tree-brooklyn-falls-noreaster-heavy-winds/",
    "date": "2026-09-26T22:26:24.000Z",
    "source": "New York Daily News",
-   "domain": "nydailynews.com"
+   "domain": "nydailynews.com",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://www.nydailynews.com/wp-content/uploads/2026/09/NYCHA-fatal-tree-2-09.26.26-Julian-Roberts-Grmela-2.jpg?w=1024&h=768",
+   "summary": "The huge tree fell Saturday around 3:24 p.m. at the NYCHA Cypress Hills Houses in East New York, fatally hitting the victim, police said. A neighbor said the wind had been blowing “nonstop” since Friday night."
   },
   {
    "id": "nyc-to3ozs",
    "title": "Greene: All night long? Not anymore. Aging music legends are not forever young",
-   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOajRobFZBdEg0NmRGNktDZ0dtLWRtdXN5aU12Nzg2aE1tNmtXRkFJLTVmOGg3UkNpM3hlMkpfam81MlhGRnJ0RURQVUVkSUdzUGg1WXZlbm1wbURDRHY2a09EN3M3UXVzZVdXVl96UzBucVdpb09hb0hCQnc1X3UxTElyYWRmY0h3dzNvUVJkR0NtNllIZjkw?oc=5",
+   "url": "https://www.nydailynews.com/2026/09/26/leonard-greene-aging-music-legends-not-forever-young/",
    "date": "2026-09-26T17:57:15.000Z",
    "source": "New York Daily News",
-   "domain": "nydailynews.com"
+   "domain": "nydailynews.com",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://www.nydailynews.com/wp-content/uploads/2026/09/GettyImages-2284266258.jpg?w=3000&h=2143",
+   "summary": "Few music icons are more beloved than Lionel Richie. But instead of Dancing on the Ceiling, the four-time Grammy winner needed a chair to finish his final song, “All Night Long,” during a concert in St."
   },
   {
    "id": "mamdani-1xtu84q",
    "title": "On World Stage, Mamdani Tries to Play Diplomat",
-   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPUktwUkZLdXluWnBIREpzdmNUUGZBZlN1azVLLW5GYnlnYWJLWFF0dTFudGI4VlY1b2NVYzQycFd1eWVfSDRVcm1aOW1nR3dqM2g3Z2Vmb2ZxOHZGRHRYUEdpamFYMDRMNG01V3A2VXhMbl9jQl8zTWdCQjgtdk9sTlhrYWMxTXhC?oc=5",
+   "url": "https://www.nytimes.com/2026/09/26/nyregion/mamdani-netanyahu-united-nations.html",
    "date": "2026-09-26T17:18:30.000Z",
    "source": "The New York Times",
-   "domain": "nytimes.com"
+   "domain": "nytimes.com",
+   "direct": 1,
+   "tried": 1
   },
   {
    "id": "nyc-1tocxds",
@@ -2319,23 +2354,6 @@
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
-   "id": "nyc-p75mp3",
-   "title": "Mamdani allies arrested blocking traffic ahead of Netanyahu's UN speech",
-   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNRFptTW5GUHBRbjBTZXNBNnV6QlBpUVdVOFVDNzd3VDNqN29OS2RXRTNJWnpwbFRvZlNaQWtKLV9wdFAtcFJDa0tUY1IyR0lHajJyTXNtQVBrNE1iT2Jud0pzZzM3Q2psSGNsejBnZEh4NVdJN3RlMFJ6YTBaWnE1clNPa0ZFakJmSktOYmlvbXlRczZBUXgxUU9xOWg5RUhnMHE3MGdwcw?oc=5",
-   "date": "2026-09-25T20:56:00.000Z",
-   "source": "Gothamist",
-   "domain": "gothamist.com",
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "nyc-gne15h",
-   "title": "NYC councilmember wants to ban tickets for spitting after arrest video circulates",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPamJfd0dKZzB4V3Nsa3B3SWk3Ty1WSmozeDZhNlVPazVKVFpzancwSmxTbDlrVnZUalFJMjQ0N0VHVktVeEVvVkkyTjdQbVhObkFFQ0l3UEZ6ejRyZE5RUVlvR2Q0U09mcnFIUWhRZ1IzcUN0c2hyLVBVNWdQenlNNjFPLTlXenpmVWZhNXNPYVpHSU1jT2JvaEdPS1NyaVlWTHcwNXh2dzVjNTlG?oc=5",
-   "date": "2026-09-25T20:56:00.000Z",
-   "source": "Gothamist",
-   "domain": "gothamist.com"
-  },
-  {
    "id": "nyc-ywsffh",
    "title": "NYC lawmakers want 'low-traffic neighborhoods' with more speed humps, street changes",
    "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNTjZCTThmOE43YjVfMGJYNUR4dWVCNE8tWXFSbGp5YjZMdkg0QUFpQTRsVlFkVXJESU5BREJGZVloemM1OTZyMVk0NEJYTWhDTWgyN1A2WjhRWDVFWDk4bW1CSU1JWEI1ZEpoMkN5a09aNzQyTm9mQ1lXZmw5MHhpM184VXg5WkdJb2Faczdpc3NSV09SU2xiVFBwV1I1ZXZsbTVvc2owTkE4elVF?oc=5",
@@ -2360,12 +2378,15 @@
    "domain": "gothamist.com"
   },
   {
-   "id": "nyc-19ubm98",
-   "title": "NJ governor asks Caldwell, her second in command, to resign",
-   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQeVh0RkNDU2RXeUktWDQwWjZYV3RtM3pMYUl6Tk5oTEtpQ3ZqbWZ4dG13bE9IemUtcUpGNU5VVVJZdzJEeWhrdGpjdV9hQzFTX1dFdVJaMmtzeVl3X2VyVWplbHpnamdqSUF2SGVGWVViUDktLUdDTVM0a3NMUDdNXzR6cUZ2NWdPNUxSQw?oc=5",
-   "date": "2026-09-25T20:56:00.000Z",
+   "id": "gothamist-1ww0t9",
+   "title": "NJ Lt. Governor Dale Caldwell has resigned, Gov. Sherrill says",
+   "url": "https://gothamist.com/news/nj-lt-governor-dale-caldwell-has-resigned-gov-sherrill-says",
+   "date": "2026-09-25T20:26:00.000Z",
    "source": "Gothamist",
-   "domain": "gothamist.com"
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/GettyImages-2244372941.jpg",
+   "summary": "Then-New Jersey lieutenant governor candidate Dale Caldwell at an event in November 2025. Caldwell is stepping down amid allegations he acted inappropriately with women while in office. He disputes the allegations.",
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
    "id": "nyc-1f55jyt",
@@ -2427,12 +2448,37 @@
    "domain": "reuters.com"
   },
   {
-   "id": "nyc-dt80vq",
-   "title": "Slower Citi Bike speed limit means higher costs for riders and more cash for Lyft",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQejlkaE5rSExBaVFFQW1kVEFYN01DdFN6S1NuWWIxdm0xUWkzSHg1SmRTc1h0SXR5YTJHRFZZZ2RyUHB4dFVLZ2JsanNGeUtmaGxTUXFDZERTeHRhVWFUVHJpOXRYaEZyUXRLRHAxR1l3b0pKSW9XbV9Gd1NEV2dvY3dPTGFWNXpYZFFCY2dLYlJGbXp5ZEJ6NURuSVN1TlZnQlFRWjNqQWFubzhF?oc=5",
-   "date": "2026-09-25T15:02:43.000Z",
+   "id": "gothamist-1t2fuhw",
+   "title": "Judge rules ICE sought to 'inflict punishment' on immigrants held in NY",
+   "url": "https://gothamist.com/news/judge-rules-ice-sought-to-inflict-punishment-on-immigrants-held-in-ny",
+   "date": "2026-09-25T17:18:30.000Z",
    "source": "Gothamist",
-   "domain": "gothamist.com"
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/GettyImages-2230132284.jpg",
+   "summary": "Federal agents patrol the halls of immigration court at the Jacob K. Javits Federal Building, 26 Federal Plaza, on August 14, 2025, in New York City.",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
+   "id": "gothamist-mj6ov6",
+   "title": "Manhole mystery grips NYC as 3 more men seen emerging from Brooklyn sewer, NYPD says",
+   "url": "https://gothamist.com/news/manhole-mystery-grips-nyc-as-3-more-men-seen-emerging-from-brooklyn-sewer-nypd-says",
+   "date": "2026-09-25T16:37:00.000Z",
+   "source": "Gothamist",
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/IMG_0441.jpg",
+   "summary": "NYC DEP in Bensonhurst Brooklyn where police say 3 men climbed into a manhole. More men seen coming out of manholes, this time in Bensonhurst Brooklyn — two others arrested in Midtown manhole incident. [ more › ]",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
+   "id": "gothamist-1dzmgkm",
+   "title": "Slower Citi Bike speed limit means higher costs for riders and more cash for Lyft",
+   "url": "https://gothamist.com/news/slower-citi-bike-speed-limit-means-higher-costs-for-riders-and-more-cash-for-lyft",
+   "date": "2026-09-25T15:00:46.000Z",
+   "source": "Gothamist",
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/GettyImages-2282434349.jpg",
+   "summary": "Former Mayor Eric Adams last year mandated Citi Bike lower the maximum speed for electric Citi Bikes from 18 to 15 mph. The change costs riders more money as they pay by the minute. [ more › ]",
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
    "id": "nyc-xikhke",
@@ -2459,6 +2505,17 @@
    "domain": "nydailynews.com"
   },
   {
+   "id": "gothamist-bo7naz",
+   "title": "How Trump's trade war with Canada is squeezing a farm cidery in Albany",
+   "url": "https://gothamist.com/news/how-trumps-trade-war-with-canada-is-squeezing-a-farm-cidery-in-albany",
+   "date": "2026-09-25T12:01:10.000Z",
+   "source": "Gothamist",
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/IMG_4002_llCLbuc.jpg",
+   "summary": "Nine Pin in Albany sells more than 2 million cans of cider a year. Nine Pin cider's co-founder said that a local business relying on a nearby harvest should be insulated from the trade war. But it isn’t. [ more › ]",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
    "id": "nyc-16bq1xo",
    "title": "NYPD detective punished for social media posts in uniform",
    "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNcW5ocmxOWHRxQVNEUnctS25Jc1hJblhWa19qQXVwTGVYZWJKb2dkZjVkUzMwblNURGNrbEdJTkNOMjJxY3hoeFpfdTMwZ2tCMlRaWkJHSGhZYVg2ZmNkNHdjMGt0MXo4anlwWnl1a3kxQTQ2NXhwb0pRWmtYTHBHbmJ0WmMxbXE4MmdDcA?oc=5",
@@ -2483,6 +2540,17 @@
    "domain": "amny.com"
   },
   {
+   "id": "gothamist-poxb3g",
+   "title": "NYC councilmember wants to ban tickets for spitting after arrest video circulates",
+   "url": "https://gothamist.com/news/nyc-councilmember-wants-to-ban-tickets-for-spitting-after-arrest-video-circulates",
+   "date": "2026-09-25T10:00:00.000Z",
+   "source": "Gothamist",
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/Spitting_pic.png",
+   "summary": "Rev. Kevin McCall Councilmember Chris Banks and other community members speak in front of the 73rd Precinct stationhouse in Brownsville on Thursday evening.",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
    "id": "mamdani-173w92t",
    "title": "Netanyahu berates New York's Mamdani in UN speech",
    "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1KTjkyd3pNMUpja2RmWVZaWi1zTUpoNHlEQmhFMzlHeG1VZ0d6aWdqNEdNR283dUxYcUJZYTVHVkJkUVJzWFlMc2h4djJ2TDM1NkN1MWFpaHlDSWJR?oc=5",
@@ -2495,7 +2563,7 @@
    "title": "Netanyahu says Mamdani endangers Jewish New Yorkers by spreading lies about Israel's actions in Gaza",
    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNZWwwMXh5M0xLSTdqOUI0ZWhSSUtEU2NfdHlfaTVhUUhEU1NzM0NsczV4UzBnbHRxMXN4VjlDTTBmdm9MWEJKV1NvTW14eW5vWmlRQkV2N0Z1NExpazc4VWxxT05vTTdZN0M4bExaMjlPay1naWV4V2tqVnlMY1g3Z1d5MHkwWEFLSjdGXy14aGlYMkNsZ0liVC1rNHFXN3c?oc=5",
    "date": "2026-09-25T05:16:00.000Z",
-   "source": "AP News",
+   "source": "apnews.com",
    "domain": "apnews.com"
   },
   {
@@ -2505,6 +2573,17 @@
    "date": "2026-09-25T01:58:34.000Z",
    "source": "New York Daily News",
    "domain": "nydailynews.com"
+  },
+  {
+   "id": "gothamist-1jem6td",
+   "title": "NJ governor asks Caldwell, her second in command, to resign",
+   "url": "https://gothamist.com/news/nj-governor-asks-caldwell-her-second-in-command-to-resign",
+   "date": "2026-09-25T01:55:00.000Z",
+   "source": "Gothamist",
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/GettyImages-2245065263.jpg",
+   "summary": "New Jersey Lt. Gov. Dale Caldwell New Jersey Gov. Mikie Sherrill said it is “in the best interest” for Garden State residents for Dale Caldwell to step down, after releasing a report that confirmed scathing allegations…",
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
    "id": "nyc-1erges4",
@@ -2545,6 +2624,17 @@
    "domain": "thecityreporter.nyc",
    "image": "https://i0.wp.com/www.thecityreporter.nyc/wp-content/uploads/2026/09/092426_un_netanyahu_arressts.jpg?fit=1024%2C683&ssl=1",
    "summary": "Israeli Prime Minister Benjamin Netanyahu called Mayor Zohran Mamdani an anti-semite during a contentious speech at the U.N.",
+   "seen": "2026-09-27T23:35:45.349Z"
+  },
+  {
+   "id": "gothamist-36nrq9",
+   "title": "Mamdani allies arrested blocking traffic ahead of Netanyahu's UN speech",
+   "url": "https://gothamist.com/news/mamdani-allies-arrested-blocking-traffic-ahead-of-netanyahus-speech-at-the-un",
+   "date": "2026-09-24T21:12:00.000Z",
+   "source": "Gothamist",
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/IMG_7803_1.jpeg",
+   "summary": "Darializa Avila Chevalier, center, joined dozens of elected officials and celebrities blocking First Avenue. The mayor said he would not be attending any demonstrations against the Israeli prime minister. [ more › ]",
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
@@ -2622,12 +2712,15 @@
    "domain": "cityandstateny.com"
   },
   {
-   "id": "nyc-zxp63n",
+   "id": "gothamist-1tee63b",
    "title": "Judge orders NYC officials to turn over phone messages, keeps rent freeze in place",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPd0Z6YmNyMTJNVnpYQnJ5UTFfMk9pS21NM0R4UVoySHYxZkl1d0pkYkp5dmRiclphOTNjWUtkN0FrQTRKWUVHUV9lOEVFUUdMZ2dsZlFBS2FoczBCVXRrQWpfWHNmejhubkUxanZOYWZzcTlZQlRva0RKZGhsRUFMQzRtZGdiWkxsQWtkOHVEVXY3SFNoMXZ6VnpZOEJ6bS05akxFRVEzTFlqZzRv?oc=5",
-   "date": "2026-09-24T17:31:59.000Z",
+   "url": "https://gothamist.com/news/judge-orders-nyc-officials-to-turn-over-phone-messages-keeps-rent-freeze-in-place",
+   "date": "2026-09-24T17:30:00.000Z",
    "source": "Gothamist",
-   "domain": "gothamist.com"
+   "domain": "gothamist.com",
+   "image": "https://images-prod.gothamist.com/original_images/GettyImages-2294777613.jpg",
+   "summary": "Mayor Zohran Mamdani Landlords had asked the court to leave a previous rent increase in place. The city’s lead attorney criticized the order to provide phone messages. [ more › ]",
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
    "id": "nyc-8qc4bq",
@@ -2695,37 +2788,6 @@
    "date": "2026-09-23T21:36:49.000Z",
    "source": "New York Daily News",
    "domain": "nydailynews.com"
-  },
-  {
-   "id": "nyc-1qagetp",
-   "title": "Flight fiasco lingers as delays at JFK, LaGuardia and EWR persist after cable cutting incident",
-   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOWDBDYnBSYWJxVThULTVZMVVtWXpZMWgxTGt3Ykc3Q1c1VkhzSnZBNzk2Z2V3NFVMNDlwSW5OakF4YXRTc3BTMjRjY0JhdlBWUUZOZmVmVnpyWFotb2pPNHp2eVR5NmtkZzFsQnc2aTJVMy1qWWZwUUh0NHVFT2JJSlYxYnhTSllJckR5T2tKRTc1eS1ZMmJqVGlEOE1vd2I5SENZRW90MjNZM0paX3lqODdBRTJrTmpGNGJ2Vg?oc=5",
-   "date": "2026-09-23T20:55:00.000Z",
-   "source": "Gothamist",
-   "domain": "gothamist.com"
-  },
-  {
-   "id": "nyc-k1kapl",
-   "title": "MTA plans upgrade to aging, garbled subway announcement systems",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNNE9LWUVwTHp1bFIyZWZpU2JBMFJvLXFpT0hJTTZiakxxMHNudVJiRHpnQ3dVRGJYSEtmV3NzZXo5NTNmcm1Hb19LRWlSeFJZYlFUa19TcDM2VWZFM3B1Y3l4bDRMR3BDZ2NxVFRSTHVMYml0Ny1QQUJXNk1OdHRfVDdOQnlzYk9NS0VzWUNsXzJURUE?oc=5",
-   "date": "2026-09-23T20:55:00.000Z",
-   "source": "Gothamist",
-   "domain": "gothamist.com"
-  },
-  {
-   "id": "nyc-15ekz73",
-   "title": "A nor'easter aimed at NYC in time for the Global Citizen Festival could trash Central Park, again",
-   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOTy1JclhJMlV0OW1ROE42bE1CbV9xS1BRXzgtRVFwQUpFSHQ2ajkxcVRIeF9XQ1VTMzBqc2kwbXBvOUtGeWZZUV9nYmZwUEx6OXNjYXhvVklGaUNUZGZra3h3S3BPWTFjdFRncVNSV1FwVU9yWmRNaFMzRHhNVl9HNk51QWlqZmVVWWtzT3pLc29zR3NRVmFjTkc4eDNjS2lxUDBmbXdLdw?oc=5",
-   "date": "2026-09-23T20:40:50.000Z",
-   "source": "New York Daily News",
-   "domain": "nydailynews.com"
-  },
-  {
-   "id": "nyc-2s4gw7",
-   "title": "New Yorkers want more protection from the heat after a sweltering summer",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPVHJuOVRVeVBPTno1aWgzdnh4b2hIWHNEZUczN25uSm9hOXRtMFVkLVhLTGRrclNETkFROFMxblcwWHJ5dlJCSWExVERiUVVmdzFDcWxvd19YbHpqbDk1ZEtpd1Q5S1JxYXgyT2YyZmVDZjBSUmoxSjZ5Y3VLbGF1cWwyQmkxRGlsQnRsNE1SWHBEVFozVVE0TW02TVhwM1dn?oc=5",
-   "date": "2026-09-23T19:03:00.000Z",
-   "source": "Gothamist"
   }
  ],
  "li": [
@@ -2736,11 +2798,11 @@
    "date": "2026-09-27T22:16:23.000Z",
    "source": "Newsday",
    "domain": "newsday.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://cdn.newsday.com/ace/c:ZTM5ODNkNDktNWM3YS00:ZmFjNTFmYTgtYzkxNS00/landscape/1280",
-   "summary": "A 911 call reported the fire at NJC Scrap Metal Recycling, fire officials said."
+   "summary": "A 911 call reported the fire at NJC Scrap Metal Recycling, fire officials said.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "li-1oxywny",
@@ -2749,11 +2811,11 @@
    "date": "2026-09-27T20:01:48.000Z",
    "source": "Herald Community Newspapers",
    "domain": "liherald.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://gamma.creativecirclecdn.com/liherald/original/20260926-153419-6ef-IMG_0494.jpg",
-   "summary": "Coastal high tides, downed trees and suspended train service were the results of a weekend nor’easter that struck Long Island on Friday and is continuing through Sunday."
+   "summary": "Coastal high tides, downed trees and suspended train service were the results of a weekend nor’easter that struck Long Island on Friday and is continuing through Sunday.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "li-1abxjes",
@@ -2762,11 +2824,23 @@
    "date": "2026-09-27T19:53:03.000Z",
    "source": "Newsday",
    "domain": "newsday.com",
+   "image": "https://cdn.newsday.com/ace/c:M2RiNTBmYzEtMGY1Yy00:MDQ3MWRkNzMtOGE3ZS00/landscape/1280",
+   "summary": "A powerful nor'easter that battered Long Island on Saturday had slowed, but not abated, by Sunday afternoon.",
+   "tried": 1,
    "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
+  },
+  {
+   "id": "li-1xjj68n",
+   "title": "Save the Sound releases water quality grades for Huntington area",
+   "url": "https://tbrnewsmedia.com/save-the-sound-releases-water-quality-grades-for-huntington-area/",
+   "date": "2026-09-27T19:48:21.000Z",
+   "source": "TBR News Media",
+   "domain": "tbrnewsmedia.com",
+   "seen": "2026-09-27T23:53:06.095Z",
    "direct": 1,
    "tried": 1,
-   "image": "https://cdn.newsday.com/ace/c:M2RiNTBmYzEtMGY1Yy00:MDQ3MWRkNzMtOGE3ZS00/landscape/1280",
-   "summary": "A powerful nor'easter that battered Long Island on Saturday had slowed, but not abated, by Sunday afternoon."
+   "image": "https://tbrnewsmedia.com/wp-content/uploads/2026/09/IMG_2477-scaled.jpeg"
   },
   {
    "id": "li-bmtcps",
@@ -2775,11 +2849,11 @@
    "date": "2026-09-27T14:54:23.000Z",
    "source": "Newsday",
    "domain": "newsday.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://cdn.newsday.com/ace/c:NzNjN2MyYmQtODkyOS00:MDhlZGM1MjktMjJiNy00/landscape/1280",
-   "summary": "The organizers behind many of events scheduled for Saturday and Sunday are canceling, postponing or rescheduling their events."
+   "summary": "The organizers behind many of events scheduled for Saturday and Sunday are canceling, postponing or rescheduling their events.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "lipress-vc1xk6",
@@ -3295,15 +3369,6 @@
    "source": "News12 | Long Island",
    "domain": "longisland.news12.com",
    "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "li-3vbjv0",
-   "title": "Nor'easter Set To Slam LI With Higher Wind, Rainfall Totals Expected: What To Know",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNWEp6ZTVxWlNBcG5XSTJZX1h5bVVFbzZFaHNDTVZweTBEVDRzMWNLTkNLMFhxWVh2c3lkSWJISFB2Z0k3V2YtS29UcDNzeVFfR3Iyd0ZEZm9pM3RLMFhvc2NaUGU5dWxjc25LLTZ5YTRkVmhRNW1GbDlrdU80Y19ET0Ytck8wRUpMRTNjZ1dicTh2UjVCNmhvajJxa29tX3Voc0tBaHpwVGU3NXJQ0gHLAUFVX3lxTFBXSnM1U2VKeEIwcEdpZC14NEFZSS1MRDZfQVA4T19kT190TTE1Y1Y2Z21SLWNITDBuNmozb0pYcWt5dG1KZWpJbmhsWFR3MXQ2N3BsSV8tb2tGSWotUUw3aGJuTUNzbEdwdGt2S3pweElQNmNQTEQxeDdlU1h0dzJoaFdETGEzWVItUkx1a2haWjkyd3JKRHlSVTJOaFFHM05uUUFKMUVaN0g5bDVWM3JaTXhDZHAtMnA5V1JrSTIzT2FWRFcyRmltS3ln?oc=5",
-   "date": "2026-09-25T12:00:29.000Z",
-   "source": "Patch",
-   "domain": "patch.com",
-   "seen": "2026-09-27T23:35:45.349Z"
   }
  ],
  "tech": [
@@ -3314,11 +3379,11 @@
    "date": "2026-09-27T22:38:56.000Z",
    "source": "TechCrunch",
    "domain": "techcrunch.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://techcrunch.com/wp-content/uploads/2018/04/tc-logo-2018-square-reverse2x.png?resize=1200,1200",
-   "summary": "Read the latest on artificial intelligence and machine learning tech, the companies that are building them, and the ethical issues AI raises today."
+   "summary": "Read the latest on artificial intelligence and machine learning tech, the companies that are building them, and the ethical issues AI raises today.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "tech-qu6ei4",
@@ -3327,11 +3392,11 @@
    "date": "2026-09-27T22:21:53.000Z",
    "source": "The Verge",
    "domain": "theverge.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2024/10/the_verge_social_share.png",
-   "summary": "The Verge is about technology and how it makes us feel. Founded in 2011, we offer our audience everything from breaking news to reviews to award-winning features and investigations, on our site, in video, and in…"
+   "summary": "The Verge is about technology and how it makes us feel. Founded in 2011, we offer our audience everything from breaking news to reviews to award-winning features and investigations, on our site, in video, and in…",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "verge-1wog09r",
@@ -3351,37 +3416,47 @@
    "date": "2026-09-27T21:32:42.000Z",
    "source": "TechCrunch",
    "domain": "techcrunch.com",
+   "image": "https://techcrunch.com/wp-content/uploads/2018/04/tc-logo-2018-square-reverse2x.png?resize=1200,1200",
+   "summary": "Read the latest on artificial intelligence and machine learning tech, the companies that are building them, and the ethical issues AI raises today.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
+  },
+  {
+   "id": "tech-1do5sql",
+   "title": "- Ars Technica",
+   "url": "https://arstechnica.com/civis/uix/toggle-width.json?t=1790544579%2Caf6d2301d0d53daa2dc552cf4d1296d4",
+   "date": "2026-09-27T21:31:39.000Z",
+   "source": "Ars Technica",
+   "domain": "arstechnica.com",
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1
+  },
+  {
+   "id": "tech-190qi9",
+   "title": "What’s the most creative way you misused tech to connect with others?",
+   "url": "https://www.theverge.com/tech/1001204/whats-the-most-creative-way-you-misused-tech-to-connect-with-others",
+   "date": "2026-09-27T21:06:43.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-placeholder_f212b3.png?quality=90&strip=all&crop=0,0.13712291199202,100,99.725754176016",
+   "summary": "NPR’s Wild Card comment section was hijacked by middle schoolers. Producer Hannah Chin used Google Docs as a makeshift chat room."
+  },
+  {
+   "id": "tech-1aujt67",
+   "title": "AI News & Artificial Intelligence | Page 6 of 521",
+   "url": "https://techcrunch.com/category/artificial-intelligence%5D(https:/techcrunch.com/category/artificial-intelligence/page/6/",
+   "date": "2026-09-27T21:05:03.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
    "seen": "2026-09-27T23:35:45.349Z",
    "direct": 1,
    "tried": 1,
    "image": "https://techcrunch.com/wp-content/uploads/2018/04/tc-logo-2018-square-reverse2x.png?resize=1200,1200",
    "summary": "Read the latest on artificial intelligence and machine learning tech, the companies that are building them, and the ethical issues AI raises today."
-  },
-  {
-   "id": "tech-1do5sql",
-   "title": "- Ars Technica",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQdm1DV1pialdpakpBWmN4TUVZVnQ0VGdXdDZjRnU2dHFqZ2NjOFlwSFZESm1ZTjZWbmVWc0hON3VsNWpGNFd0aFZVVVZBb1hOdkxCUHZva25TQkhCd0lZU1dlakV6U1hGQ2VaNldYTDNkMUgyNkl1S2FlMGowWjJTSDlhbmxhUTJhbkNpYXNZSkNwNld1RjNIc1NjWjk5Uk9f?oc=5",
-   "date": "2026-09-27T21:31:39.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "tech-190qi9",
-   "title": "What’s the most creative way you misused tech to connect with others?",
-   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQMDIzUWRHMDg5ZnRCSm5OX1VQMGduOW9QT1NaUmlwY3RFSVFNY1RsSDF2QXByUk5DSjNvc2dpN0dVWTVtUWpHRlFjekxualhTdEtEYWhjY1ZVM3hYMGltVS1ialREYy1FN0FzZDkyQ1pqT0VHRy1kY3JMV3d5bmNyQmxrUVlMZk4tRE5mMk10ckRvdUo4OS0wbURMMzVqQTJWWTcwcWxMbC0?oc=5",
-   "date": "2026-09-27T21:06:43.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com"
-  },
-  {
-   "id": "tech-1aujt67",
-   "title": "AI News & Artificial Intelligence | Page 6 of 521",
-   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNX0lxalFOU0VoOE8zcmYxM0RUaC0zNDJHNk9fbHk3YnFiMTdmLV9kZ19lVHpjeWhSWXU2eEk0dy1lc01WODRpZEh6aGo2U0g3OVVmYkRaZzhTM3FBY2cwa3ZkX2lKTkZSemhpOGZyM2k0a0l2bFE3dVpwcEJ3RXZvYUQwYTAzQ1Z0TWRPa1N1LTBHcmtmaGFZVEd0dlltOF9fNHo0MXZwc0lkWnQybVdtc1I5ZmpmSXNUcVhJMVFB?oc=5",
-   "date": "2026-09-27T21:05:03.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "seen": "2026-09-27T23:35:45.349Z"
   },
   {
    "id": "tech-13hi01d",
@@ -4080,11 +4155,11 @@
    "source": "The Quantum Insider",
    "domain": "thequantuminsider.com",
    "tag": "Quantum",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://thequantuminsider.com/wp-content/uploads/2026/07/Sebastian.jpg",
-   "summary": "Yuval Boger interviews Sebastian Hassinger, host of The New Quantum Era podcast, and author of a new book by the same name."
+   "summary": "Yuval Boger interviews Sebastian Hassinger, host of The New Quantum Era podcast, and author of a new book by the same name.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "quantum-zgkyql",
@@ -4094,11 +4169,11 @@
    "source": "The Quantum Insider",
    "domain": "thequantuminsider.com",
    "tag": "Quantum",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://thequantuminsider.com/wp-content/uploads/2026/09/2026-09-25_22-02.png",
-   "summary": "Fairfax County Public Schools plans to install an operational quantum computer at Skyview High School, with student learning beginning in spring 2027."
+   "summary": "Fairfax County Public Schools plans to install an operational quantum computer at Skyview High School, with student learning beginning in spring 2027.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "quantum-p5ras9",
@@ -4108,39 +4183,49 @@
    "source": "Barron's",
    "domain": "barrons.com",
    "tag": "Quantum",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
+  },
+  {
+   "id": "robotics-19fv1iq",
+   "title": "The Aeropod automates soil aeration without robotics — see it at TechCrunch Disrupt",
+   "url": "https://techcrunch.com/2026/09/25/the-aeropod-automates-soil-aeration-without-robotics-see-it-at-techcrunch-disrupt/",
+   "date": "2026-09-25T17:30:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "tag": "Robotics",
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2026/09/aeropdsnew.jpg?resize=1200,800",
+   "summary": "Muju Earth Technologies has developed a deceptively simply pod that can save farmers money while improving crop yields."
+  },
+  {
+   "id": "energy-1vq4d6r",
+   "title": "Eaton to acquire Italy's grid equipment maker COL Group for €810 million to expand in Europe",
+   "url": "https://www.reuters.com/business/eaton-acquire-italys-grid-equipment-maker-col-group-810-million-expand-europe-2026-09-25/",
+   "date": "2026-09-25T17:12:03.000Z",
+   "source": "Reuters",
+   "domain": "reuters.com",
+   "tag": "Energy",
    "seen": "2026-09-27T23:35:45.349Z",
    "direct": 1,
    "tried": 1
   },
   {
-   "id": "robotics-19fv1iq",
-   "title": "The Aeropod automates soil aeration without robotics — see it at TechCrunch Disrupt",
-   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQUmtWUmYzUV9lVDg3YnNBYjhRakItNUs2cGpCSjQxRmxrN2xkZFllLVpwZGRqYnBSaXR1R2ptMFNDWVlhY2Z0Z0tPelNlWnNFZG9DeTBva0o1X0dSbjZ3MzNoYk45UTBVdzUxNHFqd3Qzd1gwUDJmUHVBTHMtUHBXRXJsdWEzM2dtNXEtVHhTbTh3ekxQV0hCQV9oNGtaWTBiUFdYajVrc1N5QWp6TVplSFExREVtSHM?oc=5",
-   "date": "2026-09-25T17:30:00.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "tag": "Robotics",
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "energy-1vq4d6r",
-   "title": "Eaton to acquire Italy's grid equipment maker COL Group for €810 million to expand in Europe",
-   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOM3NfZ1dXaGRROEdXcERsZjNZLVhPSU5KMERucGNwcDY0NmNtV2RNTFBGLU5jZTd4bWN5UFVVMFZ5bWxMUlRCYkZncTZpaTZ2Q0xjOUdDRUFrZEZjTHRtb2dKRnk3X0dFU05FUUpSMGNuNldkSXRpc0NXQVdLUFU1RTQ3al9DTlZVUWRDVDdyQVJGQkdCV1NYNGZGeGsxLW0wVEtlOG1sNnNfVVYyc3gtbE53UkZZNER4cl9Gd1Fmdw?oc=5",
-   "date": "2026-09-25T17:12:03.000Z",
-   "source": "Reuters",
-   "domain": "reuters.com",
-   "tag": "Energy",
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
    "id": "quantum-pjnc9p",
    "title": "Creotech Quantum Prepares QKD System for Commercialization",
-   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOZlFrU0paYTZvSXE1Ri1TVzVGcF82Qi04QjlZakYwMGdHQTJLbFBHNTk3VGhZdzVBOTIxbF9qMU9VTHF5Y1YyenJGOFhkTWZMUmhPeWd1TTlzR2RQTXlUNGpULXc5U005TmZyOVNKTkYzQlNHRldMY09JUm5UV05vNE9LNVFvOU8wb2dqb0Y3Smg?oc=5",
+   "url": "https://thequantuminsider.com/2026/09/25/creotech-quantum-qkd-system-commercialization/",
    "date": "2026-09-25T13:55:49.000Z",
    "source": "The Quantum Insider",
    "domain": "thequantuminsider.com",
    "tag": "Quantum",
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://thequantuminsider.com/wp-content/uploads/2026/09/2026-09-25_18-13.png",
+   "summary": "Creotech Quantum plans to commercialize its proprietary QKD system in 2026 after completing the European Commission-backed eCAUSIS project."
   },
   {
    "id": "energy-zfk4xr",
@@ -4422,11 +4507,11 @@
    "date": "2026-09-27T22:39:47.000Z",
    "source": "IGN",
    "domain": "ign.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/search-for-the-needle-roblox/1/19/Search_For_The_Needle_Codes_%281%29.png",
-   "summary": "Search For The Needle codes will reward you with Gems and Coins in this incremental simulator Roblox game by Garage Games. While there is a Discord server for"
+   "summary": "Search For The Needle codes will reward you with Gems and Coins in this incremental simulator Roblox game by Garage Games. While there is a Discord server for",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "games-n5q8by",
@@ -4435,29 +4520,36 @@
    "date": "2026-09-27T22:28:16.000Z",
    "source": "IGN",
    "domain": "ign.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/marvels-wolverine/d/df/Walkthrough-FieldTest01.png",
-   "summary": "In Marvel's Wolverine, Field Test is the third mission on your second visit to Madripoor. After recruiting Mystique in opposing Essex, Jean and Logan"
+   "summary": "In Marvel's Wolverine, Field Test is the third mission on your second visit to Madripoor. After recruiting Mystique in opposing Essex, Jean and Logan",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "games-egxatk",
    "title": "PlantUp - Official Release Date Trailer",
-   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9wZHpHQWJxcGZyMVN2d1dYWUVoSVp0V2F6aGcxVXI0aXE2a3BDT05jR043Yy1NTktFZlV1OVNZS3QwYWNKX2xKUFUtTjNONW1DYWtPSExpQmdRM0E4S3FHMnViSndoenRtaldjMzV5SmdYQQ?oc=5",
+   "url": "https://www.ign.com/videos/plantup-official-release-date-trailer",
    "date": "2026-09-27T22:10:33.000Z",
    "source": "IGN",
    "domain": "ign.com",
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://assets-prd.ignimgs.com/2026/09/27/pu-vcms-1790546927372.jpg?width=1280&format=jpg&auto=webp&quality=80",
+   "summary": "Check out the release date trailer for PlantUp, a cozy time-management game developed by Malte Lehmann. Grow plants, process your harvest, and serve impatient customers before chaos takes over your shop."
   },
   {
    "id": "games-1rq30wa",
    "title": "The Best Deals Today: Super Mario RPG, Fire Emblem: Fortune's Weave, Corsair K70 Keyboard, and More",
-   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQVkdHNDhJclRKOURtSGVGcVNkSktOQkpfS3hRcW5GZE5udUwxTkJLdjlPRVRDdUVIZkswczhjUmcwY3U5VDhuV2luT1JfRFlzSTJWc1BnTlVER2ZGa1VFbUd6cnQwSTZ6RnZNZm85dGFWVER6Rkd1RXpRMGpqU3pUQzJoUjFuLUU5OUZPQlRpalJNSjh2elotZW5wY2tkcWpLRFNaN0tPa1Q1Rklfb3V4ZmxOX1BmMzFrck5FRzJVdDV6WDh5MGNxaHFlSUx1UnlwenZwbFoyZDJUcWM?oc=5",
+   "url": "https://sea.ign.com/super-mario-rpg-remake/249466/the-best-deals-today-super-mario-rpg-fire-emblem-fortunes-weave-corsair-k70-keyboard-and-more",
    "date": "2026-09-27T22:07:32.000Z",
    "source": "IGN Southeast Asia",
    "domain": "sea.ign.com",
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://sm.ign.com/t/ign_ap/deal/t/the-best-d/the-best-deals-today-super-mario-rpg-fire-emblem-fortunes-we_962h.1200.jpg"
   },
   {
    "id": "games-13x4qm4",
@@ -4686,7 +4778,7 @@
    "title": "'Forgotten Island's Stars Officially Explain the Movie's Biggest Shifting In-Joke",
    "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5yaXZveWtmbTV5YUduQkx1cjZWM2xBUmk5M2dYMWVjNFhoOUhCaE1uMFBabmJyQTlyRmktbUR2WUozWE53NWpfOWttTWw3dHY3akp1Rkpid29QR2RYN1FWZ1NKZ3dsaU5UWDkw?oc=5",
    "date": "2026-09-27T18:00:15.000Z",
-   "source": "Polygon.com",
+   "source": "polygon.com",
    "domain": "polygon.com"
   },
   {
@@ -4757,7 +4849,7 @@
    "title": "The Witcher dev reveals why CD Projekt Red doesn't like doing crossovers in its own games",
    "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE84RkNWd2ZSakZNNkU2MjBEZ1JZVWZzVllPSjQyemRtTWRDQzdtY1Q4aklsM2NoNjFreXZrSWRIZXNiRjFYWTE5Nk1sSnE4Vkp6Q055ZVpoZGF2S2xmYkMwSmZyMjNGN2JOS1VURldBQmUyM1B5WUE?oc=5",
    "date": "2026-09-27T16:31:42.000Z",
-   "source": "Polygon.com",
+   "source": "polygon.com",
    "domain": "polygon.com"
   },
   {
@@ -4834,7 +4926,7 @@
    "title": "Avengers: Endgame Encore's box office success sets the stage for Doomsday",
    "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE03ZDlpbk1KUW04T3BNcWZ2WV9ocWNKVUROaUdxVnhwaG0wdG5UdXRIV3lONHIyYzRvelFvNVdCUnBfM3JvVlZWSjNZRzJEUlhQdERLdkMzT243R0dQbS1rM0kweDJKejZRTjRB?oc=5",
    "date": "2026-09-27T15:42:23.000Z",
-   "source": "Polygon.com",
+   "source": "polygon.com",
    "domain": "polygon.com"
   },
   {
@@ -4974,7 +5066,7 @@
    "title": "Control Resonant Has a Secret Weapon in the GOTY Race",
    "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNUGR3QVRtYVJxRHh1N29TVDlEc0RpNjYtR0hkREZsRl81YktCYVZjNjVHT18xc04ydXVYSDNIN094OUwyRm5zNE85SzNjcFpGVHJPR2FFSWtmaTBiMEFkYUlXdmV0c2JnM0JBczZMc2ZGTUVqSkNRRW5ibXJ1NndGOA?oc=5",
    "date": "2026-09-27T13:00:15.000Z",
-   "source": "Polygon.com",
+   "source": "polygon.com",
    "domain": "polygon.com"
   },
   {
@@ -5014,19 +5106,27 @@
   {
    "id": "marvel-1qpvlrs",
    "title": "'Avengers: Doomsday' Director Explains It's 'Difficult' to Evolve MCU Characters",
-   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQWi1vU0hXVFpSVTdscGJHMC14MC1TT2VHaTFjT1F2MGhpOFEtLXk3YjFVQUh2YkZ3Ump3eVlST0tjUzFTdktFM2tkRFVLd0xsQmNEN0JqU1FFbl9DSUNqRENhUVdrN3RKQWViWHVLeFc1ZjhMM0QzbjVJMTllY2RROFRLYV81X0l1eW1xc1Y1NGdCaVZwV0x0WU1JSHEyQThMd0IydExn?oc=5",
+   "url": "https://variety.com/2026/film/news/avengers-doomsday-director-very-difficult-mcu-characters-1236876967/",
    "date": "2026-09-27T21:02:00.000Z",
    "source": "Variety",
    "domain": "variety.com",
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://variety.com/wp-content/uploads/2026/09/doomsday.png?w=1000&h=563&crop=1",
+   "summary": "“Avengers: Doomsday” co-director Anthony Russo has opened up about the pressure that comes with evolving the franchise’s iconic superhero characters."
   },
   {
    "id": "marvel-nsqhj0",
    "title": "Anthony Mackie Says Chris Evans Gave Him the 'Avengers: Endgame' Script Early",
-   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxON1VyLUxtOXNyYkQ1VXQ4U2otRUVfWnVGVGtRWDRnZXFUQ2NDcDFjcVVSaGc0Mm9FRTBIXzh2SURiaWhURldmWEEyM0lvUDBDak03WDdKN1lsVm5NelZ4cTdXREw3U0Z2eUNQUElJczdMUmpOQjJIX0Y2LUxhaFRxZ1ZkZDl0dGFVWW1DVkhVaTdXQTVhcFlocXpzWk91RXQwdG5wWGl3?oc=5",
+   "url": "https://variety.com/2026/film/news/chris-evans-anthony-mackie-avengers-endgame-script-early-1236876896/",
    "date": "2026-09-27T18:17:00.000Z",
    "source": "Variety",
-   "domain": "variety.com"
+   "domain": "variety.com",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://variety.com/wp-content/uploads/2026/09/2026-comic-con-international-san-diego-day-3-press-line-2025-1000x667-1.jpg?w=1000&h=563&crop=1",
+   "summary": "Chris Evans gave Anthony Mackie early access to the \"Avengers: Endgame\" script, the actor revealed in a recent interview."
   },
   {
    "id": "marvel-bxnlt1",
@@ -5159,8 +5259,19 @@
  ],
  "pop": [
   {
+   "id": "pop-10u6koa",
+   "title": "See all the stars at the 2026 MTV VMAs",
+   "url": "https://ew.com/mtv-vmas-2026-red-carpet-photos-12131740",
+   "date": "2026-09-27T23:30:06.000Z",
+   "source": "ew.com",
+   "domain": "ew.com",
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1
+  },
+  {
    "id": "variety-v8qgb7",
-   "title": "Jeff Probst Says ‘Survivor’ Needs Diversity Despite Paramount’s DEI Rollbacks: ‘All Those Differences Matter’",
+   "title": "Jeff Probst Says ‘Survivor’ Needs Diversity Despite Paramount’s DEI Rollbacks: ‘All Those Differences Matter in the Story’",
    "url": "https://variety.com/2026/tv/news/jeff-probst-survivor-casting-hasnt-changed-paramount-dei-1236876965/",
    "date": "2026-09-27T23:26:01.000Z",
    "source": "Variety",
@@ -5170,6 +5281,19 @@
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
+   "id": "pop-15jngec",
+   "title": "Jeff Probst Says 'Survivor' Needs Diversity Despite Paramount's DEI Rollbacks",
+   "url": "https://variety.com/2026/tv/news/jeff-probst-survivor-casting-hasnt-changed-paramount-dei-1236876965/",
+   "date": "2026-09-27T23:26:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "seen": "2026-09-27T23:53:06.095Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://variety.com/wp-content/uploads/2025/08/Survivor.1.jpg?crop=0px%2C22px%2C1200px%2C675px&resize=1000%2C563",
+   "summary": "Fifty seasons later, one key factor of “Survivor” remains the same: the show's approach to diversity."
+  },
+  {
    "id": "thr-h4geuy",
    "title": "MTV VMAs Red Carpet Gallery: See the Looks and Arrivals (Updating)",
    "url": "https://www.hollywoodreporter.com/gallery/mtv-vmas-2026-red-carpet-looks-arrivals-photo-1236713034/",
@@ -5177,9 +5301,9 @@
    "source": "The Hollywood Reporter",
    "domain": "hollywoodreporter.com",
    "summary": "Madonna is opening the broadcast for the first time since 2003, while Taylor Swift is guaranteed at least one Moon Person trophy — and that’s just the start of who is attending.",
-   "seen": "2026-09-27T23:35:45.349Z",
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/09/GettyImages-2297452676-H-2026.jpg?w=1296&h=730&crop=1",
    "tried": 1,
-   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/09/GettyImages-2297452676-H-2026.jpg?w=1296&h=730&crop=1"
+   "seen": "2026-09-27T23:35:45.349Z"
   },
   {
    "id": "thr-lj3qcz",
@@ -5189,9 +5313,18 @@
    "source": "The Hollywood Reporter",
    "domain": "hollywoodreporter.com",
    "summary": "Snoop Dogg is hosting the ceremony, which will open with a performance by Madonna, who leads the nominees with 13 mentions.",
-   "seen": "2026-09-27T23:35:45.349Z",
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2023/09/GettyImages-1169620339-H-2023.jpg?w=1296&h=730&crop=1",
    "tried": 1,
-   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2023/09/GettyImages-1169620339-H-2023.jpg?w=1296&h=730&crop=1"
+   "seen": "2026-09-27T23:35:45.349Z"
+  },
+  {
+   "id": "pop-1evu9k6",
+   "title": "‘SNL’ Opens Season With Mamdani Hanging Out With BFF Trump, Natalie Harp Going ‘Obsession’ Over President",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQT29zYlBIcHVRel9LS2hFTV9SenExQWR6UzcyOUZGM1dGQy15WGZlY2lRX3pxekpGcjV1QURNSk95VW5ZSGdwdkMtVWdRd0VyRnZycUxfXzNGVzhtLVVqQko2Y2g3dTBkblA3Vks5bTA5WDJ3eXB1Z0JocUM2aXVVU1MwbTB0UGpSR0xB?oc=5",
+   "date": "2026-09-27T22:50:40.000Z",
+   "source": "Variety Australia",
+   "domain": "au.variety.com",
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
    "id": "pop-1btuo32",
@@ -5248,6 +5381,15 @@
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
+   "id": "pop-n12qig",
+   "title": "Tucker Carlson Returns to 'SNL' to Review 'The Odyssey,' Gender-Neutral 'Spider-Man' and Left-Wing 'Obsession'",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQZnA2YnZkdUR2UHFza3A0YWJTNENkVnM1RjVlQURROXRibGN1aHRuWHJWNUxlWUl6UU82Q1lxNjZIemhXZzVDZ2ozZTQybFFyOXhGRFl5Nm9zLWVVVEJ3b1dHZk8wZzVCazJHam5kMTVMTFdRQjdNZGhuQ2NSdmxLN1lxSTEtTjNvRGN4dUtoRXpMeVJW?oc=5",
+   "date": "2026-09-27T22:45:39.000Z",
+   "source": "Variety Australia",
+   "domain": "au.variety.com",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
    "id": "pop-19hyfzw",
    "title": "‘You Can Get Lost’: Inside Queensland's Jim Henson Exhibition",
    "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNZlpjLW1qN3VQcy1Ia2I2Y0ZXazgzbjFFRDljY19RVlZMYkN6dkcyRWlDLW9yWUIyNzdRYjZseVpJcENJZWRJVlRCeXFqOVUzYVl5aFkwdUJpamRpS3A4eDhoam1jclo1Sl9haXJLOU1LZVI4SlFxMW9aS2FUTmxUZXhBMzF6ZEpOYUxGaXM0blJIM3R6S3pwbWc1NFd3c2ktSnhHTS04VHZHcjY5cGc?oc=5",
@@ -5257,24 +5399,24 @@
    "seen": "2026-09-27T23:35:45.349Z"
   },
   {
-   "id": "pop-10u6koa",
-   "title": "See all the stars at the 2026 MTV VMAs",
-   "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9DQVhDZWp5eDJORFI3QklHZEoxOHQzc2wxWFNxZEZrXzFBUVJkY3RmZi15MzIySUxDcjhtTE9DbG05NW5MaFRRLVRHQ1NvZzhUWkZBLTB6S2JJQTZrU0VDcThfRS1MZw?oc=5",
-   "date": "2026-09-27T22:04:25.000Z",
-   "source": "ew.com",
-   "domain": "ew.com",
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
    "id": "variety-xe3lyb",
-   "title": "2026 MTV VMAs Red Carpet: Raye, Lisa, Sienna Spiro and More",
+   "title": "2026 MTV VMAs Red Carpet: Taylor Swift, Lisa, Raye and More",
    "url": "https://variety.com/gallery/vmas-2026-red-carpet-fashion-looks/",
    "date": "2026-09-27T22:00:24.000Z",
    "source": "Variety",
    "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/09/2026-mtv-video-music-awards-vmas-arrivals-mtv-video-music-aw-1000x667-1.jpg",
+   "image": "https://variety.com/wp-content/uploads/2026/09/mtv-video-music-awards-2026-arrivals-los-angeles-2026-mtv-vi-1000x667-1.jpg",
    "summary": "The 2026 MTV VMAs are in full swing, and music’s biggest stars are showing up and out on the red carpet.",
    "seen": "2026-09-27T23:35:45.349Z"
+  },
+  {
+   "id": "pop-16manf1",
+   "title": "2026 MTV VMAs Red Carpet: Raye, Lisa, Sienna Spiro and More",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9EVnYtYm9vY1hLdF96RHB2TkdMUm8ySWc0a0NTOUF1eUVlaEE4QUtBNzR0M2sybUNrSHBuMzFyX2lvSHVSc0F1eDAyX3NhbldlMF9OR1F2UHBBajVlc1Y4TkdrRlBDNUpHR2hETGlRQVI?oc=5",
+   "date": "2026-09-27T22:00:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
    "id": "pop-16efw3e",
@@ -5430,6 +5572,15 @@
    "domain": "vulture.com"
   },
   {
+   "id": "pop-1gz4uzo",
+   "title": "Dakota Johnson offers 3 words to anyone obsessed with her dating life",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNeDY1R1JDaEpsQU9zNUNsQlQzbjBUcFU2VnBQa2tEclllNEx2bEJ1b1RtcE9HZUlrc3hVRnBQUGFmNDZtczluOHhvNkJDb1VfZVJnOGxmbmZFeHJ0NjVQY2tHeDRfNVUwajhNeU9rQnFoZ2VCNmd5UlZrbDVDZHJGNHNSNTRGNThuYkQ1d1NZeGhhaUE?oc=5",
+   "date": "2026-09-27T18:48:40.000Z",
+   "source": "ew.com",
+   "domain": "ew.com",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
    "id": "variety-11mb09m",
    "title": "Nat Geo Kicks Off New Multi-Year Doc Franchise With ‘Africa Earth’s Wild Home’",
    "url": "https://variety.com/2026/tv/news/nat-geo-new-doc-franchise-africa-earths-wild-home-1236876900/",
@@ -5528,6 +5679,24 @@
    "source": "Vulture",
    "domain": "vulture.com",
    "seen": "2026-09-27T23:35:45.349Z"
+  },
+  {
+   "id": "pop-1ti46li",
+   "title": "The Knick",
+   "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFB6SVc5eHBfSDRfbEF6LVp4YXJ2TFRwOTEyLUJDMTBzS01nWFo5N0NZeTNvaGR4YVA4dURRcnM3bUpHM1ZiOGVORDlmLXdIQQ?oc=5",
+   "date": "2026-09-27T17:22:26.000Z",
+   "source": "Vulture",
+   "domain": "vulture.com",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
+   "id": "pop-1hql8nd",
+   "title": "Orphan Black",
+   "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBXUjVjMzRBbTVYSGwtN0RCV1BSb0R4Q1JJTThuaGQ4TDZycHllT0s5cVY0dkFzTEVYRDd6Z1NEdTRpR2tkc0Z1Sm5TbTNURnF1clE?oc=5",
+   "date": "2026-09-27T17:21:44.000Z",
+   "source": "Vulture",
+   "domain": "vulture.com",
+   "seen": "2026-09-27T23:53:06.095Z"
   },
   {
    "id": "pop-uycqbj",
@@ -5728,65 +5897,31 @@
    "source": "Variety",
    "domain": "variety.com",
    "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "pop-17rgq6z",
-   "title": "The cast of Sweet Home Alabama , then and now: See the stars of the beloved rom-com nearly 25 years later",
-   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1UWU9WcGR5NHY2am45c0RWZUhLdjJzb1QtTFZ2WVFOOVNMY3UycjVRSXN0WnJXRmQzN2NKTFRNM1VjYTk0bmVJS2M2NklwREpLclJEUXJVN2pvV1RZM19vNWVwX3JtTVljVlJoNA?oc=5",
-   "date": "2026-09-27T12:00:00.000Z",
-   "source": "ew.com",
-   "domain": "ew.com"
-  },
-  {
-   "id": "pop-1wm0czo",
-   "title": "The Oscar winner who made Jesse Eisenberg change his ‘negative opinion’ about actors",
-   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNbk9DOTRVd3dxTUtSNVFuM05uY1VkTE12b24zRlhPalJUSmZDS2ZoSGQ4REVZX3JPLVhUbFhSQTlmdTVlZndaUER2LVhsMC15TnhRelVYMXpHM0lvSG1vaHVrenhUTllkdjRTaHNPcjluRS0yVldqbGZ2aGpZejE0NjJLd3NzMlVJenBNeTNvbVlYM0MtNEE?oc=5",
-   "date": "2026-09-27T12:00:00.000Z",
-   "source": "ew.com",
-   "domain": "ew.com"
-  },
-  {
-   "id": "pop-1tk5yop",
-   "title": "Martin McDonagh Says 'Wild Horse Nine' Is His Most Political Film",
-   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNX3B0WVplSE5CWElPZGJ0cUhuUVRYN3VhMFd2dkZHcHFqejNtVjduVXhfd0s3XzRpZ0ZPRjNDNTYtdktZQkhiZ0R3c2VzTU5SMzJYRnp0TTVvN3dsdTlfVjd6WTREbHotLU9DTXVfOHRNOUxrVTVPOHRRaWxjdjFHVlhHdl9la2FGRHBVaEgwVndyZTdwdkRPNkYya2hqbVhwXzJpQVQ2Xzg?oc=5",
-   "date": "2026-09-27T11:54:00.000Z",
-   "source": "Variety",
-   "domain": "variety.com"
-  },
-  {
-   "id": "pop-1ftc9dt",
-   "title": "Page 758 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
-   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPdnpaU1hPVlotWk01REQxVm5MdWJJVzVEWTRQbUdrcllfa29lOFBCMjdZa0ZUNV90THNuNEw0MDMyRjVXU0xVTTFwMnM0Ui1UOVBNcVEzTkxTeG5SakNfQkFhbms3Z1BNWnpyLXoxbGlaUUR1U0hEVkR3MzdmZURDTzdFVWJrQ3lHR0lZZnZvNEdwN2tDUUM2cjU4UGFWSWdFblhZb1p2ZUpNWTRxU2NONHN6cVFKbmEwNFo5Q0o0MXQxenA2NWpsS2pURGZqcGFZa3JWRE1xVFA3dzNxWlNaNA?oc=5",
-   "date": "2026-09-27T11:25:42.000Z",
-   "source": "Variety",
-   "seen": "2026-09-27T23:35:45.349Z"
-  },
-  {
-   "id": "pop-1kufsdv",
-   "title": "John Turturro on Joining the Oscar Race — and ‘Severance’ Season 3",
-   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNOGxOTVpRUXdEOTV5blU5YTFib0lkSWJ4cllmVUFrYmpTUkZpajcxbW9ETVVhSHlTbktiV3JwY29KWVRoeS04VXl1MnYzN3J1QS1Zb29EX1VYa0lrbXBFUzl2Z1pEVlYwcHZnNGFYNHU1bzZtOXk1MVVSRUUtVG9BSVdqMnNFRHVCcVBKQTBIVkp5NGQxZ0lOd1BWbmRGZ1dOZGdreENXM1NVazY1eGVNOVowR21vY1ZaMW41RQ?oc=5",
-   "date": "2026-09-27T10:39:33.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com"
-  },
-  {
-   "id": "pop-8c9prq",
-   "title": "Page 756 - Entertainment news, film reviews, awards, film festivals, box office, entertainment industry conferences",
-   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNRlVuWTVJQjhxQjAtQVo2R3NGYVNRY3daTnRXNy1ZNVdVbHlNckp4cDhrYmNPNVJwZ2dPOW01MjFjX0d0MWFXX2gxOHZ3Uk9mWHBwbHRaSTZTWXRjeGlBc2x1NDNFVGtKRmZSbGVPYWpadG53UHBoQjNoSEduejRXQXVXd3hINGhNaV9xel81V0U4Y3ZzYmNOejJpVXY3RnVJMFpLdlJHSGwzTVhIQTA0N1g5NWZidmpvWTFZWDBkdVlkb2VuM3hNajdLU3FZV0RycFFOWEp6eUxmUGpzaUtfSlZ2ZWtQblhl?oc=5",
-   "date": "2026-09-27T10:27:26.000Z",
-   "source": "Variety",
-   "domain": "variety.com"
-  },
-  {
-   "id": "pop-27xv9i",
-   "title": "All Spooky All The Time",
-   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBMN1ZqdmtVbHlSRnRxLWVrWXVDdXVsTW1La0tXSnFGaVUzNWZ3Mk9QWV9saTUzN0ExYTJzWThuWEFuMnppSy1kX1FCMlkzOHVWTTZ3dE11a3pKcnVudXc0a1NacEZaZklPbzFHVFVHaw?oc=5",
-   "date": "2026-09-27T10:17:54.000Z",
-   "source": "Vulture",
-   "domain": "vulture.com"
   }
  ],
  "music": [
+  {
+   "id": "billboard-1mdgaw4",
+   "title": "Fuerza Regida Talks Being A Part of Pushing Regional Mexican Music Globally & Their Love For Taylor Swift | VMAs 2026",
+   "url": "https://www.billboard.com/video/fuerza-regida-vmas-2026/",
+   "date": "2026-09-27T23:50:54.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "summary": "Fuerza Regida caught up with Billboard’s Tetris Kelly on the red carpet of the 2026 MTV Video Music Awards.",
+   "seen": "2026-09-27T23:53:06.095Z",
+   "tried": 1
+  },
+  {
+   "id": "billboard-zk2tv2",
+   "title": "Slayyyter, LISA, Charli xcx & More Rock the 2026 MTV VMAs Red Carpet: See the Best Photos",
+   "url": "https://www.billboard.com/photos/vmas-red-carpet-photos-1236348563/",
+   "date": "2026-09-27T23:45:42.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/09/2026-mtv-vmas-carpet-billboard-1800.jpg?w=237&h=147&crop=1",
+   "summary": "From Slayyyter and Charli xcx to Nirvana, LISA and more, see the stars arrive for this year's ceremony.",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
   {
    "id": "music-11q6au",
    "title": "2026 MTV Video Music Awards: Winners List (UPDATING LIVE)",
@@ -5794,11 +5929,11 @@
    "date": "2026-09-27T23:33:13.000Z",
    "source": "Rolling Stone Australia",
    "domain": "au.rollingstone.com",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "direct": 1,
-   "tried": 1,
    "image": "https://images.thebrag.com/cdn-cgi/image/fit=crop,width=1200,height=628/https://images-r2-1.thebrag.com/rs/uploads/2026/09/GettyImages-2297449344.jpg",
-   "summary": "Follow along with Rolling Stone AU/NZ today as we provide live updates on all the 2026 MTV Video Music Awards winners."
+   "summary": "Follow along with Rolling Stone AU/NZ today as we provide live updates on all the 2026 MTV Video Music Awards winners.",
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1
   },
   {
    "id": "billboard-1j1hx2h",
@@ -5808,8 +5943,8 @@
    "source": "Billboard",
    "domain": "billboard.com",
    "summary": "Slayyyter caught up with Billboard’s Tetris Kelly on the red carpet of the 2026 MTV Video Music Awards.",
-   "seen": "2026-09-27T23:35:45.349Z",
-   "tried": 1
+   "tried": 1,
+   "seen": "2026-09-27T23:35:45.349Z"
   },
   {
    "id": "billboard-8033og",
@@ -5836,11 +5971,15 @@
   {
    "id": "music-nsz9tb",
    "title": "Chuck Varga, GWAR Founding Member and ‘Sexecutioner,’ Dead at 68",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOWkF1ZE9aZzhRMEU0OFN6THJIdlN4TWY3Rng4REZRV0lyOU1TVW92YlJyckhpZlhwZXZVVnprS2VvRjh2bm1ZTkJGUlQ3ckpWdmtVYVhabXNnbXdwckNWanlWUXhNM3lHSl96aEg3bEwyTVA1b1NRSUtsb1FTSmdmVGpUYl82RFZuS05hNWR2WmRCUW54R0g3c2NqV01Qbzh0SkhXSkg0bFZRbFpX?oc=5",
+   "url": "https://au.rollingstone.com/music/music-news/chuck-varga-gwar-founding-member-sexecutioner-dead-obit-101561/",
    "date": "2026-09-27T22:28:13.000Z",
    "source": "Rolling Stone Australia",
    "domain": "au.rollingstone.com",
-   "seen": "2026-09-27T23:35:45.349Z"
+   "seen": "2026-09-27T23:35:45.349Z",
+   "direct": 1,
+   "tried": 1,
+   "image": "https://images.thebrag.com/cdn-cgi/image/fit=crop,width=1200,height=628/https://images-r2-1.thebrag.com/rs/uploads/2026/09/gwar.jpg",
+   "summary": "Chuck Varga, a founding member of the shock metal band Gwar who performed as the character \"the Sexecutioner,\" has died at the age of 68."
   },
   {
    "id": "music-chg5kd",
@@ -5915,7 +6054,8 @@
    "title": "Tyler Childers Brings the Wild, Eddie Vedder Surprise Performs at Ohana Festival",
    "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOcVdhSkIzaWtVLXN1ZERzQ3FQZnVabzMxaEpPM01qMW5qOE50c1hBZUllVHc2REtBc0lGRDg2U0ZWNlVHb2RuZmVaMnpPVzAzR3Q1MFRKWDZoanhycC0zc1BadUptUG5feVMxaTQ3eTdxUVV5V3N4UFkteDdkTWkxVUJXTE9mM0QxeUVtTHVYNVpsMzQ1ckxWR1FYSzY3RHRKQXJVLVVQTmYwWW5SRi12WDhUVUZhaUE?oc=5",
    "date": "2026-09-27T19:02:08.000Z",
-   "source": "Rolling Stone"
+   "source": "Rolling Stone",
+   "domain": "rollingstone.com"
   },
   {
    "id": "billboard-uyn0cx",
@@ -6097,6 +6237,15 @@
    "domain": "stereogum.com"
   },
   {
+   "id": "music-12g8pvt",
+   "title": "“A musician serves an intention, a continuum, a storytelling… You need to be listening carefully to what you play”: The quintessentially French, impossibility brilliant Pierre Bensusan on the freedom of DADGAD and unpredictable magic of performance",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5ZaUV6c2NBcThNVUlnQ0xOTVlyMFVIamp5SFBRLTdNM3lfRjlIcjVrV1JveFZ4U1FMelVQdmxqQ1pzS1hIM0k2VzJrNTRQSXh5Y0piRmRTcV94dVFrSDE0Y1AydTBjbzV5dzZTUjJSajU0Sks5VDV3?oc=5",
+   "date": "2026-09-27T13:00:00.000Z",
+   "source": "guitarworld.com",
+   "domain": "guitarworld.com",
+   "seen": "2026-09-27T23:53:06.095Z"
+  },
+  {
    "id": "music-1eh7dra",
    "title": "“Truly an amp improver – you’d instantly miss it if you turned it off”: ThorpyFX Kudu review",
    "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9jMDhwWkhYLS1wVS1ZV21JdGFiSmdXTGtmUDIwbklqNlBFN1l3LWxvM212REtTNGFNWFlBemVVVkNhNzRyOFMzTFZJVUZvbkN2aDZNRTZoenNwRk9QT0x0T29yMndhb3cwdWZWV3VBQ0lQdXEzSmc?oc=5",
@@ -6204,7 +6353,7 @@
    "title": "2026-09-26",
    "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFA5cnJ2ckhsSno0SnRKNGcyY0lqX0M3RTQzU3NQSnJITWJMTUZSRXp1M0h4WW12X2Q2U084dGVGdkl6OGRkektOU0lxak9lTU1VaGo4UzF0SzEyaXoxSXU0U2xOZ20weFFHSU9HMnV6aXFtdlRQUVE?oc=5",
    "date": "2026-09-26T21:22:03.000Z",
-   "source": "Billboard",
+   "source": "ca.billboard.com",
    "domain": "ca.billboard.com",
    "seen": "2026-09-27T23:35:45.349Z"
   },
@@ -6367,30 +6516,6 @@
    "date": "2026-09-26T13:34:03.000Z",
    "source": "Rolling Stone",
    "domain": "rollingstone.com"
-  },
-  {
-   "id": "music-5f7b8v",
-   "title": "Sabrina Carpenter Cast As Ginger Rogers In Fred Astaire Biopic",
-   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNWDd5RkRzQlZUQXpBd0xWS0Y2SWlfUVN2RFY4WnFoWXpwR2QxcGRsN0RmdDdLNTU3N29UR21nUWVTU2dEWkdiVktjeV9YbFpCamQzY0l0NE9BS2VYaHFZdUVBR1RncVpKWUJpSmMwZ24yNWVUYXFfN1luTmN5S1QtcXJzOV8tM2lRMHgwNnJWMC1pdTQ0RnBsOE9NT3NmQQ?oc=5",
-   "date": "2026-09-26T13:28:00.000Z",
-   "source": "Stereogum",
-   "domain": "stereogum.com"
-  },
-  {
-   "id": "music-110tofm",
-   "title": "What Some Folks Really Mean When They Claim to Have Never Heard ‘Choosin’ Texas’",
-   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQM09rUmNYYWw2eVViZm91SzNpWFl4YkJ0cHhfOEtfbEZpZ2w4NVRjWlZqMjhmeWNtbUVNN2QwVGViVlFkMFpOdTY2b183WGNGNko1bFA3R0s2RWZid3N5SHFwNTYtR3N2emVLak45VkE2MGMzdWRTTkRacnRBLURUTUktMHdKa1NxMktfX2lSV3c4YUpCOFRwcUhJc2VVNkIwMzFLemV3Y3hVT3A4SVFHRXBjbHNfYUE?oc=5",
-   "date": "2026-09-26T13:00:00.000Z",
-   "source": "Rolling Stone",
-   "domain": "rollingstone.com"
-  },
-  {
-   "id": "music-8w16ni",
-   "title": "Where to Watch the 2026 Texas vs. Tennessee College Football Game Free Online",
-   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPTm52aThFdk1VVzVUdVljMEJjc2dQd1lHbEQ3aExMakdremtSZk13S0MwbWNLUnFlY2ZNZHhfOUZjVzAxUWV5U3E2d2doU3lYNEJrSjk3VUZSZEgtek16R0ZFQmNfeVU5N0VoZHJTMlhXSkt3QnpxcE5kSHl6T3VqVXM0Tk8xZGVjM1lDaEQzNG4xQ3Z6RGZoTWZ3aHJ4eF8xNTVKTkVZZ3U1N2hXYlh5bVZ2emp6NEo0dk9ORg?oc=5",
-   "date": "2026-09-26T12:00:14.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com"
   }
  ],
  "reddit": [
