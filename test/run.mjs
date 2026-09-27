@@ -131,8 +131,11 @@ async function mockWeather(context) {
     }
     if (u.pathname.endsWith('/company-news')) {
       const now = Math.floor(Date.now() / 1000);
-      return route.fulfill({ contentType: 'application/json', headers, body: JSON.stringify([0, 1, 2].map((i) => ({ id: seed * 10 + i, headline: `${sym} test headline ${i + 1}`, source: 'Test Wire', url: `https://example.com/${sym}/${i}`, datetime: now - (i + 1) * 3600 * (seed % 5 + 1) }))) });
+      const list = [0, 1, 2].map((i) => ({ id: seed * 10 + i, headline: `${sym} test headline ${i + 1}`, source: 'Test Wire', url: `https://example.com/${sym}/${i}`, datetime: now - (i + 1) * 3600 * (seed % 5 + 1) }));
+      list.unshift({ id: seed * 10 + 9, headline: 'Market wrap: stocks drift as yields climb', summary: 'Indexes were mixed.', source: 'Test Wire', url: `https://example.com/${sym}/wrap`, datetime: now - 60 });
+      return route.fulfill({ contentType: 'application/json', headers, body: JSON.stringify(list) });
     }
+    if (u.pathname.endsWith('/stock/profile2')) return route.fulfill({ contentType: 'application/json', headers, body: JSON.stringify(sym === 'VTI' ? {} : { name: `${sym} Test Corp`, ticker: sym }) });
     route.fulfill({ status: 404, headers, body: '[]' });
   });
   await context.route('https://api.nhtsa.gov/**', (route) =>
@@ -1160,7 +1163,7 @@ await page.waitForSelector('.portfolio .tk');
   check(tks.length === 7 && tks.every((t) => /\$\d/.test(t) && /[+-]?\d+\.\d\d%/.test(t)), `portfolio prices: ${tks.slice(0, 3).join(' | ')} …`);
   await page.click('.portfolio .seg-btn:has-text("Energy")');
   const en = await page.innerText('.portfolio .pf-news');
-  check(/GOOG test headline/.test(pf) && /on average today/.test(pf) && /nuclear deals/.test(en), 'portfolio headlines: your tickers plus the energy/quantum/robotics themes');
+  check(/GOOG test headline/.test(pf) && !/Market wrap/.test(pf) && /on average today/.test(pf) && /nuclear deals/.test(en), 'portfolio headlines: news naming your companies (market wraps skipped) plus the energy/quantum/robotics themes');
   await page.click('.portfolio .seg-btn:has-text("Quantum")');
   const qs = await page.$$eval('.portfolio .pf-news .story-title', (els) => els.map((e) => e.textContent));
   check(qs.length === 1 && /quantum computer/.test(qs[0]), 'quantum headlines on their own');
