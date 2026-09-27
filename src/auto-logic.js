@@ -13,10 +13,33 @@ export const SCHEDULE = [
   { id: 'cvt', name: 'CVT fluid replacement', miles: 60000, months: 72 },
 ];
 export const SCHEDULE_URL = 'https://maintenance-schedules.nissanusa.com/maintenance-schedules/2021/altima/components/?LocaleID=en_US&MakeID=67&RegionID=1';
+// Tesla's Model Y owner's manual, "Maintenance Service Intervals" (checked September 2026). No oil; mostly by time.
+const TESLA_SCHEDULE = [
+  { id: 'rotate', name: 'Tire rotation', miles: 6250, months: null, note: 'Sooner if the tread depths differ by 2/32 in or more' },
+  { id: 'wipers', name: 'Wiper blades', miles: null, months: 12 },
+  { id: 'cabin', name: 'Cabin air filter', miles: null, months: 24 },
+  { id: 'hepa', name: 'HEPA and carbon filters', miles: null, months: 36 },
+  { id: 'brake', name: 'Brake fluid health check', miles: null, months: 48 },
+];
+const TESLA_URL = 'https://www.tesla.com/ownersmanual/modely/en_us/GUID-E95DAAD9-646E-4249-9930-B109ED7B1D91.html';
+
+// Maintenance, guide and warranty by car: the Altima is the default (the demo drives a Tesla).
+export function profileOf(car) {
+  if (/tesla/i.test((car && car.make) || ''))
+    return { schedule: TESLA_SCHEDULE, url: TESLA_URL, guide: 'Tesla’s Model Y maintenance intervals', guideFor: '', warranty: [['Basic vehicle', 4, 50000], ['Battery and drive unit', 8, 120000]], image: null };
+  return { schedule: SCHEDULE, url: SCHEDULE_URL, guide: 'Nissan’s 2021 Altima maintenance guide', guideFor: ' for the 2.5L AWD', warranty: [['Basic', 3, 36000], ['Powertrain (engine, CVT, AWD)', 5, 60000]], image: 'car.png' };
+}
+// Inspection and registration by state: New York is the default; Washington has no inspection and renews yearly.
+const STATE_RULES = {
+  NY: { inspection: 'NYS inspection', inspectionMonths: 12, registrationMonths: 24 },
+  WA: { inspection: null, registrationMonths: 12 },
+};
+export const rulesOf = (a) => STATE_RULES[a.state] || STATE_RULES.NY;
 
 export function defaultAuto() {
   return {
     version: 1,
+    state: 'NY',
     car: { year: 2021, make: 'Nissan', model: 'Altima', trim: 'SL', engine: '2.5L', drive: 'AWD', body: '4-door sedan', bought: '2021', boughtMonth: '', isNew: true },
     odo: [{ date: '2026-09-25', miles: 52000 }],
     milesPerYear: null,
@@ -99,23 +122,29 @@ export function addReading(a, miles, date = todayISO()) {
 }
 
 // ---------------------------------------------------------------- maintenance
+// Items can be due by miles, by time, or whichever comes first.
 export function maintenance(a, today = todayISO()) {
   const now = milesOn(a, today);
-  return SCHEDULE.map((item) => {
+  return profileOf(a.car).schedule.map((item) => {
     const last = [...a.service].filter((s) => (s.items || []).includes(item.id)).sort((x, y) => (x.date < y.date ? 1 : -1))[0];
-    let dueMiles;
+    let dueMiles = null;
     let dueDate = null;
     if (last) {
-      dueMiles = (Number(last.miles) || now) + item.miles;
-      dueDate = addMonthsIso(last.date, item.months);
-    } else {
+      if (item.miles) dueMiles = (Number(last.miles) || now) + item.miles;
+      if (item.months) dueDate = addMonthsIso(last.date, item.months);
+    } else if (item.miles) {
       dueMiles = Math.ceil((now + 1) / item.miles) * item.miles; // no record yet: the next mileage mark
+    } else {
+      // no record of a time-only item: the next interval since purchase
+      let d = boughtDate(a);
+      for (let i = 0; i < 40 && d <= today; i++) d = addMonthsIso(d, item.months);
+      dueDate = d;
     }
-    const byMiles = dateAtMiles(a, dueMiles);
-    const when = dueDate && dueDate < byMiles ? dueDate : byMiles;
-    const milesLeft = dueMiles - now;
+    const byMiles = dueMiles != null ? dateAtMiles(a, dueMiles) : null;
+    const when = [dueDate, byMiles].filter(Boolean).sort()[0];
+    const milesLeft = dueMiles != null ? dueMiles - now : null;
     const days = daysUntil(when, today);
-    const status = milesLeft < 0 || days < 0 ? 'over' : milesLeft <= 1000 || days <= 30 ? 'soon' : 'ok';
+    const status = (milesLeft != null && milesLeft < 0) || days < 0 ? 'over' : (milesLeft != null && milesLeft <= 1000) || days <= 30 ? 'soon' : 'ok';
     return { ...item, last, dueMiles, dueDate, when, milesLeft, days, status, unknown: !last };
   });
 }
@@ -132,24 +161,28 @@ export function removeService(a, id) {
 
 // ---------------------------------------------------------------- deadlines
 export function deadlines(a, today = todayISO()) {
+  const rules = rulesOf(a);
   const out = [
-    { id: 'inspection', name: 'NYS inspection', date: a.inspection, label: a.inspection ? `Sticker good through ${dayLabel(a.inspection)}` : 'Add the date on your inspection sticker', renew: 'Inspected' },
+    rules.inspection ? { id: 'inspection', name: rules.inspection, date: a.inspection, label: a.inspection ? `Sticker good through ${dayLabel(a.inspection)}` : 'Add the date on your inspection sticker', renew: 'Inspected' } : null,
     { id: 'registration', name: 'Registration', date: a.registration, label: a.registration ? `Expires ${monthLabel(a.registration)}` : 'Add the date on your registration', renew: 'Renewed' },
     { id: 'insurance', name: 'Insurance renewal', date: a.insuranceRenews, label: a.insuranceRenews ? `Renews ${dayLabel(a.insuranceRenews)}` : 'Add your policy renewal date', renew: 'Renewed' },
-  ];
+  ].filter(Boolean);
   return out.map((d) => {
     const days = d.date ? daysUntil(d.date, today) : null;
     return { ...d, days, status: days == null ? 'none' : days < 0 ? 'over' : days <= 30 ? 'soon' : days <= 60 ? 'near' : 'ok' };
   });
 }
-// A new NY inspection is good for 12 months (through the end of that month); registration is 2 years; policies 6 months.
+// A new NY inspection is good for 12 months (through the end of that month); NY registration is 2 years (1 in
+// Washington); policies 6 months.
 export function renew(a, id, today = todayISO()) {
-  if (id === 'inspection') a.inspection = addMonthsEnd(today, 12);
-  else if (id === 'registration') a.registration = addMonthsEnd(a.registration && a.registration > today ? a.registration : today, 24);
+  const rules = rulesOf(a);
+  if (id === 'inspection') a.inspection = addMonthsEnd(today, rules.inspectionMonths || 12);
+  else if (id === 'registration') a.registration = addMonthsEnd(a.registration && a.registration > today ? a.registration : today, rules.registrationMonths);
   else if (id === 'insurance') a.insuranceRenews = addMonthsIso(a.insuranceRenews && a.insuranceRenews > today ? a.insuranceRenews : today, 6);
 }
 
-// ---------------------------------------------------------------- warranty (Nissan: basic 3 yr / 36k, powertrain 5 yr / 60k)
+// ---------------------------------------------------------------- warranty (Nissan: basic 3 yr / 36k, powertrain 5 yr / 60k;
+// Tesla Model Y Long Range: basic 4 yr / 50k, battery and drive unit 8 yr / 120k)
 export function warranty(a, today = todayISO()) {
   const miles = milesOn(a, today);
   const start = a.car.boughtMonth ? `${a.car.boughtMonth}-01` : null;
@@ -160,7 +193,7 @@ export function warranty(a, today = todayISO()) {
     if (end <= today) return { name, text: `Ended ${monthLabel(end)}`, active: false };
     return { name, text: `Until ${monthLabel(end)} or ${cap.toLocaleString()} mi (${(cap - miles).toLocaleString()} mi left), whichever comes first`, active: true, end };
   };
-  return [one('Basic', 3, 36000), one('Powertrain (engine, CVT, AWD)', 5, 60000)];
+  return profileOf(a.car).warranty.map(([name, years, cap]) => one(name, years, cap));
 }
 
 // ---------------------------------------------------------------- money from the budget
@@ -232,8 +265,9 @@ export function autoAlerts(a, money, recalls, today = todayISO()) {
     else if (d.status === 'soon' || (d.id === 'inspection' && d.status === 'near')) out.push({ tone: 'soon', text: `${d.name} due ${d.days === 0 ? 'today' : d.days === 1 ? 'tomorrow' : `in ${d.days} days`} (${dayLabel(d.date)})` });
   }
   for (const m of maintenance(a, today)) {
-    if (m.status === 'over') out.push({ tone: 'over', text: `${m.name} overdue${m.unknown ? '' : ` (was due at ${m.dueMiles.toLocaleString()} mi)`}` });
-    else if (m.status === 'soon') out.push({ tone: 'soon', text: `${m.name} due ${m.milesLeft > 0 ? `in ~${m.milesLeft.toLocaleString()} mi` : 'now'}` });
+    const dueAt = m.milesLeft != null && m.milesLeft < 0 ? `at ${m.dueMiles.toLocaleString()} mi` : dayLabel(m.when);
+    if (m.status === 'over') out.push({ tone: 'over', text: `${m.name} overdue${m.unknown && m.dueMiles != null ? '' : ` (was due ${dueAt})`}` });
+    else if (m.status === 'soon') out.push({ tone: 'soon', text: `${m.name} due ${m.milesLeft != null && m.milesLeft > 0 && m.milesLeft <= 1000 ? `in ~${m.milesLeft.toLocaleString()} mi` : m.days > 0 ? `in ${m.days} day${m.days === 1 ? '' : 's'}` : 'now'}` });
   }
   const open = (recalls || []).filter((r) => !a.recalls[r.id]).length;
   if (open) out.push({ tone: 'soon', text: `${open} recall${open === 1 ? '' : 's'} to check for your VIN` });

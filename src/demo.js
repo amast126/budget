@@ -3,8 +3,10 @@
 // "demo:" keys and changes stay there until "Reset demo". The budget module (its own page, in a frame) runs in
 // its local mode on the same sample budget, from budget-demo.html.
 import { demoDocs, DEMO_PERSON } from './demo-data.js';
+import { IS_DEMO } from './demo-flag.js';
 
-export const IS_DEMO = typeof location !== 'undefined' && /(^|&)demo(=[^&]*)?(&|$)/.test(location.search.slice(1));
+export { IS_DEMO };
+
 const P = 'demo:';
 const META = 'meta';
 const BUDGET = 'budget-tracker-v1'; // the budget module's own key (it becomes demo:budget-tracker-v1 in budget-demo.html)
@@ -52,9 +54,11 @@ function demoKeys() {
   return out;
 }
 
-// Write the sample documents the first time (or after a reset).
+// Write the sample documents the first time, after a reset, or when the sample itself changes (VERSION).
+const VERSION = 2; // 2: the Seattle sample (1 was an earlier sample, replaced)
 export function seedDemo(force = false) {
-  if (!force && raw.get(META)) return false;
+  const meta = readDoc(META);
+  if (!force && meta && meta.version === VERSION) return false;
   demoKeys().forEach((k) => {
     try {
       localStorage.removeItem(k);
@@ -65,7 +69,7 @@ export function seedDemo(force = false) {
   mem.clear();
   const docs = demoDocs(new Date());
   for (const [name, doc] of Object.entries(docs)) raw.set(name, JSON.stringify(doc));
-  raw.set(META, JSON.stringify({ version: 1, seeded: new Date().toISOString() }));
+  raw.set(META, JSON.stringify({ version: VERSION, seeded: new Date().toISOString() }));
   return true;
 }
 
@@ -79,12 +83,35 @@ export function resetDemo() {
   seedDemo(true);
   location.reload();
 }
+// Switching in from Settings on the owner's account is remembered (just a label: "Back to my dashboard" instead of
+// "Exit demo"); either way, leaving goes to the normal page, which opens the account if it's still signed in.
+const FROM = 'dash.demoFromAccount';
+export function cameFromAccount() {
+  try {
+    return localStorage.getItem(FROM) === '1';
+  } catch {
+    return false;
+  }
+}
 export function exitDemo() {
+  try {
+    localStorage.removeItem(FROM);
+  } catch {
+    /* ignore */
+  }
   location.href = `${location.pathname}#/`;
 }
-export function enterDemo() {
+export function enterDemo(fromAccount = false) {
+  try {
+    if (fromAccount) localStorage.setItem(FROM, '1');
+    else localStorage.removeItem(FROM);
+  } catch {
+    /* ignore */
+  }
   location.href = `${location.pathname}?demo#/`;
 }
+// The link to share: the demo on this site, no sign-in needed.
+export const demoLink = () => `${location.origin}${location.pathname}?demo`;
 
 // Same shape as the Firebase backend (backend.js), backed by the "demo:" documents.
 export function createDemoBackend() {

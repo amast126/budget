@@ -3,6 +3,7 @@ import { Icon } from './ui.jsx';
 import { MiniBars } from './spark.jsx';
 import { celebrate } from './fx.jsx';
 import { CERTS, OPTIONAL, TIPS, SOURCES, PRICES_NOTE } from './learning-catalog.js';
+import { IS_DEMO } from './demo-flag.js';
 import {
   STATUSES,
   STATUS_TEXT,
@@ -282,7 +283,7 @@ export function LearningPage({ data, mutate, error }) {
       <header className="page-head">
         <h1 className="page-title">Learning</h1>
         <div className="muted">
-          Cloud &amp; AI path ·{' '}
+          {IS_DEMO ? 'AI for product work' : 'Cloud & AI path'} ·{' '}
           <label className="pace">
             <select
               className="inline-select"
@@ -296,11 +297,16 @@ export function LearningPage({ data, mutate, error }) {
                 </option>
               ))}
             </select>
-          </label>{' '}
-          ·{' '}
-          <a className="link" href={NOTES_URL} target="_blank" rel="noopener">
-            Study notes
-          </a>
+          </label>
+          {IS_DEMO ? null : (
+            <>
+              {' '}
+              ·{' '}
+              <a className="link" href={NOTES_URL} target="_blank" rel="noopener">
+                Study notes
+              </a>
+            </>
+          )}
         </div>
       </header>
       {error ? <div className="alert">{error}</div> : null}

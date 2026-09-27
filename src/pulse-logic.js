@@ -375,7 +375,7 @@ export function countdowns(ctx) {
       }
     }
   }
-  const g = daysFrom(today, GTA6_RELEASE);
+  const g = ctx.demo ? -1 : daysFrom(today, GTA6_RELEASE); // a personal countdown; the demo person has their own life
   if (g >= 0) out.push({ id: 'gta', n: g, unit: g === 1 ? 'day' : 'days', label: 'to GTA VI', text: g === 0 ? 'GTA VI is out' : null, sort: g });
   if (ctx.data) {
     const m = carMoney(ctx.data, today);
@@ -419,7 +419,7 @@ export function dayLine(ctx) {
   const calLeft = t && t.cal && food.length ? t.cal - totals(food).k : null;
   if (phase === 'morning') {
     if (wx) extra.push(`${wx.dayText}, high ${wx.high}°${wx.rainFrom && !wx.rainNow ? `, rain from about ${wx.rainFrom}` : wx.rainNow ? ', rain around now' : ''}.`);
-    if (wx && wx.tennis && wx.tennis.when === 'today') extra.push(`Good tennis weather ${wx.tennis.label}.`);
+    if (wx && wx.tennis && wx.tennis.when === 'today') extra.push(`Good ${ctx.sport || 'tennis'} weather ${wx.tennis.label}.`);
     if (ctx.home) {
       const open = ctx.home.todos.filter((x) => !x.done).length;
       if (open) extra.push(`${plural(open, 'to-do')} on your list.`);
@@ -430,7 +430,7 @@ export function dayLine(ctx) {
       extra.push(s.spent <= allowed ? `You’re ${fmt0(allowed - s.spent)} under budget pace for ${monthName(today)}.` : `You’re ${fmt0(s.spent - allowed)} over budget pace for ${monthName(today)}.`);
     }
     if (calLeft != null) extra.push(calLeft >= 0 ? `${n0(calLeft)} calories left today.` : `${n0(-calLeft)} calories over today.`);
-    if (wx && wx.tennis && wx.tennis.when === 'today') extra.push(`Good tennis weather ${wx.tennis.label}.`);
+    if (wx && wx.tennis && wx.tennis.when === 'today') extra.push(`Good ${ctx.sport || 'tennis'} weather ${wx.tennis.label}.`);
   } else if (phase === 'evening') {
     if (calLeft != null) extra.push(calLeft >= 0 ? `${n0(calLeft)} calories left for tonight.` : `${n0(-calLeft)} calories over today.`);
     if (ctx.pick && ctx.pick.m && !ctx.pick.m.missing.length) extra.push(`You have everything for ${ctx.pick.r.title}.`);
@@ -443,7 +443,7 @@ export function dayLine(ctx) {
     }
   } else {
     if (wx && wx.tomorrow) extra.push(`Tomorrow: ${wx.tomorrow.text.toLowerCase()}, high ${wx.tomorrow.high}°${wx.tomorrow.rain >= 40 ? `, ${wx.tomorrow.rain}% chance of rain` : ''}.`);
-    if (wx && wx.tennis && wx.tennis.when === 'tomorrow') extra.push(`Good tennis weather ${wx.tennis.label}.`);
+    if (wx && wx.tennis && wx.tennis.when === 'tomorrow') extra.push(`Good ${ctx.sport || 'tennis'} weather ${wx.tennis.label}.`);
     if (s) {
       const tmr = s.upcoming.filter((u) => !u.paid && u.daysAway === 1);
       if (tmr.length && !urgent.some((x) => /tomorrow/.test(x))) extra.push(`${cleanName(tmr[0].name)} charges tomorrow.`);

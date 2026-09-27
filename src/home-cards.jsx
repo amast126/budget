@@ -23,6 +23,7 @@ const writeCache = (v) => {
 const placeKey = (p) => `${p.lat.toFixed(3)},${p.lon.toFixed(3)}`;
 const placeLabel = (p) => `${p.name}${p.zip ? ` ${p.zip}` : ''}`;
 const HOME_PLACE = IS_DEMO ? DEMO_PLACE : DEFAULT_PLACE; // the demo's sample city stands in for home
+const SPORT = IS_DEMO ? ['🏃', 'running'] : ['🎾', 'tennis']; // the weather-window flag, for your sport or the demo person's
 
 // ---------------------------------------------------------------- weather
 function PlaceSearch({ onPick, onCancel }) {
@@ -152,7 +153,7 @@ export function WeatherCard({ place, onPlace, forecast }) {
           <p className="wx-sentence">{s.sentence}</p>
           {s.tennis ? (
             <p className="wx-tennis small">
-              <span aria-hidden="true">🎾</span> Good tennis weather {s.tennis.label}
+              <span aria-hidden="true">{SPORT[0]}</span> Good {SPORT[1]} weather {s.tennis.label}
             </p>
           ) : null}
           <div className="wx-hours" role="list" aria-label="Next 12 hours">

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client';
 import css from './styles.css';
 import { createFirebaseBackend } from './backend.js';
-import { IS_DEMO, createDemoBackend, resetDemo, exitDemo, enterDemo } from './demo.js';
+import { IS_DEMO, createDemoBackend, resetDemo, exitDemo, enterDemo, cameFromAccount, demoLink } from './demo.js';
 import { Icon } from './ui.jsx';
 import { LearningPage, LearningHomeCard } from './learning.jsx';
 import { defaultLearning, normalize as normalizeLearning } from './learning-logic.js';
@@ -39,9 +39,11 @@ if (!document.getElementById('dash-css')) {
   document.head.appendChild(s);
 }
 
-// Tests inject a stand-in backend. Demo mode (?demo) runs on sample data in this browser and never touches Firebase;
-// otherwise the live site uses Firebase.
-const backend = window.__DASH_BACKEND__ || (IS_DEMO ? createDemoBackend() : createFirebaseBackend());
+// Demo mode (?demo) runs on sample data in this browser and never touches Firebase. Otherwise tests inject a
+// stand-in backend, and the live site uses Firebase.
+const backend = IS_DEMO ? createDemoBackend() : window.__DASH_BACKEND__ || createFirebaseBackend();
+const FROM_ACCOUNT = IS_DEMO && cameFromAccount();
+const EXIT_LABEL = FROM_ACCOUNT ? 'Back to my dashboard' : 'Exit demo';
 const budgetSrc = IS_DEMO ? 'budget-demo.html' : 'budget.html';
 
 // ---------------------------------------------------------------- helpers
@@ -397,7 +399,7 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
   }, []);
   // Everything the rings, streaks, insights and header read from, recomputed only when a document changes.
   const ctx = useMemo(
-    () => ({ data, health, years: healthYears, hk, hkYears, learning, home, auto, today: day, now: new Date(), pick: tonightPick(cooking, recipes) }),
+    () => ({ data, health, years: healthYears, hk, hkYears, learning, home, auto, today: day, now: new Date(), pick: tonightPick(cooking, recipes), demo: IS_DEMO, sport: IS_DEMO ? 'running' : 'tennis' }),
     [data, health, healthYears, hk, hkYears, learning, home, auto, cooking, recipes, day]
   );
   // Slots carry a phone order; on wide screens the two columns show as laid out.
@@ -500,7 +502,7 @@ function DemoBar() {
             Reset
           </button>
           <button className="demo-btn" onClick={exitDemo}>
-            Exit demo
+            {EXIT_LABEL}
           </button>
         </>
       )}
@@ -508,32 +510,54 @@ function DemoBar() {
   );
 }
 
-function Settings({ user, onClose }) {
+function Settings({ user, onClose, onToast }) {
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(demoLink());
+      onToast({ text: 'Demo link copied' });
+    } catch {
+      onToast({ text: `Demo link: ${demoLink()}` });
+    }
+  };
   return (
     <div className="sheet-bg" onClick={onClose}>
       <div className="sheet" role="dialog" aria-label="Settings" onClick={(e) => e.stopPropagation()}>
         <h2 className="card-title">Settings</h2>
         {IS_DEMO ? (
-          <p className="muted small">This is the demo: sample data for a made-up person, kept only in this browser. Nothing is saved to an account.</p>
+          <p className="muted small">
+            {FROM_ACCOUNT ? 'You’re in demo mode' : 'This is the demo'}: sample data for a made-up person, kept only in this browser. Nothing here touches {FROM_ACCOUNT ? 'your account' : 'an account'}.
+          </p>
         ) : (
           <p className="muted small">Signed in as {user.email}. Only this account can open the dashboard.</p>
         )}
+        {IS_DEMO ? (
+          <button className="btn primary block" onClick={exitDemo}>
+            {EXIT_LABEL}
+          </button>
+        ) : null}
         <a className="btn quiet block" href={budgetSrc} target="_blank" rel="noopener">
           Open budget in its own tab <Icon name="ext" size={16} />
         </a>
         {IS_DEMO ? (
+          <button className="btn quiet block" onClick={resetDemo}>
+            Reset the demo data
+          </button>
+        ) : (
           <>
-            <button className="btn quiet block" onClick={resetDemo}>
-              Reset the demo data
-            </button>
-            <button className="btn quiet block" onClick={exitDemo}>
-              Exit demo
+            <div className="settings-demo">
+              <h3 className="settings-sub">Demo mode</h3>
+              <p className="muted small">The whole dashboard with sample data for a made-up person, for showing it to someone or taking screenshots. Your data stays put, and you can switch back anytime.</p>
+              <button className="btn quiet block" onClick={() => enterDemo(true)}>
+                Switch to demo mode
+              </button>
+              <button className="btn quiet block" onClick={copyLink}>
+                Copy the demo link
+              </button>
+            </div>
+            <button className="btn quiet block" onClick={() => backend.signOut()}>
+              Sign out
             </button>
           </>
-        ) : (
-          <button className="btn quiet block" onClick={() => backend.signOut()}>
-            Sign out
-          </button>
         )}
         <p className="muted small">Build {window.__BUILD || 'dev'}</p>
         <button className="btn primary block" onClick={onClose}>
@@ -548,7 +572,7 @@ function DemoOffer() {
   return (
     <div className="demo-offer">
       <p className="muted small">Just looking? The demo shows everything with sample data. No sign-in needed.</p>
-      <button className="btn quiet" onClick={enterDemo}>
+      <button className="btn quiet" onClick={() => enterDemo(false)}>
         Try the demo
       </button>
     </div>
@@ -1098,7 +1122,7 @@ function App() {
           ) : null}
         </div>
       ) : null}
-      {settings ? <Settings user={user} onClose={() => setSettings(false)} /> : null}
+      {settings ? <Settings user={user} onClose={() => setSettings(false)} onToast={showToast} /> : null}
       {more ? (
         <div className="sheet-bg" onClick={() => setMore(false)}>
           <div className="sheet more-sheet" role="dialog" aria-label="More" onClick={(e) => e.stopPropagation()}>

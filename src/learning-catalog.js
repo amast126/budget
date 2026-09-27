@@ -4,12 +4,14 @@
 // Salary figures: Skillsoft IT Skills and Salary report (2024 survey, published April 2025), average US salary of
 // people who hold the cert. Small US samples, and it reflects the jobs holders already have, not a raise the cert guarantees.
 
+import { IS_DEMO } from './demo-flag.js';
+
 const ML = 'https://learn.microsoft.com/en-us/credentials/certifications';
 const SANDBOX = { label: 'Exam sandbox (try the interface)', url: 'https://go.microsoft.com/fwlink/?linkid=2226877' };
 
 export const PRICES_NOTE = 'US prices: Microsoft fundamentals $99, associate and expert $165. Retakes cost the full fee.';
 
-export const CERTS = {
+const ALL_CERTS = {
   'ai-901': {
     code: 'AI-901',
     name: 'Azure AI Fundamentals',
@@ -250,10 +252,10 @@ export const CERTS = {
   },
 };
 
-export const PLAN = ['ai-901', 'az-104', 'python', 'ai-103', 'az-305'];
-export const OPTIONAL = ['applied-ai-security', 'sc-300', 'az-900', 'md-102', 'aws-aif', 'ai-200', 'ai-300'];
+const MY_PLAN = ['ai-901', 'az-104', 'python', 'ai-103', 'az-305'];
+const MY_OPTIONAL = ['applied-ai-security', 'sc-300', 'az-900', 'md-102', 'aws-aif', 'ai-200', 'ai-300'];
 
-export const TIPS = [
+const MY_TIPS = [
   ['One exam at a time', 'At 3–5 hours a week, switching between two certs means neither gets finished. Side credentials fit in the gaps between main ones.'],
   ['Free material first', 'Each Microsoft exam has a free Learn course and study guide. Paid courses are optional; the free practice assessment is not.'],
   ['Take the practice assessment early', 'Do it in week one to see the gaps, then again near the end. Book the exam once you score 80% or better twice in a row (a rule of thumb, not a Microsoft requirement).'],
@@ -271,3 +273,32 @@ export const SOURCES = [
   { label: 'Skillsoft: top-paying Microsoft certifications', url: 'https://www.skillsoft.com/blog/top-paying-microsoft-certifications' },
   { label: 'AWS Certified AI Practitioner', url: 'https://aws.amazon.com/certification/certified-ai-practitioner/' },
 ];
+
+// ---------------------------------------------------------------- demo mode
+// The demo's made-up person is a product lead learning AI on the side, so the demo shows a short plan of its own,
+// with the reasons written for them (the course facts, prices and links are the same).
+export const DEMO_PLAN = ['ai-901', 'aws-aif', 'python', 'ai-103'];
+const DEMO_OPTIONAL = ['az-900', 'ai-200', 'applied-ai-security'];
+const DEMO_WHY = {
+  'ai-901': { why: 'The shared vocabulary for working with AI engineers: what models can and can’t do, and what building with them involves.', impact: 'Context for product decisions more than a credential.' },
+  'aws-aif': { why: 'The product runs on AWS, so this covers the AI services the team actually ships with, from a builder’s point of view.', impact: 'Medium: AI literacy on the platform the team uses.' },
+  python: { why: 'Enough to read the data team’s notebooks and prototype small ideas without waiting for help.', impact: 'No credential; saves time on every data question.' },
+  'ai-103': { why: 'A stretch goal: build an agent prototype end to end to understand what the team is estimating.', impact: 'Deep hands-on understanding; optional for a product role.' },
+  'az-900': { why: 'Cloud basics, if the architecture conversations still feel fuzzy.', impact: 'Low; quick background.' },
+  'ai-200': { why: 'Only for moving into a hands-on developer role.', impact: 'High for developer roles, low for product.' },
+  'applied-ai-security': { why: 'Free and short: how AI features get secured, useful for privacy and risk reviews.', impact: 'Low to medium; free proof of hands-on skill.' },
+};
+const demoCerts = () => Object.fromEntries([...DEMO_PLAN, ...DEMO_OPTIONAL].map((id) => [id, { ...ALL_CERTS[id], ...DEMO_WHY[id], roles: [] }]));
+
+export const CERTS = IS_DEMO ? demoCerts() : ALL_CERTS;
+export const PLAN = IS_DEMO ? DEMO_PLAN : MY_PLAN;
+export const OPTIONAL = IS_DEMO ? DEMO_OPTIONAL : MY_OPTIONAL;
+export const TIPS = IS_DEMO
+  ? [
+      ['One thing at a time', 'A few hours a week goes further on one course or exam than spread across three.'],
+      ['Free material first', 'Each exam has a free course and study guide; take the free practice assessment early to see the gaps.'],
+      ['Book 3–4 weeks out', 'A booked date turns "studying" into a deadline. Mark it here and it shows on Home with a countdown.'],
+      ['Use the learning budget', 'Many employers pay for exams and courses. Ask before paying yourself.'],
+    ]
+  : MY_TIPS;
+

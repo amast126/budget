@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { fmt, todayISO, dateLabel } from './budget-logic.js';
 import {
-  SCHEDULE,
-  SCHEDULE_URL,
+  profileOf,
+  rulesOf,
   latestOdo,
   milesOn,
   milesPerYear,
@@ -26,6 +26,54 @@ import {
 const mi = (n) => `${Math.round(n).toLocaleString()} mi`;
 const carName = (c) => `${c.year} ${c.make} ${c.model} ${c.trim}`.trim();
 const TONE = { over: 'Overdue', soon: 'Due soon', near: 'Coming up', ok: 'OK', none: 'Not set' };
+const every = (m) =>
+  [m.miles ? `${m.miles.toLocaleString()} mi` : null, m.months ? (m.months >= 12 && m.months % 12 === 0 ? `${m.months / 12} yr` : `${m.months} mo`) : null].filter(Boolean).join(' or ');
+
+// The car's picture: the Altima's photo, or a drawn crossover for a car without one.
+function CarPic({ car, className }) {
+  const img = profileOf(car).image;
+  if (img) return <img className={className} src={img} alt={className === 'hero-car' ? `${car.year} ${car.make} ${car.model}` : ''} />;
+  return (
+    <svg className={`${className} car-art`} viewBox="0 0 440 170" aria-hidden="true">
+      <defs>
+        <linearGradient id="ca-body" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#fbfcfd" />
+          <stop offset="0.5" stopColor="#e3e7ec" />
+          <stop offset="1" stopColor="#a9b2bd" />
+        </linearGradient>
+        <linearGradient id="ca-glass" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#3a4958" />
+          <stop offset="1" stopColor="#0f161d" />
+        </linearGradient>
+        <radialGradient id="ca-rim" cx="0.5" cy="0.45" r="0.6">
+          <stop offset="0" stopColor="#d9dee4" />
+          <stop offset="0.6" stopColor="#7d8793" />
+          <stop offset="1" stopColor="#3b434c" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="222" cy="154" rx="196" ry="9" fill="rgba(0,0,0,0.28)" />
+      <path d="M28 124 C28 104 40 94 66 90 L126 82 C156 56 194 42 250 42 C300 42 332 56 360 78 L394 86 C412 91 420 102 420 116 L420 126 C420 132 415 136 408 136 L36 136 C31 136 28 131 28 124 Z" fill="url(#ca-body)" />
+      <path d="M142 84 C170 62 202 54 246 54 C288 54 314 64 336 80 L328 85 L150 88 Z" fill="url(#ca-glass)" />
+      <path d="M236 54 L232 87" stroke="#c9d0d8" strokeWidth="5" />
+      <path d="M60 108 L404 104" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" fill="none" />
+      <path d="M196 90 L200 132 M300 88 L302 132" stroke="rgba(60,70,82,0.35)" strokeWidth="1.2" />
+      <rect x="252" y="99" width="22" height="3.5" rx="1.75" fill="#8c96a2" />
+      <rect x="160" y="100" width="22" height="3.5" rx="1.75" fill="#8c96a2" />
+      <path d="M398 94 C408 96 414 100 416 106 L396 104 Z" fill="#f4f8ff" />
+      <path d="M30 100 C34 96 40 94 46 94 L44 104 L30 106 Z" fill="#c43c3c" />
+      {[112, 338].map((cx) => (
+        <g key={cx}>
+          <circle cx={cx} cy="132" r="31" fill="#15191e" />
+          <circle cx={cx} cy="132" r="20" fill="url(#ca-rim)" />
+          {[0, 72, 144, 216, 288].map((a) => (
+            <path key={a} d={`M${cx} 132 L${cx + 18 * Math.cos((a * Math.PI) / 180)} ${132 + 18 * Math.sin((a * Math.PI) / 180)}`} stroke="#4a535d" strokeWidth="4" />
+          ))}
+          <circle cx={cx} cy="132" r="5" fill="#2a3037" />
+        </g>
+      ))}
+    </svg>
+  );
+}
 
 // Recalls for the model year from NHTSA, cached for a day on this device.
 export function useRecalls(car) {
@@ -79,7 +127,7 @@ export function AutoHomeCard({ auto, data, recalls }) {
           <div className="bill-name">{carName(auto.car)}</div>
           <div className="muted small">~{mi(milesOn(auto))}</div>
         </div>
-        <img className="auto-thumb" src="car.png" alt="" />
+        <CarPic car={auto.car} className="auto-thumb" />
       </div>
       {alerts.length ? (
         <ul className="alerts">
@@ -158,6 +206,7 @@ function CarCard({ auto, mutate }) {
 }
 
 function DeadlinesCard({ auto, mutate }) {
+  const rules = rulesOf(auto);
   const list = deadlines(auto);
   const field = { inspection: 'inspection', registration: 'registration', insurance: 'insuranceRenews' };
   return (
@@ -184,7 +233,9 @@ function DeadlinesCard({ auto, mutate }) {
           </li>
         ))}
       </ul>
-      <p className="muted small note">“Inspected” sets the next one 12 months out (through the end of that month). “Renewed” adds 2 years to registration and 6 months to insurance.</p>
+      <p className="muted small note">
+        {rules.inspection ? '“Inspected” sets the next one 12 months out (through the end of that month). ' : ''}“Renewed” adds {rules.registrationMonths === 12 ? 'a year' : `${rules.registrationMonths / 12} years`} to registration and 6 months to insurance.
+      </p>
     </section>
   );
 }
@@ -253,6 +304,7 @@ function MoneyCard({ data }) {
 
 function MaintenanceCard({ auto, onLog }) {
   const list = maintenance(auto);
+  const prof = profileOf(auto.car);
   return (
     <section className="card">
       <div className="card-head">
@@ -269,14 +321,21 @@ function MaintenanceCard({ auto, onLog }) {
               <span className={`tag tag-${m.unknown && m.status === 'ok' ? 'none' : m.status}`}>{m.status === 'over' ? 'Overdue' : m.status === 'soon' ? 'Due soon' : m.unknown ? 'No record' : 'OK'}</span>
             </div>
             <div className="muted small">
-              Every {m.miles.toLocaleString()} mi or {m.months >= 12 && m.months % 12 === 0 ? `${m.months / 12} yr` : `${m.months} mo`} ·{' '}
-              {m.unknown ? `next mark ${mi(m.dueMiles)}` : `last ${dayLabel(m.last.date)}${m.last.miles ? ` at ${mi(m.last.miles)}` : ''}; next ${mi(m.dueMiles)}`}
-              {m.milesLeft > 0 ? ` (~${m.milesLeft.toLocaleString()} mi, around ${monthLabel(m.when)})` : ''}
+              Every {every(m)} ·{' '}
+              {m.unknown
+                ? m.dueMiles != null
+                  ? `next mark ${mi(m.dueMiles)}`
+                  : `next around ${monthLabel(m.when)}`
+                : `last ${dayLabel(m.last.date)}${m.last.miles ? ` at ${mi(m.last.miles)}` : ''}; next ${m.dueMiles != null ? mi(m.dueMiles) : monthLabel(m.when)}`}
+              {m.milesLeft != null && m.milesLeft > 0 ? ` (~${m.milesLeft.toLocaleString()} mi, around ${monthLabel(m.when)})` : ''}
             </div>
             {m.note ? <div className="muted small">{m.note}</div> : null}
             {!m.unknown ? (
               <div className="bar slim">
-                <div className={`bar-fill ${m.status === 'over' ? 'bar-over' : m.status === 'soon' ? 'bar-ahead' : ''}`} style={{ width: `${Math.max(3, Math.min(100, (1 - m.milesLeft / m.miles) * 100))}%` }} />
+                <div
+                  className={`bar-fill ${m.status === 'over' ? 'bar-over' : m.status === 'soon' ? 'bar-ahead' : ''}`}
+                  style={{ width: `${Math.max(3, Math.min(100, (m.milesLeft != null ? 1 - m.milesLeft / m.miles : 1 - m.days / (m.months * 30.44)) * 100))}%` }}
+                />
               </div>
             ) : null}
           </li>
@@ -284,10 +343,10 @@ function MaintenanceCard({ auto, onLog }) {
       </ul>
       <p className="muted small note">
         Intervals from{' '}
-        <a href={SCHEDULE_URL} target="_blank" rel="noopener">
-          Nissan’s 2021 Altima maintenance guide
-        </a>{' '}
-        for the 2.5L AWD. “No record” items count from the next mileage mark until you log one.
+        <a href={prof.url} target="_blank" rel="noopener">
+          {prof.guide}
+        </a>
+        {prof.guideFor}. “No record” items count from the next mileage mark (or from when you bought it) until you log one.
       </p>
     </section>
   );
@@ -296,7 +355,7 @@ function MaintenanceCard({ auto, onLog }) {
 function HistoryCard({ auto, mutate }) {
   const list = [...auto.service].sort((x, y) => (x.date < y.date ? 1 : -1));
   if (!list.length) return null;
-  const names = Object.fromEntries(SCHEDULE.map((s) => [s.id, s.name]));
+  const names = Object.fromEntries(profileOf(auto.car).schedule.map((s) => [s.id, s.name]));
   return (
     <section className="card">
       <div className="card-head">
@@ -399,7 +458,7 @@ function LogServiceSheet({ auto, budget, onSave, onClose }) {
       >
         <h2 className="card-title">Log service</h2>
         <div className="chips svc-items">
-          {SCHEDULE.map((s) => (
+          {profileOf(auto.car).schedule.map((s) => (
             <button type="button" key={s.id} className={`chip ${f.items.includes(s.id) ? 'on' : ''}`} aria-pressed={f.items.includes(s.id)} onClick={() => toggle(s.id)}>
               {f.items.includes(s.id) ? '✓ ' : ''}
               {s.name}
@@ -473,7 +532,7 @@ function Hero({ auto, data }) {
   const c = auto.car;
   return (
     <section className="auto-hero" aria-label={carName(c)}>
-      <img className="hero-car" src="car.png" alt={`${c.year} ${c.make} ${c.model}`} />
+      <CarPic car={c} className="hero-car" />
       <div className="hero-body">
         <div className="eyebrow">My car</div>
         <h2 className="hero-title">
@@ -521,7 +580,7 @@ export function AutoPage({ auto, data, recalls, mutate, budget, onAddExpense, er
     );
   }
   const save = async (f) => {
-    const names = Object.fromEntries(SCHEDULE.map((s) => [s.id, s.name]));
+    const names = Object.fromEntries(profileOf(auto.car).schedule.map((s) => [s.id, s.name]));
     await mutate((a) => logService(a, f), 'Service logged');
     const cost = Number(f.cost);
     if (budget && f.toBudget && cost > 0) {

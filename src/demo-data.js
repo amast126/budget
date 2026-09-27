@@ -1,16 +1,19 @@
-// Sample data for demo mode: a made-up person ("Jordan", in Buffalo, NY) with about eight months of budget history,
-// a food log, a year of Apple Health data, a car, a study plan and a stocked kitchen. Everything is generated
+// Sample data for demo mode: a made-up person with a life and finances nothing like the owner's. Jordan Rivera is
+// a product lead in Seattle earning about $300k a year: a condo with a mortgage, a Tesla on a loan, a dog, a
+// brokerage account and a travel habit. About eight months of budget history, a food log, a year of Apple Health
+// data (runs around Green Lake, summer rides), a study plan and a well-stocked kitchen. Everything is generated
 // relative to today, so the demo always looks current, and built with the app's own functions, so every document
 // has exactly the shape the real ones do. Nothing here comes from a real account.
 import { isoOf, addDays, daysIn, uid } from './budget-logic.js';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
 import { defaultLearning, logTime } from './learning-logic.js';
+import { DEMO_PLAN } from './learning-catalog.js';
 import { defaultCooking, addKitchen, addGrocery } from './cooking-logic.js';
 import { defaultAuto, logService } from './auto-logic.js';
 
 export const DEMO_PERSON = { uid: 'demo', email: 'demo@example.com', displayName: 'Jordan Rivera' };
-export const DEMO_PLACE = { name: 'Buffalo, NY', zip: '14202', lat: 42.88645, lon: -78.87837 };
+export const DEMO_PLACE = { name: 'Seattle, WA', zip: '98103', lat: 47.66198, lon: -122.34181 };
 
 // A small seeded random source, so the sample looks the same for everyone on a given day.
 function rng(seed) {
@@ -26,49 +29,72 @@ function rng(seed) {
 const round = (v, d = 0) => Math.round(v * 10 ** d) / 10 ** d;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const pad = (n) => String(n).padStart(2, '0');
-const hm = (mins) => `${pad(Math.floor(mins / 60))}:${pad(Math.round(mins % 60))}`;
 
 // ---------------------------------------------------------------- budget
+// About $300k a year: after 401(k), benefits and taxes (no state income tax in Washington) that's roughly $7,600 every
+// two weeks. Fixed costs about $8,200 a month, spending budgets about $4,800, and $1,500 a paycheck into savings.
+const PAYCHECK = 7620;
 const CATEGORIES = [
-  ['Groceries', 420],
-  ['Dining & Drinks', 320],
-  ['Shopping', 250],
-  ['Gaming & Entertainment', 90],
-  ['Health', 80],
-  ['Gas & Auto', 170],
-  ['Travel', 150],
-  ['Misc Discretionary', 60],
+  ['Groceries', 950],
+  ['Restaurants & Bars', 900],
+  ['Shopping', 600],
+  ['Travel', 900],
+  ['Home & Garden', 300],
+  ['Health & Wellness', 250],
+  ['Pets', 180],
+  ['Entertainment', 220],
+  ['Auto & Charging', 140],
+  ['Gifts & Giving', 200],
+  ['Personal Care', 150],
 ];
-// merchant, low, high, how often per month, how it's usually paid
+// merchant, low, high, how often per month
 const MERCHANTS = {
-  Groceries: [['Wegmans', 38, 128, 4], ['Tops Markets', 16, 64, 2], ['Aldi', 24, 72, 1.5], ['Trader Joe’s', 28, 76, 1], ['Costco', 70, 165, 0.5]],
-  'Dining & Drinks': [['Tim Hortons', 4.5, 9.8, 5], ['Starbucks', 5.4, 8.9, 2], ['Chipotle', 11.2, 15.9, 2], ['Panera Bread', 12, 18.5, 1], ['DoorDash', 24, 41, 1.2], ['Thai Orchid', 22, 38, 0.8], ['Brunch with friends', 26, 44, 0.8], ['Bar tab', 24, 58, 1]],
-  Shopping: [['Amazon', 12, 68, 3], ['Target', 18, 84, 1.3], ['Home Depot', 14, 66, 0.6], ['Uniqlo', 30, 95, 0.4], ['Best Buy', 25, 140, 0.25]],
-  'Gaming & Entertainment': [['Steam', 9.99, 39.99, 1], ['AMC Theatres', 14.5, 26, 0.8], ['Bowling night', 22, 36, 0.3], ['Concert tickets', 55, 110, 0.15]],
-  Health: [['CVS Pharmacy', 8, 32, 1.2], ['Copay', 25, 40, 0.4], ['Vitamins', 14, 26, 0.4]],
-  'Gas & Auto': [['Speedway', 36, 52, 2.5], ['Costco Gas', 38, 50, 1], ['Car wash', 12, 18, 0.6]],
-  Travel: [['Uber', 13, 29, 1], ['Southwest Airlines', 168, 262, 0.15], ['Airbnb', 180, 320, 0.1], ['Amtrak', 58, 96, 0.15]],
-  'Misc Discretionary': [['Haircut', 32, 45, 0.6], ['Birthday gift', 25, 60, 0.4], ['Dry cleaning', 14, 24, 0.4]],
+  Groceries: [['PCC Community Markets', 38, 150, 3], ['Whole Foods Market', 32, 170, 2], ['Metropolitan Market', 28, 130, 1.5], ['Trader Joe’s', 34, 92, 1.5], ['Costco', 140, 320, 0.6], ['Pike Place Market', 18, 64, 0.6]],
+  'Restaurants & Bars': [['Victrola Coffee', 5.5, 9.5, 4], ['Starbucks Reserve Roastery', 9, 18, 1], ['Din Tai Fung', 48, 92, 0.7], ['Tacos Chukis', 18, 34, 1], ['The Walrus and the Carpenter', 96, 168, 0.4], ['Portage Bay Cafe', 38, 72, 0.7], ['Happy hour', 45, 115, 1.2], ['Uber Eats', 32, 68, 1.3], ['Canlis', 320, 480, 0.08]],
+  Shopping: [['Amazon', 18, 140, 3], ['REI', 40, 260, 0.5], ['Nordstrom', 60, 380, 0.35], ['Apple Store', 29, 199, 0.25], ['Target', 25, 110, 0.8], ['Arc’teryx', 120, 450, 0.12]],
+  Travel: [['Uber', 18, 62, 1.4], ['Parking', 12, 34, 1], ['Washington State Ferries', 18, 46, 0.4], ['Alaska Airlines', 240, 680, 0.3], ['Marriott', 220, 640, 0.25], ['Airbnb', 380, 1100, 0.1]],
+  'Home & Garden': [['Swansons Nursery', 20, 120, 0.6], ['Home Depot', 25, 180, 0.6], ['Crate & Barrel', 40, 260, 0.3], ['IKEA', 40, 240, 0.2]],
+  'Health & Wellness': [['Massage', 110, 160, 0.5], ['Physical therapy copay', 35, 55, 0.6], ['Walgreens', 10, 45, 0.8], ['Yoga class pack', 120, 180, 0.15]],
+  Pets: [['Mud Bay', 45, 95, 1], ['Chewy', 35, 80, 0.5], ['Vet visit', 90, 280, 0.15]],
+  Entertainment: [['SIFF Cinema', 16, 34, 0.7], ['Elliott Bay Book Company', 22, 60, 0.6], ['Seattle Kraken tickets', 140, 320, 0.2], ['Climate Pledge Arena concert', 120, 260, 0.12]],
+  'Auto & Charging': [['Tesla Supercharger', 14, 38, 2], ['Parking garage', 18, 40, 1], ['Car wash', 20, 35, 0.5]],
+  'Gifts & Giving': [['Gift', 40, 150, 0.6], ['Donation', 50, 200, 0.2], ['Wedding gift', 150, 300, 0.08]],
+  'Personal Care': [['Haircut', 70, 110, 0.8], ['Sephora', 30, 120, 0.4], ['Dry cleaning', 18, 40, 0.5]],
 };
-const METHODS = ['Apple Pay', 'Apple Card', 'Apple Store/Services', 'Debit Card', 'Cash'];
+const METHODS = ['Amex Gold', 'Chase Sapphire Reserve', 'Apple Card', 'Checking', 'Venmo'];
+function methodFor(cat, desc, R) {
+  if (desc === 'Apple Store') return 'Apple Card';
+  if (cat === 'Travel' || cat === 'Auto & Charging') return 'Chase Sapphire Reserve';
+  if (cat === 'Gifts & Giving') return R() < 0.5 ? 'Venmo' : 'Checking';
+  if (cat === 'Groceries' || cat === 'Restaurants & Bars') return R() < 0.08 ? 'Venmo' : R() < 0.8 ? 'Amex Gold' : 'Chase Sapphire Reserve';
+  return R() < 0.7 ? 'Chase Sapphire Reserve' : 'Apple Card';
+}
+// name, category, amount, charge day, charged to the Apple Card
 const BILLS = [
-  ['Rent', 'Housing', 1150, 1, false],
-  ['National Grid (electric & gas)', 'Utilities', 96.4, 18, true],
-  ['Spectrum Internet', 'Utilities', 59.99, 12, true],
-  ['Visible (phone)', 'Utilities', 45, 22, true],
-  ['Car Payment', 'Transportation', 386.12, 28, false],
-  ['Car Insurance (Progressive)', 'Transportation', 142.5, 9, true],
-  ['Lemonade renters', 'Housing', 14.25, 10, true],
-  ['Planet Fitness', 'Subscriptions', 24.99, 3, true],
-  ['Spotify', 'Subscriptions', 11.99, 5, true],
-  ['Netflix', 'Subscriptions', 15.49, 14, true],
-  ['iCloud+', 'Subscriptions', 2.99, 20, true],
+  ['Mortgage (Chase)', 'Housing', 4780, 1, false],
+  ['HOA dues', 'Housing', 640, 1, false],
+  ['Monthly giving', 'Giving', 250, 1, false],
+  ['Equinox', 'Subscriptions', 285, 2, false],
+  ['Auto loan (Tesla)', 'Transportation', 912, 5, false],
+  ['Spotify Family', 'Subscriptions', 19.99, 7, false],
+  ['Car insurance (PEMCO)', 'Transportation', 182, 9, false],
+  ['Netflix', 'Subscriptions', 24.99, 11, false],
+  ['Ziply Fiber', 'Utilities', 80, 12, false],
+  ['Peloton App', 'Subscriptions', 24, 14, false],
+  ['House cleaning', 'Home', 260, 15, false],
+  ['Seattle City Light', 'Utilities', 118, 16, false],
+  ['Google Fi', 'Utilities', 70, 18, false],
+  ['The Economist', 'Subscriptions', 25, 20, false],
+  ['Puget Sound Energy', 'Utilities', 74, 21, false],
+  ['iCloud+ 2 TB', 'Subscriptions', 9.99, 22, true],
+  ['Seattle Public Utilities', 'Utilities', 136, 26, false],
+  ['Rover dog walking', 'Pets', 320, 28, false],
 ];
 
 function budgetDoc(today, R) {
   const [ty, tm] = today.split('-').map(Number);
-  const loanEnds = isoOf(new Date(ty, tm - 1 + 19, 1)).slice(0, 7); // about a year and a half of car payments left
-  const bills = BILLS.map(([name, category, amount, day, card], i) => ({ id: `demo-bill-${i}`, name, category, amount, starts: '', ends: name === 'Car Payment' ? loanEnds : '', day, card, share: 1 }));
+  const loanEnds = isoOf(new Date(ty, tm - 1 + 33, 1)).slice(0, 7); // about three years of car payments left
+  const bills = BILLS.map(([name, category, amount, day, card], i) => ({ id: `demo-bill-${i}`, name, category, amount, starts: '', ends: /auto loan/i.test(name) ? loanEnds : '', day, card, share: 1 }));
   // Paid every other Friday; the anchor is the most recent one.
   const t = new Date(ty, tm - 1, Number(today.slice(8, 10)));
   const back = (t.getDay() + 2) % 7; // days since the last Friday
@@ -84,24 +110,30 @@ function budgetDoc(today, R) {
     const upto = current ? Number(today.slice(8, 10)) : days;
     const tx = [];
     for (const [cat, budget] of CATEGORIES) {
-      // Most months land a little under budget; now and then one runs over. This month, dining runs hot.
+      // Most months land a little under budget; now and then a trip blows the travel budget. This month,
+      // restaurants run ahead of pace.
       let target = budget * (0.72 + R() * 0.38);
-      if (cat === 'Travel' && R() < 0.3) target = budget * (1.6 + R() * 0.6); // the occasional trip blows the travel budget
-      if (current) target = Math.min(budget * 0.96, budget * (upto / days) * (cat === 'Dining & Drinks' ? 1.22 : cat === 'Groceries' ? 0.95 : 0.6 + R() * 0.3));
+      if (cat === 'Travel' && R() < 0.35) target = budget * (1.7 + R() * 0.8);
+      if (current) target = Math.min(budget * 0.96, budget * (upto / days) * (cat === 'Restaurants & Bars' ? 1.22 : cat === 'Groceries' ? 0.95 : 0.6 + R() * 0.3));
       let spent = 0;
       let guard = 0;
-      while (spent < target && guard++ < 60) {
+      // spread the purchases through the month (stratified), so every week has some of each kind
+      const all = MERCHANTS[cat];
+      const avg = all.reduce((a, m) => a + (m[3] * (m[1] + m[2])) / 2, 0) / all.reduce((a, m) => a + m[3], 0);
+      const est = Math.max(1, Math.round(target / avg));
+      let i = 0;
+      while (spent < target && guard++ < 80) {
         // pick a merchant by how often it shows up, among those that fit what's left of the month's amount
         const left = target - spent;
-        const shops = MERCHANTS[cat].filter((s) => s[1] <= left * 1.05);
+        const shops = all.filter((s) => s[1] <= left * 1.05);
         if (!shops.length) break;
         const w = shops.reduce((a, s) => a + s[3], 0);
         let r = R() * w;
         const m = shops.find((s) => (r -= s[3]) < 0) || shops[0];
         const amount = round(m[1] + R() * (Math.min(m[2], Math.max(m[1], left * 1.05)) - m[1]), 2);
-        const day = 1 + Math.floor(R() * upto);
-        const method = /Costco|Aldi/.test(m[0]) ? 'Debit Card' : m[0] === 'Haircut' && R() < 0.5 ? 'Cash' : m[0] === 'Steam' ? 'Apple Card' : R() < 0.62 ? 'Apple Pay' : R() < 0.75 ? 'Apple Card' : 'Debit Card';
-        tx.push({ id: uid(), date: `${key}-${pad(day)}`, desc: m[0], category: cat, amount, method });
+        const day = i < est ? Math.min(upto, 1 + Math.floor(((i + R()) / est) * upto)) : 1 + Math.floor(R() * upto);
+        i++;
+        tx.push({ id: uid(), date: `${key}-${pad(day)}`, desc: m[0], category: cat, amount, method: methodFor(cat, m[0], R) });
         spent += amount;
       }
     }
@@ -113,14 +145,17 @@ function budgetDoc(today, R) {
   months[next] = { transactions: [], paid: {}, amounts: {}, collected: {} };
 
   const entries = [];
-  for (let i = 1; i <= 6; i++) entries.push({ id: uid(), date: addDays(payAnchor, -14 * (i - 1)), type: 'deposit', amount: 200, note: 'Paycheck savings', absorbed: true });
+  for (let i = 1; i <= 6; i++) entries.push({ id: uid(), date: addDays(payAnchor, -14 * (i - 1)), type: 'deposit', amount: 500, note: 'Paycheck savings', absorbed: true });
   return {
     version: 1,
     historyVersion: 2,
     configVersion: 28,
     config: {
-      incomes: [{ id: 'demo-income', name: 'Paycheck', biweekly: 2180 }],
-      savings: [{ id: 'demo-save', name: 'Paycheck Savings', biweekly: 200, starts: '', ends: '' }],
+      incomes: [{ id: 'demo-income', name: 'Paycheck', biweekly: PAYCHECK }],
+      savings: [
+        { id: 'demo-save', name: 'High-yield savings', biweekly: 500, starts: '', ends: '' },
+        { id: 'demo-invest', name: 'Brokerage auto-invest', biweekly: 1000, starts: '', ends: '' },
+      ],
       bills,
       categories: CATEGORIES.map(([name, budget], i) => ({ id: `demo-cat-${i}`, name, budget })),
       paymentMethods: [...METHODS],
@@ -128,16 +163,18 @@ function budgetDoc(today, R) {
       roommates: [],
     },
     months,
-    savings: { balance: 6240.18, asOf: today, apy: 4.1, entries },
-    card: { balance: 684.37, asOf: today, apr: 24.49, limit: 9000, lastInterest: 0 },
+    savings: { balance: 48260.12, asOf: today, apy: 4.2, entries },
+    card: { balance: 1284.5, asOf: today, apr: 22.99, limit: 30000, lastInterest: 0 },
     portfolio: {
       holdings: [
-        { id: 'demo-h1', ticker: 'VTI', shares: 14 },
-        { id: 'demo-h2', ticker: 'VXUS', shares: 22 },
-        { id: 'demo-h3', ticker: 'AAPL', shares: 6 },
-        { id: 'demo-h4', ticker: 'MSFT', shares: 3 },
+        { id: 'demo-h1', ticker: 'VTI', shares: 610 },
+        { id: 'demo-h2', ticker: 'VXUS', shares: 420 },
+        { id: 'demo-h3', ticker: 'BND', shares: 180 },
+        { id: 'demo-h4', ticker: 'NVDA', shares: 55 },
+        { id: 'demo-h5', ticker: 'AMZN', shares: 35 },
+        { id: 'demo-h6', ticker: 'AAPL', shares: 40 },
       ],
-      cash: 215,
+      cash: 4200,
       quotes: {},
       refreshedAt: '',
     },
@@ -156,7 +193,8 @@ const FOODS = {
 
 // ---------------------------------------------------------------- Apple Health (a year of a Watch and iPhone)
 const WATCH = 'Jordan’s Apple Watch';
-// A loop around Delaware Park, Buffalo, as delta-encoded points (the format the importer stores).
+// Laps of the path around Green Lake, Seattle (about 2.8 miles), as delta-encoded points (the format the importer
+// stores).
 function parkLoop(R, laps) {
   const pts = [];
   const n = 120;
@@ -164,7 +202,7 @@ function parkLoop(R, laps) {
     for (let i = 0; i < n; i++) {
       const a = (i / n) * Math.PI * 2;
       const wob = 1 + 0.06 * Math.sin(a * 3 + 0.7) + 0.03 * Math.sin(a * 7);
-      pts.push([42.9322 + Math.sin(a) * 0.0058 * wob + (R() - 0.5) * 0.00004, -78.8715 + Math.cos(a) * 0.0102 * wob + (R() - 0.5) * 0.00004]);
+      pts.push([47.681 + Math.sin(a) * 0.006 * wob + (R() - 0.5) * 0.00004, -122.3315 + Math.cos(a) * 0.0095 * wob + (R() - 0.5) * 0.00004]);
     }
   }
   pts.push(pts[0]);
@@ -222,11 +260,11 @@ function appleBundle(today, R, hourNow) {
         const extra = { mi: round(mi, 2), hr: Math.round(150 + R() * 10 - fit * 4), hrMax: Math.round(171 + R() * 8), tempF: Math.round(52 + summer * 22 + (R() - 0.5) * 10), elev: Math.round(40 + R() * 60) };
         if (n <= 70) {
           extra.route = `route_${d}`;
-          routes[extra.route] = parkLoop(R, Math.max(1, Math.round(mi / 1.8)));
+          routes[extra.route] = parkLoop(R, Math.max(1, Math.round(mi / 2.8)));
         }
         add('run', 'Running', dow === 6 ? '08:40' : '06:45', mi * pace, mi * 102, extra);
       }
-      if (dow === 6 && summer > 0.3 && !w.length) add('bike', 'Cycling', '09:30', 55 + R() * 30, 380 + R() * 150, { mi: round(12 + R() * 8, 2), hr: Math.round(132 + R() * 10), hrMax: Math.round(158 + R() * 10) });
+      if (dow === 6 && summer > 0.3 && !w.length) add('bike', 'Cycling', '09:30', 75 + R() * 45, 480 + R() * 260, { mi: round(18 + R() * 14, 2), hr: Math.round(132 + R() * 10), hrMax: Math.round(158 + R() * 10) });
       if (dow === 0) add('walk', 'Walking', '16:20', 35 + R() * 25, 130 + R() * 60, { mi: round(1.6 + R() * 1.2, 2), hr: Math.round(98 + R() * 8) });
     }
     workouts.push(...w);
@@ -310,7 +348,7 @@ function appleBundle(today, R, hourNow) {
     exportDate: `${today} 07:30:00 -0400`,
     first: keys[0],
     last: keys[keys.length - 1],
-    me: { dob: '1995-06-12', sex: 'female', heightIn: 66 },
+    me: { dob: '1992-03-08', sex: 'female', heightIn: 66 },
     days,
     workouts: workouts.sort((a, b) => (a.id < b.id ? -1 : 1)),
     weights,
@@ -336,70 +374,92 @@ export function demoDocs(now = new Date()) {
   const hour = now.getHours() + now.getMinutes() / 60;
   const year = today.slice(0, 4);
   const lastYear = String(Number(year) - 1);
+  const [ty, tm] = today.split('-').map(Number);
   const docs = {};
   docs['budget-tracker-v1'] = budgetDoc(today, R);
 
-  // Home: a sample city's weather and a few to-dos (some done, for the rings and streaks)
+  // Home: Seattle weather and a few to-dos (some done, for the rings and streaks)
   const doneLog = {};
   for (let n = 1; n <= 40; n++) if (R() < 0.55) doneLog[addDays(today, -n)] = 1 + Math.floor(R() * 2);
   docs.home = {
     version: 1,
     place: { ...DEMO_PLACE },
     todos: [
-      { id: uid(), text: 'Book a dentist cleaning', added: addDays(today, -3) },
-      { id: uid(), text: 'Call the landlord about the radiator', added: addDays(today, -2) },
-      { id: uid(), text: 'Return library books', added: addDays(today, -1) },
-      { id: uid(), text: 'Renew passport', added: addDays(today, -6) },
+      { id: uid(), text: 'Book Biscuit’s vet checkup', added: addDays(today, -3) },
+      { id: uid(), text: 'Book flights for Maui in February', added: addDays(today, -2) },
+      { id: uid(), text: 'Schedule gutter cleaning', added: addDays(today, -1) },
+      { id: uid(), text: 'Return the REI jacket', added: addDays(today, -6) },
       { id: uid(), text: 'Pick up dry cleaning', added: addDays(today, -1), done: true, doneAt: today },
     ],
     doneLog: { ...doneLog, [today]: 1 },
   };
 
-  // Auto: a different car from anyone's real one, inspection due next month, a service record
+  // Auto: a 2024 Model Y in Washington (no inspection; registration renews yearly), on a loan
   const auto = defaultAuto();
-  const [ty, tm] = today.split('-').map(Number);
-  auto.car = { year: 2022, make: 'Nissan', model: 'Altima', trim: 'SR', engine: '2.5L', drive: 'AWD', body: '4-door sedan', bought: '2022', boughtMonth: '2022-04', isNew: false };
+  auto.state = 'WA';
+  auto.car = { year: 2024, make: 'Tesla', model: 'Model Y', trim: 'Long Range', engine: 'Dual Motor', drive: 'AWD', body: 'SUV', bought: '2024', boughtMonth: '2024-03', isNew: true };
   auto.odo = [
-    { date: addDays(today, -330), miles: 18450 },
-    { date: addDays(today, -160), miles: 24120 },
-    { date: addDays(today, -12), miles: 28960 },
+    { date: addDays(today, -300), miles: 19850 },
+    { date: addDays(today, -150), miles: 24300 },
+    { date: addDays(today, -9), miles: 28410 },
   ];
-  auto.inspection = isoOf(new Date(ty, tm + 1, 0)); // end of next month
-  auto.registration = isoOf(new Date(ty, tm + 6, 0));
+  auto.inspection = '';
+  auto.registration = isoOf(new Date(ty, tm + 1, 0)); // end of next month
   auto.insuranceRenews = isoOf(new Date(ty, tm + 3, 14));
-  auto.loan = { lender: 'Capital One Auto', balance: 7240, apr: 5.9 };
-  logService(auto, { date: addDays(today, -160), miles: 24120, items: ['oil', 'rotate', 'cabin', 'awd'], cost: 118.4, shop: 'West Herr Nissan', note: 'Synthetic oil change and tire rotation' });
-  logService(auto, { date: addDays(today, -300), miles: 19300, items: ['air'], cost: 42, shop: 'West Herr Nissan', note: '' });
+  auto.loan = { lender: 'BECU', balance: 29400, apr: 4.49 };
+  logService(auto, { date: addDays(today, -190), miles: 23100, items: ['cabin', 'wipers'], cost: 139, shop: 'Tesla Service, Seattle', note: '' });
+  logService(auto, { date: addDays(today, -40), miles: 27500, items: ['rotate'], cost: 30, shop: 'Discount Tire', note: 'Tread even all around' });
   docs.auto = auto;
 
-  // Learning: a cloud and AI study plan, one exam booked, a steady few hours a week
+  // Learning: AI for product work, one fundamentals exam passed, the next one booked
   const learning = defaultLearning();
-  learning.hoursPerWeek = 5;
-  learning.certs = { 'ai-901': { status: 'booked', examDate: addDays(today, 16) }, 'az-104': { status: 'planned' } };
-  for (let n = 60; n >= 0; n--) {
+  learning.plan = [...DEMO_PLAN];
+  learning.hoursPerWeek = 4;
+  for (let n = 130; n >= 0; n--) {
     const dow = new Date(ty, tm - 1, Number(today.slice(8, 10)) - n).getDay();
-    if ((dow === 2 || dow === 4 || dow === 0) && R() < 0.8) logTime(learning, 'ai-901', 30 + Math.round(R() * 4) * 15, addDays(today, -n));
+    if ((dow === 1 || dow === 3 || dow === 6) && R() < 0.75) logTime(learning, n > 75 ? 'ai-901' : 'aws-aif', 30 + Math.round(R() * 4) * 15, addDays(today, -n));
   }
-  learning.certs['ai-901'] = { status: 'booked', examDate: addDays(today, 16) };
+  learning.certs = {
+    'ai-901': { status: 'passed', passedDate: addDays(today, -72) },
+    'aws-aif': { status: 'booked', examDate: addDays(today, 16) },
+    python: { status: 'planned' },
+    'ai-103': { status: 'planned' },
+  };
   docs.learning = learning;
 
-  // Cooking: a stocked kitchen and a short grocery list
+  // Cooking: a well-stocked kitchen, a couple of saved recipes, a short grocery list
   const cooking = defaultCooking();
-  addKitchen(cooking, ['Chicken thighs', 'Eggs', 'Greek yogurt', 'Butter', 'Cheddar', 'Spinach', 'Lemons', 'Salsa'], 'fridge');
-  addKitchen(cooking, ['Frozen peas', 'Ground beef', 'Frozen berries'], 'freezer');
-  addKitchen(cooking, ['Rice', 'Pasta', 'Black beans', 'Canned tomatoes', 'Olive oil', 'Soy sauce', 'Oats', 'Flour tortillas', 'Chicken broth', 'Onions', 'Garlic', 'Honey'], 'pantry');
-  addKitchen(cooking, ['Cumin', 'Smoked paprika', 'Chili powder', 'Oregano', 'Cinnamon', 'Black pepper', 'Kosher salt'], 'spices');
+  cooking.mine = [
+    {
+      id: 'demo-mine-salmon',
+      title: 'Miso-glazed salmon',
+      ingredients: ['4 salmon fillets', '3 tbsp white miso', '2 tbsp mirin', '1 tbsp honey', '1 tbsp soy sauce', 'sesame oil', 'scallions', 'jasmine rice'],
+      notes: 'Whisk the glaze, brush it on, and broil 8–10 minutes until it caramelizes. Serve over rice with sesame seeds and scallions.',
+      made: 4,
+    },
+    {
+      id: 'demo-mine-shakshuka',
+      title: 'Weeknight shakshuka',
+      ingredients: ['1 onion', '3 cloves garlic', '1 red bell pepper', '28 oz canned tomatoes', '6 eggs', 'ground cumin', 'smoked paprika', 'feta', 'parsley'],
+      notes: 'Soften the onion and pepper, add the spices and tomatoes, simmer 10 minutes, then poach the eggs in wells until just set. Feta and parsley on top, crusty bread alongside.',
+      made: 2,
+    },
+  ];
+  addKitchen(cooking, ['Salmon fillets', 'Eggs', 'Greek yogurt', 'Butter', 'Parmesan', 'Kale', 'Lemons', 'Kimchi', 'Miso paste'], 'fridge');
+  addKitchen(cooking, ['Frozen dumplings', 'Frozen berries', 'Ground turkey'], 'freezer');
+  addKitchen(cooking, ['Jasmine rice', 'Farro', 'Pasta', 'Chickpeas', 'Canned tomatoes', 'Olive oil', 'Soy sauce', 'Oats', 'Honey', 'Onions', 'Garlic', 'Sesame oil', 'Coconut milk'], 'pantry');
+  addKitchen(cooking, ['Cumin', 'Smoked paprika', 'Za’atar', 'Red pepper flakes', 'Cinnamon', 'Black pepper', 'Kosher salt'], 'spices');
   const low = cooking.kitchen.find((i) => i.name === 'Olive oil');
   if (low) low.low = true;
-  addGrocery(cooking, ['Olive oil', 'Avocados', 'Limes', 'Cilantro', 'Bananas', 'Oat milk']);
-  const bananas = cooking.grocery.find((g) => g.name === 'Bananas');
-  if (bananas) bananas.done = true;
+  addGrocery(cooking, ['Olive oil', 'Avocados', 'Limes', 'Sourdough', 'Oat milk', 'Dog treats']);
+  const oat = cooking.grocery.find((g) => g.name === 'Oat milk');
+  if (oat) oat.done = true;
   docs.cooking = cooking;
 
   // Health: profile, a food log (every day for the last 7 weeks, today so far), and remembered foods
   const health = H.defaultHealth();
-  health.profile = { sex: '', age: null, heightIn: null, activity: 'moderate', goal: 'lose_slow' };
-  health.stepGoal = 9000;
+  health.profile = { sex: '', age: null, heightIn: null, activity: 'active', goal: 'maintain' };
+  health.stepGoal = 10000;
   const years = { [year]: H.defaultYear(), [lastYear]: H.defaultYear() };
   const pick = (list) => list[Math.floor(R() * list.length)];
   for (let n = 48; n >= 0; n--) {
@@ -417,7 +477,7 @@ export function demoDocs(now = new Date()) {
         H.addEntry(y, iso, H.entryFor(food, portion, qty, meal));
       }
     }
-    if (n > 0 && n % 9 === 4) H.addWorkout(y, iso, { type: 'tennis', minutes: 60, note: 'Doubles at the park' });
+    if (n > 0 && n % 9 === 4) H.addWorkout(y, iso, { type: 'hiit', minutes: 50, note: 'Spin class' });
   }
 
   // Apple Health, imported the way the Health tab would do it
@@ -445,4 +505,3 @@ export function demoDocs(now = new Date()) {
   Object.values(docs).forEach((d) => (d.updatedAt = stamp));
   return docs;
 }
-
