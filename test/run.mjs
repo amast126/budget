@@ -1100,11 +1100,14 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   const b = docs['budget-tracker-v1'];
   const names = Object.keys(docs).sort().join(',');
   const y = String(new Date().getFullYear());
-  check(b.historyVersion === 2 && b.configVersion === 28 && b.config.categories.length === 8 && Object.keys(b.months).length >= 8, `demo budget: ${Object.keys(b.months).length} months, current versions (so the budget module adds nothing of its own)`);
+  check(b.historyVersion === 2 && b.configVersion === 28 && b.config.categories.length === 11 && Object.keys(b.months).length >= 8, `demo budget: ${Object.keys(b.months).length} months, current versions (so the budget module adds nothing of its own)`);
   check(['home', 'auto', 'learning', 'cooking', 'health', `health-${y}`, 'health-hk', `health-hk-${y}`, 'health-hk-ecg', 'health-hk-routes'].every((n) => docs[n]), `demo documents: ${names}`);
-  check(docs.home.place.name === 'Buffalo, NY' && docs.auto.car.year === 2022 && docs.health.profile.sex === 'female' && docs['health-hk'].workouts.length > 100, 'demo person: Buffalo, a 2022 car, a year of Apple Health');
+  check(docs.home.place.name === 'Seattle, WA' && docs.auto.car.make === 'Tesla' && docs.auto.state === 'WA' && docs.health.profile.sex === 'female' && docs['health-hk'].workouts.length > 100, 'demo person: Seattle, a Tesla, a year of Apple Health');
+  const takeHome = b.config.incomes.reduce((a, i) => a + i.biweekly, 0) * 26;
+  const fixed = b.config.bills.reduce((a, x) => a + x.amount, 0);
+  check(takeHome > 180000 && takeHome < 220000 && fixed > 7000 && b.savings.balance > 20000, `demo finances fit a ~$300k salary: $${Math.round(takeHome).toLocaleString()} take-home a year, $${Math.round(fixed).toLocaleString()} a month in bills`);
   const json = JSON.stringify(docs);
-  check(!/Dix Hills|amast126|Alec\b|Alliant/.test(json), 'demo data has nothing from the real account');
+  check(!/Dix Hills|amast126|Alec\b|Alliant|Altima|Nissan|Chipotle|tennis|Geico|Verizon/i.test(json), 'demo data has nothing from the real account or life');
 
   const dc = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   await mockWeather(dc);
@@ -1116,7 +1119,12 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   const errs = [];
   tp.on('pageerror', (e) => errs.push(e.message));
   await tp.goto(base, { waitUntil: 'networkidle' });
-  await tp.evaluate(() => localStorage.setItem('budget-tracker-v1', 'REAL-DATA-SENTINEL'));
+  await tp.evaluate(() => {
+    localStorage.setItem('budget-tracker-v1', 'REAL-DATA-SENTINEL');
+    // an older sample left over from a previous visit gets replaced by the current one
+    localStorage.setItem('demo:meta', JSON.stringify({ version: 1 }));
+    localStorage.setItem('demo:home', JSON.stringify({ version: 1, place: { name: 'Oldtown, NY', lat: 1, lon: 1 }, todos: [] }));
+  });
   await tp.waitForSelector('.gate');
   check(/Try the demo/.test(await tp.innerText('.gate')), 'the sign-in screen offers the demo');
   await tp.click('.gate button:has-text("Try the demo")');
@@ -1124,7 +1132,9 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForSelector('.hero');
   await tp.waitForTimeout(600);
   check(/[?&]demo/.test(tp.url()) && /Good (morning|afternoon|evening), Jordan/.test(await tp.innerText('.hero')), `demo opens without signing in: ${(await tp.innerText('.hero-title')).trim()}`);
-  check((await tp.$$('.lring')).length === 4 && /Buffalo, NY/.test(await tp.innerText('.weather')) && /2022 Nissan Altima/.test(await tp.innerText('.main')), 'demo home: rings, Buffalo weather, the sample car');
+  check((await tp.$$('.lring')).length === 4 && /Seattle, WA/.test(await tp.innerText('.weather')) && /2024 Tesla Model Y/.test(await tp.innerText('.main')), 'demo home: rings, Seattle weather, the sample car');
+  const chips = await tp.innerText('.chips-row');
+  check(!/GTA/.test(chips) && !/inspection/.test(chips) && /AIF-C01 exam/.test(chips), `demo countdowns are the demo person's: ${chips.replace(/\n/g, ' ')}`);
   const spentBefore = await tp.innerText('.money .muted.small.num');
   await tp.fill('.qa input[aria-label="Amount"]', '12.34');
   await tp.fill('.qa input[aria-label="Description"]', 'Demo test lunch');
@@ -1139,7 +1149,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   }
   await tp.click('a.nav-item:has-text("Budget")');
   const frame = await (await tp.waitForSelector('iframe.frame')).contentFrame();
-  await frame.waitForSelector('text=Dining & Drinks', { timeout: 10000 });
+  await frame.waitForSelector('text=Restaurants & Bars', { timeout: 10000 });
   const ftext = await frame.innerText('body');
   check(/budget-demo\.html/.test(frame.url()) && /Saved in this browser/.test(ftext) && !/Sign in with Google/.test(ftext), 'budget frame runs locally on the sample budget');
   await frame.click('text=Sep').catch(() => {});
@@ -1173,6 +1183,33 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   check(!/[?&]demo/.test(tp.url()) && !(await tp.$('.demo-bar')), 'Exit demo goes back to the sign-in screen');
   check(!errs.length, `no errors in the demo${errs.length ? ': ' + errs.join(' | ') : ''}`);
   await dc.close();
+}
+// the owner can switch into demo mode from Settings and back again
+{
+  const tp = await desk.newPage();
+  const errs = [];
+  tp.on('pageerror', (e) => errs.push(e.message));
+  await tp.goto(base, { waitUntil: 'networkidle' });
+  await tp.waitForSelector('.hero');
+  await tp.click('.nav-settings');
+  await tp.waitForSelector('.settings-demo');
+  check(/Demo mode/.test(await tp.innerText('.sheet')) && !!(await tp.$('.sheet button:has-text("Sign out")')), 'Settings on the account offers demo mode');
+  await tp.click('.sheet button:has-text("Copy the demo link")');
+  await tp.waitForSelector('.toast');
+  check(/Demo link/.test(await tp.innerText('.toast')), `copy the demo link: ${await tp.innerText('.toast')}`);
+  await tp.click('.sheet button:has-text("Switch to demo mode")'); // Settings stays open after copying
+  await tp.waitForSelector('.demo-bar');
+  await tp.waitForSelector('.hero');
+  await tp.waitForTimeout(300);
+  check(/[?&]demo/.test(tp.url()) && /Jordan/.test(await tp.innerText('.hero-title')) && /Back to my dashboard/.test(await tp.innerText('.demo-bar')), 'switched to demo: sample data, with a way back');
+  await tp.click('.nav-settings');
+  check(/You’re in demo mode/.test(await tp.innerText('.sheet')) && !(await tp.$('.sheet button:has-text("Sign out")')), 'Settings in demo mode offers the way back, not sign out');
+  await tp.click('.sheet button:has-text("Back to my dashboard")');
+  await tp.waitForSelector('.hero');
+  await tp.waitForTimeout(300);
+  check(!/[?&]demo/.test(tp.url()) && !(await tp.$('.demo-bar')) && /Alec/.test(await tp.innerText('.hero-title')), 'back on the real dashboard');
+  check(!errs.length, `no errors switching in and out${errs.length ? ': ' + errs.join(' | ') : ''}`);
+  await tp.close();
 }
 // the sky at different times of day
 for (const [label, hh, want] of [['night', 22, 'sky-night'], ['golden', 18, 'sky-golden'], ['morning', 9, 'sky-day']]) {
