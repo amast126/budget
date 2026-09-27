@@ -1113,6 +1113,19 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await mockWeather(dc);
   // a config with a (fake) Firebase key: demo mode must not start Firebase even when it could
   await dc.route('**/config.js', (r) => r.fulfill({ contentType: 'text/javascript', body: 'window.BUDGET_CONFIG = { firebase: { apiKey: "AIzaFakeDemoCheck", authDomain: "x.firebaseapp.com", projectId: "x", appId: "1:1:web:1" }, allowedEmails: ["someone@example.com"], ownerEmail: "someone@example.com", sharedDocId: "t" };' }));
+  // the link to share: a preview card for Messages and friends, then straight into the demo
+  {
+    const html = await (await fetch(`${base}demo.html`)).text();
+    const og = (p) => (html.match(new RegExp(`property="og:${p}" content="([^"]+)"`)) || [])[1];
+    const img = og('image') || '';
+    const local = await fetch(`${base}${img.split('/').pop()}`);
+    check(/live demo/.test(og('title') || '') && /^https:\/\/amast126\.github\.io\/budget\/demo-preview\.jpg$/.test(img) && local.ok && Number(local.headers.get('content-length') || (await local.arrayBuffer()).byteLength) < 600000, `demo.html has a preview card: “${og('title')}”, ${img.split('/').pop()}`);
+    const rp = await dc.newPage();
+    await rp.goto(`${base}demo.html`);
+    await rp.waitForSelector('.demo-bar', { timeout: 8000 });
+    check(/\?demo/.test(rp.url()), `demo.html opens the demo (${rp.url().replace(base, '/')})`);
+    await rp.close();
+  }
   const google = [];
   dc.on('request', (r) => /googleapis|firebase|gstatic|google\.com/.test(new URL(r.url()).host) && google.push(r.url()));
   const tp = await dc.newPage();
@@ -1196,7 +1209,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   check(/Demo mode/.test(await tp.innerText('.sheet')) && !!(await tp.$('.sheet button:has-text("Sign out")')), 'Settings on the account offers demo mode');
   await tp.click('.sheet button:has-text("Copy the demo link")');
   await tp.waitForSelector('.toast');
-  check(/Demo link/.test(await tp.innerText('.toast')), `copy the demo link: ${await tp.innerText('.toast')}`);
+  check(/Demo link( copied|: http.*\/budget\/demo\.html)/.test(await tp.innerText('.toast')), `copy the demo link: ${await tp.innerText('.toast')}`);
   await tp.click('.sheet button:has-text("Switch to demo mode")'); // Settings stays open after copying
   await tp.waitForSelector('.demo-bar');
   await tp.waitForSelector('.hero');
