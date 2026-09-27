@@ -215,7 +215,7 @@ check(/sky-(dawn|day|golden|dusk|night)/.test(await page.getAttribute('.hero', '
 // with "reduce motion" the sky is painted once, still, but complete: opaque, with an overcast deck's texture
 {
   const px = await page.evaluate(() => {
-    const c = document.querySelector('.hero canvas.sky-canvas');
+    const c = document.querySelector('.page-sky canvas.sky-canvas') || document.querySelector('.hero canvas.sky-canvas'); // glass: the sky is behind the whole page
     const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
     let opaque = 0;
     let n = 0;
@@ -1280,7 +1280,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(250);
   const b = await sample();
   check(a.lit > 200 && a.hash !== b.hash, `rain draws and moves (${a.lit} lit samples)`);
-  check(!!(await tp.$('.hero canvas.sky-canvas')) && (await tp.$$('.hero .sky-art canvas')).length === 2, 'rain falls in front of the sky canvas');
+  check(!!(await tp.$('.page-sky canvas.sky-canvas')) && (await tp.$$('.hero .sky-art canvas')).length === 1, 'rain falls on the header pane, in front of the sky behind the page');
   await tp.locator('.hero').screenshot({ path: path.join(OUT, 'hero-rain.png') });
   await tp.close();
 }
@@ -1341,10 +1341,10 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     await tp.clock.install({ time: t });
     await tp.clock.resume();
     await tp.goto(base, { waitUntil: 'networkidle' });
-    await tp.waitForSelector('.hero canvas.sky-canvas');
+    await tp.waitForSelector('.page-sky canvas.sky-canvas');
     return { tp, errs };
   };
-  const skyPx = (tp, sel = '.hero canvas.sky-canvas') =>
+  const skyPx = (tp, sel = '.page-sky canvas.sky-canvas') =>
     tp.evaluate((sel) => {
       const c = document.querySelector(sel);
       const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
@@ -1375,7 +1375,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     const { tp } = await open(0, 23, 30);
     await tp.waitForTimeout(600);
     const stars = await tp.evaluate(() => {
-      const c = document.querySelector('.hero canvas.sky-canvas');
+      const c = document.querySelector('.page-sky canvas.sky-canvas');
       const d = c.getContext('2d').getImageData(0, 0, c.width, Math.floor(c.height * 0.6)).data;
       let n = 0;
       for (let i = 0; i < d.length; i += 4) if ((d[i] + d[i + 1] + d[i + 2]) / 3 > 140) n++;
@@ -1548,6 +1548,99 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   check(!/[?&]demo/.test(tp.url()) && !(await tp.$('.demo-bar')) && /Alec/.test(await tp.innerText('.hero-title')), 'back on the real dashboard');
   check(!errs.length, `no errors switching in and out${errs.length ? ': ' + errs.join(' | ') : ''}`);
   await tp.close();
+}
+// the look: Liquid Glass over the live sky by default (light or dark with the system), a Clear–Tinted slider,
+// and the classic look one tap away; the budget frame follows along
+{
+  const tp = await desk.newPage();
+  const errs = [];
+  tp.on('pageerror', (e) => errs.push(e.message));
+  await tp.goto(base, { waitUntil: 'networkidle' });
+  await tp.waitForSelector('.hero');
+  await tp.waitForTimeout(500);
+  const look = () =>
+    tp.evaluate(() => {
+      const card = document.querySelector('.home-grid .card');
+      const cs = getComputedStyle(card);
+      const alpha = (cs.backgroundColor.match(/rgba?\(([^)]+)\)/) || [, '0,0,0,1'])[1].split(',').map(Number)[3];
+      return {
+        html: document.documentElement.className,
+        tint: getComputedStyle(document.documentElement).getPropertyValue('--tint').trim(),
+        sky: !!document.querySelector('.page-sky canvas.sky-canvas'),
+        heroSky: !!document.querySelector('.hero canvas.sky-canvas'),
+        cardBlur: cs.backdropFilter || cs.webkitBackdropFilter || '',
+        cardAlpha: alpha == null || isNaN(alpha) ? 1 : alpha,
+        nav: document.querySelector('.nav').style.backdropFilter || '',
+        lens: !!document.querySelector('svg.lens-defs filter#lens-nav feDisplacementMap'),
+        body: getComputedStyle(document.body).backgroundColor,
+      };
+    });
+  let L = await look();
+  check(/theme-glass/.test(L.html) && !/dark/.test(L.html) && L.sky && !L.heroSky && /blur/.test(L.cardBlur) && L.cardAlpha < 0.95 && L.body === 'rgba(0, 0, 0, 0)', `Liquid Glass by default: the sky behind the page, frosted cards (alpha ${L.cardAlpha.toFixed(2)}), light`);
+  check(L.lens && /url\("?#lens-nav"?\)/.test(L.nav), 'the tab bar bends light at its edges (Chrome)');
+  await tp.click('a.nav-item:has-text("Budget")');
+  const bf = await (await tp.waitForSelector('iframe.frame')).contentFrame();
+  await bf.waitForSelector('.bt-root', { timeout: 10000 });
+  const inFrame = await bf.evaluate(() => ({ cls: document.documentElement.className, bg: getComputedStyle(document.body).backgroundColor, root: getComputedStyle(document.querySelector('.bt-root')).backgroundColor }));
+  check(/in-glass/.test(inFrame.cls) && inFrame.bg === 'rgba(0, 0, 0, 0)' && inFrame.root === 'rgba(0, 0, 0, 0)', 'the budget sits on the same pane of glass (its page is see-through)');
+  await tp.screenshot({ path: path.join(OUT, 'glass-budget.png') });
+  await tp.click('a.nav-item:has-text("Home")');
+  await tp.click('.nav-settings');
+  await tp.waitForSelector('.settings-look');
+  check(/Liquid Glass/.test(await tp.innerText('.settings-look .seg-btn.on')), 'Settings shows the look');
+  await tp.fill('.glass-slider input', '100');
+  await tp.waitForTimeout(150);
+  L = await look();
+  const tinted = L.cardAlpha;
+  await tp.fill('.glass-slider input', '0');
+  await tp.waitForTimeout(150);
+  L = await look();
+  check(L.tint === '0' && tinted > L.cardAlpha + 0.2 && (await tp.evaluate(() => localStorage.getItem('dash.glassTint'))) === '0', `transparency slider: Tinted ${tinted.toFixed(2)} → Clear ${L.cardAlpha.toFixed(2)}, remembered`);
+  await tp.screenshot({ path: path.join(OUT, 'glass-settings.png') });
+  await tp.fill('.glass-slider input', '50');
+  await tp.click('.settings-look .seg-btn:has-text("Classic")');
+  await tp.waitForTimeout(300);
+  L = await look();
+  check(/theme-classic/.test(L.html) && !L.sky && L.heroSky && L.cardAlpha === 1 && !L.nav && !L.lens && L.body === 'rgb(245, 246, 242)', 'Classic brings back the original look (the sky back in the header, paper background)');
+  await tp.reload({ waitUntil: 'networkidle' });
+  await tp.waitForSelector('.hero');
+  L = await look();
+  check(/theme-classic/.test(L.html) && L.heroSky, 'and stays after a reload');
+  await tp.click('.nav-settings');
+  await tp.click('.settings-look .seg-btn:has-text("Liquid Glass")');
+  await tp.waitForTimeout(300);
+  check(/theme-glass/.test((await look()).html), 'switch back to Liquid Glass');
+  check(!errs.length, `no errors changing the look${errs.length ? ': ' + errs.join(' | ') : ''}`);
+  await tp.close();
+}
+// dark mode follows the system
+{
+  const dk = await browser.newContext({ viewport: { width: 1366, height: 900 }, colorScheme: 'dark', reducedMotion: 'reduce' });
+  await dk.addInitScript(init, EXPORT);
+  await mockWeather(dk);
+  const tp = await dk.newPage();
+  const errs = [];
+  tp.on('pageerror', (e) => errs.push(e.message));
+  await tp.goto(base, { waitUntil: 'networkidle' });
+  await tp.waitForSelector('.hero');
+  await tp.waitForTimeout(500);
+  const d = await tp.evaluate(() => {
+    const card = document.querySelector('.home-grid .card');
+    const bg = getComputedStyle(card).backgroundColor.match(/\d+(\.\d+)?/g).map(Number);
+    const ink = getComputedStyle(card.querySelector('.card-title')).color.match(/\d+/g).map(Number);
+    return { html: document.documentElement.className, bg, ink };
+  });
+  check(/theme-glass/.test(d.html) && /dark/.test(d.html) && d.bg[0] < 60 && d.ink[0] > 200, `dark mode with the system: dark glass (${d.bg.slice(0, 3).join(',')}), light text`);
+  await tp.screenshot({ path: path.join(OUT, 'glass-dark-home.png') });
+  await tp.click('a.nav-item:has-text("Budget")');
+  const bf = await (await tp.waitForSelector('iframe.frame')).contentFrame();
+  await bf.waitForSelector('.bt-root', { timeout: 10000 });
+  const fr = await tp.evaluate(() => getComputedStyle(document.querySelector('iframe.frame')).filter);
+  const fcls = await bf.evaluate(() => document.documentElement.className);
+  check(/invert/.test(fr) && /in-dark/.test(fcls), 'the budget goes dark too');
+  await tp.screenshot({ path: path.join(OUT, 'glass-dark-budget.png') });
+  check(!errs.length, `no errors in dark mode${errs.length ? ': ' + errs.join(' | ') : ''}`);
+  await dk.close();
 }
 // the sky at different times of day
 for (const [label, hh, want] of [['night', 22, 'sky-night'], ['golden', 18, 'sky-golden'], ['morning', 9, 'sky-day']]) {
