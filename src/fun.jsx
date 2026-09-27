@@ -562,7 +562,7 @@ function WatchList({ data, mutate }) {
 
 // ---------------------------------------------------------------- news
 const FUN_NEWS = [
-  ['gaming', 'Gaming', 'IGN, Polygon, Kotaku, GameSpot, VGC, Eurogamer, plus stories on your games'],
+  ['gaming', 'Gaming', 'Polygon, GameSpot, VGC, IGN, Kotaku, Eurogamer, plus stories on your games'],
   ['marvel', 'Marvel', 'Variety, THR, Deadline, IGN and more on Marvel Studios'],
 ];
 function FunNews({ news, read, markRead }) {
@@ -600,6 +600,7 @@ function FunNews({ news, read, markRead }) {
           {items.slice(0, limit).map((i) => (
             <li key={i.id}>
               <a className={`story ${read.has(i.id) ? 'read' : ''}`} href={i.url} target="_blank" rel="noopener" onClick={() => markRead(i.id)}>
+                {i.image ? <img className="thumb" src={i.image} alt="" loading="lazy" referrerPolicy="no-referrer" onError={(e) => (e.currentTarget.style.display = 'none')} /> : null}
                 <div className="grow">
                   <div className="story-title">
                     {!read.has(i.id) ? <span className="dot" /> : null}

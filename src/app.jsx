@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client';
 import css from './styles.css';
 import glassCss from './glass.css';
+import newsCss from './news.css';
 import { createFirebaseBackend } from './backend.js';
 import { IS_DEMO, createDemoBackend, resetDemo, exitDemo, enterDemo, cameFromAccount, demoLink } from './demo.js';
 import { Icon } from './ui.jsx';
@@ -27,6 +28,8 @@ import { defaultSourdough, normalizeSourdough } from './sourdough-logic.js';
 import { defaultBirthdays, normalizeBirthdays, upcoming as upcomingBirthdays } from './birthdays-logic.js';
 import { BirthdaysCard, BirthdaySheet } from './birthdays.jsx';
 import { PortfolioCard } from './portfolio.jsx';
+import { NewsPage } from './news.jsx';
+import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
 import {
@@ -48,7 +51,7 @@ trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss;
+  s.textContent = css + glassCss + newsCss;
   document.head.appendChild(s);
 }
 
@@ -75,15 +78,6 @@ const lsSet = (k, v) => {
     /* private mode */
   }
 };
-function timeAgo(iso) {
-  const ms = Date.now() - new Date(iso).getTime();
-  const m = Math.round(ms / 60000);
-  if (m < 1) return 'just now';
-  if (m < 60) return `${m}m ago`;
-  const h = Math.round(m / 60);
-  if (h < 24) return `${h}h ago`;
-  return `${Math.round(h / 24)}d ago`;
-}
 function greeting(d = new Date()) {
   const h = d.getHours();
   return h < 5 ? 'Good evening' : h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
@@ -301,102 +295,6 @@ function WatchCard({ s }) {
         </ul>
       )}
     </section>
-  );
-}
-
-// Sections of the News tab, in order. Keys match news.json (written by scripts/fetch-news.mjs).
-const NEWS_TABS = [
-  ['politics', 'US politics', 'AP and Reuters, U.S. coverage', ['ap', 'reuters']],
-  ['nyc', 'NYC', 'NYC politics: Gothamist, THE CITY, City & State, Politico New York, amNY, Daily News, plus Mamdani coverage', ['nyc', 'mamdani']],
-  ['tech', 'Tech & AI', 'The Verge, Ars Technica, TechCrunch, Wired, Reuters tech', ['tech', 'ai']],
-  ['reddit', 'Reddit', 'Top posts on r/popular today', ['reddit']],
-  ['pop', 'Pop culture', 'Variety, The Hollywood Reporter, Vulture, Entertainment Weekly', ['pop']],
-  ['music', 'Music', 'Pitchfork, Billboard, Stereogum, Rolling Stone, Guitar World', ['music']],
-  ['markets', 'Markets', 'Energy, quantum computing and robotics from Reuters, CNBC, Bloomberg, Barron’s, TechCrunch and trade press', ['energy', 'quantum', 'robotics']],
-];
-
-function NewsPage({ news, read, markRead, markAllRead }) {
-  const [tab, setTab] = useState(() => {
-    const t = lsGet('dash.newsTab', 'politics');
-    return NEWS_TABS.some(([k]) => k === t) ? t : 'politics';
-  });
-  const [limit, setLimit] = useState(20);
-  useEffect(() => lsSet('dash.newsTab', tab), [tab]);
-  const items = (news && news[tab]) || [];
-  const unread = (k) => ((news && news[k]) || []).filter((i) => !read.has(i.id)).length;
-  const shown = items.slice(0, limit);
-  const cur = NEWS_TABS.find(([k]) => k === tab);
-  const st = (news && news.sources) || {};
-  const failed = cur[3].some((k) => st[k] && !st[k].ok);
-  return (
-    <div className="home news-page">
-      <header className="page-head row-between">
-        <div>
-          <h1 className="page-title">News</h1>
-          <div className="muted">{news && news.generated ? `Updated ${timeAgo(news.generated)}` : 'Loading…'}</div>
-        </div>
-        {items.some((i) => !read.has(i.id)) ? (
-          <button className="btn quiet small" onClick={() => markAllRead(items)}>
-            Mark all read
-          </button>
-        ) : null}
-      </header>
-      <section className="card news">
-        <div className="seg news-tabs" role="tablist">
-          {NEWS_TABS.map(([k, l]) => (
-            <button
-              key={k}
-              role="tab"
-              aria-selected={tab === k}
-              className={`seg-btn tab ${tab === k ? 'on' : ''}`}
-              onClick={() => {
-                setTab(k);
-                setLimit(20);
-              }}
-            >
-              {l}
-              {unread(k) ? <span className="count">{unread(k)}</span> : null}
-            </button>
-          ))}
-        </div>
-        {!news ? (
-          <p className="empty">Loading…</p>
-        ) : items.length === 0 ? (
-          <p className="empty">{news.error ? 'The news feed hasn’t been generated yet.' : 'Nothing here yet. This section fills in on the next update, within about 30 minutes.'}</p>
-        ) : (
-          <ul className="list">
-            {shown.map((i) => (
-              <li key={i.id}>
-                <a className={`story ${read.has(i.id) ? 'read' : ''}`} href={i.url} target="_blank" rel="noopener" onClick={() => markRead(i.id)}>
-                  {i.image ? <img className="thumb" src={i.image} alt="" loading="lazy" onError={(e) => (e.currentTarget.style.display = 'none')} /> : null}
-                  <div className="grow">
-                    <div className="story-title">
-                      {!read.has(i.id) ? <span className="dot" /> : null}
-                      {i.title}
-                    </div>
-                    <div className="muted small">
-                      {i.tag ? <span className={`tag tag-theme th-${String(i.tag).toLowerCase().replace(/[^a-z]/g, '')}`}>{i.tag}</span> : null}
-                      {i.source}
-                      {i.date ? ` · ${timeAgo(i.date)}` : ''}
-                      {i.comments ? ` · ${i.comments}` : ''}
-                    </div>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-        {items.length > limit ? (
-          <button className="btn quiet block" onClick={() => setLimit(limit + 20)}>
-            Show more
-          </button>
-        ) : null}
-        <p className="muted small note">
-          {cur[2]}
-          {failed ? ' · a source failed on the last run, showing the last good copy' : ''}
-        </p>
-      </section>
-    </div>
   );
 }
 
@@ -692,13 +590,14 @@ const normalizeYearInPlace = inPlace(H.normalizeYear);
 const normalizeHkInPlace = inPlace(HK.normalizeHk);
 const normalizeHkYearInPlace = inPlace(HK.normalizeHkYear);
 
-// The newer modules (Entertainment, Guitar, Sourdough, Birthdays) share one pattern: a document per module,
+// The newer modules (Entertainment, Guitar, Sourdough, Birthdays, News saves and mutes) share one pattern: a document per module,
 // normalized on the way in and before every change.
 const MODULES = {
   fun: [normalizeFun, defaultFun, 'Entertainment'],
   guitar: [normalizeGuitar, defaultGuitar, 'guitar practice'],
   sourdough: [normalizeSourdough, defaultSourdough, 'the sourdough corner'],
   birthdays: [normalizeBirthdays, defaultBirthdays, 'birthdays'],
+  news: [normalizeNewsPrefs, defaultNewsPrefs, 'your saved stories'],
 };
 function useModuleDoc(allowed, user, name) {
   const [doc, setDoc] = useState(null);
@@ -827,6 +726,7 @@ function App() {
   const [guitar] = useModuleDoc(allowed, user, 'guitar');
   const [sourdough] = useModuleDoc(allowed, user, 'sourdough');
   const [birthdays] = useModuleDoc(allowed, user, 'birthdays');
+  const [newsPrefs] = useModuleDoc(allowed, user, 'news');
 
   useEffect(() => {
     if (!allowed) return;
@@ -991,11 +891,6 @@ function App() {
     n.add(id);
     saveRead(n);
   };
-  const markAllRead = (items) => {
-    const n = new Set(read);
-    items.forEach((i) => n.add(i.id));
-    saveRead(n);
-  };
 
   const toastTimer = useRef(null);
   const showToast = (t) => {
@@ -1071,6 +966,7 @@ function App() {
   const mutateGuitar = mutateDoc('guitar');
   const mutateSourdough = mutateDoc('sourdough');
   const mutateBirthdays = mutateDoc('birthdays');
+  const mutateNews = mutateDoc('news');
   const mutateHealth = async (fn, msg) => {
     try {
       await backend.mutateModule(user, 'health', (d) => fn(normalizeHealthInPlace(d)), H.defaultHealth);
@@ -1285,7 +1181,9 @@ function App() {
           <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} onLogRecipe={logRecipe} sourdough={sourdough} mutateSourdough={mutateSourdough} />
         ) : null}
         {route === 'fun' ? <FunPage data={fun} mutate={mutateFun} error={funError} news={news} read={read} markRead={markRead} /> : null}
-        {route === 'news' ? <NewsPage news={news} read={read} markRead={markRead} markAllRead={markAllRead} /> : null}
+        {route === 'news' ? (
+          <NewsPage news={news} read={read} markRead={markRead} prefs={newsPrefs} mutatePrefs={mutateNews} data={data} fun={fun} auto={auto} home={home} onToast={showToast} dark={look.dark} />
+        ) : null}
         {route === 'auto' ? (
           <AutoPage auto={auto} data={data} recalls={recalls} mutate={mutateAuto} budget={autoBudget} onAddExpense={(d) => onAdd(newTransaction(d))} error={autoError} />
         ) : null}

@@ -3,6 +3,10 @@
 // holdings never leave your account) and the energy, quantum and robotics themes from news.json.
 import React, { useEffect, useMemo, useState } from 'react';
 import { fmt, fmt0 } from './budget-logic.js';
+import { holdingsOf, namesFor, mentions } from './portfolio-logic.js';
+
+export { holdingsOf, namesFor, mentions };
+export const PKEY = 'dash.profiles.v1'; // Finnhub company names, kept a week (the News tab's For you reads them too)
 
 const QKEY = 'dash.quotes.v1';
 const NKEY = 'dash.coNews.v2';
@@ -29,19 +33,6 @@ function timeAgo(iso) {
   if (h < 1) return 'just now';
   if (h < 24) return `${h}h ago`;
   return `${Math.round(h / 24)}d ago`;
-}
-
-export function holdingsOf(data) {
-  const hs = (data && data.portfolio && Array.isArray(data.portfolio.holdings) ? data.portfolio.holdings : []).filter((h) => h && String(h.ticker || '').trim());
-  const by = new Map();
-  hs.forEach((h) => {
-    const t = String(h.ticker).trim().toUpperCase();
-    const cur = by.get(t) || { ticker: t, shares: 0, basis: 0 };
-    cur.shares += Number(h.shares) || 0;
-    cur.basis += Number(h.basis) || 0;
-    by.set(t, cur);
-  });
-  return [...by.values()];
 }
 
 // Live quotes, cached for a few minutes; falls back to the prices the budget saved last time it refreshed.
@@ -85,30 +76,6 @@ function useQuotes(tickers, saved) {
   return q;
 }
 
-// What a ticker is called in headlines: the ticker itself, the company's name without "Inc", "Corp" and the like,
-// and a distinctive first word ("Constellation", "Alphabet"). From Finnhub's company profile, cached for a week;
-// funds have no profile, so only their ticker counts.
-const PKEY = 'dash.profiles.v1';
-const ALIASES = { alphabet: ['Google'], 'meta platforms': ['Meta', 'Facebook'] };
-export function namesFor(ticker, profileName) {
-  const out = [ticker];
-  const clean = String(profileName || '')
-    .replace(/\.com\b/gi, '')
-    .replace(/\b(inc|incorporated|corp|corporation|co|company|ltd|plc|holdings?|group|class [a-c]|sa|nv|ag)\b\.?/gi, '')
-    .replace(/[,.]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  if (clean) {
-    out.push(clean);
-    const first = clean.split(' ')[0];
-    if (first.length >= 5 && first.toLowerCase() !== clean.toLowerCase()) out.push(first);
-    (ALIASES[clean.toLowerCase()] || ALIASES[first.toLowerCase()] || []).forEach((a) => out.push(a));
-  }
-  return [...new Set(out)];
-}
-export function mentions(text, names) {
-  return names.some((n) => new RegExp(`(^|[^A-Za-z0-9$])\\$?${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^A-Za-z0-9])`, 'i').test(text || ''));
-}
 // Recent company news for each ticker (last 3 days): the newest 2 that are actually about it (named in the
 // headline first, then in the summary), cached for half an hour. Market wraps that only tag the ticker are skipped.
 function useCompanyNews(tickers) {

@@ -617,6 +617,9 @@ export function demoDocs(now = new Date()) {
     ],
   };
 
+  // News: a few followed topics, so For you has something beyond the sample's stocks, games, car and town
+  docs.news = { version: 1, saved: [], hidden: [], muteWords: [], muteSources: [], follow: ['Seahawks', 'Mariners', 'Nintendo'] };
+
   const stamp = Date.now();
   Object.values(docs).forEach((d) => (d.updatedAt = stamp));
   return docs;
