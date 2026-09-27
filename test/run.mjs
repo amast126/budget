@@ -1092,6 +1092,88 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     await tp.close();
   }
 }
+// demo mode: anyone with …/?demo gets the whole app on sample data, with Firebase never started, the real
+// budget key in this browser left alone, the budget frame on the same sample, and reset / exit that work
+{
+  const { demoDocs } = await import('../src/demo-data.js');
+  const docs = demoDocs(new Date());
+  const b = docs['budget-tracker-v1'];
+  const names = Object.keys(docs).sort().join(',');
+  const y = String(new Date().getFullYear());
+  check(b.historyVersion === 2 && b.configVersion === 28 && b.config.categories.length === 8 && Object.keys(b.months).length >= 8, `demo budget: ${Object.keys(b.months).length} months, current versions (so the budget module adds nothing of its own)`);
+  check(['home', 'auto', 'learning', 'cooking', 'health', `health-${y}`, 'health-hk', `health-hk-${y}`, 'health-hk-ecg', 'health-hk-routes'].every((n) => docs[n]), `demo documents: ${names}`);
+  check(docs.home.place.name === 'Buffalo, NY' && docs.auto.car.year === 2022 && docs.health.profile.sex === 'female' && docs['health-hk'].workouts.length > 100, 'demo person: Buffalo, a 2022 car, a year of Apple Health');
+  const json = JSON.stringify(docs);
+  check(!/Dix Hills|amast126|Alec\b|Alliant/.test(json), 'demo data has nothing from the real account');
+
+  const dc = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await mockWeather(dc);
+  // a config with a (fake) Firebase key: demo mode must not start Firebase even when it could
+  await dc.route('**/config.js', (r) => r.fulfill({ contentType: 'text/javascript', body: 'window.BUDGET_CONFIG = { firebase: { apiKey: "AIzaFakeDemoCheck", authDomain: "x.firebaseapp.com", projectId: "x", appId: "1:1:web:1" }, allowedEmails: ["someone@example.com"], ownerEmail: "someone@example.com", sharedDocId: "t" };' }));
+  const google = [];
+  dc.on('request', (r) => /googleapis|firebase|gstatic|google\.com/.test(new URL(r.url()).host) && google.push(r.url()));
+  const tp = await dc.newPage();
+  const errs = [];
+  tp.on('pageerror', (e) => errs.push(e.message));
+  await tp.goto(base, { waitUntil: 'networkidle' });
+  await tp.evaluate(() => localStorage.setItem('budget-tracker-v1', 'REAL-DATA-SENTINEL'));
+  await tp.waitForSelector('.gate');
+  check(/Try the demo/.test(await tp.innerText('.gate')), 'the sign-in screen offers the demo');
+  await tp.click('.gate button:has-text("Try the demo")');
+  await tp.waitForSelector('.demo-bar');
+  await tp.waitForSelector('.hero');
+  await tp.waitForTimeout(600);
+  check(/[?&]demo/.test(tp.url()) && /Good (morning|afternoon|evening), Jordan/.test(await tp.innerText('.hero')), `demo opens without signing in: ${(await tp.innerText('.hero-title')).trim()}`);
+  check((await tp.$$('.lring')).length === 4 && /Buffalo, NY/.test(await tp.innerText('.weather')) && /2022 Nissan Altima/.test(await tp.innerText('.main')), 'demo home: rings, Buffalo weather, the sample car');
+  const spentBefore = await tp.innerText('.money .muted.small.num');
+  await tp.fill('.qa input[aria-label="Amount"]', '12.34');
+  await tp.fill('.qa input[aria-label="Description"]', 'Demo test lunch');
+  await tp.click('.qa button[type=submit]');
+  await tp.waitForTimeout(300);
+  const spentAfter = await tp.innerText('.money .muted.small.num');
+  check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
+  for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news']]) {
+    await tp.goto(`${base}?demo#/${route}`);
+    await tp.waitForSelector(sel, { timeout: 8000 }).catch(() => {});
+    check(!!(await tp.$(sel)) && !!(await tp.$('.demo-bar')), `demo #/${route} renders`);
+  }
+  await tp.click('a.nav-item:has-text("Budget")');
+  const frame = await (await tp.waitForSelector('iframe.frame')).contentFrame();
+  await frame.waitForSelector('text=Dining & Drinks', { timeout: 10000 });
+  const ftext = await frame.innerText('body');
+  check(/budget-demo\.html/.test(frame.url()) && /Saved in this browser/.test(ftext) && !/Sign in with Google/.test(ftext), 'budget frame runs locally on the sample budget');
+  await frame.click('text=Sep').catch(() => {});
+  check(await frame.evaluate(() => JSON.stringify(JSON.parse(localStorage.getItem('budget-tracker-v1'))).includes('Demo test lunch')), 'the budget frame sees the expense added on Home');
+  // a change made in the budget frame reaches the rest of the app
+  await frame.evaluate(() => {
+    const d = JSON.parse(localStorage.getItem('budget-tracker-v1'));
+    const k = Object.keys(d.months).sort().filter((m) => d.months[m].transactions.length).pop();
+    d.months[k].transactions.push({ id: 'frame-test', date: `${k}-01`, desc: 'From the frame', category: 'Shopping', amount: 100, method: 'Cash' });
+    localStorage.setItem('budget-tracker-v1', JSON.stringify(d));
+  });
+  await tp.click('a.nav-item:has-text("Home")');
+  await tp.waitForSelector('.money');
+  await tp.waitForTimeout(300);
+  check((await tp.innerText('.money .muted.small.num')) !== spentAfter, 'a change in the budget frame shows on Home');
+  const keys = await tp.evaluate(() => ({ real: localStorage.getItem('budget-tracker-v1'), demo: Object.keys(localStorage).filter((k) => k.startsWith('demo:')).length }));
+  check(keys.real === 'REAL-DATA-SENTINEL' && keys.demo >= 12, `the real budget key is untouched (${keys.demo} demo documents beside it)`);
+  const idb = await tp.evaluate(async () => (indexedDB.databases ? (await indexedDB.databases()).map((d) => d.name) : []));
+  check(!google.length && !idb.some((n) => /firebase|firestore/i.test(n)), `Firebase never started (${google.length} Google requests, databases: ${idb.join(', ') || 'none'})`);
+  // reset: fresh sample data, the test expense gone
+  await tp.click('.demo-bar button:has-text("Reset")');
+  await tp.click('.demo-bar button:has-text("Reset")');
+  await tp.waitForSelector('.hero');
+  await tp.waitForTimeout(500);
+  const afterReset = await tp.evaluate(() => localStorage.getItem('demo:budget-tracker-v1'));
+  check(!afterReset.includes('Demo test lunch') && !afterReset.includes('From the frame'), 'Reset brings back fresh sample data');
+  await tp.locator('.app').screenshot({ path: path.join(OUT, 'demo-home.png') });
+  // exit: back to the sign-in screen, the demo a click away
+  await tp.click('.demo-bar button:has-text("Exit demo")');
+  await tp.waitForSelector('.gate');
+  check(!/[?&]demo/.test(tp.url()) && !(await tp.$('.demo-bar')), 'Exit demo goes back to the sign-in screen');
+  check(!errs.length, `no errors in the demo${errs.length ? ': ' + errs.join(' | ') : ''}`);
+  await dc.close();
+}
 // the sky at different times of day
 for (const [label, hh, want] of [['night', 22, 'sky-night'], ['golden', 18, 'sky-golden'], ['morning', 9, 'sky-day']]) {
   const tp = await desk.newPage();
