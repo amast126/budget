@@ -572,6 +572,30 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false, onTon
     let nextMeteor = 5 + R() * 20;
     let shadeA = 0.2;
     let lastTone = '';
+    const toneProbe = page ? mk(8, 2) : null;
+    const tg = toneProbe ? toneProbe.getContext('2d', { willReadFrequently: true }) : null;
+    // Behind the page: read the sky's actual colors along the top edge and at the bottom of the screen, so the
+    // strips the phone paints outside the page (status bar, Safari's bars) can be matched to them.
+    const readTone = () => {
+      if (!tg || !toneRef.current || !c.width || !c.height) return;
+      const band = Math.max(1, Math.round(4 * dpr));
+      const vb = clamp(Math.round((window.innerHeight - 6) * dpr), 0, c.height - band);
+      tg.clearRect(0, 0, 8, 2);
+      tg.drawImage(c, 0, 0, c.width, band, 0, 0, 8, 1);
+      tg.drawImage(c, 0, vb, c.width, band, 0, 1, 8, 1);
+      const d = tg.getImageData(0, 0, 8, 2).data;
+      const row = (r) => {
+        const sum = [0, 0, 0];
+        for (let x = 0; x < 8; x++) for (let k = 0; k < 3; k++) sum[k] += d[(r * 8 + x) * 4 + k];
+        return sum.map((v) => Math.round(v / 8 / 2) * 2);
+      };
+      const tone = { top: row(0), bottom: row(1) };
+      const key = `${tone.top}|${tone.bottom}`;
+      if (key !== lastTone) {
+        lastTone = key;
+        toneRef.current(tone);
+      }
+    };
     let measureIn = 0;
     const probe = mk(24, 10);
     const pg = probe.getContext('2d', { willReadFrequently: true });
@@ -704,16 +728,6 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false, onTon
       const sc = skyColors(alt, sun.evening);
       const wxc = (col) => scale(grey(col, wx.grey), wx.dark);
       const top = wxc(sc.top);
-      // behind the page: tell the page the color at the very top (with the shade band over it), so the strip the
-      // phone draws above the page (status bar, browser bars) can match the sky
-      if (page && toneRef.current) {
-        const col = mix(top, [3, 12, 30], shadeA).map((v) => Math.round(clamp(v, 0, 255)));
-        const k = col.join(',');
-        if (k !== lastTone) {
-          lastTone = k;
-          toneRef.current(col);
-        }
-      }
       const mid = wxc(sc.mid);
       const bot = wxc(sc.bot);
       const grd = g.createLinearGradient(0, 0, 0, H);
@@ -1086,6 +1100,7 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false, onTon
           // aim to keep the sky behind the text around a mid-dark tone, whatever the weather
           const target = clamp(1 - 108 / Math.max(1, mean * 0.5 + bright * 0.5), 0.06, 0.52);
           shadeA = still || dt === 0 ? target : shadeA + (target - shadeA) * 0.35;
+          if (page) readTone();
         } catch (e) {
           shadeA = 0.25;
         }
@@ -1157,18 +1172,25 @@ export function SkyCanvas({ code, riseISO, setISO, wind = 6, page = false, onTon
 
 // The live sky behind the whole app in the glass theme (weather `s` from the forecast summary). The page's own
 // background follows the sky's top color, since phones paint the status bar strip (and Safari its bars) with it.
-export function skyTone(rgb) {
+export function skyTone({ top, bottom }) {
   const el = document.documentElement;
   const k = el.classList.contains('dark') ? 0.68 : 1; // the sky is dimmed in dark mode
-  const c = `rgb(${rgb.map((v) => Math.round(v * k)).join(',')})`;
-  el.style.setProperty('--sky-top', c);
+  const css = (rgb) => `rgb(${rgb.map((v) => Math.round(v * k)).join(',')})`;
+  el.style.setProperty('--sky-top', css(top));
+  el.style.setProperty('--sky-bottom', css(bottom));
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta && el.classList.contains('theme-glass')) meta.setAttribute('content', c);
+  if (meta && el.classList.contains('theme-glass')) meta.setAttribute('content', css(top));
 }
+// Safari on iPhone colors its status bar strip and bottom bar from solid-colored fixed elements touching the top and
+// bottom edges (it can't see a canvas), so two thin strips carry the sky's edge colors there.
 export function PageSky({ wx }) {
   return (
-    <div className="page-sky" aria-hidden="true">
-      <SkyCanvas code={wx ? wx.code : 1} riseISO={wx && wx.sunriseISO} setISO={wx && wx.sunsetISO} wind={wx && wx.wind} page onTone={skyTone} />
-    </div>
+    <>
+      <div className="page-sky" aria-hidden="true">
+        <SkyCanvas code={wx ? wx.code : 1} riseISO={wx && wx.sunriseISO} setISO={wx && wx.sunsetISO} wind={wx && wx.wind} page onTone={skyTone} />
+      </div>
+      <div className="sky-edge top" aria-hidden="true" />
+      <div className="sky-edge bottom" aria-hidden="true" />
+    </>
   );
 }

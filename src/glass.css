@@ -67,7 +67,13 @@ html.theme-glass.dark { background: var(--sky-top, #0a1220); }
 html.theme-glass body { background: transparent; }
 .theme-glass .page-sky { position: fixed; top: 0; left: 0; right: 0; height: calc(100lvh + 160px); z-index: -1; pointer-events: none; overflow: hidden; } /* taller than the screen, so it reaches under Safari's bottom bar */
 .theme-glass .page-sky .sky-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.theme-glass.dark .page-sky { filter: brightness(0.68) saturate(0.92); } /* a dimmer sky under dark glass, like a dark-mode wallpaper */
+.theme-glass.dark .page-sky { filter: brightness(0.68) saturate(0.92); }
+/* thin strips in the sky's edge colors for Safari to tint its bars with (see PageSky) */
+.theme-glass .sky-edge { position: fixed; left: 0; width: 100%; z-index: 2; pointer-events: none; }
+.theme-glass .sky-edge.top { top: -8px; height: 12px; background-color: var(--sky-top, transparent); }
+.theme-glass .sky-edge.bottom { bottom: -8px; height: 12px; background-color: var(--sky-bottom, transparent); }
+.sky-edge { display: none; }
+.theme-glass .sky-edge { display: block; } /* a dimmer sky under dark glass, like a dark-mode wallpaper */
 
 /* ---------------------------------------------------------------- glass surfaces */
 .theme-glass .card:not(.fun-hero),
