@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { fmt, fmt0 } from './budget-logic.js';
 
 const QKEY = 'dash.quotes.v1';
-const NKEY = 'dash.coNews.v1';
+const NKEY = 'dash.coNews.v2';
 const QUOTE_TTL = 5 * 60000;
 const NEWS_TTL = 30 * 60000;
 const key = () => ((window.BUDGET_CONFIG || {}).finnhubKey || '').trim();
@@ -85,7 +85,32 @@ function useQuotes(tickers, saved) {
   return q;
 }
 
-// Recent company news for each ticker (last 3 days, the newest 2 each), cached for half an hour.
+// What a ticker is called in headlines: the ticker itself, the company's name without "Inc", "Corp" and the like,
+// and a distinctive first word ("Constellation", "Alphabet"). From Finnhub's company profile, cached for a week;
+// funds have no profile, so only their ticker counts.
+const PKEY = 'dash.profiles.v1';
+const ALIASES = { alphabet: ['Google'], 'meta platforms': ['Meta', 'Facebook'] };
+export function namesFor(ticker, profileName) {
+  const out = [ticker];
+  const clean = String(profileName || '')
+    .replace(/\.com\b/gi, '')
+    .replace(/\b(inc|incorporated|corp|corporation|co|company|ltd|plc|holdings?|group|class [a-c]|sa|nv|ag)\b\.?/gi, '')
+    .replace(/[,.]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (clean) {
+    out.push(clean);
+    const first = clean.split(' ')[0];
+    if (first.length >= 5 && first.toLowerCase() !== clean.toLowerCase()) out.push(first);
+    (ALIASES[clean.toLowerCase()] || ALIASES[first.toLowerCase()] || []).forEach((a) => out.push(a));
+  }
+  return [...new Set(out)];
+}
+export function mentions(text, names) {
+  return names.some((n) => new RegExp(`(^|[^A-Za-z0-9$])\\$?${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^A-Za-z0-9])`, 'i').test(text || ''));
+}
+// Recent company news for each ticker (last 3 days): the newest 2 that are actually about it (named in the
+// headline first, then in the summary), cached for half an hour. Market wraps that only tag the ticker are skipped.
 function useCompanyNews(tickers) {
   const sig = tickers.join(',');
   const [items, setItems] = useState(() => {
@@ -104,21 +129,33 @@ function useCompanyNews(tickers) {
     (async () => {
       const to = isoDay(new Date());
       const from = isoDay(new Date(Date.now() - 3 * 86400000));
+      const profiles = read(PKEY) || {};
       const out = [];
       for (const t of tickers) {
         try {
+          let prof = profiles[t];
+          if (!prof || Date.now() - prof.at > 7 * 86400000) {
+            const pr = await fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${encodeURIComponent(t)}&token=${encodeURIComponent(k)}`);
+            if (pr.status === 429) break;
+            const pj = pr.ok ? await pr.json() : {};
+            prof = { at: Date.now(), name: (pj && pj.name) || '' };
+            profiles[t] = prof;
+          }
+          const names = namesFor(t, prof.name);
           const r = await fetch(`https://finnhub.io/api/v1/company-news?symbol=${encodeURIComponent(t)}&from=${from}&to=${to}&token=${encodeURIComponent(k)}`);
           if (r.status === 429) break;
           const list = r.ok ? await r.json() : [];
-          (Array.isArray(list) ? list : [])
-            .filter((n) => n && n.headline && n.url)
-            .sort((a, b) => (b.datetime || 0) - (a.datetime || 0))
+          const recent = (Array.isArray(list) ? list : []).filter((n) => n && n.headline && n.url).sort((a, b) => (b.datetime || 0) - (a.datetime || 0));
+          const inHead = recent.filter((n) => mentions(n.headline, names));
+          const inBody = recent.filter((n) => !inHead.includes(n) && mentions(n.summary, names));
+          [...inHead, ...inBody]
             .slice(0, 2)
             .forEach((n) => out.push({ id: `fh-${n.id || n.url}`, title: n.headline, url: n.url, source: n.source || 'Finnhub', date: new Date((n.datetime || 0) * 1000).toISOString(), tag: t }));
         } catch {
           /* skip this one */
         }
       }
+      write(PKEY, profiles);
       write(NKEY, { at: Date.now(), sig, items: out });
       if (live) setItems(out);
     })();
