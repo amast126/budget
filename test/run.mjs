@@ -13,6 +13,7 @@ import * as SD from '../src/sourdough-logic.js';
 import * as BD from '../src/birthdays-logic.js';
 import * as NL from '../src/news-logic.js';
 import * as NJ from '../scripts/fetch-news.mjs';
+import { budgetUnit } from './budget-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -192,6 +193,8 @@ const check = (cond, msg) => {
   console.log(`${cond ? '✓' : '✗'} ${msg}`);
   if (!cond) process.exitCode = 1;
 };
+// the Budget tab's rules and the alerts job, on made-up data
+await budgetUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -630,18 +633,255 @@ await page.waitForTimeout(150);
 }
 await page.screenshot({ path: path.join(OUT, 'news.png'), fullPage: true });
 
-// budget module
+// ---------------- budget (native tab). Made-up merchants, a subscription, a roommate and a shared bill are added
+// to the stored budget first, so the checks don't depend on (or print) anything from the real export.
+const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const todayL = ymd(new Date());
+const curKey = todayL.slice(0, 7);
+const monthsBack = (n) => {
+  const d = new Date(`${curKey}-15T12:00:00`);
+  d.setMonth(d.getMonth() - n);
+  return ymd(d).slice(0, 7);
+};
+const dine = await page.evaluate(
+  ({ prev, cur }) => {
+    const d = JSON.parse(localStorage.getItem('budget-tracker-v1'));
+    const cats = d.config.categories.map((c) => c.name);
+    const dine = cats.find((c) => /dining|restaurant/i.test(c)) || cats[0];
+    const misc = cats.find((c) => /misc/i.test(c)) || cats[cats.length - 1];
+    const add = (k, t) => {
+      d.months[k] = d.months[k] || { transactions: [], paid: {}, amounts: {}, collected: {} };
+      d.months[k].transactions.push(t);
+    };
+    prev.forEach((k, i) => add(k, { id: `tv-${i}`, date: `${k}-12`, desc: 'Testville Pizza', category: dine, amount: 18.4, method: 'Apple Pay', dc: 'absorbed', card: 'absorbed' }));
+    [...prev, cur].forEach((k, i) => add(k, { id: `sc-${i}`, date: `${k}-01`, desc: 'StreamCo Plus', category: misc, amount: k === cur ? 11.99 : 9.99, method: 'Apple Card', dc: 'absorbed', card: 'absorbed' }));
+    d.config.roommates = [{ id: 'rm-test', name: 'Sam Test', venmo: 'sam-test' }];
+    d.config.bills.push({ id: 'bill-test-net', name: 'Test Internet', category: 'Utilities', amount: 80, share: 0.5, card: true, day: 1, starts: '', ends: '' });
+    localStorage.setItem('budget-tracker-v1', JSON.stringify(d));
+    return dine;
+  },
+  { prev: [monthsBack(3), monthsBack(2), monthsBack(1)], cur: curKey }
+);
+await page.route('https://ntfy.sh/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{}' }));
+const ntfy = [];
+page.on('request', (r) => r.url().startsWith('https://ntfy.sh/') && ntfy.push({ url: r.url(), method: r.method(), body: r.postData() }));
+await page.reload({ waitUntil: 'networkidle' });
 await go('Budget');
-const frame = page.frameLocator('iframe.frame');
-await frame.locator('body').waitFor();
-await page.waitForTimeout(1500);
-const btext = await page.frames().find((f) => /budget\.html/.test(f.url())).innerText('body');
-check(/Budget Tracker|Month|Settings/.test(btext), 'budget module loads inside the app');
-check(/Dashboard test bagel/.test(btext), 'quick-add shows up inside the budget module');
-await page.screenshot({ path: path.join(OUT, 'budget.png') });
-await go('Home');
-await page.waitForSelector('.money .big');
-
+await page.waitForSelector('.budget .bud-summary');
+const budTab = async (label) => {
+  await page.click(`.bud-tabs .nchip:has-text("${label}")`);
+  await page.waitForTimeout(250);
+};
+{
+  const bt = await page.innerText('.budget');
+  check(!(await page.$('iframe')) && /Left to spend|Over budget by/.test(bt) && /Spending budgets/.test(bt) && /Fixed costs/.test(bt) && /Expenses/.test(bt), 'Budget is part of the app now (no frame): summary, categories, bills, expenses');
+  check(/Dashboard test bagel/.test(bt), 'the Home quick-add is in this month’s expenses');
+  const views = await page.$$eval('.bud-tabs .nchip', (e) => e.map((x) => x.textContent));
+  check(views.join('|') === 'Month|Paycheck|Spending|Savings & card|Outlook|Stocks|Year|Settings', `budget views: ${views.join(', ')}`);
+  await page.waitForTimeout(300);
+  const sb = await stored();
+  check(sb.configVersion === 28 && sb.historyVersion === 2, 'an older budget gets the budget app’s one-time upgrade');
+  await page.screenshot({ path: path.join(OUT, 'budget.png'), fullPage: true });
+}
+// add an expense: a merchant you've used fills in its category and usual amount
+await page.fill('.ledger input[aria-label="Description"]', 'Testv');
+await page.waitForSelector('.ledger .msuggest button:has-text("Testville Pizza")');
+await page.click('.ledger .msuggest button:has-text("Testville Pizza")');
+check((await page.inputValue('.ledger input[aria-label="Amount"]')) === '18.4' && (await page.inputValue('.ledger select[aria-label="Category"]')) === dine, 'picking a merchant fills its category and usual amount');
+check((await page.$$('.ledger .rchip')).length >= 1, 'your usual merchants are one tap away');
+await page.fill('.ledger input[aria-label="Amount"]', '21.60');
+await page.click('.ledger button:has-text("Add expense")');
+await page.waitForSelector('.toast');
+await page.waitForTimeout(150);
+let tv = (await stored()).months[curKey].transactions.find((t) => t.desc === 'Testville Pizza');
+check(tv && tv.amount === 21.6 && tv.category === dine && tv.dc === 'pending' && /Testville Pizza/.test(await page.innerText('.ledger .txlist')), 'added from the Budget tab, shown at once');
+// edit it in its sheet
+await page.click('.ledger .txrow:has-text("Testville Pizza")');
+await page.waitForSelector('.txn-sheet');
+await page.fill('.txn-sheet input[aria-label="Amount"]', '22');
+await page.click('.txn-sheet button:has-text("Save")');
+await page.waitForTimeout(200);
+tv = (await stored()).months[curKey].transactions.find((t) => t.desc === 'Testville Pizza');
+check(tv && tv.amount === 22 && !(await page.$('.txn-sheet')), 'tap an expense to edit it');
+// swipe it away, then undo
+{
+  const el = await page.$('.ledger .txswipe:has-text("Testville Pizza") .txrow');
+  await el.scrollIntoViewIfNeeded();
+  const b = await el.boundingBox();
+  await page.mouse.move(b.x + b.width - 20, b.y + b.height / 2);
+  await page.mouse.down();
+  for (let i = 1; i <= 8; i++) await page.mouse.move(b.x + b.width - 20 - i * 20, b.y + b.height / 2);
+  await page.mouse.up();
+  await page.waitForTimeout(250);
+  const gone = !(await stored()).months[curKey].transactions.some((t) => t.id === tv.id);
+  check(gone && /Removed Testville Pizza/.test(await page.innerText('.toast')) && !(await page.$('.txn-sheet')), 'swipe left deletes an expense (without opening it)');
+  await page.click('.toast-btn');
+  await page.waitForTimeout(200);
+  check((await stored()).months[curKey].transactions.some((t) => t.id === tv.id), 'undo brings it back');
+}
+// bills and what the roommate owes
+{
+  const box = '.budget .bill:has-text("Test Internet") input[type=checkbox]';
+  check(await page.isChecked(box), 'a bill with a charge day ticks itself');
+  await page.click(box);
+  await page.waitForTimeout(150);
+  check((await stored()).months[curKey].paid['bill-test-net'] === false && !(await page.isChecked(box)), 'untick a bill');
+  await page.click(box);
+  await page.waitForTimeout(150);
+  check((await stored()).months[curKey].paid['bill-test-net'] === undefined, 'and tick it back');
+  const rm = await page.innerText('.owed .rmate:has-text("Sam Test")');
+  const href = await page.getAttribute('.owed .rmate:has-text("Sam Test") a:has-text("on Venmo")', 'href');
+  check(/Test Internet/.test(rm) && /recipients=sam-test&amount=\d+\.\d\d&note=[^&]*Test%20Internet/.test(href), `Owed to you: a Venmo request, amount and note filled in (${href.split('?')[0]})`);
+  const days = Number(todayL.slice(8, 10)) - 1;
+  check(days < 7 || /Waiting \d+ days/.test(rm), `an unpaid share waiting a week or more says so (${days} days)`);
+  await page.click('.owed input[aria-label="Sam Test paid Test Internet"]');
+  await page.waitForTimeout(150);
+  const col = (await stored()).months[curKey].collected['bill-test-net'];
+  check(col && col['rm-test'] === true, 'tick when the roommate pays');
+}
+// paycheck
+await budTab('Paycheck');
+{
+  const t = await page.innerText('.budget');
+  check(/Left to spend until payday|Over this paycheck by|Add a recent payday/.test(t) && (/Coming paychecks/.test(t) || /Add a recent payday/.test(t)), 'paycheck view: what’s left until payday and the paychecks ahead');
+  await page.screenshot({ path: path.join(OUT, 'budget-paycheck.png'), fullPage: true });
+}
+// spending: search, a merchant's history, trends, subscriptions
+await budTab('Spending');
+await page.fill('input[aria-label="Search expenses"]', 'testville');
+await page.waitForTimeout(200);
+{
+  const n = await page.$$eval('.bud-search .txlist > li', (e) => e.length);
+  check(n === 4, `search finds it in every month (${n})`);
+  await page.click('.bud-search button:has-text("Everything at Testville Pizza")');
+  await page.waitForSelector('.merchant-sheet');
+  const mt = await page.innerText('.merchant-sheet');
+  check(/4 visits/.test(mt) && !!(await page.$('.merchant-sheet .chart svg')), 'a merchant’s history: visits, totals and a chart');
+  await page.click('.merchant-sheet .x');
+  check(!!(await page.$('.trends .chart svg')) && (await page.$$('.trends .trend-rows > li')).length >= 2, 'trends by category');
+  const st = await page.innerText('.subs');
+  check(/StreamCo Plus/.test(st) && /Up from \$9\.99/.test(st), 'subscription radar finds a repeating charge and its price rise');
+  await page.fill('input[aria-label="Search expenses"]', '');
+  await page.screenshot({ path: path.join(OUT, 'budget-spending.png'), fullPage: true });
+}
+// outlook: net worth (a reading saved this month) and what's coming
+await budTab('Outlook');
+{
+  const t = await page.innerText('.budget');
+  const nw = (await stored()).netWorth;
+  check(/Net worth/.test(t) && /What’s coming/.test(t) && nw && nw[curKey] && nw[curKey].at === todayL, 'outlook: net worth (saved once a day) and milestones');
+}
+// savings and the card
+await budTab('Savings & card');
+if (await page.$('.sv-form')) {
+  await page.fill('.sv-form input[aria-label="Amount"]', '25');
+  await page.fill('.sv-form input[aria-label="Note"]', 'Test deposit');
+  await page.click('.sv-form button:has-text("Log it")');
+  await page.waitForTimeout(200);
+  const e = (await stored()).savings.entries.find((x) => x.note === 'Test deposit');
+  check(e && e.amount === 25 && e.type === 'deposit', 'log a savings deposit');
+  await page.click('.toast-btn');
+  await page.waitForTimeout(150);
+  check(!(await stored()).savings.entries.some((x) => x.note === 'Test deposit'), 'and undo it');
+  check(/Card balance/.test(await page.innerText('.budget')) || !(await stored()).card, 'the Apple Card panel');
+}
+// stocks: prices refresh on open (made-up quotes)
+await budTab('Stocks');
+{
+  const p = (await stored()).portfolio;
+  if (p && p.holdings.length) {
+    await page.waitForTimeout(800);
+    const p2 = (await stored()).portfolio;
+    check(p2.refreshedAt && Object.keys(p2.quotes).length >= 1, 'stock prices refresh when the view opens');
+  } else check(!!(await page.$('.bud-stocks, .budget .card')), 'stocks view renders');
+}
+await budTab('Year');
+check(!!(await page.$('.ytable')), 'the year: a table by category and month');
+// settings: rename a category (expenses follow), alerts, a bill
+await budTab('Settings');
+{
+  await page.fill(`input[aria-label="Rename ${dine}"]`, `${dine} X`);
+  await page.press(`input[aria-label="Rename ${dine}"]`, 'Enter');
+  await page.waitForTimeout(200);
+  let sb = await stored();
+  const moved = Object.values(sb.months).flatMap((m) => m.transactions).filter((t) => t.desc === 'Testville Pizza');
+  check(sb.config.categories.some((c) => c.name === `${dine} X`) && moved.every((t) => t.category === `${dine} X`), 'renaming a category moves its expenses with it');
+  await page.fill(`input[aria-label="Rename ${dine} X"]`, dine);
+  await page.press(`input[aria-label="Rename ${dine} X"]`, 'Enter');
+  await page.waitForTimeout(200);
+  check((await stored()).config.categories.some((c) => c.name === dine), 'and back');
+  await page.click('.alerts button:has-text("Set up alerts")');
+  await page.waitForTimeout(200);
+  sb = await stored();
+  const topic = sb.config.alerts && sb.config.alerts.topic;
+  check(/^dash-[a-z2-9]{26}$/.test(topic || ''), 'phone alerts get a long random ntfy topic');
+  await page.click('.alerts button:has-text("Send a test")');
+  await page.waitForTimeout(300);
+  check(ntfy.length === 1 && ntfy[0].url === `https://ntfy.sh/${topic}` && ntfy[0].method === 'POST', 'Send a test posts to that topic');
+  await page.click('.alerts input[type=checkbox] >> nth=0');
+  await page.waitForTimeout(150);
+  check((await stored()).config.alerts.bills === false, 'each kind of alert can be turned off');
+  await page.click('.budget button[aria-label="Edit Test Internet"]');
+  await page.waitForSelector('.bill-sheet');
+  await page.fill('.bill-sheet input[aria-label="Amount charged"]', '90');
+  await page.click('.bill-sheet button:has-text("Save")');
+  await page.waitForTimeout(150);
+  check((await stored()).config.bills.find((b) => b.id === 'bill-test-net').amount === 90, 'edit a bill in its sheet');
+  await page.screenshot({ path: path.join(OUT, 'budget-settings.png'), fullPage: true });
+}
+// import an Apple Card statement (a made-up one)
+{
+  const mm = curKey.slice(5);
+  const yy = curKey.slice(0, 4);
+  const csv = [
+    'Transaction Date,Clearing Date,Description,Merchant,Category,Type,Amount (USD),Purchased By',
+    `${mm}/02/${yy},${mm}/03/${yy},"TESTVILLE PIZZA 0042 NEW YORK, NY",Testville Pizza,Restaurants,Purchase,14.25,Test Person`,
+    `${mm}/03/${yy},${mm}/04/${yy},ZZTOP GADGETS ONLINE,Zztop Gadgets,Shopping,Purchase,49.99,Test Person`,
+    `${mm}/01/${yy},${mm}/02/${yy},STREAMCO PLUS,StreamCo Plus,Other,Purchase,11.99,Test Person`,
+    `${mm}/01/${yy},${mm}/02/${yy},TEST INTERNET CO,Test Internet,Utilities,Purchase,86.50,Test Person`,
+    `${mm}/04/${yy},${mm}/04/${yy},ACH DEPOSIT INTERNET TRANSFER,Payment,Payment,Payment,-500.00,Test Person`,
+  ].join('\n');
+  const file = path.join(OUT, 'test-statement.csv');
+  fs.writeFileSync(file, csv);
+  await page.click('.bud-import');
+  await page.setInputFiles('.import-sheet input[type=file]', file);
+  await page.waitForSelector('.imp-list');
+  const it = await page.innerText('.import-sheet');
+  check(/2 new expenses, 1 already logged, 1 bill, 1 skipped/.test(it) && /1 merchant you haven’t used before/.test(it), `import review: ${(it.match(/\d+ new expenses[^.]*/) || [''])[0]}`);
+  await page.screenshot({ path: path.join(OUT, 'budget-import.png') });
+  await page.click('.import-sheet button:has-text("Add 2 expenses")');
+  await page.waitForTimeout(250);
+  const sb = await stored();
+  const imp = sb.months[curKey].transactions.filter((t) => t.src === 'csv');
+  check(imp.length === 2 && imp.every((t) => t.ext) && imp.find((t) => /Testville/.test(t.desc)).category === dine && sb.months[curKey].amounts['bill-test-net'] === 86.5, 'import adds the new ones (known merchant, known category) and notes the bill’s real charge');
+  await page.click('.bud-import');
+  await page.setInputFiles('.import-sheet input[type=file]', file);
+  await page.waitForTimeout(250);
+  check(/0 new expenses/.test(await page.innerText('.import-sheet')) && /Nothing new to add/.test(await page.innerText('.import-sheet')), 'the same statement again adds nothing');
+  await page.click('.import-sheet .x');
+}
+// the Apple Pay shortcut's link opens the add sheet, filled in
+await page.goto(`${base}#/add?amount=%2412.34&merchant=TESTVILLE%20PIZZA%20%23123`);
+await page.waitForSelector('.add-sheet');
+{
+  check((await page.inputValue('.add-sheet input[aria-label="Description"]')) === 'Testville Pizza' && (await page.inputValue('.add-sheet input[aria-label="Amount"]')) === '12.34' && (await page.inputValue('.add-sheet select[aria-label="Category"]')) === dine, 'the Apple Pay link opens “Log this purchase” with the merchant matched');
+  await page.screenshot({ path: path.join(OUT, 'budget-addlink.png') });
+  await page.click('.add-sheet button:has-text("Add to budget")');
+  await page.waitForTimeout(250);
+  check((await stored()).months[curKey].transactions.some((t) => t.desc === 'Testville Pizza' && t.amount === 12.34) && !(await page.$('.add-sheet')) && /#\/$/.test(page.url()), 'one tap adds it and lands on Home');
+}
+// Home's quick add knows your merchants too
+await page.waitForSelector('.qa');
+await page.fill('.qa input[aria-label="Description"]', 'Testv');
+await page.waitForSelector('.qa .msuggest button:has-text("Testville Pizza")');
+await page.click('.qa .msuggest button:has-text("Testville Pizza")');
+check((await page.inputValue('.qa select[aria-label="Category"]')) === dine && (await page.inputValue('.qa input[aria-label="Amount"]')) !== '', 'Home quick add suggests merchants and fills them in');
+await page.fill('.qa input[aria-label="Description"]', '');
+await page.fill('.qa input[aria-label="Amount"]', '');
+{
+  const w = await page.evaluate(() => document.documentElement.scrollWidth);
+  check(w <= 390, `no sideways scrolling on a phone (${w}px)`);
+}
 
 // ---------------- learning
 await go('Home');
@@ -1189,6 +1429,8 @@ await page.click('.health-tabs .seg-btn:has-text("Today")');
   check(/Altima/.test(why('Nissan recalls 2021 Altima sedans', 'top')) && /Altima/.test(why('Nissan issues a recall for some sedans', 'top')), 'For you: your car, and recalls from its maker');
   check(/Dix Hills/.test(why('Dix Hills pool reopens', 'li')) && !why('Long Island weather this weekend', 'li') && /Dix Hills/.test(why('Long Island weather this weekend', 'top')) && !why('Huntington Bancshares beats estimates', 'markets'), 'For you: your town; Long Island stories only from outside the Long Island section');
   check(/Knicks/.test(why('Knicks sign a guard', 'politics')), 'For you: topics you follow');
+  check(/NVIDIA/.test(why('Nvidia stock slides after earnings', 'markets')) && !why('Early Prime Day deals: Nvidia graphics cards 20% off', 'tech'), 'For you: shopping deals that name a company aren’t stock news');
+  check(NJ.parseGoogleNews('<rss><item><title>FS: Apple iPhone 13 Pro - Ars Technica</title><link>https://news.google.com/a</link><guid>F</guid><source url="https://arstechnica.com">Ars Technica</source></item><item><title>Google ads caught delivering scareware | Page 4 | Ars OpenForum - Ars Technica</title><link>https://news.google.com/b</link><guid>G</guid><source url="https://arstechnica.com">Ars Technica</source></item></rss>', 'tech', { name: 'Tech', outlet: true }).length === 0, 'news job: forum threads and for-sale posts are left out');
   const prefs = NL.defaultNewsPrefs();
   check(NL.addTerm(prefs, 'muteSources', 'nypost.com') && !NL.addTerm(prefs, 'muteSources', 'NYPost.com') && NL.isMuted({ title: 'x', source: 'New York Post', domain: 'nypost.com' }, prefs) && !NL.isMuted({ title: 'x', source: 'AP', domain: 'apnews.com' }, prefs), 'mutes: an outlet by web address (added once, whatever the case)');
   NL.addTerm(prefs, 'muteWords', 'Kardashian');
@@ -1686,7 +1928,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   }
 }
 // demo mode: anyone with …/?demo gets the whole app on sample data, with Firebase never started, the real
-// budget key in this browser left alone, the budget frame on the same sample, and reset / exit that work
+// budget key in this browser left alone, the Budget tab on the same sample, and reset / exit that work
 {
   const { demoDocs } = await import('../src/demo-data.js');
   const docs = demoDocs(new Date());
@@ -1749,7 +1991,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(300);
   const spentAfter = await tp.innerText('.money .muted.small.num');
   check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
-  for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news-body'], ['fun', '.fun-hero'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
+  for (const [route, sel] of [['budget', '.bud-summary'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news-body'], ['fun', '.fun-hero'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
     await tp.goto(`${base}?demo#/${route}`);
     await tp.waitForSelector(sel, { timeout: 8000 }).catch(() => {});
     check(!!(await tp.$(sel)) && !!(await tp.$('.demo-bar')), `demo #/${route} renders`);
@@ -1763,23 +2005,28 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     await tp.screenshot({ path: path.join(OUT, 'demo-fun.png'), fullPage: true });
   }
   await tp.click('a.nav-item:has-text("Budget")');
-  const frame = await (await tp.waitForSelector('iframe.frame')).contentFrame();
-  await frame.waitForSelector('text=Restaurants & Bars', { timeout: 10000 });
-  const ftext = await frame.innerText('body');
-  check(/budget-demo\.html/.test(frame.url()) && /Saved in this browser/.test(ftext) && !/Sign in with Google/.test(ftext), 'budget frame runs locally on the sample budget');
-  await frame.click('text=Sep').catch(() => {});
-  check(await frame.evaluate(() => JSON.stringify(JSON.parse(localStorage.getItem('budget-tracker-v1'))).includes('Demo test lunch')), 'the budget frame sees the expense added on Home');
-  // a change made in the budget frame reaches the rest of the app
-  await frame.evaluate(() => {
-    const d = JSON.parse(localStorage.getItem('budget-tracker-v1'));
-    const k = Object.keys(d.months).sort().filter((m) => d.months[m].transactions.length).pop();
-    d.months[k].transactions.push({ id: 'frame-test', date: `${k}-01`, desc: 'From the frame', category: 'Shopping', amount: 100, method: 'Cash' });
-    localStorage.setItem('budget-tracker-v1', JSON.stringify(d));
-  });
+  await tp.waitForSelector('.budget .bud-summary', { timeout: 10000 });
+  {
+    const bt = await tp.innerText('.budget');
+    check(/Restaurants & Bars/.test(bt) && /Demo test lunch/.test(bt), 'the Budget tab runs on the sample budget and has the expense added on Home');
+    await tp.fill('.ledger input[aria-label="Amount"]', '100');
+    await tp.fill('.ledger input[aria-label="Description"]', 'From the budget tab');
+    await tp.click('.ledger button:has-text("Add expense")');
+    await tp.waitForTimeout(300);
+    for (const v of ['Paycheck', 'Spending', 'Savings & card', 'Outlook', 'Stocks', 'Year', 'Settings']) {
+      await tp.click(`.bud-tabs .nchip:has-text("${v}")`);
+      await tp.waitForTimeout(200);
+    }
+    await tp.click('.bud-tabs .nchip:has-text("Stocks")');
+    await tp.waitForTimeout(200);
+    check(/VTI/.test(await tp.innerText('.budget')) && !/no price yet/.test(await tp.innerText('.budget .holds')), 'demo stocks have (made-up) prices');
+    await tp.screenshot({ path: path.join(OUT, 'demo-budget-stocks.png'), fullPage: true });
+    await tp.click('.bud-tabs .nchip:has-text("Month")');
+  }
   await tp.click('a.nav-item:has-text("Home")');
   await tp.waitForSelector('.money');
   await tp.waitForTimeout(300);
-  check((await tp.innerText('.money .muted.small.num')) !== spentAfter, 'a change in the budget frame shows on Home');
+  check((await tp.innerText('.money .muted.small.num')) !== spentAfter, 'a change in the Budget tab shows on Home');
   const keys = await tp.evaluate(() => ({ real: localStorage.getItem('budget-tracker-v1'), demo: Object.keys(localStorage).filter((k) => k.startsWith('demo:')).length }));
   check(keys.real === 'REAL-DATA-SENTINEL' && keys.demo >= 12, `the real budget key is untouched (${keys.demo} demo documents beside it)`);
   const idb = await tp.evaluate(async () => (indexedDB.databases ? (await indexedDB.databases()).map((d) => d.name) : []));
@@ -1790,7 +2037,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForSelector('.hero');
   await tp.waitForTimeout(500);
   const afterReset = await tp.evaluate(() => localStorage.getItem('demo:budget-tracker-v1'));
-  check(!afterReset.includes('Demo test lunch') && !afterReset.includes('From the frame'), 'Reset brings back fresh sample data');
+  check(!afterReset.includes('Demo test lunch') && !afterReset.includes('From the budget tab'), 'Reset brings back fresh sample data');
   await tp.locator('.app').screenshot({ path: path.join(OUT, 'demo-home.png') });
   // exit: back to the sign-in screen, the demo a click away
   await tp.click('.demo-bar button:has-text("Exit demo")');
@@ -1827,7 +2074,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.close();
 }
 // the look: Liquid Glass over the live sky by default (light or dark with the system), a Clear–Tinted slider,
-// and the classic look one tap away; the budget frame follows along
+// and the classic look one tap away
 {
   const tp = await desk.newPage();
   const errs = [];
@@ -1856,10 +2103,12 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   check(/theme-glass/.test(L.html) && !/dark/.test(L.html) && L.sky && !L.heroSky && /blur/.test(L.cardBlur) && L.cardAlpha < 0.95 && L.body === 'rgba(0, 0, 0, 0)', `Liquid Glass by default: the sky behind the page, frosted cards (alpha ${L.cardAlpha.toFixed(2)}), light`);
   check(L.lens && /url\("?#lens-nav"?\)/.test(L.nav), 'the tab bar bends light at its edges (Chrome)');
   await tp.click('a.nav-item:has-text("Budget")');
-  const bf = await (await tp.waitForSelector('iframe.frame')).contentFrame();
-  await bf.waitForSelector('.bt-root', { timeout: 10000 });
-  const inFrame = await bf.evaluate(() => ({ cls: document.documentElement.className, bg: getComputedStyle(document.body).backgroundColor, root: getComputedStyle(document.querySelector('.bt-root')).backgroundColor }));
-  check(/in-glass/.test(inFrame.cls) && inFrame.bg === 'rgba(0, 0, 0, 0)' && inFrame.root === 'rgba(0, 0, 0, 0)', 'the budget sits on the same pane of glass (its page is see-through)');
+  await tp.waitForSelector('.budget .bud-summary', { timeout: 10000 });
+  const bcard = await tp.evaluate(() => {
+    const cs = getComputedStyle(document.querySelector('.budget .bud-summary'));
+    return { blur: cs.backdropFilter || cs.webkitBackdropFilter || '', alpha: Number((cs.backgroundColor.match(/rgba?\(([^)]+)\)/) || [, '0,0,0,1'])[1].split(',')[3] ?? 1) };
+  });
+  check(/blur/.test(bcard.blur) && bcard.alpha < 0.95, `the budget is glass cards like every other tab (alpha ${bcard.alpha.toFixed(2)})`);
   await tp.screenshot({ path: path.join(OUT, 'glass-budget.png') });
   await tp.click('a.nav-item:has-text("Home")');
   await tp.click('.nav-settings');
@@ -1910,11 +2159,12 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   check(/theme-glass/.test(d.html) && /dark/.test(d.html) && d.bg[0] < 60 && d.ink[0] > 200, `dark mode with the system: dark glass (${d.bg.slice(0, 3).join(',')}), light text`);
   await tp.screenshot({ path: path.join(OUT, 'glass-dark-home.png') });
   await tp.click('a.nav-item:has-text("Budget")');
-  const bf = await (await tp.waitForSelector('iframe.frame')).contentFrame();
-  await bf.waitForSelector('.bt-root', { timeout: 10000 });
-  const fr = await tp.evaluate(() => getComputedStyle(document.querySelector('iframe.frame')).filter);
-  const fcls = await bf.evaluate(() => document.documentElement.className);
-  check(/invert/.test(fr) && /in-dark/.test(fcls), 'the budget goes dark too');
+  await tp.waitForSelector('.budget .bud-summary', { timeout: 10000 });
+  const bd = await tp.evaluate(() => {
+    const card = document.querySelector('.budget .bud-summary');
+    return { bg: getComputedStyle(card).backgroundColor.match(/\d+(\.\d+)?/g).map(Number), ink: getComputedStyle(card.querySelector('.big')).color.match(/\d+/g).map(Number) };
+  });
+  check(bd.bg[0] < 60 && bd.ink[0] > 200, `the budget goes dark too, for real (${bd.bg.slice(0, 3).join(',')})`);
   await tp.screenshot({ path: path.join(OUT, 'glass-dark-budget.png') });
   check(!errs.length, `no errors in dark mode${errs.length ? ': ' + errs.join(' | ') : ''}`);
   await dk.close();
