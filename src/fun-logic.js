@@ -2,6 +2,7 @@
 // Doomsday watch list. Saved in trackers/<doc>-fun. All changes go through small functions so they're easy to test.
 import { uid, todayISO } from './budget-logic.js';
 import { IS_DEMO } from './demo-flag.js';
+import { recentGames, matchGame, isExtra } from './steam-logic.js';
 
 export const DOOMSDAY = '2026-12-18'; // Marvel Studios, in theaters
 export const KINDS = [
@@ -159,8 +160,8 @@ const SEED_PLAYING = [
 
 // (The demo seeds its own document; this default is the owner's starting point.)
 export function defaultFun() {
-  if (IS_DEMO) return { version: 1, releases: [], playing: [], mcu: {}, mcuMine: [] };
-  return { version: 1, releases: JSON.parse(JSON.stringify(SEED_RELEASES)), playing: JSON.parse(JSON.stringify(SEED_PLAYING)), mcu: {}, mcuMine: [] };
+  if (IS_DEMO) return { version: 1, releases: [], playing: [], mcu: {}, mcuMine: [], steam: { profile: '', dismissed: {} } };
+  return { version: 1, releases: JSON.parse(JSON.stringify(SEED_RELEASES)), playing: JSON.parse(JSON.stringify(SEED_PLAYING)), mcu: {}, mcuMine: [], steam: { profile: '', dismissed: {} } };
 }
 
 export function normalizeFun(d) {
@@ -175,8 +176,18 @@ export function normalizeFun(d) {
       : base.playing,
     mcu: d.mcu && typeof d.mcu === 'object' ? d.mcu : {},
     mcuMine: Array.isArray(d.mcuMine) ? d.mcuMine.filter((t) => t && t.id && t.title) : [],
+    steam: normalizeSteamPrefs(d.steam),
     updatedAt: d.updatedAt,
   };
+}
+// Your Steam link: the profile the sync job reads, and games you took out of Now Playing (appid → when, in Unix
+// seconds), so they stay out until you play them again.
+function normalizeSteamPrefs(s) {
+  const o = { profile: '', dismissed: {} };
+  if (!s || typeof s !== 'object') return o;
+  o.profile = String(s.profile || '').trim().slice(0, 200);
+  if (s.dismissed && typeof s.dismissed === 'object') for (const [k, v] of Object.entries(s.dismissed)) if (/^\d+$/.test(k) && Number(v) > 0) o.dismissed[k] = Number(v);
+  return o;
 }
 
 // ---------------------------------------------------------------- countdowns
@@ -226,8 +237,41 @@ export function addGame(d, { title, note = '' }) {
   d.playing.push(g);
   return g;
 }
-export function removeGame(d, id) {
-  d.playing = d.playing.filter((g) => g.id !== id);
+export function removeGame(d, id, now = Date.now()) {
+  const g = d.playing.find((x) => x.id === id);
+  if (g && g.appid) {
+    d.steam = d.steam || { profile: '', dismissed: {} };
+    d.steam.dismissed = { ...(d.steam.dismissed || {}), [g.appid]: Math.floor(now / 1000) };
+  }
+  d.playing = d.playing.filter((x) => x.id !== id);
+}
+
+// ---------------------------------------------------------------- Steam in Now Playing
+export function setSteamProfile(d, profile) {
+  d.steam = { ...(d.steam || { dismissed: {} }), profile: String(profile || '').trim() };
+}
+// Steam games played in the last two weeks that aren't in Now Playing yet (by Steam id or by name), leaving out
+// ones you removed, unless you've played them since.
+export function steamToAdd(d, steam) {
+  if (!steam || !d || !d.steam || !d.steam.profile) return [];
+  const dismissed = d.steam.dismissed || {};
+  return recentGames(steam).filter(
+    (g) => !isExtra(g.n) && !d.playing.some((p) => p.appid === g.id || (!p.appid && matchGame(p.title, [g]))) && !((dismissed[g.id] || 0) >= (g.l || 0))
+  );
+}
+export const cleanName = (n) => String(n || '').replace(/[®™©]/g, '').replace(/\s+/g, ' ').trim();
+export function addSteamGames(d, games) {
+  for (const g of games) {
+    if (d.playing.some((p) => p.appid === g.id)) continue;
+    d.playing.push({ id: uid(), title: cleanName(g.n), note: 'Steam', appid: g.id, challenges: [] });
+  }
+}
+export function addGameFromSteam(d, g) {
+  if (d.playing.some((p) => p.appid === g.id)) return null;
+  const item = { id: uid(), title: cleanName(g.n), note: 'Steam', appid: g.id, challenges: [] };
+  d.playing.push(item);
+  if (d.steam && d.steam.dismissed) delete d.steam.dismissed[g.id];
+  return item;
 }
 export function setGameNote(d, id, note) {
   const g = d.playing.find((x) => x.id === id);

@@ -8,6 +8,8 @@ import { IS_DEMO } from './demo-flag.js';
 import { dateLabel } from './budget-logic.js';
 import * as F from './fun-logic.js';
 import { ViceZone, DoomZone, Countdown, ART } from './fun-zones.jsx';
+import { SteamZone, GameArt, hueOf, initialsOf } from './steam.jsx';
+import * as S from './steam-logic.js';
 
 const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 const dayText = (n) => (n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : n < 0 ? 'Out now' : `${n} days`);
@@ -216,32 +218,41 @@ function Challenge({ g, c, mutate }) {
     </li>
   );
 }
-function Game({ g, mutate }) {
+function Game({ g, mutate, steam, status }) {
   const [adding, setAdding] = useState(false);
   const [f, setF] = useState({ text: '', goal: '' });
   const [note, setNote] = useState(null);
   const open = g.challenges.filter((c) => c.n < c.goal).length;
   const doneN = g.challenges.length - open;
-  const hue = [...g.title].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) % 360, 7);
-  const initials = g.title
-    .replace(/[^A-Za-z0-9 ]/g, ' ')
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 3)
-    .map((w) => (/^\d+$/.test(w) ? w : w[0].toUpperCase()))
-    .join('')
-    .slice(0, 3);
+  const hue = hueOf(g.title);
+  const initials = initialsOf(g.title);
+  // its Steam side: cover art for anything Steam sells, hours and achievements for games in your library
+  const sg = S.steamGameFor(g, steam);
+  const owned = sg && !sg.notOwned ? sg : null;
+  const ach = owned && steam.ach && steam.ach[owned.id];
+  const live = !!(status && status.playing && sg && status.id === sg.id);
   return (
     <li className="game" style={{ '--gh': hue }}>
       <div className="game-head">
-        <span className="game-badge" aria-hidden="true">
-          {initials}
-          {g.challenges.length ? (
-            <svg className="game-ring" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="16" pathLength="100" strokeDasharray={`${(doneN / g.challenges.length) * 100} 100`} />
-            </svg>
-          ) : null}
-        </span>
+        {sg ? (
+          <span className={`game-badge has-art ${live ? 'live' : ''}`}>
+            <GameArt id={sg.id} name={g.title} steam={steam} shape="badge" />
+            {g.challenges.length ? (
+              <span className="game-prog" aria-hidden="true">
+                <i style={{ width: `${(doneN / g.challenges.length) * 100}%` }} />
+              </span>
+            ) : null}
+          </span>
+        ) : (
+          <span className="game-badge" aria-hidden="true">
+            {initials}
+            {g.challenges.length ? (
+              <svg className="game-ring" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="16" pathLength="100" strokeDasharray={`${(doneN / g.challenges.length) * 100} 100`} />
+              </svg>
+            ) : null}
+          </span>
+        )}
         <div className="grow">
           <div className="bill-name">{g.title}</div>
           {note != null ? (
@@ -260,6 +271,16 @@ function Game({ g, mutate }) {
               {g.challenges.length ? ` · ${doneN} of ${g.challenges.length} done` : ''}
             </button>
           )}
+          {owned ? (
+            <div className="game-steam">
+              {live ? (
+                <span className="live-pill">
+                  <span className="dot-live" /> Playing now
+                </span>
+              ) : null}
+              <span>{[`${S.hoursText(owned.m)} on Steam`, owned.w ? `${S.hoursText(owned.w)} past 2 weeks` : '', ach && ach.t ? `${ach.u}/${ach.t} achievements` : ''].filter(Boolean).join(' · ')}</span>
+            </div>
+          ) : null}
         </div>
         <button className="x" aria-label={`Remove ${g.title}`} onClick={() => mutate((d) => F.removeGame(d, g.id), `Removed ${g.title}`)}>
           ×
@@ -307,7 +328,7 @@ function Game({ g, mutate }) {
     </li>
   );
 }
-function NowPlaying({ data, mutate }) {
+function NowPlaying({ data, mutate, steam, status }) {
   const [title, setTitle] = useState('');
   return (
     <section className="card now-playing">
@@ -318,11 +339,11 @@ function NowPlaying({ data, mutate }) {
       {data.playing.length ? (
         <ul className="list games">
           {data.playing.map((g) => (
-            <Game key={g.id} g={g} mutate={mutate} />
+            <Game key={g.id} g={g} mutate={mutate} steam={steam} status={status} />
           ))}
         </ul>
       ) : (
-        <p className="empty">Add what you’re playing, and track challenges, Easter eggs and trophies as you go.</p>
+        <p className="empty">Add what you’re playing, and track challenges, Easter eggs and trophies as you go.{data.steam && data.steam.profile ? ' Steam games you play show up here on their own.' : ''}</p>
       )}
       <form
         className="add-row"
@@ -410,7 +431,7 @@ function FunNews({ news, read, markRead }) {
 }
 
 // ---------------------------------------------------------------- page
-export function FunPage({ data, mutate, error, news, read, markRead }) {
+export function FunPage({ data, mutate, error, news, read, markRead, steam, steamLive }) {
   const list = data ? F.upcoming(data) : [];
   const gta = list.find((r) => F.zoneOf(r) === 'gta') || null;
   const hero = data ? F.featured(data) : null;
@@ -452,12 +473,13 @@ export function FunPage({ data, mutate, error, news, read, markRead }) {
           {other ? <ReleaseHero r={other} /> : null}
           {gta && !IS_DEMO ? <ViceZone r={gta} feed={feed} /> : null}
           <ComingUp data={data} mutate={mutate} />
-          <NowPlaying data={data} mutate={mutate} />
+          <NowPlaying data={data} mutate={mutate} steam={steam} status={S.liveStatus(steamLive)} />
         </div>
         <div className="col">
           <DoomZone data={data} mutate={mutate} />
           <FunNews news={news} read={read} markRead={markRead} />
         </div>
+        <SteamZone fun={data} mutate={mutate} steam={steam} live={steamLive} />
       </div>
     </div>
   );

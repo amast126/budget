@@ -15,6 +15,7 @@ import { defaultCooking, addKitchen, addGrocery } from './cooking-logic.js';
 import { demoBox } from './demo-recipes.js';
 import { defaultAuto, logService } from './auto-logic.js';
 import { MCU } from './fun-logic.js';
+import { demoSteam } from './demo-steam.js';
 
 export const DEMO_PERSON = { uid: 'demo', email: 'demo@example.com', displayName: 'Jordan Rivera' };
 export const DEMO_PLACE = { name: 'Seattle, WA', zip: '98103', lat: 47.66198, lon: -122.34181 };
@@ -611,7 +612,11 @@ export function demoDocs(now = new Date()) {
     ],
     mcu,
     mcuMine: [],
+    steam: { profile: 'https://steamcommunity.com/id/sample-demo-player', dismissed: {} },
   };
+  const st = demoSteam(now);
+  docs.steam = st.steam;
+  docs['steam-live'] = st.live;
 
   // Guitar: about two months in, most days, on grade 2 of the course
   const sessions = [];

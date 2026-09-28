@@ -30,7 +30,7 @@ function timeAgo(iso) {
   return d < 60 ? `${d}d ago` : new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 // A tab choice remembered in this browser.
-function useStored(key, initial, allowed) {
+export function useStored(key, initial, allowed) {
   const [v, setV] = useState(() => {
     try {
       const s = localStorage.getItem(key);
@@ -70,7 +70,7 @@ export function Countdown({ date, className = '' }) {
     </div>
   );
 }
-function HubTabs({ tabs, value, onChange, label }) {
+export function HubTabs({ tabs, value, onChange, label }) {
   return (
     <div className="hub-tabs" role="tablist" aria-label={label}>
       {tabs.map(([k, l]) => (

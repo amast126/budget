@@ -43,11 +43,17 @@ const readDoc = (k) => {
   const v = raw.get(k);
   if (v == null) return null;
   try {
-    return JSON.parse(v);
+    return fresh(k, JSON.parse(v));
   } catch {
     return null;
   }
 };
+// The sample Steam status is "in a game for about 50 minutes, checked a few minutes ago" whenever it's opened.
+function fresh(k, d) {
+  if (k !== 'steam-live' || !d || d.demoMins == null) return d;
+  const now = Date.now();
+  return { ...d, seenAt: new Date(now - 4 * 60000).toISOString(), since: d.game ? new Date(now - d.demoMins * 60000).toISOString() : null };
+}
 
 function demoKeys() {
   const out = [];
@@ -63,7 +69,7 @@ function demoKeys() {
 }
 
 // Write the sample documents the first time, after a reset, or when the sample itself changes (VERSION).
-const VERSION = 7; // 7: the recipe box; 6: Health training, habits, checkups, labs, sync; 5: sample stock prices; 4: News follows; 3: adds Entertainment, Guitar, Sourdough and Birthdays; 2: the Seattle sample; 1: an earlier sample
+const VERSION = 8; // 8: Steam; 7: the recipe box; 6: Health training, habits, checkups, labs, sync; 5: sample stock prices; 4: News follows; 3: adds Entertainment, Guitar, Sourdough and Birthdays; 2: the Seattle sample; 1: an earlier sample
 export function seedDemo(force = false) {
   const meta = readDoc(META);
   if (!force && meta && meta.version === VERSION) return false;

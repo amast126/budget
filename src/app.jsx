@@ -24,7 +24,9 @@ import { HealthPage, HealthHomeCard } from './health.jsx';
 import { HealthSyncPage } from './health-more.jsx';
 import * as HM from './health-more.js';
 import { FunPage } from './fun.jsx';
-import { defaultFun, normalizeFun } from './fun-logic.js';
+import { defaultFun, normalizeFun, steamToAdd, addSteamGames, cleanName } from './fun-logic.js';
+import { SteamLiveCard } from './steam.jsx';
+import { normalizeSteam, normalizeLive, liveStatus } from './steam-logic.js';
 import { defaultGuitar, normalizeGuitar } from './guitar-logic.js';
 import { defaultSourdough, normalizeSourdough } from './sourdough-logic.js';
 import { defaultBirthdays, normalizeBirthdays, upcoming as upcomingBirthdays } from './birthdays-logic.js';
@@ -328,7 +330,7 @@ function WatchCard({ s }) {
 let homeSeen = false;
 // A birthday this week moves the Birthdays card up next to the to-do list on phones.
 const bdaySoon = (b, today) => upcomingBirthdays(b, today, 7).length > 0;
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, box, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, guitar, mutateGuitar, sourdough, birthdays, mutateBirthdays, onBirthdays, forecast, pageSky }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, box, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, steam, steamLive, guitar, mutateGuitar, sourdough, birthdays, mutateBirthdays, onBirthdays, forecast, pageSky }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   const place = (home && home.place) || DEFAULT_PLACE;
@@ -385,6 +387,11 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
           ) : null}
         </div>
         <div className="col">
+          {(liveStatus(steamLive) || {}).playing ? (
+            <div className="slot o2">
+              <SteamLiveCard steam={steam} live={steamLive} />
+            </div>
+          ) : null}
           <div className="slot o3">
             <WeatherCard place={place} forecast={forecast} onPlace={(p) => mutateHome((d) => (d.place = p), `Weather set to ${p.name}`)} />
           </div>
@@ -619,6 +626,8 @@ const MODULES = {
   news: [normalizeNewsPrefs, defaultNewsPrefs, 'your saved stories'],
   recipebox: [normalizeBox, defaultBox, 'your recipe box'],
   alerts: [(d) => d || null, () => null, 'the alerts status'], // written by the Budget alerts job
+  steam: [normalizeSteam, () => null, 'your Steam library'], // written by the Steam sync job
+  'steam-live': [normalizeLive, () => null, 'your Steam status'], // written by the Steam sync job
 };
 function useModuleDoc(allowed, user, name) {
   const [doc, setDoc] = useState(null);
@@ -753,6 +762,8 @@ function App() {
   const [birthdays] = useModuleDoc(allowed, user, 'birthdays');
   const [newsPrefs] = useModuleDoc(allowed, user, 'news');
   const [alertStatus] = useModuleDoc(allowed, user, 'alerts');
+  const [steam] = useModuleDoc(allowed, user, 'steam');
+  const [steamLive] = useModuleDoc(allowed, user, 'steam-live');
   const [box, boxError] = useModuleDoc(allowed, user, 'recipebox');
   // Recipe photos live in documents of their own, read when they're needed.
   const photos = useMemo(
@@ -1038,6 +1049,16 @@ function App() {
     }
   };
   const mutateFun = mutateDoc('fun');
+  // Steam games played in the last two weeks join Now Playing on their own (once each; ones you remove stay out
+  // until you play them again). Checked whenever the Steam or Entertainment document changes.
+  const steamAdding = useRef(new Set());
+  useEffect(() => {
+    if (!allowed || !fun || !steam) return;
+    const add = steamToAdd(fun, steam).filter((g) => !steamAdding.current.has(g.id));
+    if (!add.length) return;
+    add.forEach((g) => steamAdding.current.add(g.id));
+    mutateFun((d) => addSteamGames(d, steamToAdd(d, steam)), add.length === 1 ? `${cleanName(add[0].n)} added to Now playing` : `${add.length} Steam games added to Now playing`).finally(() => add.forEach((g) => steamAdding.current.delete(g.id)));
+  }, [allowed, steam, fun]);
   const mutateGuitar = mutateDoc('guitar');
   const mutateSourdough = mutateDoc('sourdough');
   const mutateBirthdays = mutateDoc('birthdays');
@@ -1323,7 +1344,7 @@ function App() {
             photos={photos}
           />
         ) : null}
-        {route === 'fun' ? <FunPage data={fun} mutate={mutateFun} error={funError} news={news} read={read} markRead={markRead} /> : null}
+        {route === 'fun' ? <FunPage data={fun} mutate={mutateFun} error={funError} news={news} read={read} markRead={markRead} steam={steam} steamLive={steamLive} /> : null}
         {route === 'news' ? (
           <NewsPage news={news} read={read} markRead={markRead} prefs={newsPrefs} mutatePrefs={mutateNews} data={data} fun={fun} auto={auto} home={home} onToast={showToast} dark={look.dark} />
         ) : null}
@@ -1356,6 +1377,8 @@ function App() {
             hkYears={hkYears}
             news={news}
             fun={fun}
+            steam={steam}
+            steamLive={steamLive}
             guitar={guitar}
             mutateGuitar={mutateGuitar}
             sourdough={sourdough}

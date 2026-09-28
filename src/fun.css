@@ -226,11 +226,154 @@
   .fun .doom-zone { order: 2; }
   .fun .coming-up { order: 3; }
   .fun .now-playing { order: 4; }
-  .fun .fun-news { order: 5; }
+  .fun .steam-zone { order: 5; }
+  .fun .fun-news { order: 6; }
 }
 /* on a narrow card the artwork carries the name, so the lettering below it would only repeat it */
 @container (max-width: 519px) {
   .zone-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .zone-hero-text { margin-top: -34px; }
   .zone-sub { font-size: 14px; font-weight: 600; margin-top: 4px; }
+}
+
+/* ---------------------------------------------------------------- Steam: a zone in Steam's navy and sky blue */
+@media (min-width: 1100px) { .fun .steam-zone { grid-column: 1 / -1; } }
+.steam-zone { --ink: #eef4fa; --ink-soft: rgba(214, 228, 240, 0.72); --fill: #66c0f4; --on-fill: #06121d; --green: #66c0f4; --green-soft: rgba(102, 192, 244, 0.18); --blue: #66c0f4; --amber: #f5d58c; --amber-soft: rgba(229, 184, 92, 0.16); --paper-deep: rgba(255, 255, 255, 0.12); --live: #90ba3c; }
+.card.steam-zone, .theme-glass .card.steam-zone { background: #0e1621; }
+.steam-zone::before { background: radial-gradient(80% 60% at 12% 0%, rgba(102, 192, 244, 0.22), transparent 70%), linear-gradient(180deg, rgba(14, 22, 33, 0.45) 0%, rgba(14, 22, 33, 0.9) 150px, #0e1621 320px); }
+.steam-bg { filter: blur(26px) saturate(1.25); opacity: 0.7; inset: -60px; background-position: center top; }
+.steam-zone .zone-kicker { color: #66c0f4; }
+.steam-zone .zone-h { color: #66c0f4; }
+.steam-zone .zone-panel .zone-h:not(:first-child) { margin-top: 16px; }
+.steam-zone .hub-tab { color: rgba(214, 228, 240, 0.8); }
+.steam-zone .hub-tab.on { color: #06121d; background: linear-gradient(180deg, #9ad8ff, #4ea4dc); box-shadow: 0 6px 16px -8px rgba(102, 192, 244, 0.9); }
+.steam-zone .zone-panel a:not(.btn):not(.shelf-item):not(.lib-tile) { color: #9ad8ff; }
+.steam-head { display: flex; align-items: center; gap: 14px; padding: 18px 16px 6px; }
+.steam-avatar { flex: none; width: 58px; height: 58px; border-radius: 14px; object-fit: cover; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 10px 22px -12px rgba(0, 0, 0, 0.9); }
+.steam-avatar.none { display: flex; align-items: center; justify-content: center; color: #66c0f4; background: rgba(102, 192, 244, 0.14); }
+.steam-zone.is-live .steam-avatar { box-shadow: 0 0 0 2px var(--live), 0 0 22px -4px rgba(144, 186, 60, 0.85); }
+.steam-name { margin: 3px 0 2px; font: 700 24px/1.15 var(--sans); letter-spacing: -0.01em; color: #fff; overflow-wrap: anywhere; }
+.steam-status { font-size: 14px; color: var(--ink-soft); }
+.steam-status-live b { color: #fff; font-weight: 700; }
+.dot-live { display: inline-block; width: 8px; height: 8px; margin-right: 3px; border-radius: 50%; background: var(--live, #90ba3c); box-shadow: 0 0 8px var(--live, #90ba3c); vertical-align: 1px; animation: zone-pulse 2.4s ease-in-out infinite; }
+.steam-alert { margin: 8px 16px 2px; padding: 10px 12px; border-radius: 12px; font-size: 13.5px; line-height: 1.4; color: #f5d58c; background: rgba(229, 184, 92, 0.13); box-shadow: inset 0 0 0 1px rgba(229, 184, 92, 0.4); }
+.steam-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 12px 16px 4px; }
+.steam-stats > div { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 6px 9px; border-radius: 12px; background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 0.5px rgba(102, 192, 244, 0.35); text-align: center; }
+.steam-stats b { font: 700 20px/1.1 var(--sans); color: #fff; font-variant-numeric: tabular-nums; }
+.steam-stats span { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+.steam-foot { justify-content: space-between; color: var(--ink-soft); font-weight: 600; }
+.steam-foot .link-btn { color: #9ad8ff; }
+
+/* game art: tall covers, cropped badges, wide headers, and initials when Steam has nothing */
+.gart { position: relative; display: block; overflow: hidden; background: rgba(127, 140, 160, 0.18); }
+.gart img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gart-cover { width: 100%; aspect-ratio: 2 / 3; border-radius: 10px; box-shadow: 0 12px 24px -14px rgba(0, 0, 0, 0.9), 0 0 0 0.5px rgba(255, 255, 255, 0.14); }
+.gart-wide { flex: none; width: 92px; aspect-ratio: 460 / 215; border-radius: 8px; box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.16); }
+.gart-badge { width: 100%; height: 100%; }
+.gart-framed .gart-bg { position: absolute; inset: -20%; width: 140%; height: 140%; filter: blur(14px) saturate(1.3) brightness(0.65); }
+.gart-framed .gart-fg { position: absolute; left: 0; top: 50%; height: auto; transform: translateY(-50%); object-fit: contain; box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.8); }
+.gart-none { display: flex; align-items: center; justify-content: center; color: #fff; font: 400 26px/1 'Anton', var(--sans); letter-spacing: 0.03em; background: linear-gradient(140deg, hsl(var(--gh), 70%, 42%), hsl(calc(var(--gh) + 50), 80%, 58%)); }
+.gart-wide.gart-none, .gart-badge.gart-none { font-size: 17px; }
+
+/* recent: a shelf of covers */
+.steam-shelf { list-style: none; display: grid; grid-auto-flow: column; grid-auto-columns: 128px; gap: 12px; margin: 0 -16px; padding: 4px 16px 10px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.steam-shelf::-webkit-scrollbar { display: none; }
+.steam-shelf > li { scroll-snap-align: start; min-width: 0; }
+.shelf-item { display: flex; flex-direction: column; gap: 1px; color: inherit; text-decoration: none; }
+.shelf-art { position: relative; display: block; margin-bottom: 7px; transition: transform 0.18s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.shelf-item:hover .shelf-art, .lib-tile:hover .gart { transform: translateY(-2px); }
+.steam-shelf li.live .gart { box-shadow: 0 0 0 2px var(--live), 0 0 24px -4px rgba(144, 186, 60, 0.9); }
+.live-tag { position: absolute; left: 6px; top: 6px; padding: 3px 7px; border-radius: 999px; font: 700 10.5px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: #0d1a05; background: var(--live); }
+.shelf-name { font-weight: 700; font-size: 13.5px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.shelf-sub { font-size: 12px; color: var(--ink-soft); }
+
+/* playtime */
+.steam-time-head { align-items: center; margin-bottom: 4px; gap: 8px; flex-wrap: wrap; }
+.steam-zone .chart .cbar { stroke: rgba(12, 20, 30, 0.95); stroke-width: 1px; }
+.steam-zone .chart-tip { background: #0a131d; color: #eef4fa; box-shadow: 0 0 0 1px rgba(102, 192, 244, 0.4), 0 8px 22px rgba(0, 0, 0, 0.5); }
+.steam-legend { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0 6px; padding: 0; font-size: 12.5px; }
+.steam-legend li { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.steam-legend .key { flex: none; width: 10px; height: 10px; border-radius: 3px; }
+.steam-top { list-style: none; margin: 0; padding: 0; }
+.steam-top li { display: flex; align-items: center; gap: 12px; padding: 7px 0; }
+.steam-top .row-between { gap: 10px; }
+.top-name { font-weight: 600; font-size: 13.5px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.steam-top b { font-size: 13px; font-variant-numeric: tabular-nums; }
+.steam-zone .bar { background: rgba(255, 255, 255, 0.1); }
+.steam-zone .bar-fill { background: linear-gradient(90deg, #2f7fb8, #7fd0ff); }
+
+/* achievements */
+.steam-ach-sum { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; color: var(--ink-soft); }
+.steam-ach-sum svg { color: #66c0f4; }
+.steam-ach { list-style: none; margin: 0; padding: 0; }
+.steam-ach > li { padding: 12px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.steam-ach > li:first-child { border-top: 0; }
+.ach-head { display: flex; align-items: center; gap: 12px; }
+.ach-name { font-weight: 700; font-size: 14.5px; line-height: 1.25; }
+.ach-count { color: var(--ink-soft); }
+.ach-count b { color: #fff; }
+.ach-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+.ach-label { flex: none; width: 52px; font: 700 10.5px var(--sans); letter-spacing: 0.1em; text-transform: uppercase; color: #66c0f4; }
+.ach-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 3px 10px 3px 3px; border-radius: 999px; font-size: 12.5px; background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.16); }
+.ach-chip img, .ach-ico { flex: none; width: 22px; height: 22px; border-radius: 6px; object-fit: cover; }
+.ach-ico { display: inline-flex; align-items: center; justify-content: center; color: #66c0f4; background: rgba(102, 192, 244, 0.16); }
+.ach-t { font-weight: 600; min-width: 0; max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ach-p { flex: none; font-size: 11.5px; color: var(--ink-soft); white-space: nowrap; }
+
+/* library and backlog */
+.steam-search { width: 100%; margin: 0 0 8px; }
+.steam-controls { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 0 0 12px; }
+.steam-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 14px 10px; }
+.lib-tile { display: flex; flex-direction: column; gap: 1px; color: inherit; text-decoration: none; min-width: 0; }
+.lib-tile .gart { margin-bottom: 6px; border-radius: 8px; transition: transform 0.18s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.lib-name { font-weight: 600; font-size: 12.5px; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.lib-sub { font-size: 11.5px; color: var(--ink-soft); }
+.steam-more { margin-top: 12px; }
+.steam-pick-card { display: flex; gap: 14px; align-items: flex-start; margin: 10px 0; padding: 12px; border-radius: 16px; background: linear-gradient(120deg, rgba(102, 192, 244, 0.2), rgba(255, 255, 255, 0.04)); box-shadow: inset 0 0 0 1px rgba(102, 192, 244, 0.45); animation: pick-in 0.35s cubic-bezier(0.2, 1.3, 0.4, 1) both; }
+.steam-pick-card .gart-cover { flex: none; width: 88px; }
+.steam-pick-card .zone-h { margin: 2px 0 4px; }
+.pick-name { font: 700 18px/1.2 var(--sans); color: #fff; }
+.pick-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+@keyframes pick-in { from { transform: scale(0.96); opacity: 0; } }
+.steam-pick { margin: 10px 0 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* connect and settings */
+.steam-settings { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.steam-settings details { margin: 10px 0; }
+.steam-form { margin: 2px 0 0; }
+.steam-hint { color: var(--ink-soft); margin: 6px 0 0; }
+.steam-steps { padding-left: 20px; margin: 12px 0 2px; line-height: 1.45; }
+.steam-steps li { margin: 6px 0; }
+.steam-steps li.done { color: var(--ink-soft); }
+.steam-steps code, .steam-zone code { font-size: 12px; padding: 1px 5px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); overflow-wrap: anywhere; }
+.steam-connect .steam-name { font-size: 22px; }
+
+/* Now playing: covers in place of initials, a slim challenge bar, Steam hours */
+.game-badge.has-art { width: 46px; height: 62px; padding: 0; overflow: hidden; border-radius: 9px; background: rgba(127, 140, 160, 0.2); box-shadow: 0 10px 18px -12px rgba(0, 0, 0, 0.75), 0 0 0 0.5px var(--rule-strong); }
+.game-badge.has-art.live { box-shadow: 0 0 0 2px #90ba3c, 0 0 18px -4px rgba(144, 186, 60, 0.9); }
+.game-prog { position: absolute; left: 4px; right: 4px; bottom: 4px; height: 4px; border-radius: 2px; background: rgba(0, 0, 0, 0.5); overflow: hidden; }
+.game-prog i { display: block; height: 100%; border-radius: 2px; background: hsl(calc(var(--gh) + 50), 85%, 62%); }
+.game-steam { font-size: 12.5px; line-height: 1.45; color: var(--ink-soft); margin-top: 1px; }
+.live-pill { display: inline-flex; align-items: center; gap: 3px; margin-right: 8px; font-weight: 700; color: #4f8a1d; }
+html.dark .live-pill { color: #9fd36a; }
+
+/* Home: while you're in a game */
+.card.steam-live, .theme-glass .card.steam-live { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 0; color: #eef4fa; text-decoration: none; background: radial-gradient(90% 120% at 0% 0%, rgba(102, 192, 244, 0.28), transparent 60%), linear-gradient(120deg, #0e1824, #1a2c40); box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.35), 0 18px 36px -20px rgba(0, 0, 0, 0.8); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.theme-glass .card.steam-live { border-radius: 24px; }
+.steam-live .gart-wide { width: 112px; border-radius: 10px; }
+@media (max-width: 430px) { .steam-live .gart-wide { width: 84px; } }
+.steam-live-kicker { font: 700 11px var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: #a8d86e; }
+.steam-live-name { font: 700 17px/1.2 var(--sans); color: #fff; margin: 2px 0 1px; }
+.steam-live-sub { color: rgba(238, 244, 250, 0.72); }
+.steam-live > svg { flex: none; color: rgba(238, 244, 250, 0.6); }
+
+@container (max-width: 440px) {
+  .steam-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steam-name { font-size: 21px; }
+}
+@container (min-width: 520px) {
+  .steam-head { padding: 20px 18px 6px; }
+  .steam-stats, .steam-zone .zone-panel { padding-left: 18px; padding-right: 18px; }
+  .steam-shelf { margin: 0 -18px; padding-left: 18px; padding-right: 18px; grid-auto-columns: 140px; }
+  .steam-grid { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); }
 }
