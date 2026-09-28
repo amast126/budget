@@ -474,31 +474,46 @@ export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogR
     if (gone && gone.photo) timer = setTimeout(() => photos.drop(gone.id, gone.photo), 10000);
     closeRecipe();
   };
+  // A few recipes at a time (their photos, then the recipes), so a big file that stops partway keeps what it
+  // saved. The error lists the saved ids, and the sheet offers the rest.
   const importRecipes = async (plan, progress) => {
-    const stamps = {};
-    const undoPhotos = () => Object.entries(stamps).forEach(([id, st]) => photos.drop(id, st));
+    const GROUP = 8;
+    const total = plan.items.length;
+    const saved = [];
     let n = 0;
-    try {
-      for (const it of plan.items) {
-        if (!it.photo) continue;
-        n++;
-        progress(`Saving photos · ${n} of ${plan.photos}`);
-        const st = RB.newStamp();
-        await photos.put(it.r.id, st, it.photo);
-        stamps[it.r.id] = st;
+    const stop = (why) => {
+      const e = new Error(saved.length ? `Saved ${saved.length} of ${total} recipes, then it stopped: ${why}` : why);
+      e.saved = saved.slice();
+      return e;
+    };
+    for (let i = 0; i < total; i += GROUP) {
+      const part = plan.items.slice(i, i + GROUP);
+      const stamps = {};
+      const undoPhotos = () => Object.entries(stamps).forEach(([id, st]) => photos.drop(id, st));
+      try {
+        for (const it of part) {
+          if (!it.photo) continue;
+          n++;
+          progress(`Saving photos · ${n} of ${plan.photos}`);
+          const st = RB.newStamp();
+          await photos.put(it.r.id, st, it.photo);
+          stamps[it.r.id] = st;
+        }
+      } catch (e) {
+        undoPhotos();
+        throw stop(e.message || String(e));
       }
-    } catch (e) {
-      undoPhotos();
-      throw e;
+      progress(total > GROUP ? `Saving recipes · ${Math.min(i + GROUP, total)} of ${total}` : 'Saving recipes…');
+      let replaced = [];
+      const last = i + GROUP >= total;
+      const ok = await mutateBox((b) => (replaced = RB.applyImport(b, part, stamps)), last ? `Imported ${plural(total, 'recipe')}` : null);
+      if (!ok) {
+        undoPhotos();
+        throw stop(saved.length ? 'the recipes couldn’t be saved.' : 'Couldn’t save the recipes, so nothing changed. Try again.');
+      }
+      replaced.forEach(([id, st]) => photos.drop(id, st));
+      part.forEach((it) => saved.push(it.r.id));
     }
-    progress('Saving recipes…');
-    let replaced = [];
-    const ok = await mutateBox((b) => (replaced = RB.applyImport(b, plan.items, stamps)), `Imported ${plural(plan.items.length, 'recipe')}`);
-    if (!ok) {
-      undoPhotos();
-      throw new Error('Couldn’t save the recipes, so nothing changed. Try again.');
-    }
-    replaced.forEach(([id, st]) => photos.drop(id, st));
     setSection('recipes');
   };
   const sheets = (

@@ -794,9 +794,11 @@ export function planImport(box, file) {
     existing = existing || box.recipes.find((b) => sameDish(b, r)) || null;
     const id = existing ? existing.id : r.id;
     if (items.some((it) => it.r.id === id)) return dupes.push(n + 1);
+    // a recipe already in the box keeps the photo it has (so importing a file again, say to finish one that
+    // stopped partway, doesn't send every photo again)
     let photo = null;
     const p = x.photo;
-    if (p && typeof p === 'object' && isPhoto(p.card)) photo = { card: p.card, full: isPhoto(p.full) ? p.full : p.card };
+    if (p && typeof p === 'object' && isPhoto(p.card) && !(existing && existing.photo)) photo = { card: p.card, full: isPhoto(p.full) ? p.full : p.card };
     items.push({ r: { ...r, id }, existing, photo });
   });
   return { items, skipped, dupes, add: items.filter((i) => !i.existing).length, update: items.filter((i) => i.existing).length, photos: items.filter((i) => i.photo).length };

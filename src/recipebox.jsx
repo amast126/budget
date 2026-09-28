@@ -1314,7 +1314,16 @@ export function ImportSheet({ box, onImport, onClose }) {
       await onImport(plan, setProgress);
       onClose();
     } catch (x) {
-      setErr(x.message || String(x));
+      let msg = x.message || String(x);
+      // what was saved stays saved; the sheet keeps just the rest, ready to try again
+      if (x.saved && x.saved.length) {
+        const done = new Set(x.saved);
+        const items = plan.items.filter((it) => !done.has(it.r.id));
+        setPlan({ ...plan, items, add: items.filter((it) => !it.existing).length, update: items.filter((it) => it.existing).length, photos: items.filter((it) => it.photo).length });
+        if (items.length) msg += ` Tap Import to send the other ${plural(items.length, 'recipe')}.`;
+      }
+      setErr(msg);
+      setProgress('');
       setBusy(false);
     }
   };
@@ -1323,8 +1332,13 @@ export function ImportSheet({ box, onImport, onClose }) {
       <div className="sheet tall rim" role="dialog" aria-label="Import recipes" onClick={(e) => e.stopPropagation()}>
         <h2 className="card-title">Import recipes</h2>
         <p className="small muted">
-          Pick a recipe file (.json). To make one, send Claude photos of your recipe cards, front and back; it writes out the ingredients and steps and crops each dish’s photo. Recipes already in your box are updated, not doubled.
+          Pick a recipe file (.json). To make one, send Claude photos of your recipe cards, front and back; it writes out the ingredients and steps and crops each dish’s photo. Recipes already in your box are updated, not doubled, and keep their photos.
         </p>
+        {err ? (
+          <div className="alert" role="alert">
+            {err}
+          </div>
+        ) : null}
         {progress && !busy ? <p className="small muted">{progress}</p> : null}
         {!busy ? (
           <label className={`btn block ${plan ? '' : 'primary'}`}>
@@ -1367,7 +1381,6 @@ export function ImportSheet({ box, onImport, onClose }) {
             </button>
           </>
         ) : null}
-        {err ? <div className="alert">{err}</div> : null}
         <button className="btn quiet block" disabled={busy} onClick={onClose}>
           {busy ? 'Importing…' : 'Cancel'}
         </button>

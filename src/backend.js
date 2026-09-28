@@ -10,7 +10,7 @@ import {
   getRedirectResult,
   signOut as fbSignOut,
 } from 'firebase/auth';
-import { getFirestore, doc, onSnapshot, runTransaction, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, doc, onSnapshot, runTransaction, getDoc, deleteDoc } from 'firebase/firestore';
 
 const CFG = window.BUDGET_CONFIG || {};
 const CLIENT = 'home-' + Math.random().toString(36).slice(2);
@@ -96,9 +96,16 @@ export function createFirebaseBackend() {
       const snap = await getDoc(moduleRef(user, name));
       return snap.exists() && snap.data().json ? JSON.parse(snap.data().json) : null;
     },
+    // Each one is its own commit rather than a write on the live connection: a long run of big writes (a recipe
+    // import's photos) stalled that connection partway, with no error, and every save after it waited behind it.
+    // A commit either lands or fails with a reason.
     setModule: (user, name, data) => {
       const updatedAt = Date.now();
-      return setDoc(moduleRef(user, name), { json: JSON.stringify({ ...data, updatedAt }), updatedAt, client: CLIENT });
+      const ref = moduleRef(user, name);
+      const body = { json: JSON.stringify({ ...data, updatedAt }), updatedAt, client: CLIENT };
+      return runTransaction(db, async (tx) => {
+        tx.set(ref, body);
+      });
     },
     deleteModule: (user, name) => deleteDoc(moduleRef(user, name)),
   };
