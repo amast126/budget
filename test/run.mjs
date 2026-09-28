@@ -34,6 +34,14 @@ const server = http.createServer((req, res) => {
   }
   if (p === '/news.json') p = '/test/news.fixture.json';
   if (p === '/gta6/news.json') p = '/test/gta6-news.fixture.json'; // the GTA 6 site's feed, next to /budget/ on the live site
+  {
+    // the GTA 6 site's content files, made up for the tests
+    const m = /^\/gta6\/content\/([a-z]+)\.json$/.exec(p);
+    if (m) {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify(JSON.parse(fs.readFileSync(path.join(ROOT, 'test/gta6-content.fixture.json'), 'utf8'))[m[1]] || []));
+    }
+  }
   if (p === '/recipes.json') {
     // made-up recipes (test/make-recipes-fixture.mjs), or a real recipes.json in RECIPES_FIXTURE
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -249,7 +257,7 @@ check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news
   check(!(await navShown()), 'and swiping it to the left');
   await page.click('.menu-btn');
   await page.click('.nav.open .nav-item:has-text("Entertainment")');
-  await page.waitForSelector('.fun-hero');
+  await page.waitForSelector('.vice-zone');
   await page.waitForTimeout(450);
   check(!(await navShown()) && /Entertainment/.test(await page.innerText('.menu-btn')), 'picking a tab opens it and closes the sidebar; the button shows where you are');
   await go('Home');
@@ -1741,12 +1749,18 @@ const localDay = (n) => {
 };
 const mod = (name) => page.evaluate((n) => JSON.parse(localStorage.getItem('mod:' + n) || 'null'), name);
 await go('Entertainment');
-await page.waitForSelector('.fun-hero');
+await page.waitForSelector('.vice-zone');
 await page.waitForSelector('.vice-list li');
 {
-  const heroT = await page.innerText('.fun-hero');
-  check(/Grand Theft Auto VI/.test(heroT) && (await page.$$('.cd-tile')).length === 4 && /Latest from Rockstar/i.test(heroT), 'Entertainment opens on the GTA VI countdown');
-  check((await page.$$('.vice-list li')).length === 3 && /Test newswire post one/.test(heroT) && !/Older test post four/.test(heroT), 'the three newest posts from the GTA 6 site’s feed');
+  const heroT = await page.innerText('.vice-zone');
+  const doomT = await page.innerText('.doom-zone');
+  check(/Grand Theft Auto VI/i.test(heroT) && (await page.$$('.vice-zone .cd-tile')).length === 4 && /Latest from Rockstar/i.test(heroT) && !(await page.$('.fun-hero')), 'Entertainment opens on the GTA VI zone, counting down');
+  check((await page.$$('.vice-list li')).length === 4 && /Test newswire post one/.test(heroT) && /Older test post four/.test(heroT), 'the four newest posts from the GTA 6 site’s feed');
+  check(/Avengers: Doomsday/i.test(doomT) && (await page.$$('.doom-zone .cd-tile')).length === 4 && /Road to Doomsday/.test(doomT), 'the Doomsday zone counts down beside it');
+  const imgs = await page.$$eval('.zone-art', (els) => els.map((e) => [e.getAttribute('src'), e.naturalWidth]));
+  check(imgs.length === 2 && imgs[0][0] === 'art/gta6-key-art.jpg' && imgs[1][0] === 'art/doomsday-poster.jpg' && imgs.every((x) => x[1] > 300), `both artworks load (${JSON.stringify(imgs)})`);
+  const fonts = await page.evaluate(async () => { await document.fonts.ready; return ['Anton', 'Cinzel'].map((f) => document.fonts.check(`12px "${f}"`)); });
+  check(fonts.every(Boolean), `the zones' fonts load (${fonts})`);
   const rel = await page.$$eval('.coming-up .release .bill-name', (els) => els.map((e) => e.textContent));
   check(rel.join('|') === 'VisionQuest|Call of Duty: Modern Warfare 4|Grand Theft Auto VI|Avengers: Doomsday', `coming up, soonest first: ${rel.join(', ')}`);
   await page.screenshot({ path: path.join(OUT, 'fun.png'), fullPage: true });
@@ -1760,10 +1774,35 @@ let FD = await mod('fun');
 check(FD.releases.some((r) => r.title === 'Test Game' && r.home && r.date === localDay(10)), 'add a release (counted down on Home)');
 await page.click('button[aria-label="Feature Test Game at the top"]');
 await page.waitForTimeout(200);
-check(/Test Game/.test(await page.innerText('.fun-hero-title')) && !(await page.$('.vice-feed')), 'featuring a release moves it to the big countdown');
+check(/Test Game/i.test(await page.innerText('.fun-hero-title')) && (await page.$('.vice-zone')), 'featuring another release gives it the big countdown, above the zones');
 await page.click('button[aria-label="Feature Grand Theft Auto VI at the top"]');
 await page.waitForTimeout(200);
-check(/Grand Theft Auto VI/.test(await page.innerText('.fun-hero-title')), 'and back to GTA VI');
+check(!(await page.$('.fun-hero')) && (await page.$('.vice-zone')), 'and back to GTA VI');
+// the GTA VI hub, from the GTA 6 site's content files
+await page.click('.vice-zone .hub-tab:has-text("Jason & Lucia")');
+await page.waitForSelector('.gta-leads li');
+{
+  const t = await page.innerText('.vice-zone .zone-panel');
+  const href = await page.getAttribute('.gta-leads a', 'href');
+  check((await page.$$('.gta-leads li')).length === 2 && /Test Lead One/i.test(t) && /Test Friend/.test(t) && /\/gta6\/#\/e\/test-lead-one$/.test(href), `characters: the two leads, the rest, each linking to its entry (${href})`);
+}
+await page.click('.vice-zone .hub-tab:has-text("Leonida")');
+await page.waitForSelector('.gta-regions li');
+check((await page.$$('.gta-regions li')).length === 3 && /A made-up state/.test(await page.innerText('.vice-zone .zone-panel')), 'Leonida: the state, then its regions');
+await page.click('.vice-zone .hub-tab:has-text("Trailers")');
+await page.waitForSelector('.vice-zone .vid');
+{
+  const v = await page.$$eval('.vice-zone .vid', (els) => els.map((e) => e.getAttribute('href')));
+  check(v.length === 2 && v[0].endsWith('testvid0002') && /Test Album/.test(await page.innerText('.vice-zone .zone-panel')), 'trailers newest first, plus the album');
+}
+await page.click('.vice-zone .hub-tab:has-text("Editions")');
+await page.waitForSelector('.gta-tickets li');
+check(/Test launch day/i.test(await page.innerText('.gta-when')) && (await page.$$('.gta-tickets li')).length === 2, 'editions: the launch line and each edition');
+await page.screenshot({ path: path.join(OUT, 'fun-gta-hub.png'), fullPage: true });
+await page.reload();
+await page.waitForSelector('.vice-zone');
+check(/on/.test(await page.getAttribute('.vice-zone .hub-tab:has-text("Editions")', 'class')), 'the GTA hub reopens where you left it');
+await page.click('.vice-zone .hub-tab:has-text("Latest")');
 await page.click('button[aria-label="Add 10 to Totenreich Cursed: 500 kills in Cursed Mode"]');
 await page.waitForTimeout(150);
 await page.click('.chal:has-text("500 kills") .link-btn.num');
@@ -1786,6 +1825,31 @@ await page.waitForTimeout(200);
 FD = await mod('fun');
 check(FD.playing.find((g) => g.id === 'tft').challenges[0].text === 'Reach Diamond' && FD.playing.find((g) => g.id === 'tft').challenges[0].goal === 1 && FD.playing.some((g) => g.title === 'Astro Bot'), 'add a challenge and a game');
 check(/0 of 91 watched/.test(await page.innerText('.watchlist .dd-progress')), 'watch list starts at 0 of 91');
+// the Doomsday hub: crash course (ticks count on the watch list too), cast, trailers, facts
+await page.click('.doom-zone .hub-tab:has-text("Crash course")');
+await page.waitForSelector('.crash-row');
+check((await page.$$('.crash-row')).length === 11 && /Avengers: Endgame/.test(await page.innerText('.crash')), 'crash course: 11 titles, Endgame first');
+await page.click('.crash-row:has-text("Avengers: Endgame") button[aria-label="Avengers: Endgame: watched"]');
+await page.waitForTimeout(200);
+FD = await mod('fun');
+check(FD.mcu.endgame === 'w' && /1 of 11 watched/.test(await page.innerText('.doom-zone .zone-lede')) && /1 of 91 watched/.test(await page.innerText('.watchlist .dd-progress')), 'a crash-course tick marks it watched everywhere');
+await page.click('.doom-zone .hub-tab:has-text("Cast")');
+await page.waitForSelector('.cast-card');
+check((await page.$$('.cast-card')).length === 30 && /Robert Downey Jr\./.test(await page.innerText('.cast-doom')), 'cast: 30 names, Doom first');
+await page.click('.doom-zone .hub-tab:has-text("Trailers")');
+check((await page.$$('.doom-zone .vid')).length === 6 && (await page.getAttribute('.doom-zone .vid', 'href')).endsWith('X1aFkAkFASk'), 'trailers: six, newest first');
+await page.click('.doom-zone .hub-tab:has-text("About")');
+check(/Anthony and Joe Russo/.test(await page.innerText('.doom-facts')) && /Secret Wars/.test(await page.innerText('.doom-facts')), 'about: the facts, with sources');
+await page.screenshot({ path: path.join(OUT, 'fun-doom-hub.png'), fullPage: true });
+await page.click('.doom-zone .hub-tab:has-text("Watch list")');
+// untick Endgame again so the watch-list counts below start from nothing
+await page.evaluate(() => {
+  const d = JSON.parse(localStorage.getItem('mod:fun'));
+  delete d.mcu.endgame;
+  localStorage.setItem('mod:fun', JSON.stringify(d));
+  window.__modSubs.fun.forEach((f) => f());
+});
+await page.waitForTimeout(200);
 await page.click('.wgroup-head:has-text("Phase One")');
 await page.click('button[aria-label="Iron Man: watched"]');
 await page.click('button[aria-label="The Incredible Hulk: skip"]');
@@ -2225,7 +2289,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(300);
   const spentAfter = await tp.innerText('.money .muted.small.num');
   check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
-  for (const [route, sel] of [['budget', '.bud-summary'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news-body'], ['fun', '.fun-hero'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
+  for (const [route, sel] of [['budget', '.bud-summary'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news-body'], ['fun', '.doom-zone'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
     await tp.goto(`${base}?demo#/${route}`);
     await tp.waitForSelector(sel, { timeout: 8000 }).catch(() => {});
     check(!!(await tp.$(sel)) && !!(await tp.$('.demo-bar')), `demo #/${route} renders`);
@@ -2235,7 +2299,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   {
     const ft = await tp.innerText('.fun');
     const np = await tp.innerText('.now-playing');
-    check(/Dune: Part Three/.test(await tp.innerText('.fun-hero')) && !/My GTA 6 site/.test(ft) && /Mario Kart World/.test(np) && !/Black Ops/.test(np) && /\d+ of \d+ watched/.test(ft), 'demo Entertainment is the demo person’s own');
+    check(/Dune: Part Three/i.test(await tp.innerText('.fun-hero')) && !/GTA 6 site/.test(ft) && !(await tp.$('.vice-zone')) && !(await tp.$('img[src*="gta6"]')) && (await tp.$('.doom-zone')) && /Mario Kart World/.test(np) && !/Black Ops/.test(np) && /\d+ of \d+ watched/.test(ft), 'demo Entertainment is the demo person’s own');
     await tp.screenshot({ path: path.join(OUT, 'demo-fun.png'), fullPage: true });
   }
   await tp.click('a.nav-item:has-text("Budget")');

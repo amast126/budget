@@ -1,0 +1,24 @@
+{
+  "characters": [
+    { "id": "test-lead-one", "name": "Test Lead One", "subtitle": "Playable protagonist", "tags": ["protagonist"], "summary": "A made-up lead for the tests, with a short summary that runs to a couple of lines so the clamp can be seen." },
+    { "id": "test-lead-two", "name": "Test Lead Two", "subtitle": "Playable protagonist", "tags": ["protagonist"], "summary": "The second made-up lead for the tests." },
+    { "id": "test-friend", "name": "Test Friend", "subtitle": "The lead's friend", "tags": ["support"], "summary": "A made-up supporting character." },
+    { "id": "test-boss", "name": "Test Boss", "subtitle": "Club owner", "tags": ["support"], "summary": "Another made-up supporting character." }
+  ],
+  "locations": [
+    { "id": "test-state", "name": "Test State", "subtitle": "The whole map", "tags": ["state"], "summary": "A made-up state with a neon city, swamps and a beach town." },
+    { "id": "test-city", "name": "Test City", "subtitle": "The main city", "tags": ["city"], "summary": "A made-up city." },
+    { "id": "test-keys", "name": "Test Keys", "subtitle": "Island chain", "tags": ["region"], "summary": "Made-up islands." },
+    { "id": "test-swamp", "name": "Test Swamp", "subtitle": "Wetlands", "tags": ["region"], "summary": "A made-up swamp." }
+  ],
+  "media": [
+    { "id": "test-trailer-2", "name": "Test Trailer 2", "subtitle": "Second made-up trailer", "date": "2026-05-06", "video": "testvid0002" },
+    { "id": "test-trailer-1", "name": "Test Trailer 1", "subtitle": "First made-up trailer", "date": "2025-12-04", "video": "testvid0001" },
+    { "id": "test-album", "name": "Test Album", "subtitle": "Made-up soundtrack" }
+  ],
+  "release": [
+    { "id": "platforms-and-date", "name": "Release date and platforms", "subtitle": "Test launch day · Test consoles", "summary": "A made-up launch line for the tests." },
+    { "id": "test-standard", "name": "Test Standard Edition", "subtitle": "$1.00", "summary": "A made-up edition." },
+    { "id": "test-deluxe", "name": "Test Deluxe Edition", "subtitle": "$2.00 · digital", "summary": "Another made-up edition." }
+  ]
+}
