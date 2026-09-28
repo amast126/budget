@@ -94,11 +94,15 @@ const cleanNotes = (s) =>
     .replace(/,\s*$/, '')
     .trim();
 
-// Per-serving nutrition as [calories, protein g, carbs g, fat g], or null when the recipe has none.
-function nutritionOf(n) {
+// Per-serving nutrition as [calories, protein g, carbs g, fat g], then [fiber g, sugar g, sodium mg] when the
+// recipe lists any of them (null for the ones it doesn't), or null when the recipe has no nutrition.
+export function nutritionOf(n) {
   if (!n || !Number(n.calories)) return null;
   const num = (v) => Math.round((Number(v) || 0) * 10) / 10;
-  return [Math.round(Number(n.calories)), num(n.protein), num(n.carbohydrates), num(n.fat)];
+  const out = [Math.round(Number(n.calories)), num(n.protein), num(n.carbohydrates), num(n.fat)];
+  const opt = (v, round) => (v == null || v === '' || !Number.isFinite(Number(v)) ? null : round(Number(v)));
+  const extra = [opt(n.fiber, (v) => Math.round(v * 10) / 10), opt(n.sugar, (v) => Math.round(v * 10) / 10), opt(n.sodium, Math.round)];
+  return extra.some((v) => v != null) ? [...out, ...extra] : out;
 }
 
 export function shape(x) {
