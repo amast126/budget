@@ -16,6 +16,7 @@ import * as NJ from '../scripts/fetch-news.mjs';
 import { budgetUnit } from './budget-unit.mjs';
 import { makeRecipes } from './make-recipes-fixture.mjs';
 import { recipesUnit } from './recipes-unit.mjs';
+import { recipeboxUnit } from './recipebox-unit.mjs';
 import { healthUnit } from './health-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
@@ -93,6 +94,16 @@ const init = (exportJson) => {
       d.updatedAt = Date.now();
       localStorage.setItem(k, JSON.stringify(d));
       (window.__modSubs[name] || []).forEach((f) => f());
+    },
+    async readModule(user, name) {
+      const v = localStorage.getItem('mod:' + name);
+      return v ? JSON.parse(v) : null;
+    },
+    async setModule(user, name, data) {
+      localStorage.setItem('mod:' + name, JSON.stringify({ ...data, updatedAt: Date.now() }));
+    },
+    async deleteModule(user, name) {
+      localStorage.removeItem('mod:' + name);
     },
     async mutateBudget(user, fn) {
       const d = read();
@@ -208,6 +219,7 @@ const check = (cond, msg) => {
 // the Budget tab's rules and the alerts job, on made-up data
 await budgetUnit(check);
 await recipesUnit(check);
+await recipeboxUnit(check);
 await healthUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
@@ -950,66 +962,254 @@ check(/exam in 20 days/.test(await page.innerText(learnCard)), 'Home learning ca
 await page.screenshot({ path: path.join(OUT, 'home-learning.png'), fullPage: true });
 
 
-// ---------------- cooking
+// ---------------- cooking: the recipe box (search, a recipe's page, servings, cook mode, import, add, edit, delete)
 await go('Home');
 await page.waitForSelector('.money .big');
 check(/Cooking/.test(await page.innerText('.col:nth-child(2)')) && /Grocery list/.test(await page.innerText('.col:nth-child(2)')), 'Home shows the Cooking card');
 await go('Cooking');
+await page.waitForSelector('.cooking .cook-hero');
+const rbox = () => page.evaluate(() => JSON.parse(localStorage.getItem('mod:recipebox') || 'null'));
+const SEARCH = 'input[aria-label="Search your recipes"]';
+await page
+  .waitForFunction(() => {
+    const b = JSON.parse(localStorage.getItem('mod:recipebox') || 'null');
+    const c = JSON.parse(localStorage.getItem('mod:cooking') || 'null');
+    return b && b.recipes.length === 2 && c && Array.isArray(c.mine) && c.mine.length === 0;
+  }, null, { timeout: 5000 })
+  .catch(() => {});
+let RBX = await rbox();
+let C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+check(RBX && RBX.recipes.map((r) => r.id).join() === 'mine-chipotle-steak,mine-chipotle-guac' && RBX.recipes[0].steps.length === 1 && C.mine.length === 0, 'the two starter recipes moved from My recipes into the recipe box');
+await page.waitForSelector('.rb-grid .rb-tile');
+check((await page.$$('.rb-grid .rb-tile')).length === 2 && /2\s*recipes/.test(await page.innerText('.cook-hero')), 'Recipes: the box shows them and the hero counts them');
+await page.screenshot({ path: path.join(OUT, 'cooking-box.png'), fullPage: true });
+// search
+await page.fill(SEARCH, 'guac');
+await page.waitForSelector('.cook-results .rs');
+{
+  const titles = await page.$$eval('.cook-results .rs-title', (e) => e.map((x) => x.textContent));
+  const marks = await page.$$eval('.cook-results mark', (e) => e.map((x) => x.textContent.toLowerCase()));
+  check(titles.join('|') === 'Chipotle-style guacamole' && marks.includes('guac'), `search by name, the match highlighted (${titles.join(', ')})`);
+}
+await page.fill(SEARCH, 'avocado');
+await page.waitForTimeout(100);
+check(/Uses hass avocados/i.test(await page.innerText('.cook-results')), 'search by ingredient says which ingredient matched');
+await page.fill(SEARCH, 'zzzz');
+await page.waitForTimeout(100);
+check(/Nothing in your recipe box/.test(await page.innerText('.cook-results')), 'no match: says so');
+await page.fill(SEARCH, 'steak');
+await page.press(SEARCH, 'Enter');
+await page.waitForSelector('.rp .rp-title');
+{
+  const ings = await page.$$eval('.rp-ing .ri-list:not(.pantry) > li:not(.ri-h)', (e) => e.length);
+  check((await page.innerText('.rp-title')) === 'Chipotle-style steak' && (await page.evaluate(() => location.hash)).includes('?r=mine-chipotle-steak') && ings === 10 && /Grill at 425/.test(await page.innerText('.rp-steps')), `Enter opens the top result with its ${ings} ingredients and steps`);
+  await page.fill('input[aria-label="Times the recipe"]', '2');
+  await page.waitForTimeout(100);
+  const first = await page.innerText('.rp-ing .ri-list > li:first-child .ri-amt');
+  check(first === '4–5 lb', `a recipe without a serving count scales as a batch (2× → ${first})`);
+  await page.fill('input[aria-label="Times the recipe"]', '1');
+}
+await page.screenshot({ path: path.join(OUT, 'cooking-recipe-mine.png'), fullPage: true });
+await page.click('.rp-back');
+await page.waitForSelector('.cook-hero');
+check((await page.inputValue(SEARCH)) === 'steak' && !!(await page.$('.cook-results')), 'Back returns to the search as it was');
+await page.fill(SEARCH, '');
+// import a recipe file: one recipe with a photo and card amounts for 4, one without
+const dish = await page.evaluate(() => {
+  const c = document.createElement('canvas');
+  c.width = 800;
+  c.height = 600;
+  const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, 800, 600);
+  g.addColorStop(0, '#c2553a');
+  g.addColorStop(1, '#f2c14e');
+  x.fillStyle = g;
+  x.fillRect(0, 0, 800, 600);
+  x.fillStyle = '#fffaf2';
+  x.beginPath();
+  x.arc(400, 300, 200, 0, 7);
+  x.fill();
+  return c.toDataURL('image/jpeg', 0.8);
+});
+const gnocchi = {
+  id: 'kit-sample-gnocchi',
+  title: 'Sample Sheet-Pan Gnocchi',
+  subtitle: 'with Zucchini & Melty Mozzarella',
+  source: 'Meal kit',
+  servings: 2,
+  minutes: 30,
+  calories: 610,
+  tags: ['Vegetarian'],
+  ingredients: [
+    { item: 'Shelf-stable gnocchi', amount: '12 oz', per: { 4: '24 oz' } },
+    { item: 'Cherry tomatoes', amount: '8 oz', per: { 4: '16 oz' } },
+    { item: 'Zucchini', amount: '1', per: { 4: '2' } },
+    { item: 'Mozzarella', amount: '½ cup', per: { 4: '1 cup' } },
+    { item: 'Italian seasoning', amount: '1 tsp', per: { 4: '2 tsp' } },
+    { item: 'Olive oil', amount: '1 tbsp', per: { 4: '2 tbsp' }, pantry: true },
+    { item: 'Salt', pantry: true },
+  ],
+  tools: ['Sheet pan'],
+  steps: [
+    { title: 'Prep', text: 'Heat the oven to 450°F. Halve the tomatoes and cut the zucchini into half-moons.' },
+    { title: 'Roast', text: 'Toss everything with [[1 tbsp]] olive oil and the seasoning on a sheet pan. Roast 18–20 minutes, until the gnocchi are golden.' },
+    { title: 'Melt', text: 'Scatter the mozzarella over the top and roast 3 more minutes.' },
+  ],
+  photo: { card: dish, full: dish },
+};
+const importFile = path.join(OUT, 'recipes-import.json');
+fs.writeFileSync(importFile, JSON.stringify({ kind: 'recipebox-import', version: 1, recipes: [gnocchi, { id: 'kit-sample-toast', title: 'Sample Plain Toast', steps: ['Toast the bread 2 minutes.'] }] }));
+const dishFile = path.join(OUT, 'dish.jpg');
+fs.writeFileSync(dishFile, Buffer.from(dish.split(',')[1], 'base64'));
+await page.click('.rb button:has-text("Import")');
+await page.setInputFiles('.rim input[type=file]', importFile);
+await page.waitForSelector('.rim-list li');
+check(/2 recipes · 2 new · 1 photo/.test(await page.innerText('.rim-sum')), `import preview: ${(await page.innerText('.rim-sum')).trim()}`);
+await page.screenshot({ path: path.join(OUT, 'cooking-import.png') });
+await page.click('.rim button:has-text("Import 2 recipes")');
+await page.waitForSelector('.toast:has-text("Imported 2 recipes")');
+RBX = await rbox();
+{
+  const gn = RBX.recipes.find((r) => r.id === 'kit-sample-gnocchi');
+  const docs = await page.evaluate((st) => ['card', 'photo'].map((k) => JSON.parse(localStorage.getItem(`mod:recipebox-${k}-kit-sample-gnocchi-${st}`) || 'null')), gn && gn.photo);
+  check(RBX.recipes.length === 4 && gn && gn.photo && docs.every((d) => d && /^data:image\/jpeg/.test(d.url)) && gn.ingredients[0].by[4].amt === 24, 'imported: the recipe in the box, its photo in two documents of its own');
+}
+await page.waitForSelector('.rb-tile:has-text("Sample Sheet-Pan Gnocchi") img[src^="data:image/jpeg"]');
+check(true, 'its tile shows the photo');
+// the recipe page: servings from the card, a custom amount, step amounts, cook mode
+await page.click('.rb-tile:has-text("Sample Sheet-Pan Gnocchi") a');
+await page.waitForSelector('.rp .rp-title');
+const amts = () => page.$$eval('.rp-ing .ri-list:not(.pantry) .ri-amt', (e) => e.map((x) => x.textContent));
+check((await amts()).join('|') === '12 oz|8 oz|1|½ cup|1 tsp' && !!(await page.$('.rp-photo img[src^="data:image/jpeg"]')), `as written for 2: ${(await amts()).join(', ')}`);
+await page.click('button[aria-label="More servings"]');
+await page.click('button[aria-label="More servings"]');
+await page.waitForTimeout(100);
+check((await amts()).join('|') === '24 oz|16 oz|2|1 cup|2 tsp', `4 servings uses the card’s own amounts: ${(await amts()).join(', ')}`);
+await page.fill('input[aria-label="Number of servings"]', '3');
+await page.waitForTimeout(100);
+{
+  const a3 = await amts();
+  const stepAmt = await page.$$eval('.rp-steps .amt.scaled', (e) => e.map((x) => x.textContent));
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('dash.rb.serv') || '{}'));
+  check(a3.join('|') === '18 oz|12 oz|1½|¾ cup|1½ tsp' && stepAmt.join() === '1½ tbsp' && saved['kit-sample-gnocchi'] === 3 && /Back to 2/.test(await page.innerText('.serv')), `typed 3 servings: ${a3.join(', ')}; the step says ${stepAmt.join()}`);
+}
+await page.click('.rp-ing .ri-list > li:first-child button');
+check(!!(await page.$('.rp-ing .ri-list > li.done')), 'tapping an ingredient checks it off');
+await page.screenshot({ path: path.join(OUT, 'cooking-recipe.png'), fullPage: true });
+await page.click('.cook-btn');
+await page.waitForSelector('.cook .cook-text');
+check(/Step 1 of 3/i.test(await page.innerText('.cook-kick')) && /Heat the oven/.test(await page.innerText('.cook-text')), 'cook mode: one step at a time');
+await page.click('.cook-next');
+await page.click('.cook-tbtn:has-text("18–20 min")');
+await page.waitForTimeout(1200);
+{
+  const ct = await page.innerText('.ct');
+  check(/Step 2 · 18–20 min/.test(ct) && /17:5\d|18:00/.test(ct) && /1½ tbsp/.test(await page.innerText('.cook-text')), `cook mode: a timer from the step (${ct.replace(/\n/g, ' ')}), amounts scaled`);
+}
+await page.click('.cook-ingbtn');
+check((await page.$$('.cook-ing .ri-list li.done')).length === 1, 'cook mode: ingredients on hand, with what’s checked off');
+await page.click('.cook-ing .cook-x');
+await page.screenshot({ path: path.join(OUT, 'cooking-cookmode.png') });
+await page.click('.cook-next');
+await page.click('.cook-next');
+await page.waitForSelector('.cook-done');
+await page.click('.cook-made');
+await page.waitForTimeout(200);
+RBX = await rbox();
+check(!(await page.$('.cook')) && RBX.recipes.find((r) => r.id === 'kit-sample-gnocchi').made === 1, 'finishing cook mode marks it made');
+await page.click('.rp-icon[aria-label="Add to favorites"]');
+await page.waitForTimeout(150);
+RBX = await rbox();
+check(RBX.recipes.find((r) => r.id === 'kit-sample-gnocchi').fav === 1 && !!(await page.$('.rp-icon.on')), 'favorite');
+// edit: a new name and a new photo; the card's amounts for 4 stay
+const stamp0 = RBX.recipes.find((r) => r.id === 'kit-sample-gnocchi').photo;
+await page.click('.rp-icon[aria-label="Edit recipe"]');
+await page.waitForSelector('.rf');
+await page.fill('.rf label:has-text("Name") input', 'Sample Gnocchi Bake');
+await page.setInputFiles('.rf input[type=file]', dishFile);
+await page.waitForSelector('.rf .rf-img img[src^="data:image/jpeg"]');
+await page.click('.rf button:has-text("Save changes")');
+await page.waitForSelector('.toast:has-text("Recipe saved")');
+RBX = await rbox();
+{
+  const gn = RBX.recipes.find((r) => r.id === 'kit-sample-gnocchi');
+  const [card, oldCard] = await page.evaluate(([a, b]) => [a, b].map((st) => localStorage.getItem(`mod:recipebox-card-kit-sample-gnocchi-${st}`)), [gn.photo, stamp0]);
+  check(gn.title === 'Sample Gnocchi Bake' && gn.photo !== stamp0 && card && !oldCard && gn.ingredients[0].by[4].amt === 24 && gn.fav === 1 && gn.made === 1 && (await page.innerText('.rp-title')) === 'Sample Gnocchi Bake', 'edit: renamed with a new photo (the old one removed after saving); amounts for 4, favorite and times made kept');
+}
+await page.click('.rp-back');
+// delete, undo, delete
+await page.fill(SEARCH, 'toast');
+await page.press(SEARCH, 'Enter');
+await page.waitForSelector('.rp-title:text-is("Sample Plain Toast")');
+await page.click('.rp-more button:has-text("Delete recipe")');
+await page.click('.rp-more button:has-text("Tap again")');
+await page.waitForSelector('.toast:has-text("Deleted")');
+RBX = await rbox();
+check(!RBX.recipes.some((r) => r.id === 'kit-sample-toast') && !!(await page.$('.cook-hero')), 'delete: gone, and back to the box');
+await page.click('.toast-btn');
+await page.waitForTimeout(200);
+RBX = await rbox();
+check(RBX.recipes.some((r) => r.id === 'kit-sample-toast'), 'Undo brings it back');
+await page.fill(SEARCH, '');
+// add your own
+await page.click('.rb button:has-text("Add recipe")');
+await page.waitForSelector('.rf');
+await page.fill('.rf label:has-text("Name") input', 'Garlic butter rice');
+await page.fill('.rf label:has-text("Servings") input', '4');
+await page.fill('.rf label:has-text("Ingredients, one per line") textarea', '1 cup rice\n2 Tbsp butter\n3 cloves garlic, minced\nsalt');
+await page.fill('.rf label:has-text("Steps") textarea', 'Rice: Simmer the rice in [[1½ cups]] water for 15 minutes.\n\nFinish: Stir in the butter and garlic.');
+await page.click('.rf button:has-text("Save recipe")');
+await page.waitForSelector('.rp-title:text-is("Garlic butter rice")');
+RBX = await rbox();
+{
+  const own = RBX.recipes.find((r) => r.title === 'Garlic butter rice');
+  check(own && /^mine-/.test(own.id) && own.servings === 4 && own.ingredients.length === 4 && own.ingredients[1].unit === 'tbsp' && own.steps.length === 2 && own.steps[0].title === 'Rice' && own.source === 'Mine', 'own recipe added, opened, with its steps');
+}
+await page.click('.rp-back');
+await page.waitForSelector('.rb-grid');
+check((await page.$$('.rb-grid .rb-tile')).length === 5, 'the box now holds 5 recipes');
+// ---------------- cooking: the kitchen
+await page.click('.cooking .page-tabs .seg-btn:has-text("Kitchen")');
 await page.waitForSelector('.cooking .kitchen');
 await page.screenshot({ path: path.join(OUT, 'cooking-empty.png'), fullPage: true });
 check((await page.$$('.picks .pick')).length === 8 && /All 30 picks/.test(await page.innerText('.cooking .mp-more')), 'Kitchen shows 8 of this week’s 30 picks, with a way to all of them');
-check(/Chipotle-style steak/.test(await page.innerText('.cooking')), 'starter recipes in My recipes');
 // kitchen: add several at once
 await page.fill('input[aria-label="Add to kitchen"]', 'chicken breasts, garlic, olive oil, rice, yellow onion, soy sauce, eggs, butter, limes');
 await page.click('.kitchen .add-row button[type=submit]');
 await page.waitForTimeout(200);
-let C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
 check(C.kitchen.length === 9, `9 kitchen items saved (${C.kitchen.map((i) => i.name + '@' + i.where).join(', ')})`);
 check(C.kitchen.find((i) => /Chicken/.test(i.name)).where === 'fridge' && C.kitchen.find((i) => /Rice/.test(i.name)).where === 'pantry', 'places guessed (chicken → fridge, rice → pantry)');
 // a common chip
-const chip = await page.$('.chips .chip');
+const chip = await page.$('.kitchen .chips .chip');
 const chipText = chip ? (await chip.innerText()).replace('+ ', '') : '';
 if (chip) await chip.click();
 await page.waitForTimeout(150);
 C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
 check(C.kitchen.length === 10 && C.kitchen.some((i) => i.name === chipText), `common chip adds "${chipText}"`);
-// cook-now matches
-const rows = await page.$$eval('.cooking .col:nth-child(2) .card:first-child .rc', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
+// cook-now matches: your own recipe (you have everything) first
+const rows = await page.$$eval('.cooking .cook-now .rc', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
 console.log('  cook now:', rows.slice(0, 4));
-check(rows.length > 0, 'cook-with-what-you-have shows matches');
+check(rows.length > 0 && /Garlic butter rice/.test(rows[0]) && /You have everything/.test(rows[0]), 'cook-with-what-you-have: your own recipe tops it (you have everything)');
 // running low → grocery list
 await page.click('.k-row:has-text("Butter") .low-btn');
 await page.waitForTimeout(150);
 C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
 check(C.kitchen.find((i) => i.name === 'Butter').low && C.grocery.some((g) => g.name === 'Butter'), 'Low adds butter to the grocery list');
-// open a pick, add its missing items
+// open a pick, add its missing items, save it to the box
 await page.click('.picks .pick >> nth=1');
-await page.waitForSelector('.sheet .ing');
-const sheetText = await page.innerText('.sheet');
-await page.screenshot({ path: path.join(OUT, 'cooking-recipe.png') });
-const addBtn = await page.$('.sheet .btn.primary');
+await page.waitForSelector('.rp .ri-list');
 const nGroceryBefore = C.grocery.length;
-if (addBtn) {
-  await addBtn.click();
-  await page.waitForTimeout(150);
-}
+await page.click('.rp-ing button:has-text("missing to groceries")');
+await page.waitForTimeout(150);
 C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
 check(C.grocery.length > nGroceryBefore && C.grocery.some((g) => g.for && g.for.length), `recipe’s missing items added with a "for" note (${C.grocery.length - nGroceryBefore} added)`);
-// save it
-await page.click('.sheet button:has-text("Save to My recipes")');
+await page.click('.rp-cta button:has-text("Save to recipe box")');
 await page.waitForTimeout(150);
-C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
-check(C.mine.some((r) => r.id.startsWith('bb-') && r.ingredients.length > 3), 'pick saved to My recipes with its ingredients');
-await page.click('.sheet button:has-text("Close")');
-// add own recipe
-await page.click('.cooking button:has-text("+ Add")');
-await page.fill('.sheet input >> nth=0', 'Garlic butter rice');
-await page.fill('.sheet textarea >> nth=0', '1 cup rice\n2 Tbsp butter\n3 cloves garlic, minced\nsalt');
-await page.click('.sheet button:has-text("Save recipe")');
-await page.waitForTimeout(150);
-C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
-check(C.mine.some((r) => r.title === 'Garlic butter rice' && r.ingredients.length === 4), 'own recipe added');
-check(/Garlic butter rice/.test(await page.innerText('.cooking .col:nth-child(2) .card:first-child')), 'own recipe tops cook-now (have everything)');
+RBX = await rbox();
+check(RBX.recipes.some((r) => r.id.startsWith('bb-') && r.source === 'Budget Bytes' && r.ingredients.length > 3) && !(await page.$('.rp-cta button:has-text("Save to recipe box")')) && !!(await page.$('.rp-icon[aria-label="Edit recipe"]')), 'a pick saved to the recipe box with its ingredients');
+await page.click('.rp-back');
+await page.waitForSelector('.cooking .kitchen');
 // tick two grocery items and finish the shop, logging it to the budget
 await page.fill('input[aria-label="Add to grocery list"]', 'cilantro, tortillas');
 await page.click('.grocery .add-row button[type=submit]');
@@ -1049,7 +1249,7 @@ await page.waitForSelector('.mealprep .mp-grid');
   check((await count()) === 30 && (await n()) === 30 && !/Show more/.test(await page.innerText('.mp-browse')), 'Meal prep: all of this week’s 30 picks');
   await page.click('.mp-browse .seg-btn:has-text("All")');
   const total = await count();
-  check(total >= 40, `All: the whole pool (${total} recipes)`);
+  check(total >= 44, `All: the whole pool and your own recipes (${total} recipes)`);
   await page.click('.mp-filters .chip:has-text("Meal prep")');
   const mp = await count();
   await page.click('.mp-filters .chip:has-text("Chicken & turkey")');
@@ -1063,13 +1263,16 @@ await page.waitForSelector('.mealprep .mp-grid');
   await page.fill('input[aria-label="Search recipes"]', 'lentil');
   await page.waitForTimeout(150);
   check((await page.$$eval('.mealprep .mp-card', (e) => e.map((x) => x.innerText))).every((t) => /Lentil/i.test(t)) && (await n()) >= 1, 'search by name or ingredient');
+  await page.fill('input[aria-label="Search recipes"]', 'gnocchi');
+  await page.waitForTimeout(150);
+  check((await page.$$eval('.mealprep .mp-card', (e) => e.map((x) => x.innerText))).some((t) => /Sample Gnocchi Bake/.test(t) && /Meal kit/.test(t)), 'your recipe box is in meal prep too');
   await page.fill('input[aria-label="Search recipes"]', '');
   await page.click('.mp-filters .chip:has-text("25g+ protein")');
   await page.selectOption('.mp-count select', 'protein');
   const prot = await page.$$eval('.mealprep .mp-card', (e) => e.map((x) => Number((x.innerText.match(/(\d+)g protein/) || [])[1])));
   check(prot.length > 0 && prot.every((g) => g >= 25) && prot.every((g, i) => i === 0 || g <= prot[i - 1]), `25g+ protein, most first (${prot.slice(0, 4).join(', ')}…)`);
   await page.click('.mp-browse button:has-text("Clear filters")');
-  // plan three recipes, one from a recipe's own sheet
+  // plan three recipes, one from a recipe's own page
   const find = async (q) => {
     await page.fill('input[aria-label="Search recipes"]', q);
     await page.waitForTimeout(120);
@@ -1080,19 +1283,21 @@ await page.waitForSelector('.mealprep .mp-grid');
   await page.click('.mp-card:has-text("Sample Lentil Soup") .mp-add');
   await find('egg muffins');
   await page.click('.mp-card:has-text("Sample Egg Muffins") .mp-open');
-  await page.waitForSelector('.sheet .ing');
-  await page.click('.sheet button:has-text("Add to this week’s prep")');
-  await page.click('.sheet button:has-text("Close")');
+  await page.waitForSelector('.rp .ri-list');
+  await page.click('.rp-more button:has-text("Add to this week’s prep")');
+  await page.click('.rp-back');
+  await page.waitForSelector('.mealprep .mp-grid');
+  check((await page.inputValue('input[aria-label="Search recipes"]')) === 'egg muffins', 'back from a recipe, meal prep is as you left it');
   await find('');
   await page.waitForTimeout(200);
   C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
   const pt = await page.innerText('.mp-plan');
   check(C.plan.length === 3 && C.plan.every((r) => r.keys && r.keys.length) && /3 recipes · 12 servings/.test(pt) && (await page.$$('.mp-card.planned')).length >= 2, `plan saved (${C.plan.map((r) => r.title).join(', ')})`);
-  const before = C.grocery.length;
+  const foodBefore = C.grocery.length;
   await page.click('.mp-plan button:has-text("missing item")');
   await page.waitForTimeout(200);
   C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
-  check(C.grocery.length > before && C.grocery.some((g) => (g.for || []).includes('Sample Lentil Soup')) && C.grocery.some((g) => (g.for || []).includes('Sample Beef Chili')), `the week’s missing ingredients go on the grocery list, each saying what it’s for (${C.grocery.length - before} added)`);
+  check(C.grocery.length > foodBefore && C.grocery.some((g) => (g.for || []).includes('Sample Lentil Soup')) && C.grocery.some((g) => (g.for || []).includes('Sample Beef Chili')), `the week’s missing ingredients go on the grocery list, each saying what it’s for (${C.grocery.length - foodBefore} added)`);
   await page.click('.mp-plan-row:has-text("Sample Egg Muffins") .x');
   await page.waitForTimeout(150);
   C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
@@ -1102,8 +1307,14 @@ await page.waitForSelector('.mealprep .mp-grid');
 await go('Home');
 await page.waitForSelector('.money .big');
 const homeCook = await page.innerText('.col:nth-child(2)');
-check(/Tonight:/.test(homeCook), 'Home Cooking card suggests tonight’s dinner');
+check(/Tonight: Garlic butter rice/.test(homeCook) && /6 recipes/.test(homeCook), `Home Cooking card suggests tonight’s dinner from your box: ${(homeCook.match(/Cooking[\s\S]{0,120}/) || [''])[0].replace(/\n/g, ' · ')}`);
 check(/This week’s prep/.test(homeCook) && /2 recipes · 8 servings/.test(homeCook), 'and this week’s prep');
+await page.click('.home-cooking a.home-row:has-text("Tonight")');
+await page.waitForSelector('.rp-title:text-is("Garlic butter rice")');
+check(true, 'Home’s tonight link opens the recipe');
+await page.click('.rp-back');
+await page.waitForSelector('.money .big');
+check(/#\/?$/.test(await page.evaluate(() => location.hash)) || (await page.evaluate(() => location.hash)) === '', 'and Back goes back Home');
 await page.screenshot({ path: path.join(OUT, 'home-cooking.png'), fullPage: true });
 
 
@@ -1403,11 +1614,11 @@ await go('Cooking');
 await page.click('.cooking .page-tabs .seg-btn:has-text("Kitchen")'); // the tab remembers Meal prep from before
 await page.waitForSelector('.picks .pick');
 await page.click('.picks .pick >> nth=1');
-await page.waitForSelector('.sheet .nutri');
-await page.click('.sheet button:has-text("Log a serving to Health")');
+await page.waitForSelector('.rp .rp-nutri');
+await page.click('.rp-more button:has-text("Log a serving to Health")');
 await page.waitForTimeout(250);
 check((await dayFood()).some((e) => e.key.startsWith('bb:') && e.k === 420), 'Cooking recipe logged to Health (420 cal)');
-await page.click('.sheet button:has-text("Close")');
+await page.click('.rp-back');
 
 // ---------------------------------------------------------------- Apple Health import
 await go('Health');
@@ -2234,7 +2445,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   const names = Object.keys(docs).sort().join(',');
   const y = String(new Date().getFullYear());
   check(b.historyVersion === 2 && b.configVersion === 28 && b.config.categories.length === 11 && Object.keys(b.months).length >= 8, `demo budget: ${Object.keys(b.months).length} months, current versions (so the budget module adds nothing of its own)`);
-  check(['home', 'auto', 'learning', 'cooking', 'health', `health-${y}`, 'health-hk', `health-hk-${y}`, 'health-hk-ecg', 'health-hk-routes', 'fun', 'guitar', 'sourdough', 'birthdays'].every((n) => docs[n]), `demo documents: ${names}`);
+  check(['home', 'auto', 'learning', 'cooking', 'health', `health-${y}`, 'health-hk', `health-hk-${y}`, 'health-hk-ecg', 'health-hk-routes', 'fun', 'guitar', 'sourdough', 'birthdays', 'recipebox'].every((n) => docs[n]), `demo documents: ${names}`);
   check(docs.fun.releases.every((r) => !/GTA|Grand Theft|Modern Warfare/i.test(r.title)) && !docs.fun.playing.some((g) => /Black Ops|Teamfight|Pokémon/i.test(g.title)) && docs.guitar.sessions.length > 20 && docs.sourdough.starter.feeds.length && docs.birthdays.people.length >= 5, 'demo person has their own games, guitar practice, starter and birthdays');
   check(docs.home.place.name === 'Seattle, WA' && docs.auto.car.make === 'Tesla' && docs.auto.state === 'WA' && docs.health.profile.sex === 'female' && docs['health-hk'].workouts.length > 100, 'demo person: Seattle, a Tesla, a year of Apple Health');
   const takeHome = b.config.incomes.reduce((a, i) => a + i.biweekly, 0) * 26;
@@ -2289,7 +2500,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(300);
   const spentAfter = await tp.innerText('.money .muted.small.num');
   check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
-  for (const [route, sel] of [['budget', '.bud-summary'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.kitchen'], ['auto', '.auto-hero'], ['news', '.news-body'], ['fun', '.doom-zone'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
+  for (const [route, sel] of [['budget', '.bud-summary'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.rb-grid'], ['cooking?r=demo-miso-salmon', '.rp-title'], ['auto', '.auto-hero'], ['news', '.news-body'], ['fun', '.doom-zone'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
     await tp.goto(`${base}?demo#/${route}`);
     await tp.waitForSelector(sel, { timeout: 8000 }).catch(() => {});
     check(!!(await tp.$(sel)) && !!(await tp.$('.demo-bar')), `demo #/${route} renders`);
@@ -2520,7 +2731,7 @@ for (const [label, hh, want] of [['night', 22, 'sky-night'], ['golden', 18, 'sky
   await tp.close();
 }
 await dp.click('a.nav-item:has-text("Cooking")');
-await dp.waitForSelector('.cooking .kitchen');
+await dp.waitForSelector('.cooking .cook-hero');
 await dp.evaluate(() => {});
 await dp.waitForTimeout(300);
 await dp.screenshot({ path: path.join(OUT, 'desktop-cooking.png'), fullPage: true });
