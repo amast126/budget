@@ -18,7 +18,7 @@ export function normalizeHkYear(d) {
   if (!d || typeof d !== 'object') return defaultHkYear();
   return { version: 1, days: d.days && typeof d.days === 'object' ? d.days : {} };
 }
-export const hasHk = (hk) => !!(hk && hk.importedAt);
+export const hasHk = (hk) => !!(hk && (hk.importedAt || hk.syncedAt));
 
 // ---------------------------------------------------------------- reading days
 export const hkDay = (hkYears, iso) => {
@@ -238,7 +238,11 @@ export function planImport(bundle) {
       Object.entries(years).map(([y, days]) => [
         y,
         (doc) => {
-          doc.days = { ...(doc.days || {}), ...days };
+          // Each day from the file replaces the same fields already saved; anything else there (water and
+          // caffeine from the daily sync, say) stays.
+          const out = { ...(doc.days || {}) };
+          for (const iso in days) out[iso] = { ...(out[iso] || {}), ...days[iso] };
+          doc.days = out;
         },
       ])
     ),

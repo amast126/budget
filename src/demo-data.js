@@ -7,6 +7,8 @@
 import { isoOf, addDays, daysIn, uid } from './budget-logic.js';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
+import * as HM from './health-more.js';
+import * as T from './health-training.js';
 import { defaultLearning, logTime } from './learning-logic.js';
 import { DEMO_PLAN } from './learning-catalog.js';
 import { defaultCooking, addKitchen, addGrocery } from './cooking-logic.js';
@@ -192,13 +194,27 @@ function budgetDoc(today, R) {
 }
 
 // ---------------------------------------------------------------- food
-const q = (name, k, p, c, f) => ({ name, src: 'quick', perServing: { k, p, c, f }, portions: [{ label: '1 serving', mult: 1 }] });
+// [fiber g, sugar g, sodium mg] per serving
+const q = (name, k, p, c, f, [fib, sug, na] = []) => ({ name, src: 'quick', perServing: { k, p, c, f, ...(fib != null ? { fib, sug, na } : {}) }, portions: [{ label: '1 serving', mult: 1 }] });
 const FOODS = {
-  breakfast: [q('Greek yogurt with berries', 210, 17, 26, 4), q('Oatmeal with banana', 310, 9, 58, 6), q('Scrambled eggs and toast', 380, 22, 30, 18), q('Everything bagel with cream cheese', 420, 13, 62, 13), q('Protein smoothie', 290, 28, 34, 5)],
-  lunch: [q('Turkey and swiss sandwich', 460, 32, 42, 17), q('Chicken burrito bowl', 640, 42, 68, 20), q('Chicken Caesar salad', 520, 38, 18, 32), q('Leftover stir-fry', 540, 34, 56, 18), q('Tomato soup and grilled cheese', 590, 20, 58, 30)],
-  dinner: [q('Salmon, rice and broccoli', 610, 42, 55, 22), q('Spaghetti and meatballs', 720, 34, 86, 24), q('Chicken stir-fry', 560, 40, 52, 18), q('Sheet-pan chicken and vegetables', 530, 44, 32, 24), q('Beef tacos', 650, 36, 48, 34), q('Pizza, 2 slices', 570, 24, 66, 22)],
-  snack: [q('Apple', 95, 0.5, 25, 0.3), q('Almonds, 1 oz', 165, 6, 6, 14), q('Protein bar', 210, 20, 23, 7), q('Hummus and pretzels', 230, 7, 32, 9), q('Latte', 190, 10, 18, 7)],
+  breakfast: [q('Greek yogurt with berries', 210, 17, 26, 4, [3, 18, 70]), q('Oatmeal with banana', 310, 9, 58, 6, [7, 16, 10]), q('Scrambled eggs and toast', 380, 22, 30, 18, [2, 3, 540]), q('Everything bagel with cream cheese', 420, 13, 62, 13, [3, 7, 690]), q('Protein smoothie', 290, 28, 34, 5, [4, 22, 220])],
+  lunch: [q('Turkey and swiss sandwich', 460, 32, 42, 17, [4, 6, 1350]), q('Chicken burrito bowl', 640, 42, 68, 20, [11, 5, 1480]), q('Chicken Caesar salad', 520, 38, 18, 32, [3, 4, 1100]), q('Leftover stir-fry', 540, 34, 56, 18, [4, 12, 1240]), q('Tomato soup and grilled cheese', 590, 20, 58, 30, [4, 16, 1650])],
+  dinner: [q('Salmon, rice and broccoli', 610, 42, 55, 22, [5, 3, 520]), q('Spaghetti and meatballs', 720, 34, 86, 24, [7, 14, 1380]), q('Chicken stir-fry', 560, 40, 52, 18, [4, 11, 1150]), q('Sheet-pan chicken and vegetables', 530, 44, 32, 24, [6, 8, 780]), q('Beef tacos', 650, 36, 48, 34, [6, 5, 1210]), q('Pizza, 2 slices', 570, 24, 66, 22, [4, 8, 1280])],
+  snack: [q('Apple', 95, 0.5, 25, 0.3, [4.4, 19, 2]), q('Almonds, 1 oz', 165, 6, 6, 14, [3.5, 1.2, 0]), q('Protein bar', 210, 20, 23, 7, [3, 6, 190]), q('Hummus and pretzels', 230, 7, 32, 9, [5, 2, 560]), q('Latte', 190, 10, 18, 7, [0, 17, 150])],
 };
+// A workout's heart-rate histogram the way the importer stores it: [first bpm, minutes per 5 bpm…].
+function hrHist(R, avg, min, sd) {
+  const bins = {};
+  for (let i = 0; i < min * 4; i++) {
+    const u = (R() + R() + R() - 1.5) * 2 * sd;
+    const b = Math.floor((avg + u) / 5) * 5;
+    bins[b] = (bins[b] || 0) + 0.25;
+  }
+  const ks = Object.keys(bins).map(Number).sort((a, b) => a - b);
+  const out = [ks[0]];
+  for (let b = ks[0]; b <= ks[ks.length - 1]; b += 5) out.push(Math.round((bins[b] || 0) * 10) / 10);
+  return out;
+}
 
 // ---------------------------------------------------------------- Apple Health (a year of a Watch and iPhone)
 const WATCH = 'Jordan’s Apple Watch';
@@ -276,6 +292,7 @@ function appleBundle(today, R, hourNow) {
       if (dow === 6 && summer > 0.3 && !w.length) add('bike', 'Cycling', '09:30', 75 + R() * 45, 480 + R() * 260, { mi: round(18 + R() * 14, 2), hr: Math.round(132 + R() * 10), hrMax: Math.round(158 + R() * 10) });
       if (dow === 0) add('walk', 'Walking', '16:20', 35 + R() * 25, 130 + R() * 60, { mi: round(1.6 + R() * 1.2, 2), hr: Math.round(98 + R() * 8) });
     }
+    for (const x of w) if (x.hr) x.hb = hrHist(R, x.hr, x.min, x.type === 'run' ? 8 : 11);
     workouts.push(...w);
     const wkcal = w.reduce((a, x) => a + x.kcal, 0);
     const wmin = w.reduce((a, x) => a + x.min, 0);
@@ -489,12 +506,74 @@ export function demoDocs(now = new Date()) {
     if (n > 0 && n % 9 === 4) H.addWorkout(y, iso, { type: 'hiit', minutes: 50, note: 'Spin class' });
   }
 
+  // Habits for the last six weeks: water, coffee, a drink or two most Friday and Saturday nights, vitamins
+  for (let n = 41; n >= 0; n--) {
+    const iso = addDays(today, -n);
+    const y = years[iso.slice(0, 4)];
+    if (!y || (n > 0 && R() < 0.06)) continue;
+    const dow = new Date(`${iso}T12:00:00`).getDay();
+    const d = H.dayOf(y, iso);
+    const partial = n === 0 ? Math.min(1, (hour - 7) / 14) : 1;
+    d.hb = { water: Math.max(0, Math.round((5 + R() * 4) * partial)), caffeine: Math.round((dow === 0 || dow === 6 ? 1 : 1 + R() * 2) * (n === 0 && hour < 9 ? 0 : 1)) };
+    if ((dow === 5 || dow === 6) && R() < 0.65 && n > 0) d.hb.alcohol = 1 + Math.floor(R() * 3);
+    else if (R() < 0.06 && n > 0) d.hb.alcohol = 1;
+    if (R() < 0.82 && (n > 0 || hour >= 9)) d.hb.vitamins = 1;
+    Object.keys(d.hb).forEach((k) => !d.hb[k] && delete d.hb[k]);
+    d.hbAt = 1;
+  }
   // Apple Health, imported the way the Health tab would do it
   const bundle = appleBundle(today, R, hour);
+  // Nights after a drink run shorter, with lower HRV (so "What affects your sleep" has something to find).
+  for (const y of Object.values(years)) {
+    for (const [iso, d] of Object.entries(y.days)) {
+      if (!(d.hb && d.hb.alcohol)) continue;
+      const next = bundle.days[addDays(iso, 1)];
+      if (!next) continue;
+      if (next.sl) {
+        next.sl.a = Math.max(200, next.sl.a - 30 - d.hb.alcohol * 8);
+        next.sl.c = Math.max(0, next.sl.a - next.sl.d - next.sl.r);
+      }
+      if (next.hrv) next.hrv = Math.max(20, next.hrv - 5 - d.hb.alcohol * 2);
+      if (next.rhr) next.rhr += 2;
+    }
+  }
+  // Strength: an upper day on Mondays and a lower day on Thursdays (the Watch's strength workouts), slowly heavier.
+  const UPPER = [['bench', 85, 8], ['row', 75, 10], ['ohp', 50, 8], ['pulldown', 90, 10], ['curl', 20, 12]];
+  const LOWER = [['squat', 105, 8], ['rdl', 95, 10], ['legpress', 180, 12], ['calf', 90, 15], ['plank', 0, 45]];
+  for (const w of bundle.workouts.filter((x) => x.type === 'weights' && x.d >= addDays(today, -84))) {
+    const y = years[w.d.slice(0, 4)];
+    if (!y) continue;
+    const weeks = Math.floor((new Date(`${w.d}T12:00:00`) - new Date(`${addDays(today, -84)}T12:00:00`)) / (7 * 864e5));
+    const list = new Date(`${w.d}T12:00:00`).getDay() === 1 ? UPPER : LOWER;
+    for (const [ex, lb0, reps] of list) {
+      const l = T.addLift(y, w.d, ex);
+      const lb = lb0 ? Math.round((lb0 + weeks * (ex === 'squat' || ex === 'legpress' || ex === 'rdl' ? 2.5 : 1.25)) / 2.5) * 2.5 : 0;
+      for (let k = 0; k < 3; k++) T.addSet(y, w.d, l.id, { r: Math.max(5, reps - (k === 2 && R() < 0.4 ? 1 : 0)), lb });
+    }
+  }
+  T.saveRoutine(health, 'Upper', UPPER.map((x) => x[0]));
+  T.saveRoutine(health, 'Lower', LOWER.map((x) => x[0]));
   const plan = HK.planImport(bundle);
   plan.health(health);
   const hk = HK.defaultHk();
   plan.main(hk);
+  hk.syncedAt = Date.now() - 2 * 3600e3;
+  // A saved breakfast, a weight goal, checkups, labs, and a daily sync that ran this morning
+  const yb = FOODS.breakfast[0];
+  const coffee = FOODS.snack[4];
+  HM.saveMeal(health, 'Usual breakfast', 'breakfast', [H.entryFor(yb, yb.portions[0], 1, 'breakfast'), H.entryFor(coffee, coffee.portions[0], 1, 'breakfast')]);
+  health.goalWeight = 145;
+  health.checkups = [
+    { id: 'physical', name: 'Physical', every: 12, last: addDays(today, -300) },
+    { id: 'dentist', name: 'Dental cleaning', every: 6, last: addDays(today, -168) },
+    { id: 'eye', name: 'Eye exam', every: 24, last: addDays(today, -500), booked: addDays(today, 12) },
+  ];
+  health.labs = [
+    ['tc', 540, 212], ['ldl', 540, 128], ['hdl', 540, 58], ['tg', 540, 110], ['vitd', 540, 22], ['a1c', 540, 5.3],
+    ['tc', 170, 196], ['ldl', 170, 112], ['hdl', 170, 61], ['tg', 170, 96], ['vitd', 170, 31], ['a1c', 170, 5.2], ['tsh', 170, 1.9],
+  ].map(([test, ago, value], i) => ({ id: `lab${i}`, test, date: addDays(today, -ago), value }));
+  health.sync = { key: 'demo0sample0key0000x', lastAt: Date.now() - 2 * 3600e3, lastDate: addDays(today, -1), count: 23 };
+
   docs.health = health;
   docs[`health-${year}`] = years[year];
   docs[`health-${lastYear}`] = years[lastYear];

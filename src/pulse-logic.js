@@ -8,6 +8,7 @@ import { currentStep, projectPlan, hoursThisWeek, certState } from './learning-l
 import { CERTS } from './learning-catalog.js';
 import { deadlines, carMoney } from './auto-logic.js';
 import { upcoming as upcomingBirthdays } from './birthdays-logic.js';
+import { readiness, checkupReminders } from './health-more.js';
 
 export const GTA6_RELEASE = '2026-11-19'; // Rockstar Games newswire, Nov 2025
 const n0 = (n) => Math.round(Number(n) || 0).toLocaleString();
@@ -75,7 +76,17 @@ export function lifeRings(ctx) {
   } else out.push({ id: 'money', label: 'Money', value: 0, closed: false, detail: '…', pending: true });
   if (ctx.health && ctx.years) {
     const b = bodyOn(ctx, today);
-    out.push({ id: 'body', label: 'Body', value: b.workouts ? 1 : Math.min(1, b.steps / b.goal), closed: b.ok, detail: b.workouts ? `${plural(b.workouts, 'workout')} logged` : `${n0(b.steps)} of ${n0(b.goal)} steps`, href: '#/health', goal: `${n0(b.goal)} steps or any workout` });
+    const rd = ctx.hkYears ? readiness(ctx, today) : null;
+    out.push({
+      id: 'body',
+      label: 'Body',
+      value: b.workouts ? 1 : Math.min(1, b.steps / b.goal),
+      closed: b.ok,
+      detail: b.workouts ? `${plural(b.workouts, 'workout')} logged` : `${n0(b.steps)} of ${n0(b.goal)} steps`,
+      href: '#/health',
+      goal: `${n0(b.goal)} steps or any workout${rd ? `. Readiness ${rd.score}: ${rd.advice}` : ''}`,
+      tag: rd ? { text: `${rd.label} · ${rd.score}`, level: rd.level } : null,
+    });
   } else out.push({ id: 'body', label: 'Body', value: 0, closed: false, detail: '…', pending: true });
   if (ctx.learning) {
     const L = ctx.learning;
@@ -423,6 +434,10 @@ export function dayLine(ctx) {
       else if (d.days <= 7) urgent.push(`${d.name} ${d.days === 0 ? 'is due today' : d.days === 1 ? 'is due tomorrow' : `is due ${weekdayOf(d.date)} (${d.days} days)`}.`);
     }
   }
+  if (ctx.health) {
+    const soon = checkupReminders(ctx.health, today).filter((c) => c.state === 'booked' && c.days <= 1);
+    if (soon.length) urgent.push(`${soon[0].text}.`);
+  }
   if (s) {
     if (s.payday && s.payday.days === 0) urgent.push('It’s payday.');
     else if (s.payday && s.payday.days === 1 && phase !== 'morning') urgent.push('Payday is tomorrow.');
@@ -436,6 +451,8 @@ export function dayLine(ctx) {
   const food = ctx.health && ctx.years ? foodOn(ctx, today) : [];
   const calLeft = t && t.cal && food.length ? t.cal - totals(food).k : null;
   if (phase === 'morning') {
+    const rd = ctx.health && ctx.hkYears ? readiness(ctx, today) : null;
+    if (rd) extra.push(`Readiness ${rd.score}, ${rd.label.toLowerCase()}${rd.reasons[0] ? `: ${rd.reasons[0].charAt(0).toLowerCase()}${rd.reasons[0].slice(1)}` : ''}.`);
     if (wx) extra.push(`${wx.dayText}, high ${wx.high}°${wx.rainFrom && !wx.rainNow ? `, rain from about ${wx.rainFrom}` : wx.rainNow ? ', rain around now' : ''}.`);
     if (wx && wx.tennis && wx.tennis.when === 'today') extra.push(`Good ${ctx.sport || 'tennis'} weather ${wx.tennis.label}.`);
     if (ctx.home) {

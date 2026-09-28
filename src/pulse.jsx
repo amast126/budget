@@ -140,6 +140,7 @@ export function RingsCard({ ctx, onReview }) {
             <Ring value={r.value} closed={r.closed} label={r.label} />
             <span className="lr-label">{r.label}</span>
             <span className="lr-detail">{r.detail}</span>
+            {r.tag ? <span className={`lr-tag rd-${r.tag.level}`}>{r.tag.text}</span> : null}
           </a>
         ))}
       </div>

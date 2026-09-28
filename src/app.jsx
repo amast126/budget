@@ -21,6 +21,8 @@ import { AutoPage, AutoHomeCard, useRecalls } from './auto.jsx';
 import { defaultAuto, normalizeAuto } from './auto-logic.js';
 import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
 import { HealthPage, HealthHomeCard } from './health.jsx';
+import { HealthSyncPage } from './health-more.jsx';
+import * as HM from './health-more.js';
 import { FunPage } from './fun.jsx';
 import { defaultFun, normalizeFun } from './fun-logic.js';
 import { defaultGuitar, normalizeGuitar } from './guitar-logic.js';
@@ -33,6 +35,7 @@ import { BudgetPage } from './budget.jsx';
 import { startWideLayout } from './wide.js';
 import { MerchantInput, RecentChips, useMerchants, AddSheet, parseAddLink } from './budget-add.jsx';
 import budgetCss from './budget.css';
+import healthCss from './health-more.css';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
@@ -55,7 +58,7 @@ trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss + newsCss + budgetCss;
+  s.textContent = css + glassCss + newsCss + budgetCss + healthCss;
   document.head.appendChild(s);
 }
 
@@ -1042,7 +1045,37 @@ function App() {
     }
   };
   const healthAct = {
-    mutateHealth: (fn) => mutateHealth(fn),
+    mutateHealth: (fn, msg) => mutateHealth(fn, msg),
+    mutateDay: (iso, fn, msg) => mutateYear(iso, fn, msg),
+    // A saved meal: every item at once, with one undo.
+    async logMeal(iso, saved, meal) {
+      const entries = HM.mealEntries(saved, meal);
+      const k = entries.reduce((a, e) => a + (e.k || 0), 0);
+      await mutateYear(iso, (y) => H.addEntries(y, iso, entries), {
+        text: `${saved.name} · ${Math.round(k)} cal added`,
+        undo: async () => {
+          await mutateYear(iso, (y) => H.removeEntries(y, iso, entries.map((e) => e.id)));
+          setToast(null);
+        },
+      });
+    },
+    saveMeal: (meal, name, items) => mutateHealth((h) => HM.saveMeal(h, name, meal, items), `Saved “${String(name).trim() || 'Saved meal'}”. Add it from Meals when you log food.`),
+    removeMeal: (id) => mutateHealth((h) => HM.removeMeal(h, id)),
+    setHabit: (iso, id, v) => mutateYear(iso, (y) => HM.setHabit(y, iso, id, v)),
+    stepHabit: (iso, id, delta, shown) => mutateYear(iso, (y) => HM.stepHabit(y, iso, id, delta, shown)),
+    // Numbers from the iPhone Shortcut's link: each day into Apple Health's year documents, weight into your log.
+    async applySync(parsed) {
+      const plan = HM.planSync(parsed);
+      for (const y of Object.keys(plan.years)) {
+        await backend.mutateModule(user, `health-hk-${y}`, (d) => plan.years[y](normalizeHkYearInPlace(d)), HK.defaultHkYear);
+      }
+      await backend.mutateModule(user, 'health', (d) => {
+        const h = normalizeHealthInPlace(d);
+        plan.health(h);
+        plan.sync(h);
+      }, H.defaultHealth);
+      await backend.mutateModule(user, 'health-hk', (d) => plan.main(normalizeHkInPlace(d)), HK.defaultHk);
+    },
     async logFood(iso, food, portion, qty, meal) {
       const entry = H.entryFor(food, portion, qty, meal);
       await mutateHealth((h) => H.remember(h, food, portion, qty));
@@ -1111,8 +1144,7 @@ function App() {
   };
   // Log one serving of a Budget Bytes recipe (from the Cooking tab) to today's food.
   const logRecipe = (r) => {
-    const [k, p, c, f] = r.nutrition;
-    const food = { name: r.title, src: 'bb', ref: String(r.webId || r.id), perServing: { k, p, c, f }, portions: [{ label: '1 serving', mult: 1 }] };
+    const food = HM.recipeFood(r);
     return healthAct.logFood(H.todayISO(), food, food.portions[0], 1, H.mealNow());
   };
   const autoBudget = useMemo(() => {
@@ -1194,13 +1226,14 @@ function App() {
     );
 
   // Wide screens keep the sidebar open; on phones it slides out from the menu button.
+  const tabRoute = route === 'health-sync' ? 'health' : route;
   const nav = (to, icon, label) => (
-    <a className={`nav-item ${route === to ? 'active' : ''}`} href={`#/${to === 'home' ? '' : to}`} onClick={() => setMenu(false)} aria-current={route === to ? 'page' : undefined}>
+    <a className={`nav-item ${tabRoute === to ? 'active' : ''}`} href={`#/${to === 'home' ? '' : to}`} onClick={() => setMenu(false)} aria-current={tabRoute === to ? 'page' : undefined}>
       <Icon name={icon} />
       <span>{label}</span>
     </a>
   );
-  const here = TABS.find(([k]) => k === (TABS.some(([t]) => t === route) ? route : 'home'));
+  const here = TABS.find(([k]) => k === (TABS.some(([t]) => t === tabRoute) ? tabRoute : 'home'));
 
   return (
     <div className={`app ${IS_DEMO ? 'demo' : ''}`}>
@@ -1241,9 +1274,10 @@ function App() {
         {route === 'auto' ? (
           <AutoPage auto={auto} data={data} recalls={recalls} mutate={mutateAuto} budget={autoBudget} onAddExpense={(d) => onAdd(newTransaction(d))} error={autoError} />
         ) : null}
-        {route === 'health' ? <HealthPage health={health} years={healthYears} hk={hk} hkYears={hkYears} act={healthAct} error={healthError} /> : null}
+        {route === 'health' ? <HealthPage health={health} years={healthYears} hk={hk} hkYears={hkYears} act={healthAct} error={healthError} plan={cooking && cooking.plan} wx={forecast.s} /> : null}
+        {route === 'health-sync' ? <HealthSyncPage health={health} hk={hk} hkYears={hkYears} years={healthYears} act={healthAct} /> : null}
         {route === 'budget' ? <BudgetPage data={data} mutate={mutateBudget} error={dataError} onToast={showToast} dark={look.dark} auto={auto} route={location.hash} alertStatus={alertStatus} /> : null}
-        {['budget', 'learning', 'cooking', 'news', 'auto', 'health', 'fun'].includes(route) ? null : (
+        {['budget', 'learning', 'cooking', 'news', 'auto', 'health', 'health-sync', 'fun'].includes(route) ? null : (
           <Home
             user={user}
             data={data}

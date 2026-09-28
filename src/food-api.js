@@ -5,7 +5,7 @@
 // Nutrients come back per 100 g; portions come from USDA's household measures or the package's serving size.
 
 const USDA = 'https://api.nal.usda.gov/fdc/v1/foods/search';
-const N = { k: [1008, 2047, 2048], p: [1003], c: [1005], f: [1004] };
+const N = { k: [1008, 2047, 2048], p: [1003], c: [1005], f: [1004], fib: [1079], sug: [2000, 1063], na: [1093] };
 const r1 = (n) => Math.round(Number(n || 0) * 10) / 10;
 const cap = (s) => String(s || '').replace(/\s+/g, ' ').trim();
 const title = (s) => {
@@ -26,7 +26,15 @@ function nutrientsFromUsda(list) {
   const c = get(N.c) || 0;
   const f = get(N.f) || 0;
   if (k == null) k = p * 4 + c * 4 + f * 9;
-  return { k: Math.round(k), p: r1(p), c: r1(c), f: r1(f) };
+  const out = { k: Math.round(k), p: r1(p), c: r1(c), f: r1(f) };
+  // Fiber and sugar in g, sodium in mg, only when USDA lists them (so "unknown" never counts as zero).
+  const fib = get(N.fib);
+  const sug = get(N.sug);
+  const na = get(N.na);
+  if (fib != null) out.fib = r1(fib);
+  if (sug != null) out.sug = r1(sug);
+  if (na != null) out.na = Math.round(na);
+  return out;
 }
 
 export function foodFromUsda(x) {
@@ -79,6 +87,14 @@ export async function searchUsda(query, key) {
   return out.slice(0, 25);
 }
 
+// Open Food Facts gives sodium in grams (or only salt, which is 2.5× sodium).
+function offExtras(n, out) {
+  if (n.fiber_100g != null && n.fiber_100g !== '') out.fib = r1(n.fiber_100g);
+  if (n.sugars_100g != null && n.sugars_100g !== '') out.sug = r1(n.sugars_100g);
+  const na = n.sodium_100g != null && n.sodium_100g !== '' ? Number(n.sodium_100g) : n.salt_100g != null && n.salt_100g !== '' ? Number(n.salt_100g) / 2.5 : null;
+  if (na != null && Number.isFinite(na)) out.na = Math.round(na * 1000);
+  return out;
+}
 export function foodFromOff(code, p) {
   const n = p.nutriments || {};
   const kcal = n['energy-kcal_100g'] ?? (n['energy_100g'] ? n['energy_100g'] / 4.184 : null);
@@ -93,7 +109,7 @@ export function foodFromOff(code, p) {
     src: 'off',
     ref: String(code),
     kind: 'branded',
-    per100: { k: Math.round(kcal), p: r1(n.proteins_100g), c: r1(n.carbohydrates_100g), f: r1(n.fat_100g) },
+    per100: offExtras(n, { k: Math.round(kcal), p: r1(n.proteins_100g), c: r1(n.carbohydrates_100g), f: r1(n.fat_100g) }),
     portions,
   };
 }

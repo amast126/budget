@@ -177,7 +177,7 @@ export function ImportCard({ hk, onImport, open: open0 = false }) {
       <button className="step-head card-toggle" onClick={() => setOpen(!open)} aria-expanded={open}>
         <span className="grow">
           <span className="card-title">Apple Health</span>
-          <span className="muted small block">{imported ? `Data through ${shortDate(hk.last)} · imported ${shortDate(new Date(hk.importedAt).toISOString().slice(0, 10))}` : 'Import steps, workouts, heart, sleep and more'}</span>
+          <span className="muted small block">{imported ? `Data through ${shortDate(hk.last)}${hk.importedAt ? ` · imported ${shortDate(new Date(hk.importedAt).toISOString().slice(0, 10))}` : ' · daily sync only'}` : 'Import steps, workouts, heart, sleep and more'}</span>
         </span>
         <Icon name={open ? 'down' : 'chev'} size={18} />
       </button>
@@ -362,7 +362,7 @@ function RouteMap({ enc }) {
     </svg>
   );
 }
-export function WorkoutSheet({ w, loadDoc, onClose }) {
+export function WorkoutSheet({ w, loadDoc, onClose, children }) {
   const [route, setRoute] = useState(undefined);
   useEffect(() => {
     if (!w.route || !loadDoc) return setRoute(null);
@@ -411,6 +411,7 @@ export function WorkoutSheet({ w, loadDoc, onClose }) {
             </React.Fragment>
           ))}
         </dl>
+        {children}
       </div>
     </div>
   );
@@ -1039,14 +1040,16 @@ function SleepTrendCard({ hk, hkYears, today }) {
   );
 }
 
-export function SleepView({ hk, hkYears, today }) {
+export function SleepView({ hk, hkYears, today, left, right }) {
   return (
     <div className="grid">
       <div className="col">
         <NightCard hk={hk} hkYears={hkYears} />
+        {left}
       </div>
       <div className="col">
         <SleepTrendCard hk={hk} hkYears={hkYears} today={today} />
+        {right}
       </div>
     </div>
   );
@@ -1246,10 +1249,13 @@ export function HearingView({ hk, hkYears, today }) {
 export const VIEWS = [
   ['today', 'Today'],
   ['activity', 'Activity'],
+  ['training', 'Training'],
   ['heart', 'Heart'],
   ['sleep', 'Sleep'],
   ['body', 'Body'],
   ['hearing', 'Hearing'],
+  ['checkups', 'Checkups'],
+  ['report', 'Report'],
 ];
 export function ViewTabs({ view, onChange }) {
   return (
@@ -1262,4 +1268,4 @@ export function ViewTabs({ view, onChange }) {
     </div>
   );
 }
-export { EmptyHk };
+export { EmptyHk, Tiles };

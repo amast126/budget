@@ -624,6 +624,36 @@ function hrInWindow(st, a, b) {
   return n >= 3 ? { avg: sum / n, max: mx } : null;
 }
 
+// Minutes at each heart rate during a workout, in 5 bpm bins: [first bin's bpm, minutes, minutes, …]. Each sample
+// counts until the next one (at most a minute), so zones can be worked out later for any max heart rate.
+function hrHist(st, a, b) {
+  const T = st.hrT;
+  const s = a / 1000;
+  const e = b / 1000;
+  let lo = 0;
+  let hi = st.hrN;
+  while (lo < hi) {
+    const m = (lo + hi) >> 1;
+    if (T[m] < s) lo = m + 1;
+    else hi = m;
+  }
+  const secs = {};
+  let n = 0;
+  for (let i = lo; i < st.hrN && T[i] <= e; i++) {
+    // the last sample counts for as long as the gap before it (the Watch's usual spacing), within the workout
+    const next = i + 1 < st.hrN && T[i + 1] <= e ? T[i + 1] : Math.min(e, T[i] + (i > lo ? T[i] - T[i - 1] : 5));
+    const dt = Math.min(60, Math.max(0, next - T[i]));
+    const bin = Math.floor(st.hrV[i] / 5) * 5;
+    secs[bin] = (secs[bin] || 0) + dt;
+    n++;
+  }
+  if (n < 10) return null;
+  const bins = Object.keys(secs).map(Number).sort((x, y) => x - y);
+  const out = [bins[0]];
+  for (let bpm = bins[0]; bpm <= bins[bins.length - 1]; bpm += 5) out.push(Math.round(((secs[bpm] || 0) / 60) * 10) / 10);
+  return out;
+}
+
 function sortHr(st) {
   const n = st.hrN;
   const idx = new Uint32Array(n);
@@ -699,6 +729,8 @@ function finish(st) {
         out.hr = r0(hr.avg);
         if (hr.max) out.hrMax = r0(hr.max);
       }
+      const hb = hrHist(st, w.start, w.end);
+      if (hb) out.hb = hb;
       if (w.indoor) out.indoor = true;
       if (w.elevFt) out.elev = r0(w.elevFt);
       if (w.tempF) out.tempF = r0(w.tempF);

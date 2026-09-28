@@ -4,7 +4,7 @@ import { useWidth, Tip } from './chart-kit.jsx';
 import { CountUp, Skeleton, useSwipe } from './fx.jsx';
 import { MiniBars } from './spark.jsx';
 import { hasHk, hkDay, stepsFor, workoutsOn, ringsOf, fmtMins, daysBetween as hkDaysBetween } from './hk-logic.js';
-import { ImportCard, DayVitalsCard, RingBars, ActivityView, HeartView, SleepView, BodyView, HearingView, ViewTabs, EmptyHk, WorkoutSheet, workoutLine } from './health-hk.jsx';
+import { ImportCard, DayVitalsCard, RingBars, ActivityView, HeartView, SleepView, BodyView, HearingView, ViewTabs, EmptyHk, WorkoutSheet, workoutLine, VIEWS } from './health-hk.jsx';
 import { dateLabel } from './budget-logic.js';
 import {
   MEALS,
@@ -29,6 +29,10 @@ import {
   ageOf,
 } from './health-logic.js';
 import { searchUsda, lookupBarcode, startScanner, decodePhoto } from './food-api.js';
+import { ReadinessCard, ReadinessDial, NutrientsCard, HabitsCard, CheckInCard, AdaptiveNote, WeightGoal, MealsTab, SaveMealForm, SyncCard, CheckupsView } from './health-more.jsx';
+import { TrainingView, WorkoutZones } from './health-training.jsx';
+import { ConsistencyCard, FactorsCard, ReportView } from './health-report.jsx';
+import { readiness, checkupReminders, mealTotals, acceptAdaptive, skipAdaptive, adaptiveOff } from './health-more.js';
 
 const n0 = (n) => Math.round(Number(n) || 0).toLocaleString();
 const g1 = (n) => {
@@ -364,7 +368,7 @@ function QuickAdd({ onSave }) {
     >
       <label className="field wide">
         <span className="small muted">What was it?</span>
-        <input className="input" value={f.name} onChange={set('name')} placeholder="e.g. Chipotle bowl" aria-label="Food name" />
+        <input className="input" value={f.name} onChange={set('name')} placeholder="e.g. Burrito bowl" aria-label="Food name" />
       </label>
       <div className="macro-inputs">
         <label className="field">
@@ -413,9 +417,9 @@ function saveSearch(q, list) {
   }
 }
 
-function AddFoodSheet({ health, meal, onAdd, onClose }) {
+function AddFoodSheet({ health, meal, plan, onAdd, onLogMeal, onRemoveMeal, onClose }) {
   const recents = recentFoods(health);
-  const [tab, setTab] = useState(recents.length ? 'recent' : 'search');
+  const [tab, setTab] = useState(recents.length ? 'recent' : (health.meals || []).length ? 'meals' : 'search');
   const [q, setQ] = useState('');
   const [busy, setBusy] = useState(false);
   const [results, setResults] = useState(null);
@@ -453,6 +457,7 @@ function AddFoodSheet({ health, meal, onAdd, onClose }) {
   };
   const tabs = [
     ['recent', 'Recent'],
+    ['meals', 'Meals'],
     ['search', 'Search'],
     ['scan', 'Barcode'],
     ['quick', 'Quick add'],
@@ -527,6 +532,7 @@ function AddFoodSheet({ health, meal, onAdd, onClose }) {
               </>
             ) : null}
             {tab === 'quick' ? <QuickAdd onSave={setPicked} /> : null}
+            {tab === 'meals' ? <MealsTab health={health} plan={plan} meal={meal} onPickFood={setPicked} onLogMeal={(m) => onLogMeal(m, meal)} onRemoveMeal={onRemoveMeal} /> : null}
           </>
         )}
       </div>
@@ -623,7 +629,8 @@ function TodayCard({ t, tot, iso }) {
   );
 }
 
-function FoodLogCard({ day, yesterday, onAdd, onEdit, onCopy }) {
+function FoodLogCard({ day, yesterday, saved = [], onAdd, onEdit, onCopy, onLogSaved, onSaveMeal }) {
+  const [saving, setSaving] = useState(null); // meal being saved as a combo
   return (
     <section className="card food-log">
       <div className="card-head">
@@ -664,10 +671,39 @@ function FoodLogCard({ day, yesterday, onAdd, onEdit, onCopy }) {
                   </li>
                 ))}
               </ul>
-            ) : prev.length ? (
-              <button className="link-btn small muted-link copy-meal" onClick={() => onCopy(m)}>
-                Copy yesterday’s {l.toLowerCase()} ({n0(totals(prev).k)} cal)
-              </button>
+            ) : null}
+            {!items.length && (prev.length || saved.some((x) => x.meal === m)) ? (
+              <div className="meal-quick">
+                {prev.length ? (
+                  <button className="link-btn small muted-link copy-meal" onClick={() => onCopy(m)}>
+                    Copy yesterday’s {l.toLowerCase()} ({n0(totals(prev).k)} cal)
+                  </button>
+                ) : null}
+                {saved
+                  .filter((x) => x.meal === m)
+                  .slice(0, 3)
+                  .map((x) => (
+                    <button key={x.id} className="chip saved-chip" onClick={() => onLogSaved(x, m)}>
+                      + {x.name} · {n0(mealTotals(x).k)} cal
+                    </button>
+                  ))}
+              </div>
+            ) : null}
+            {items.length >= 1 ? (
+              saving === m ? (
+                <SaveMealForm
+                  meal={m}
+                  onCancel={() => setSaving(null)}
+                  onSave={(name) => {
+                    onSaveMeal(m, name, items);
+                    setSaving(null);
+                  }}
+                />
+              ) : (
+                <button className="link-btn small muted-link save-meal-btn" onClick={() => setSaving(m)}>
+                  Save as a meal
+                </button>
+              )
             ) : null}
           </div>
         );
@@ -676,7 +712,7 @@ function FoodLogCard({ day, yesterday, onAdd, onEdit, onCopy }) {
   );
 }
 
-function WeightCard({ health, onLog, onRemove }) {
+function WeightCard({ health, onLog, onRemove, onGoal }) {
   const [v, setV] = useState('');
   const series = useMemo(() => weightSeries(health), [health.weights]);
   const st = weightStats(health);
@@ -761,6 +797,7 @@ function WeightCard({ health, onLog, onRemove }) {
       ) : (
         <p className="empty">Log your weight to start a trend. Daily numbers bounce around with water and salt; the 7-day average is the one to watch.</p>
       )}
+      {onGoal ? <WeightGoal health={health} onGoal={onGoal} /> : null}
     </section>
   );
 }
@@ -913,7 +950,7 @@ function watchBurn(hkYears) {
   return { rest: Math.round(rest), active: Math.round(active), n: days.length };
 }
 
-function TargetsCard({ health, t, mutate, open, setOpen, hkYears }) {
+function TargetsCard({ health, t, mutate, open, setOpen, hkYears, years }) {
   const p = health.profile;
   const burn = hkYears ? watchBurn(hkYears) : null;
   const lw = latestWeight(health);
@@ -926,6 +963,9 @@ function TargetsCard({ health, t, mutate, open, setOpen, hkYears }) {
     setP('heightIn', total || null);
   };
   const [custom, setCustom] = useState(health.custom ? { ...health.custom } : null);
+  // Follow the saved numbers when they change elsewhere (a check-in target clears them).
+  const savedCustom = JSON.stringify(health.custom || null);
+  useEffect(() => setCustom(health.custom ? { ...health.custom } : null), [savedCustom]);
   const auto = t.auto;
   return (
     <section className="card">
@@ -933,7 +973,7 @@ function TargetsCard({ health, t, mutate, open, setOpen, hkYears }) {
         <span className="grow">
           <span className="card-title">Targets &amp; settings</span>
           <span className="muted small block">
-            {t.source === 'missing' ? 'Set up your daily target' : `${n0(t.cal)} cal · P ${n0(t.p)}g · C ${n0(t.c)}g · F ${n0(t.f)}g${t.source === 'custom' ? ' (custom)' : ''}`}
+            {t.source === 'missing' ? 'Set up your daily target' : `${n0(t.cal)} cal · P ${n0(t.p)}g · C ${n0(t.c)}g · F ${n0(t.f)}g${t.source === 'custom' ? ' (custom)' : t.source === 'adaptive' ? ' (check-in)' : ''}`}
           </span>
         </span>
         <Icon name={open ? 'down' : 'chev'} size={18} />
@@ -1006,6 +1046,7 @@ function TargetsCard({ health, t, mutate, open, setOpen, hkYears }) {
               <b>{n0(auto.p)}g</b> (0.8 g per lb), fat <b>{n0(auto.f)}g</b> (30% of calories), carbs <b>{n0(auto.c)}g</b> (the rest).
             </p>
           ) : null}
+          {years && lw ? <AdaptiveNote health={health} years={years} t={t} onAccept={(a) => mutate((h) => acceptAdaptive(h, a))} onOff={() => mutate((h) => adaptiveOff(h))} /> : null}
           {burn && auto ? (
             <p className="small calc">
               Apple Watch check: on the {burn.n} days in the past year you wore it most of the day, you burned about <b>{n0(burn.rest + burn.active)}</b> calories a day ({n0(burn.rest)} resting + {n0(burn.active)} active). If that’s far from the{' '}
@@ -1080,7 +1121,7 @@ function savedView() {
   }
 }
 
-export function HealthPage({ health, years, hk, hkYears, act, error }) {
+export function HealthPage({ health, years, hk, hkYears, act, error, plan, wx }) {
   const [iso, setIso] = useState(todayISO());
   const [view, setView0] = useState(savedView);
   const [adding, setAdding] = useState(null); // meal
@@ -1100,6 +1141,11 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
     if (/add=1/.test(location.hash)) {
       setView('today');
       setAdding(mealNow());
+      history.replaceState(null, '', '#/health');
+    }
+    const v = /[?&]view=([a-z]+)/.exec(location.hash);
+    if (v && VIEWS.some((x) => x[0] === v[1])) {
+      setView(v[1]);
       history.replaceState(null, '', '#/health');
     }
   }, []);
@@ -1154,8 +1200,10 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
         return true;
       }}
       onRemove={(date) => act.removeWeight(date)}
+      onGoal={(lb) => act.mutateHealth((h) => (h.goalWeight = lb > 50 && lb < 700 ? Math.round(lb * 10) / 10 : null))}
     />
   );
+  const ctx = { health, years, hk: hkv, hkYears };
   const goImport = () => {
     setView('today');
     setImportOpen(true);
@@ -1164,9 +1212,11 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 50);
   };
-  const needHk = view !== 'today' && view !== 'body' && hk && !imported;
-  const hkLoading = view !== 'today' && (!hk || !hkYears);
+  const HK_ONLY = ['activity', 'heart', 'sleep', 'hearing'];
+  const needHk = HK_ONLY.includes(view) && hk && !imported;
+  const hkLoading = view !== 'today' && view !== 'checkups' && (!hk || !hkYears);
   const titles = { activity: 'Activity', heart: 'Heart', sleep: 'Sleep', hearing: 'Hearing' };
+  const openWorkout = (w) => setWorkout(w);
   return (
     <div className="home health">
       <header className="page-head row-between">
@@ -1197,8 +1247,14 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
         <ActivityView hk={hkv} hkYears={hkYears} health={health} years={years} today={today} onOpenWorkout={setWorkout} />
       ) : view === 'heart' ? (
         <HeartView hk={hkv} hkYears={hkYears} today={today} loadDoc={act.loadDoc} />
+      ) : view === 'training' ? (
+        <TrainingView ctx={ctx} wx={wx} act={act} onOpenWorkout={openWorkout} />
+      ) : view === 'checkups' ? (
+        <CheckupsView health={health} mutateHealth={act.mutateHealth} />
+      ) : view === 'report' ? (
+        <ReportView ctx={ctx} />
       ) : view === 'sleep' ? (
-        <SleepView hk={hkv} hkYears={hkYears} today={today} />
+        <SleepView hk={hkv} hkYears={hkYears} today={today} left={<ConsistencyCard ctx={ctx} mutateHealth={act.mutateHealth} />} right={<FactorsCard ctx={ctx} />} />
       ) : view === 'hearing' ? (
         <HearingView hk={hkv} hkYears={hkYears} today={today} />
       ) : view === 'body' ? (
@@ -1206,8 +1262,20 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
       ) : (
         <div className="grid day-swipe" key={iso} {...swipe}>
           <div className="col">
+            {hkYears ? <ReadinessCard ctx={ctx} iso={iso} /> : null}
             <TodayCard t={t} tot={tot} iso={iso} />
-            <FoodLogCard day={day} yesterday={yesterday} onAdd={setAdding} onEdit={setEditing} onCopy={(m) => act.copyMeal(iso, yesterday, m)} />
+            <FoodLogCard
+              day={day}
+              yesterday={yesterday}
+              saved={health.meals || []}
+              onAdd={setAdding}
+              onEdit={setEditing}
+              onCopy={(m) => act.copyMeal(iso, yesterday, m)}
+              onLogSaved={(m, meal) => act.logMeal(iso, m, meal)}
+              onSaveMeal={(meal, name, items) => act.saveMeal(meal, name, items)}
+            />
+            <NutrientsCard day={day} t={t} years={years} iso={iso} />
+            <HabitsCard health={health} years={years} hkYears={hkYears} iso={iso} onSet={(id, v) => act.setHabit(iso, id, v)} onStep={(id, d, shown) => act.stepHabit(iso, id, d, shown)} mutateHealth={act.mutateHealth} />
             <ActivityCard
               day={day}
               iso={iso}
@@ -1221,10 +1289,12 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
             />
           </div>
           <div className="col">
+            {isToday ? <CheckInCard health={health} years={years} onAccept={(a) => act.mutateHealth((h) => acceptAdaptive(h, a), `Target set to ${n0(a.suggested)} cal`)} onSkip={() => act.mutateHealth((h) => skipAdaptive(h))} /> : null}
             <DayVitalsCard hk={hk} hkYears={hkYears} iso={iso} />
             {weightCard}
             <WeekCard years={years} t={t} apple={{ hk, hkYears }} />
-            <TargetsCard health={health} t={t} mutate={act.mutateHealth} open={openTargets} setOpen={setOpenTargets} hkYears={hkYears} />
+            <TargetsCard health={health} t={t} mutate={act.mutateHealth} open={openTargets} setOpen={setOpenTargets} hkYears={hkYears} years={years} />
+            <SyncCard health={health} hk={hk} mutateHealth={act.mutateHealth} />
             <ImportCard key={importOpen ? 'open' : 'auto'} hk={hk} onImport={act.importAppleHealth} open={importOpen} />
           </div>
         </div>
@@ -1233,6 +1303,12 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
         <AddFoodSheet
           health={health}
           meal={adding}
+          plan={plan}
+          onLogMeal={(m, meal) => {
+            act.logMeal(iso, m, meal);
+            setAdding(null);
+          }}
+          onRemoveMeal={(id) => act.removeMeal(id)}
           onClose={() => setAdding(null)}
           onAdd={(food, portion, qty, meal) => {
             act.logFood(iso, food, portion, qty, meal);
@@ -1259,7 +1335,11 @@ export function HealthPage({ health, years, hk, hkYears, act, error }) {
           }}
         />
       ) : null}
-      {workout ? <WorkoutSheet w={workout} loadDoc={act.loadDoc} onClose={() => setWorkout(null)} /> : null}
+      {workout ? (
+        <WorkoutSheet w={workout} loadDoc={act.loadDoc} onClose={() => setWorkout(null)}>
+          <WorkoutZones w={workout} health={health} />
+        </WorkoutSheet>
+      ) : null}
     </div>
   );
 }
@@ -1277,6 +1357,8 @@ export function HealthHomeCard({ health, years, hk, hkYears }) {
   const nw = day.workouts.length + workoutsOn(hk, iso).length;
   const night = hkDay(hkYears, iso) || hkDay(hkYears, addDays(iso, -1));
   const sl = night && night.sl && night.sl.a ? night.sl : null;
+  const rd = hkYears ? readiness({ health, years, hk, hkYears }, iso) : null;
+  const due = checkupReminders(health, iso);
   const last7 = [];
   for (let i = 6; i >= 0; i--) {
     const d = addDays(iso, -i);
@@ -1291,6 +1373,14 @@ export function HealthHomeCard({ health, years, hk, hkYears }) {
           + Log food
         </a>
       </div>
+      {rd ? (
+        <a className="home-ready" href="#/health">
+          <ReadinessDial score={rd.score} level={rd.level} size={38} />
+          <span className="small">
+            <b>{rd.label}</b> <span className="muted">· {rd.reasons[0] || rd.advice}</span>
+          </span>
+        </a>
+      ) : null}
       {t.source === 'missing' ? (
         <p className="muted small">
           {n0(tot.k)} cal today. <a href="#/health">Set up your target →</a>
@@ -1340,6 +1430,18 @@ export function HealthHomeCard({ health, years, hk, hkYears }) {
           ) : null}
         </span>
       </a>
+      {due.length ? (
+        <a className="home-row checkup-due" href="#/health?view=checkups">
+          <span className="grow small">
+            {due.slice(0, 2).map((d, i) => (
+              <span key={d.id} className={d.state === 'overdue' ? 'due-over' : ''}>
+                {i ? <span className="muted"> · </span> : null}
+                {d.text}
+              </span>
+            ))}
+          </span>
+        </a>
+      ) : null}
     </section>
   );
 }

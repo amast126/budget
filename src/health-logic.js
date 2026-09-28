@@ -97,6 +97,14 @@ export function targets(h) {
     return { cal, p: protein, c: carbs, f: fat, bmr: Math.round(bmr), tdee: Math.round(tdee) };
   })();
   if (h.custom && Number(h.custom.cal)) return { ...auto, ...h.custom, cal: Number(h.custom.cal), p: Number(h.custom.p) || 0, c: Number(h.custom.c) || 0, f: Number(h.custom.f) || 0, source: 'custom', auto };
+  // The weekly check-in's target (from your own intake and weight trend), with macros worked out the same way.
+  if (h.adaptive && h.adaptive.on && Number(h.adaptive.cal) && lb) {
+    const cal = Number(h.adaptive.cal);
+    const protein = Math.round(lb * 0.8);
+    const fat = Math.round((cal * 0.3) / 9);
+    const carbs = Math.max(0, Math.round((cal - protein * 4 - fat * 9) / 4));
+    return { ...(auto || {}), cal, p: protein, c: carbs, f: fat, source: 'adaptive', auto };
+  }
   if (auto) return { ...auto, source: 'auto', auto };
   return { source: 'missing', need: [!p.sex && 'sex', !Number(p.age) && 'age', !Number(p.heightIn) && 'height', !lb && 'weight'].filter(Boolean) };
 }
@@ -120,7 +128,12 @@ export function nutrientsFor(food, portion, qty) {
     f = q; // no portion: treat as 100 g units
   }
   if (!base) return { k: 0, p: 0, c: 0, f: 0 };
-  return { k: Math.round((base.k || 0) * f), p: r1((base.p || 0) * f), c: r1((base.c || 0) * f), f: r1((base.f || 0) * f) };
+  const out = { k: Math.round((base.k || 0) * f), p: r1((base.p || 0) * f), c: r1((base.c || 0) * f), f: r1((base.f || 0) * f) };
+  // Fiber and sugar (g) and sodium (mg), when the database had them.
+  if (base.fib != null) out.fib = r1(base.fib * f);
+  if (base.sug != null) out.sug = r1(base.sug * f);
+  if (base.na != null) out.na = Math.round(base.na * f);
+  return out;
 }
 export const foodKey = (food) => (food.src && food.ref ? `${food.src}:${food.ref}` : `q:${String(food.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40)}`);
 export function portionsOf(food) {
@@ -235,6 +248,16 @@ export function workoutKcal(w, lb) {
 // ---------------------------------------------------------------- totals and summaries
 export function totals(entries) {
   return entries.reduce((t, e) => ({ k: t.k + (e.k || 0), p: r1(t.p + (e.p || 0)), c: r1(t.c + (e.c || 0)), f: r1(t.f + (e.f || 0)) }), { k: 0, p: 0, c: 0, f: 0 });
+}
+// Log several entries at once (a saved meal).
+export function addEntries(yearDoc, iso, entries) {
+  const d = dayOf(yearDoc, iso);
+  entries.forEach((e) => d.food.push(e));
+}
+export function removeEntries(yearDoc, iso, ids) {
+  const d = dayOf(yearDoc, iso);
+  const set = new Set(ids);
+  d.food = d.food.filter((e) => !set.has(e.id));
 }
 export function mealNow(d = new Date()) {
   const h = d.getHours() + d.getMinutes() / 60;
