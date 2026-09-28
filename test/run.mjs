@@ -2253,7 +2253,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     const og = (p) => (html.match(new RegExp(`property="og:${p}" content="([^"]+)"`)) || [])[1];
     const img = og('image') || '';
     const local = await fetch(`${base}${img.split('/').pop()}`);
-    check(/live demo/.test(og('title') || '') && /^https:\/\/amast126\.github\.io\/budget\/demo-preview\.jpg$/.test(img) && local.ok && Number(local.headers.get('content-length') || (await local.arrayBuffer()).byteLength) < 600000, `demo.html has a preview card: “${og('title')}”, ${img.split('/').pop()}`);
+    check(/live demo/.test(og('title') || '') && /^https:\/\/amast126\.github\.io\/budget\/demo-preview\.jpg(\?v=\d+)?$/.test(img) && local.ok && Number(local.headers.get('content-length') || (await local.arrayBuffer()).byteLength) < 600000, `demo.html has a preview card: “${og('title')}”, ${img.split('/').pop()}`);
     const rp = await dc.newPage();
     await rp.goto(`${base}demo.html`);
     await rp.waitForSelector('.demo-bar', { timeout: 8000 });
