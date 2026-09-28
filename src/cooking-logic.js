@@ -338,25 +338,27 @@ export function findRecipes(list, { q = '', show = 'all', protein = 'any', extra
 }
 
 // This week's prep: recipes you've lined up, kept with enough of each to work after they leave the weekly file.
-const PLAN_FIELDS = ['id', 'title', 'slug', 'url', 'course', 'perServing', 'total', 'servings', 'minutes', 'nutrition', 'thumb', 'image', 'mp', 'prep', 'webId'];
+const PLAN_FIELDS = ['id', 'title', 'subtitle', 'slug', 'url', 'course', 'perServing', 'total', 'servings', 'minutes', 'nutrition', 'thumb', 'image', 'imgUrl', 'box', 'source', 'mp', 'prep', 'webId'];
 export function planItem(r) {
   const o = { added: todayISO() };
   PLAN_FIELDS.forEach((f) => r[f] != null && (o[f] = r[f]));
   o.keys = keysOf(r);
   return o;
 }
-export const inPlan = (d, id) => (d.plan || []).some((x) => x.id === id);
+// Ids compare as text: a saved Budget Bytes recipe carries its id as text, the weekly file as a number.
+const sameId = (a, b) => String(a) === String(b);
+export const inPlan = (d, id) => (d.plan || []).some((x) => sameId(x.id, id));
 export function togglePlan(d, r) {
   d.plan = d.plan || [];
   if (inPlan(d, r.id)) {
-    d.plan = d.plan.filter((x) => x.id !== r.id);
+    d.plan = d.plan.filter((x) => !sameId(x.id, r.id));
     return false;
   }
   d.plan.push(planItem(r));
   return true;
 }
 export function removePlan(d, id) {
-  d.plan = (d.plan || []).filter((x) => x.id !== id);
+  d.plan = (d.plan || []).filter((x) => !sameId(x.id, id));
 }
 export function clearPlan(d) {
   const n = (d.plan || []).length;
@@ -379,9 +381,10 @@ export function planTotals(plan) {
       cost += c;
       priced++;
     }
-    if (r.nutrition) {
-      cal += r.nutrition[0] * n;
-      prot += r.nutrition[1] * n;
+    // recipes with calories and protein count toward the averages (cards often only print calories)
+    if (r.nutrition && r.nutrition[0] != null && r.nutrition[1] != null) {
+      cal += Number(r.nutrition[0]) * n;
+      prot += Number(r.nutrition[1]) * n;
       fed += n;
     }
   }

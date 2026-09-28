@@ -1,80 +1,65 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { SourdoughSection, SourdoughHomeRow } from './sourdough.jsx';
 import { SectionTabs } from './learning.jsx';
 import { MealPrepSection, planLine } from './mealprep.jsx';
 import { fmt, todayISO, dateLabel } from './budget-logic.js';
-import { normalize, covers, STAPLES } from './ingredients.mjs';
+import { covers, STAPLES } from './ingredients.mjs';
+import { PLACES, COURSES, splitItems, kitchenKeys, addKitchen, removeKitchen, setWhere, toggleLow, addGrocery, toggleGrocery, removeGrocery, rankRecipes, match, recipeUrl, imageUrl, label } from './cooking-logic.js';
+import * as RB from './recipebox-logic.js';
 import {
-  PLACES,
-  COURSES,
-  splitItems,
-  kitchenKeys,
-  addKitchen,
-  removeKitchen,
-  setWhere,
-  toggleLow,
-  addGrocery,
-  toggleGrocery,
-  removeGrocery,
-  rankRecipes,
-  match,
-  recipeUrl,
-  imageUrl,
-  saveWeb,
-  removeMine,
-  madeIt,
-  addMine,
-  missingNames,
-  label,
-  inPlan,
-  togglePlan,
-} from './cooking-logic.js';
+  BoxCtx,
+  CookHero,
+  SearchResults,
+  searchAll,
+  RecentStrip,
+  RecipeBoxSection,
+  RecipePage,
+  RecipeForm,
+  ImportSheet,
+  RecipeImg,
+  webRecipe,
+  useRecipeParam,
+  openRecipe,
+  closeRecipe,
+  takeScroll,
+  openLink,
+  recipeHref,
+  noteRecent,
+  mins,
+} from './recipebox.jsx';
 
 const money = (n) => (n == null ? null : `$${Number(n).toFixed(2)}`);
-function mins(m) {
-  if (!m) return null;
-  if (m < 60) return `${m} min`;
-  const h = Math.floor(m / 60);
-  const r = m % 60;
-  return r ? `${h} hr ${r} min` : `${h} hr`;
-}
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
-// My recipes join the matching as dinners.
-const asMine = (r) => ({ ...r, course: 'main', mine: true });
-const listFor = (data, recipes) => {
-  const saved = new Set(data.mine.map((r) => r.webId).filter(Boolean));
-  // Skip one- or two-ingredient technique posts ("how to boil an egg") and anything already saved as yours.
-  return [...data.mine.map(asMine), ...((recipes && recipes.pool) || []).filter((r) => !saved.has(r.id) && (r.keys || []).length >= 3)];
+// Budget Bytes recipes open as bb-<id>; recipes in your box (and plan entries made from them) by their own id.
+export const openId = (r) => (r.box || /^(mine|bb|hf|r|demo)-/.test(String(r.id)) ? r.id : `bb-${r.id}`);
+const open = (r) => {
+  noteRecent(openId(r));
+  openRecipe(openId(r));
 };
-// Card-size photo for pool recipes, which only carry a thumbnail (hidden if that size doesn't exist).
+// Your recipes and Budget Bytes' popular ones, for matching against the kitchen.
+const listFor = (box, recipes) => {
+  const mine = box ? box.recipes.map(RB.asCookable) : [];
+  const saved = new Set(mine.filter((r) => r.webId != null).map((r) => String(r.webId)));
+  // Skip one- or two-ingredient technique posts ("how to boil an egg") and anything already in your box.
+  return [...mine, ...((recipes && recipes.pool) || []).filter((r) => !saved.has(String(r.id)) && (r.keys || []).length >= 3)];
+};
 const bigFromThumb = (p) => (p ? p.replace(/-160x160(\.\w+)$/, '-400x300$1') : null);
-
-function Thumb({ recipes, r }) {
-  const src = r.thumb ? imageUrl(recipes, r.thumb) : null;
-  if (!src)
-    return (
-      <span className="thumb ph" aria-hidden="true">
-        <Icon name="pot" size={20} />
-      </span>
-    );
-  return <img className="thumb" src={src} alt="" loading="lazy" referrerPolicy="no-referrer" onError={(e) => (e.currentTarget.style.visibility = 'hidden')} />;
-}
 
 function Meta({ r, m }) {
   const bits = [];
   if (m) bits.push(m.missing.length === 0 ? 'You have everything' : `Have ${m.have.length} of ${m.total}`);
   if (r.perServing != null) bits.push(`${money(r.perServing)}/serving`);
   if (r.minutes) bits.push(mins(r.minutes));
-  if (r.mine) bits.push(r.made ? `Made ${r.made}×` : 'Yours');
+  if (r.box) bits.push(r.made ? `Made ${r.made}×` : r.source && r.source !== 'Mine' ? r.source : 'Yours');
   return <span className="muted small">{bits.join(' · ')}</span>;
 }
 
-function RecipeRow({ r, m, recipes, onOpen }) {
+function RecipeRow({ r, m }) {
   return (
     <li>
-      <button className="rc" onClick={() => onOpen(r)}>
-        <Thumb recipes={recipes} r={r} />
+      <a className="rc" href={recipeHref(openId(r))} onClick={openLink(openId(r))}>
+        <RecipeImg r={r} className="thumb" />
         <span className="grow">
           <span className="rc-title">{r.title}</span>
           <Meta r={r} m={m} />
@@ -86,7 +71,7 @@ function RecipeRow({ r, m, recipes, onOpen }) {
           ) : null}
         </span>
         <Icon name="chev" size={18} />
-      </button>
+      </a>
     </li>
   );
 }
@@ -314,13 +299,13 @@ function KitchenCard({ data, recipes, mutate }) {
   );
 }
 
-// ---------------------------------------------------------------- recipes
-function CookNowCard({ data, recipes, onOpen }) {
+// ---------------------------------------------------------------- recipes from what you have
+function CookNowCard({ data, recipes, box }) {
   const [course, setCourse] = useState('main');
   const kKeys = useMemo(() => kitchenKeys(data), [data.kitchen]);
-  const ranked = useMemo(() => rankRecipes(listFor(data, recipes), kKeys, { course, limit: 8 }), [data, recipes, kKeys, course]);
+  const ranked = useMemo(() => rankRecipes(listFor(box, recipes), kKeys, { course, limit: 8 }), [box, recipes, kKeys, course]);
   return (
-    <section className="card">
+    <section className="card cook-now">
       <div className="card-head">
         <h2 className="card-title">Cook with what you have</h2>
       </div>
@@ -332,23 +317,23 @@ function CookNowCard({ data, recipes, onOpen }) {
         ))}
       </div>
       {!data.kitchen.length ? (
-        <p className="empty">Add a few things to your kitchen and the best matches from your recipes and Budget Bytes’ most popular ones show up here.</p>
+        <p className="empty">Add a few things to your kitchen and the best matches from your recipe box and Budget Bytes’ most popular recipes show up here.</p>
       ) : ranked.length === 0 ? (
         <p className="empty">No close matches yet. Add a few more kitchen staples.</p>
       ) : (
         <ul className="list rc-list">
           {ranked.map(({ r, m }) => (
-            <RecipeRow key={r.id} r={r} m={m} recipes={recipes} onOpen={onOpen} />
+            <RecipeRow key={r.id} r={r} m={m} />
           ))}
         </ul>
       )}
-      <p className="muted small note">Fewest missing ingredients first{recipes && recipes.pool ? `, from your recipes and ${recipes.pool.length} popular Budget Bytes recipes` : ''}.</p>
+      <p className="muted small note">Fewest missing ingredients first{recipes && recipes.pool ? `, from your recipe box and ${recipes.pool.length} popular Budget Bytes recipes` : ''}.</p>
     </section>
   );
 }
 
 const PREVIEW = 8;
-function PicksCard({ data, recipes, onOpen, onMore }) {
+function PicksCard({ data, recipes, onMore }) {
   const kKeys = useMemo(() => kitchenKeys(data), [data.kitchen]);
   const picks = (recipes && recipes.picks) || [];
   const src = recipes && recipes.source;
@@ -367,16 +352,14 @@ function PicksCard({ data, recipes, onOpen, onMore }) {
           {picks.slice(0, PREVIEW).map((r) => {
             const m = data.kitchen.length ? match(r, kKeys) : null;
             return (
-              <button key={r.id} className="pick" onClick={() => onOpen(r)}>
-                {r.image ? <img className="pick-img" src={imageUrl(recipes, r.image)} alt="" loading="lazy" referrerPolicy="no-referrer" onError={(e) => (e.currentTarget.style.visibility = 'hidden')} /> : <span className="pick-img ph" />}
+              <a key={r.id} className="pick" href={recipeHref(openId(r))} onClick={openLink(openId(r))}>
+                <RecipeImg r={r} className="pick-img" />
                 <span className="pick-body">
                   <span className="pick-title">{r.title}</span>
-                  <span className="muted small">
-                    {[r.perServing != null ? `${money(r.perServing)}/serving` : null, mins(r.minutes)].filter(Boolean).join(' · ')}
-                  </span>
+                  <span className="muted small">{[r.perServing != null ? `${money(r.perServing)}/serving` : null, mins(r.minutes)].filter(Boolean).join(' · ')}</span>
                   {m ? <span className={`small ${m.missing.length ? 'rc-miss' : 'rc-ok'}`}>{m.missing.length ? `Need ${m.missing.length} of ${m.total}` : 'You have everything'}</span> : null}
                 </span>
-              </button>
+              </a>
             );
           })}
         </div>
@@ -394,184 +377,9 @@ function PicksCard({ data, recipes, onOpen, onMore }) {
   );
 }
 
-function MineCard({ data, recipes, onOpen, onAdd }) {
-  const kKeys = useMemo(() => kitchenKeys(data), [data.kitchen]);
-  return (
-    <section className="card">
-      <div className="card-head">
-        <h2 className="card-title">My recipes</h2>
-        <button className="btn quiet small" onClick={onAdd}>
-          + Add
-        </button>
-      </div>
-      {data.mine.length === 0 ? (
-        <p className="empty">Save picks you like, or add your own.</p>
-      ) : (
-        <ul className="list rc-list">
-          {data.mine.map((r) => (
-            <RecipeRow key={r.id} r={asMine(r)} m={data.kitchen.length ? match(r, kKeys) : null} recipes={recipes} onOpen={onOpen} />
-          ))}
-        </ul>
-      )}
-    </section>
-  );
-}
-
-function RecipeSheet({ r, data, recipes, mutate, onLogRecipe, onClose }) {
-  const [confirm, setConfirm] = useState(false);
-  const kKeys = kitchenKeys(data);
-  const isMine = data.mine.some((x) => x.id === r.id);
-  const savedId = !isMine && data.mine.some((x) => x.id === 'bb-' + r.id);
-  const m = match(r, kKeys);
-  const url = recipeUrl(recipes, r);
-  const img = imageUrl(recipes, r.image || bigFromThumb(r.thumb));
-  const have = (k) => k && kKeys.some((a) => covers(a, k));
-  // Lines to show: the recipe's own lines, your typed lines, or just ingredient names.
-  const lines = r.lines
-    ? r.lines
-    : r.ingredients
-      ? r.ingredients.map((t) => ({ t, k: normalize(t), o: /optional/i.test(t) }))
-      : (r.keys || []).map((k) => ({ t: label(k), k }));
-  const miss = missingNames(r, m);
-  return (
-    <div className="sheet-bg" onClick={onClose}>
-      <div className="sheet tall" role="dialog" aria-label={r.title} onClick={(e) => e.stopPropagation()}>
-        {img ? <img className="sheet-img" src={img} alt="" referrerPolicy="no-referrer" onError={(e) => (e.currentTarget.style.display = 'none')} /> : null}
-        <h2 className="card-title">{r.title}</h2>
-        <p className="muted small">
-          {[
-            r.perServing != null ? `${money(r.perServing)} a serving` : null,
-            r.total != null ? `${money(r.total)} total` : null,
-            mins(r.minutes),
-            r.servings ? plural(r.servings, 'serving') : null,
-            r.ratings ? `★ ${r.stars} (${r.ratings.toLocaleString()} ratings)` : null,
-            isMine && r.made ? `Made ${r.made}× · last ${dateLabel(r.lastMade)}` : null,
-          ]
-            .filter(Boolean)
-            .join(' · ')}
-        </p>
-        {r.nutrition ? (
-          <p className="small nutri">
-            Per serving: <b>{r.nutrition[0]} cal</b> · protein {r.nutrition[1]}g · carbs {r.nutrition[2]}g · fat {r.nutrition[3]}g
-          </p>
-        ) : null}
-        <h3 className="k-head">
-          Ingredients {m.total ? <span className="muted">· you have {m.have.length} of {m.total}</span> : null}
-        </h3>
-        <ul className="ing">
-          {lines.map((l, i) =>
-            l.h ? (
-              <li key={i} className="ing-h">
-                {l.h}
-              </li>
-            ) : (
-              <li key={i} className={STAPLES.has(l.k) ? 'staple' : have(l.k) ? 'have' : l.o ? 'opt' : 'miss'}>
-                <span className="mark" aria-hidden="true">
-                  {STAPLES.has(l.k) || have(l.k) ? <Icon name="check" size={14} /> : '○'}
-                </span>
-                <span>
-                  {l.t}
-                  {l.o && !/optional/i.test(l.t) ? <span className="muted"> (optional)</span> : null}
-                </span>
-              </li>
-            )
-          )}
-        </ul>
-        {!r.lines && !r.ingredients ? <p className="muted small">Amounts and steps are on Budget Bytes.</p> : null}
-        {r.notes ? <p className="small notes">{r.notes}</p> : null}
-        {miss.length ? (
-          <button className="btn primary block" onClick={() => mutate((d) => addGrocery(d, miss, r.title), `Added ${plural(miss.length, 'item')} to the grocery list`)}>
-            Add {plural(miss.length, 'missing item')} to the grocery list
-          </button>
-        ) : (
-          <p className="ok-note">You have everything for this.</p>
-        )}
-        <button className={`btn block ${inPlan(data, r.id) ? 'quiet' : ''}`} onClick={() => mutate((d) => togglePlan(d, r), inPlan(data, r.id) ? `Removed ${r.title} from this week’s prep` : `Added ${r.title} to this week’s prep`)}>
-          {inPlan(data, r.id) ? 'In this week’s prep · remove' : 'Add to this week’s prep'}
-        </button>
-        {r.nutrition && onLogRecipe ? (
-          <button className="btn quiet block" onClick={() => onLogRecipe(r)}>
-            Log a serving to Health · {r.nutrition[0]} cal
-          </button>
-        ) : null}
-        {url ? (
-          <a className="btn quiet block" href={url} target="_blank" rel="noopener">
-            {r.slug || r.webId ? 'Full recipe on Budget Bytes' : 'Open recipe'} <Icon name="ext" size={15} />
-          </a>
-        ) : null}
-        {isMine ? (
-          <>
-            <button className="btn quiet block" onClick={() => mutate((d) => madeIt(d, r.id), `Nice. ${r.title} marked as made`)}>
-              I made this
-            </button>
-            <button
-              className="btn quiet block danger-text"
-              onClick={() => {
-                if (!confirm) return setConfirm(true);
-                mutate((d) => removeMine(d, r.id), `Removed ${r.title}`);
-                onClose();
-              }}
-            >
-              {confirm ? 'Tap again to remove it' : 'Remove from My recipes'}
-            </button>
-          </>
-        ) : savedId ? (
-          <p className="muted small">Saved in My recipes.</p>
-        ) : (
-          <button className="btn quiet block" onClick={() => mutate((d) => saveWeb(d, r, recipes), 'Saved to My recipes')}>
-            Save to My recipes
-          </button>
-        )}
-        <button className="btn quiet block" onClick={onClose}>
-          Close
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function AddRecipeSheet({ mutate, onClose }) {
-  const [f, setF] = useState({ title: '', url: '', ingredients: '', notes: '' });
-  const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
-  const save = (e) => {
-    e.preventDefault();
-    if (!f.title.trim()) return;
-    mutate((d) => addMine(d, f), `Added ${f.title.trim()}`);
-    onClose();
-  };
-  return (
-    <div className="sheet-bg" onClick={onClose}>
-      <form className="sheet tall" role="dialog" aria-label="Add a recipe" onClick={(e) => e.stopPropagation()} onSubmit={save}>
-        <h2 className="card-title">Add a recipe</h2>
-        <label className="field wide">
-          <span className="small muted">Name</span>
-          <input className="input" value={f.title} onChange={set('title')} autoFocus />
-        </label>
-        <label className="field wide">
-          <span className="small muted">Link (optional)</span>
-          <input className="input" type="url" value={f.url} onChange={set('url')} placeholder="https://" />
-        </label>
-        <label className="field wide">
-          <span className="small muted">Ingredients, one per line</span>
-          <textarea className="input" rows={7} value={f.ingredients} onChange={set('ingredients')} placeholder={'1 lb chicken thighs\n2 cloves garlic\n1 cup rice'} />
-        </label>
-        <label className="field wide">
-          <span className="small muted">Notes (optional)</span>
-          <textarea className="input" rows={3} value={f.notes} onChange={set('notes')} />
-        </label>
-        <button className="btn primary block" type="submit" disabled={!f.title.trim()}>
-          Save recipe
-        </button>
-        <button className="btn quiet block" type="button" onClick={onClose}>
-          Cancel
-        </button>
-      </form>
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------- page + home card
 const COOK_SECTIONS = [
+  ['recipes', 'Recipes'],
   ['kitchen', 'Kitchen'],
   ['prep', 'Meal prep'],
   ['sourdough', 'Sourdough'],
@@ -581,15 +389,19 @@ function initialSection() {
   if (COOK_SECTIONS.some(([k]) => k === q)) return q;
   try {
     const v = localStorage.getItem('dash.cookSection');
-    return COOK_SECTIONS.some(([k]) => k === v) ? v : 'kitchen';
+    return COOK_SECTIONS.some(([k]) => k === v) ? v : 'recipes';
   } catch {
-    return 'kitchen';
+    return 'recipes';
   }
 }
-export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogRecipe, sourdough, mutateSourdough }) {
-  const [open, setOpen] = useState(null);
-  const [adding, setAdding] = useState(false);
+
+export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogRecipe, sourdough, mutateSourdough, box, boxError, mutateBox, photos }) {
+  const rid = useRecipeParam();
   const [section, setSec] = useState(initialSection);
+  const [q, setQ] = useState('');
+  const [form, setForm] = useState(null); // 'new' or the recipe being edited
+  const [importing, setImporting] = useState(false);
+  const ctx = useMemo(() => ({ photos, recipes }), [photos, recipes]);
   const setSection = (k) => {
     setSec(k);
     try {
@@ -598,93 +410,223 @@ export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogR
       /* private mode */
     }
   };
-  const tabs = <SectionTabs list={COOK_SECTIONS} value={section} onChange={setSection} label="Cooking sections" />;
-  if (section === 'sourdough') {
-    return (
-      <div className="home cooking">
-        <header className="page-head">
-          <h1 className="page-title">Cooking</h1>
-          <div className="muted">Sourdough corner · starter, bake plan, dough math</div>
-        </header>
-        {tabs}
-        <SourdoughSection data={sourdough} mutate={mutateSourdough} />
+  // a recipe opens at the top; closing it goes back to where you were
+  const wasOpen = useRef(!!rid);
+  useEffect(() => {
+    if (rid) window.scrollTo(0, 0);
+    else if (wasOpen.current) {
+      const y = takeScroll();
+      requestAnimationFrame(() => window.scrollTo(0, y));
+    }
+    wasOpen.current = !!rid;
+  }, [rid]);
+
+  const imgFor = (w) => (w.image || w.thumb ? imageUrl(recipes, w.image || bigFromThumb(w.thumb)) : null);
+  const saveWeb = (w) => mutateBox((b) => RB.saveWebRecipe(b, { ...w, url: recipeUrl(recipes, w) }, imgFor(w)), 'Saved to your recipe box');
+  // Photos are saved first under a new stamp, then the box switches to them in one save; the old photo is removed
+  // only after that, and a new one is removed again if the box save didn't go through.
+  const saveRecipe = async (next, { photo, drop }) => {
+    const existing = form && form !== 'new' ? form : null;
+    let r = next;
+    if (!existing && RB.findRecipe(box, r.id)) r = { ...r, id: `${r.id}-${Date.now().toString(36)}` };
+    let stamp = null;
+    if (photo) {
+      stamp = RB.newStamp();
+      await photos.put(r.id, stamp, photo);
+    }
+    let old = null;
+    const ok = await mutateBox(
+      (b) => {
+        if (!existing && RB.findRecipe(b, r.id)) throw new Error('A recipe with this name was just added. Try again.');
+        const cur = existing ? RB.findRecipe(b, r.id) : null;
+        old = (cur && cur.photo) || null;
+        const saved = existing ? RB.updateRecipe(b, r) : RB.addRecipe(b, r);
+        if (stamp) RB.setPhoto(b, saved.id, stamp);
+        else if (drop) RB.setPhoto(b, saved.id, null);
+      },
+      existing ? 'Recipe saved' : `Added “${r.title}” to your recipe box`
+    );
+    if (!ok) {
+      if (stamp) photos.drop(r.id, stamp);
+      return false;
+    }
+    if (old && (stamp || drop) && old !== stamp) photos.drop(r.id, old);
+    if (!existing) {
+      setQ('');
+      noteRecent(r.id);
+      openRecipe(r.id);
+    }
+    return true;
+  };
+  const deleteRecipe = async (r) => {
+    let removed = null;
+    let timer = null;
+    const ok = await mutateBox((b) => (removed = RB.removeRecipe(b, r.id)), {
+      text: `Deleted “${r.title}”`,
+      undo: async () => {
+        clearTimeout(timer);
+        if (removed) await mutateBox((b) => RB.restoreRecipe(b, removed.item, removed.index), 'Recipe restored');
+      },
+    });
+    if (!ok) return;
+    // its photo goes once Undo has had its chance (only that photo: a new one under the same id is left alone)
+    const gone = removed && removed.item;
+    if (gone && gone.photo) timer = setTimeout(() => photos.drop(gone.id, gone.photo), 10000);
+    closeRecipe();
+  };
+  const importRecipes = async (plan, progress) => {
+    const stamps = {};
+    const undoPhotos = () => Object.entries(stamps).forEach(([id, st]) => photos.drop(id, st));
+    let n = 0;
+    try {
+      for (const it of plan.items) {
+        if (!it.photo) continue;
+        n++;
+        progress(`Saving photos · ${n} of ${plan.photos}`);
+        const st = RB.newStamp();
+        await photos.put(it.r.id, st, it.photo);
+        stamps[it.r.id] = st;
+      }
+    } catch (e) {
+      undoPhotos();
+      throw e;
+    }
+    progress('Saving recipes…');
+    let replaced = [];
+    const ok = await mutateBox((b) => (replaced = RB.applyImport(b, plan.items, stamps)), `Imported ${plural(plan.items.length, 'recipe')}`);
+    if (!ok) {
+      undoPhotos();
+      throw new Error('Couldn’t save the recipes, so nothing changed. Try again.');
+    }
+    replaced.forEach(([id, st]) => photos.drop(id, st));
+    setSection('recipes');
+  };
+  const sheets = (
+    <>
+      {form ? <RecipeForm key={form === 'new' ? 'new' : form.id} r={form === 'new' ? null : form} onSave={saveRecipe} onClose={() => setForm(null)} /> : null}
+      {importing && box ? <ImportSheet box={box} onImport={importRecipes} onClose={() => setImporting(false)} /> : null}
+    </>
+  );
+
+  // ---- one recipe, over the tab (which stays as it was underneath: search, filters, meal prep choices)
+  let view = null;
+  if (rid) {
+    const inBox = box ? RB.findRecipe(box, rid) : null;
+    const w = !inBox ? webRecipe(recipes, rid) : null;
+    const r = inBox || (w ? RB.webToBox({ ...w, url: recipeUrl(recipes, w) }, imgFor(w)) : null);
+    view = (
+      <div className="cook-view">
+        {r ? (
+          <RecipePage
+            r={r}
+            inBox={!!inBox}
+            web={w}
+            data={data}
+            mutate={mutate}
+            mutateBox={mutateBox}
+            onLogRecipe={onLogRecipe}
+            onEdit={() => setForm(inBox)}
+            onDelete={() => deleteRecipe(inBox)}
+            onSave={w ? () => saveWeb(w) : null}
+            onClose={closeRecipe}
+          />
+        ) : (
+          <section className="card rp-missing">
+            <button className="rp-back" onClick={closeRecipe}>
+              <Icon name="back" size={20} /> Back
+            </button>
+            <p className="empty">{!box || (/^bb-/.test(rid) && !recipes) ? boxError || 'Loading…' : 'That recipe isn’t in your recipe box anymore.'}</p>
+          </section>
+        )}
       </div>
     );
   }
-  if (!data) {
-    return (
-      <div className="home">
-        <header className="page-head">
-          <h1 className="page-title">Cooking</h1>
-        </header>
-        <section className="card">
-          <p className="empty">{error || 'Loading…'}</p>
-        </section>
-      </div>
+
+  // ---- the tab
+  const todo = data ? data.grocery.filter((g) => !g.done).length : 0;
+  const pick = data && data.kitchen.length ? tonightPick(data, recipes, box) : null;
+  const chips = [
+    box ? { k: 'n', b: box.recipes.length, t: box.recipes.length === 1 ? 'recipe' : 'recipes', on: () => (setQ(''), setSection('recipes')) } : null,
+    data ? { k: 'g', b: todo, t: 'on the grocery list', on: () => (setQ(''), setSection('kitchen')) } : null,
+    pick ? { k: 't', t: `Tonight: ${pick.r.title}`, href: recipeHref(openId(pick.r)), rid: openId(pick.r), hot: true } : null,
+  ].filter(Boolean);
+  const compact = section === 'prep' || section === 'sourdough';
+  const searching = q.trim().length > 0;
+  const firstHit = () => {
+    const { mine, web } = searchAll(box, recipes, q);
+    const top = mine[0] ? mine[0].r.id : web[0] ? `bb-${web[0].id}` : null;
+    if (top) {
+      noteRecent(top);
+      openRecipe(top);
+    }
+  };
+  let body;
+  if (searching) body = <SearchResults q={q} box={box || RB.defaultBox()} recipes={recipes} onAdd={() => setForm('new')} />;
+  else if (section === 'sourdough') body = <SourdoughSection data={sourdough} mutate={mutateSourdough} />;
+  else if (section === 'recipes')
+    body = box ? (
+      <>
+        <RecentStrip box={box} />
+        <RecipeBoxSection box={box} data={data} onAdd={() => setForm('new')} onImport={() => setImporting(true)} />
+      </>
+    ) : (
+      <section className="card">
+        <p className="empty">{boxError || 'Loading…'}</p>
+      </section>
     );
-  }
-  // Keep the open recipe in sync with saved changes (My recipes edits).
-  const current = open && open.mine ? data.mine.find((x) => x.id === open.id) || open : open;
-  const sheet = current ? <RecipeSheet r={current} data={data} recipes={recipes} mutate={mutate} onLogRecipe={onLogRecipe} onClose={() => setOpen(null)} /> : null;
-  if (section === 'prep') {
-    const t = planLine(data);
-    return (
-      <div className="home cooking">
-        <header className="page-head">
-          <h1 className="page-title">Cooking</h1>
-          <div className="muted">Meal prep · {t ? `this week: ${t}` : 'pick recipes for the week'}</div>
-        </header>
-        {tabs}
-        {error ? <div className="alert">{error}</div> : null}
-        <MealPrepSection data={data} recipes={recipes} mutate={mutate} onOpen={setOpen} />
-        {sheet}
-      </div>
+  else if (!data)
+    body = (
+      <section className="card">
+        <p className="empty">{error || 'Loading…'}</p>
+      </section>
     );
-  }
-  return (
-    <div className="home cooking">
-      <header className="page-head">
-        <h1 className="page-title">Cooking</h1>
-        <div className="muted">
-          {plural(data.kitchen.length, 'thing')} in the kitchen · {plural(data.grocery.filter((g) => !g.done).length, 'item')} on the list
-        </div>
-      </header>
-      {tabs}
-      {error ? <div className="alert">{error}</div> : null}
+  else if (section === 'prep') body = <MealPrepSection data={data} recipes={recipes} mutate={mutate} onOpen={open} box={box} />;
+  else
+    body = (
       <div className="grid">
         <div className="col">
           <GroceryCard data={data} mutate={mutate} onFinish={onFinishShop} />
           <KitchenCard data={data} recipes={recipes} mutate={mutate} />
         </div>
         <div className="col">
-          <CookNowCard data={data} recipes={recipes} onOpen={setOpen} />
-          <PicksCard data={data} recipes={recipes} onOpen={setOpen} onMore={() => (setSection('prep'), window.scrollTo(0, 0))} />
-          <MineCard data={data} recipes={recipes} onOpen={(r) => setOpen(r)} onAdd={() => setAdding(true)} />
+          <CookNowCard data={data} recipes={recipes} box={box} />
+          <PicksCard data={data} recipes={recipes} onMore={() => (setSection('prep'), window.scrollTo(0, 0))} />
         </div>
       </div>
-      {sheet}
-      {adding ? <AddRecipeSheet mutate={mutate} onClose={() => setAdding(false)} /> : null}
-    </div>
+    );
+  return (
+    <BoxCtx.Provider value={ctx}>
+      <div className={`home cooking sec-${section} ${rid ? 'has-recipe' : ''}`}>
+        <div className="cook-tab" hidden={!!rid}>
+          <CookHero box={box} q={q} setQ={setQ} onEnter={firstHit} compact={compact} chips={chips} />
+          <SectionTabs list={COOK_SECTIONS} value={section} onChange={(k) => (setSection(k), setQ(''))} label="Cooking sections" />
+          {error && section !== 'recipes' && section !== 'sourdough' ? <div className="alert">{error}</div> : null}
+          {boxError && section === 'recipes' ? <div className="alert">{boxError}</div> : null}
+          {body}
+        </div>
+        {view}
+        {sheets}
+      </div>
+    </BoxCtx.Provider>
   );
 }
 
 // Tonight's best dinner from what's in the kitchen (used by the Home header too).
-export function tonightPick(data, recipes) {
+export function tonightPick(data, recipes, box) {
   if (!data || !data.kitchen.length) return null;
-  return rankRecipes(listFor(data, recipes), kitchenKeys(data), { course: 'main', limit: 1 })[0] || null;
+  return rankRecipes(listFor(box, recipes), kitchenKeys(data), { course: 'main', limit: 1 })[0] || null;
 }
 
-export function CookingHomeCard({ data, recipes, sourdough }) {
-  const kKeys = useMemo(() => (data ? kitchenKeys(data) : []), [data]);
-  const best = useMemo(() => (data && data.kitchen.length ? rankRecipes(listFor(data, recipes), kKeys, { course: 'main', limit: 1 })[0] : null), [data, recipes, kKeys]);
+export function CookingHomeCard({ data, recipes, sourdough, box }) {
+  const best = useMemo(() => tonightPick(data, recipes, box), [data, recipes, box]);
   if (!data) return null;
   const todo = data.grocery.filter((g) => !g.done);
   return (
-    <section className="card">
+    <section className="card home-cooking">
       <div className="card-head">
         <h2 className="card-title">Cooking</h2>
         <a className="link small" href="#/cooking">
-          Kitchen →
+          {box && box.recipes.length ? `${plural(box.recipes.length, 'recipe')} →` : 'Kitchen →'}
         </a>
       </div>
       <a className="home-row" href="#/cooking">
@@ -697,7 +639,7 @@ export function CookingHomeCard({ data, recipes, sourdough }) {
         <span className="num badge">{todo.length}</span>
       </a>
       {best ? (
-        <a className="home-row" href="#/cooking">
+        <a className="home-row" href={recipeHref(openId(best.r))} onClick={openLink(openId(best.r))}>
           <span className="grow">
             <span className="bill-name">Tonight: {best.r.title}</span>
             <span className="muted small block">

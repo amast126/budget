@@ -10,7 +10,7 @@ import {
   getRedirectResult,
   signOut as fbSignOut,
 } from 'firebase/auth';
-import { getFirestore, doc, onSnapshot, runTransaction } from 'firebase/firestore';
+import { getFirestore, doc, onSnapshot, runTransaction, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 
 const CFG = window.BUDGET_CONFIG || {};
 const CLIENT = 'home-' + Math.random().toString(36).slice(2);
@@ -91,5 +91,15 @@ export function createFirebaseBackend() {
     mutateBudget: (user, fn) => mutate(budgetRef(user), fn),
     subscribeModule: (user, name, cb, onError) => listen(moduleRef(user, name), cb, onError),
     mutateModule: (user, name, fn, init) => mutate(moduleRef(user, name), fn, init),
+    // One-time reads and blind writes, for documents that aren't kept live (recipe photos).
+    readModule: async (user, name) => {
+      const snap = await getDoc(moduleRef(user, name));
+      return snap.exists() && snap.data().json ? JSON.parse(snap.data().json) : null;
+    },
+    setModule: (user, name, data) => {
+      const updatedAt = Date.now();
+      return setDoc(moduleRef(user, name), { json: JSON.stringify({ ...data, updatedAt }), updatedAt, client: CLIENT });
+    },
+    deleteModule: (user, name) => deleteDoc(moduleRef(user, name)),
   };
 }

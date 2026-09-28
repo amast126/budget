@@ -37,6 +37,9 @@ import { MerchantInput, RecentChips, useMerchants, AddSheet, parseAddLink } from
 import budgetCss from './budget.css';
 import healthCss from './health-more.css';
 import funCss from './fun.css';
+import cookCss from './cooking.css';
+import { normalizeBox, defaultBox, moveMine, mineId } from './recipebox-logic.js';
+import { createPhotoStore } from './recipe-photos.js';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
@@ -59,7 +62,7 @@ trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss;
+  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss;
   document.head.appendChild(s);
 }
 
@@ -325,7 +328,7 @@ function WatchCard({ s }) {
 let homeSeen = false;
 // A birthday this week moves the Birthdays card up next to the to-do list on phones.
 const bdaySoon = (b, today) => upcomingBirthdays(b, today, 7).length > 0;
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, guitar, mutateGuitar, sourdough, birthdays, mutateBirthdays, onBirthdays, forecast, pageSky }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, box, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, guitar, mutateGuitar, sourdough, birthdays, mutateBirthdays, onBirthdays, forecast, pageSky }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   const place = (home && home.place) || DEFAULT_PLACE;
@@ -338,8 +341,8 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
   }, []);
   // Everything the rings, streaks, insights and header read from, recomputed only when a document changes.
   const ctx = useMemo(
-    () => ({ data, health, years: healthYears, hk, hkYears, learning, home, auto, fun, birthdays, today: day, now: new Date(), pick: tonightPick(cooking, recipes), demo: IS_DEMO, sport: IS_DEMO ? 'running' : 'tennis' }),
-    [data, health, healthYears, hk, hkYears, learning, home, auto, fun, birthdays, cooking, recipes, day]
+    () => ({ data, health, years: healthYears, hk, hkYears, learning, home, auto, fun, birthdays, today: day, now: new Date(), pick: tonightPick(cooking, recipes, box), demo: IS_DEMO, sport: IS_DEMO ? 'running' : 'tennis' }),
+    [data, health, healthYears, hk, hkYears, learning, home, auto, fun, birthdays, cooking, recipes, box, day]
   );
   // Slots carry a phone order; on wide screens the two columns show as laid out.
   return (
@@ -403,7 +406,7 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
             <LearningHomeCard data={learning} mutate={mutateLearning} guitar={guitar} mutateGuitar={mutateGuitar} />
           </div>
           <div className="slot o14">
-            <CookingHomeCard data={cooking} recipes={recipes} sourdough={sourdough} />
+            <CookingHomeCard data={cooking} recipes={recipes} sourdough={sourdough} box={box} />
           </div>
           {data ? (
             <div className="slot o12">
@@ -614,6 +617,7 @@ const MODULES = {
   sourdough: [normalizeSourdough, defaultSourdough, 'the sourdough corner'],
   birthdays: [normalizeBirthdays, defaultBirthdays, 'birthdays'],
   news: [normalizeNewsPrefs, defaultNewsPrefs, 'your saved stories'],
+  recipebox: [normalizeBox, defaultBox, 'your recipe box'],
   alerts: [(d) => d || null, () => null, 'the alerts status'], // written by the Budget alerts job
 };
 function useModuleDoc(allowed, user, name) {
@@ -749,6 +753,19 @@ function App() {
   const [birthdays] = useModuleDoc(allowed, user, 'birthdays');
   const [newsPrefs] = useModuleDoc(allowed, user, 'news');
   const [alertStatus] = useModuleDoc(allowed, user, 'alerts');
+  const [box, boxError] = useModuleDoc(allowed, user, 'recipebox');
+  // Recipe photos live in documents of their own, read when they're needed.
+  const photos = useMemo(
+    () =>
+      user
+        ? createPhotoStore({
+            read: (name) => backend.readModule(user, name),
+            write: (name, doc) => backend.setModule(user, name, doc),
+            remove: (name) => backend.deleteModule(user, name),
+          })
+        : null,
+    [user && user.uid]
+  );
 
   useEffect(() => {
     if (!allowed) return;
@@ -1025,6 +1042,31 @@ function App() {
   const mutateSourdough = mutateDoc('sourdough');
   const mutateBirthdays = mutateDoc('birthdays');
   const mutateNews = mutateDoc('news');
+  const mutateBox = mutateDoc('recipebox');
+  // "My recipes" from before the recipe box move into it once: each entry is copied into the box (which remembers
+  // what it has taken), then only those entries leave the cooking document. Tried once per visit.
+  const moving = useRef(false);
+  useEffect(() => {
+    if (!allowed || !cooking || !box || moving.current || !(cooking.mine && cooking.mine.length)) return;
+    moving.current = true;
+    const mine = cooking.mine;
+    let handled = [];
+    backend
+      .mutateModule(user, 'recipebox', (d) => (handled = moveMine(inPlace(normalizeBox)(d), mine)), defaultBox)
+      .then(() => {
+        const done = new Set(handled);
+        return backend.mutateModule(
+          user,
+          'cooking',
+          (d) => {
+            normalizeCookingInPlace(d);
+            d.mine = d.mine.filter((m) => !done.has(mineId(m)));
+          },
+          defaultCooking
+        );
+      })
+      .catch(() => {});
+  }, [allowed, cooking, box]);
   const mutateHealth = async (fn, msg) => {
     try {
       await backend.mutateModule(user, 'health', (d) => fn(normalizeHealthInPlace(d)), H.defaultHealth);
@@ -1143,7 +1185,7 @@ function App() {
         );
       }),
   };
-  // Log one serving of a Budget Bytes recipe (from the Cooking tab) to today's food.
+  // Log one serving of a recipe (from the Cooking tab) to today's food.
   const logRecipe = (r) => {
     const food = HM.recipeFood(r);
     return healthAct.logFood(H.todayISO(), food, food.portions[0], 1, H.mealNow());
@@ -1266,7 +1308,20 @@ function App() {
       <main className="main" ref={mainRef}>
         {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} guitar={guitar} mutateGuitar={mutateGuitar} /> : null}
         {route === 'cooking' ? (
-          <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} onLogRecipe={logRecipe} sourdough={sourdough} mutateSourdough={mutateSourdough} />
+          <CookingPage
+            data={cooking}
+            recipes={recipes}
+            mutate={mutateCooking}
+            error={cookingError}
+            onFinishShop={() => setShopping(true)}
+            onLogRecipe={logRecipe}
+            sourdough={sourdough}
+            mutateSourdough={mutateSourdough}
+            box={box}
+            boxError={boxError}
+            mutateBox={mutateBox}
+            photos={photos}
+          />
         ) : null}
         {route === 'fun' ? <FunPage data={fun} mutate={mutateFun} error={funError} news={news} read={read} markRead={markRead} /> : null}
         {route === 'news' ? (
@@ -1289,6 +1344,7 @@ function App() {
             mutateLearning={mutateLearning}
             cooking={cooking}
             recipes={recipes}
+            box={box}
             home={home}
             mutateHome={mutateHome}
             onDeleteTodo={onDeleteTodo}

@@ -30,6 +30,14 @@ const raw = {
       mem.set(k, v);
     }
   },
+  del(k) {
+    mem.delete(k);
+    try {
+      localStorage.removeItem(P + k);
+    } catch {
+      /* no storage */
+    }
+  },
 };
 const readDoc = (k) => {
   const v = raw.get(k);
@@ -55,7 +63,7 @@ function demoKeys() {
 }
 
 // Write the sample documents the first time, after a reset, or when the sample itself changes (VERSION).
-const VERSION = 6; // 6: Health training, habits, checkups, labs, sync; 5: sample stock prices; 4: News follows; 3: adds Entertainment, Guitar, Sourdough and Birthdays; 2: the Seattle sample; 1: an earlier sample
+const VERSION = 7; // 7: the recipe box; 6: Health training, habits, checkups, labs, sync; 5: sample stock prices; 4: News follows; 3: adds Entertainment, Guitar, Sourdough and Birthdays; 2: the Seattle sample; 1: an earlier sample
 export function seedDemo(force = false) {
   const meta = readDoc(META);
   if (!force && meta && meta.version === VERSION) return false;
@@ -164,6 +172,15 @@ export function createDemoBackend() {
     },
     subscribeModule: (user, name, cb) => subscribe(name, cb),
     mutateModule: (user, name, fn, init) => mutate(name, fn, init),
+    readModule: async (user, name) => readDoc(name),
+    setModule: async (user, name, data) => {
+      raw.set(name, JSON.stringify({ ...data, updatedAt: Date.now() }));
+      emit(name);
+    },
+    deleteModule: async (user, name) => {
+      raw.del(name);
+      emit(name);
+    },
     // The budget frame doesn't watch storage, so the app reloads it after the budget changes from here.
     onBudgetWrite(f) {
       listeners.add(f);

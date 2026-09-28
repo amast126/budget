@@ -4,6 +4,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { kitchenKeys, findRecipes, MP_SHOW, MP_PROTEIN, MP_EXTRAS, MP_SORT, inPlan, togglePlan, removePlan, clearPlan, planTotals, planShopping, addPlanToGrocery, imageUrl, label } from './cooking-logic.js';
+import { asCookable } from './recipebox-logic.js';
+import { RecipeImg } from './recipebox.jsx';
+import { PlateArt } from './plate-art.jsx';
 
 const money = (n) => (n == null ? null : `$${Number(n).toFixed(2)}`);
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
@@ -12,10 +15,19 @@ const PAGE = 30;
 
 // A card-size photo: the recipe's own, else the thumbnail's bigger sibling, else the thumbnail.
 function Photo({ recipes, r, className = 'mp-img' }) {
+  if (r.box || r.photo || r.imgUrl) return <RecipeImg r={r} className={className} />;
+  return <WebPhoto recipes={recipes} r={r} className={className} />;
+}
+function WebPhoto({ recipes, r, className }) {
   const big = r.image || (r.thumb ? r.thumb.replace(/-160x160(\.\w+)$/, '-400x300$1') : null);
   const [src, setSrc] = useState(big ? imageUrl(recipes, big) : null);
   useEffect(() => setSrc(big ? imageUrl(recipes, big) : null), [big]);
-  if (!src) return <span className={`${className} ph`} aria-hidden="true" />;
+  if (!src)
+    return (
+      <span className={`rimg art ${className}`} aria-hidden="true">
+        <PlateArt r={r} />
+      </span>
+    );
   return (
     <img
       className={className}
@@ -32,8 +44,9 @@ function Photo({ recipes, r, className = 'mp-img' }) {
 }
 
 function RecipeCard({ r, m, recipes, planned, onOpen, onPlan, hasKitchen }) {
-  const bits = [r.perServing != null ? `${money(r.perServing)}/serving` : null, mins(r.minutes), r.nutrition ? `${Math.round(r.nutrition[1])}g protein` : null].filter(Boolean);
+  const bits = [r.perServing != null ? `${money(r.perServing)}/serving` : null, mins(r.minutes), r.nutrition && r.nutrition[1] != null ? `${Math.round(r.nutrition[1])}g protein` : r.nutrition ? `${Math.round(r.nutrition[0])} cal` : null].filter(Boolean);
   const tags = [];
+  if (r.box) tags.push(r.source && r.source !== 'Mine' ? r.source : 'Yours');
   if (r.mp) tags.push('Meal prep');
   if ((r.prep || []).includes('noreheat')) tags.push('No reheat');
   return (
@@ -62,7 +75,7 @@ function RecipeCard({ r, m, recipes, planned, onOpen, onPlan, hasKitchen }) {
   );
 }
 
-function PlanCard({ data, recipes, mutate, onOpen, kKeys }) {
+function PlanCard({ data, recipes, mutate, onOpen, kKeys, box }) {
   const plan = data.plan || [];
   const t = planTotals(plan);
   const shop = useMemo(() => planShopping(plan, kKeys), [plan, kKeys]);
@@ -86,11 +99,11 @@ function PlanCard({ data, recipes, mutate, onOpen, kKeys }) {
             {plan.map((r) => (
               <li key={r.id} className="mp-plan-row">
                 <button className="rc" onClick={() => onOpen(r)}>
-                  <Photo recipes={recipes} r={r} className="thumb" />
+                  <Photo recipes={recipes} r={(r.box && box && box.recipes.find((x) => x.id === r.id)) || r} className="thumb" />
                   <span className="grow">
                     <span className="rc-title">{r.title}</span>
                     <span className="muted small">
-                      {[r.servings ? plural(r.servings, 'serving') : null, r.perServing != null ? `${money(r.perServing)}/serving` : null, r.nutrition ? `${r.nutrition[0]} cal · ${Math.round(r.nutrition[1])}g protein` : null].filter(Boolean).join(' · ')}
+                      {[r.servings ? plural(r.servings, 'serving') : null, r.perServing != null ? `${money(r.perServing)}/serving` : null, r.nutrition ? `${Math.round(r.nutrition[0])} cal${r.nutrition[1] != null ? ` · ${Math.round(r.nutrition[1])}g protein` : ''}` : null].filter(Boolean).join(' · ')}
                     </span>
                   </span>
                 </button>
@@ -134,7 +147,7 @@ function PlanCard({ data, recipes, mutate, onOpen, kKeys }) {
   );
 }
 
-export function MealPrepSection({ data, recipes, mutate, onOpen }) {
+export function MealPrepSection({ data, recipes, mutate, onOpen, box }) {
   const [view, setView] = useState('week');
   const [q, setQ] = useState('');
   const [show, setShow] = useState('all');
@@ -149,21 +162,21 @@ export function MealPrepSection({ data, recipes, mutate, onOpen }) {
   // most popular first; your own recipes join too.
   const all = useMemo(() => {
     const byId = new Map(picks.map((r) => [r.id, r]));
-    const saved = new Set(data.mine.map((r) => r.webId).filter(Boolean));
-    const mine = data.mine.filter((r) => !r.webId).map((r) => ({ ...r, course: 'main', mine: true }));
-    return [...mine, ...pool.filter((r) => !saved.has(r.id)).map((r) => byId.get(r.id) || r)];
-  }, [recipes, data.mine]);
+    // your own recipes, then the file (recipes you saved from it stay here in their Budget Bytes form)
+    const mine = (box ? box.recipes : []).filter((r) => r.webId == null).map(asCookable);
+    return [...mine, ...pool.map((r) => byId.get(r.id) || r)];
+  }, [recipes, box]);
   const list = view === 'week' ? picks : all;
   const results = useMemo(() => findRecipes(list, { q, show, protein, extras, kKeys, sort: view === 'all' && sort === 'best' ? 'popular' : sort }), [list, q, show, protein, extras, kKeys, sort, view]);
   useEffect(() => setLimit(PAGE), [view, q, show, protein, extras, sort]);
-  const plan = new Set((data.plan || []).map((r) => r.id));
+  const plan = new Set((data.plan || []).map((r) => String(r.id)));
   const toggleExtra = (k) => setExtras(extras.includes(k) ? extras.filter((x) => x !== k) : [...extras, k]);
   const onPlan = (r, planned) => mutate((d) => togglePlan(d, r), planned ? `Removed ${r.title} from this week’s prep` : `Added ${r.title} to this week’s prep`);
   const mpCount = pool.filter((r) => r.mp).length;
   const filtered = q || show !== 'all' || protein !== 'any' || extras.length;
   return (
     <div className="mealprep">
-      <PlanCard data={data} recipes={recipes} mutate={mutate} onOpen={onOpen} kKeys={kKeys} />
+      <PlanCard data={data} recipes={recipes} mutate={mutate} onOpen={onOpen} kKeys={kKeys} box={box} />
       <section className="card mp-browse">
         <div className="card-head wrap">
           <h2 className="card-title">Recipes</h2>
@@ -242,7 +255,7 @@ export function MealPrepSection({ data, recipes, mutate, onOpen }) {
             ) : (
               <ul className="mp-grid">
                 {results.slice(0, limit).map(({ r, m }) => (
-                  <RecipeCard key={r.id} r={r} m={m} recipes={recipes} planned={plan.has(r.id)} onOpen={onOpen} onPlan={onPlan} hasKitchen={data.kitchen.length > 0} />
+                  <RecipeCard key={r.id} r={r} m={m} recipes={recipes} planned={plan.has(String(r.id))} onOpen={onOpen} onPlan={onPlan} hasKitchen={data.kitchen.length > 0} />
                 ))}
               </ul>
             )}

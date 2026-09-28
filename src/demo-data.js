@@ -12,6 +12,7 @@ import * as T from './health-training.js';
 import { defaultLearning, logTime } from './learning-logic.js';
 import { DEMO_PLAN } from './learning-catalog.js';
 import { defaultCooking, addKitchen, addGrocery } from './cooking-logic.js';
+import { demoBox } from './demo-recipes.js';
 import { defaultAuto, logService } from './auto-logic.js';
 import { MCU } from './fun-logic.js';
 
@@ -453,24 +454,9 @@ export function demoDocs(now = new Date()) {
   };
   docs.learning = learning;
 
-  // Cooking: a well-stocked kitchen, a couple of saved recipes, a short grocery list
+  // Cooking: a well-stocked kitchen, a recipe box, a short grocery list
   const cooking = defaultCooking();
-  cooking.mine = [
-    {
-      id: 'demo-mine-salmon',
-      title: 'Miso-glazed salmon',
-      ingredients: ['4 salmon fillets', '3 tbsp white miso', '2 tbsp mirin', '1 tbsp honey', '1 tbsp soy sauce', 'sesame oil', 'scallions', 'jasmine rice'],
-      notes: 'Whisk the glaze, brush it on, and broil 8–10 minutes until it caramelizes. Serve over rice with sesame seeds and scallions.',
-      made: 4,
-    },
-    {
-      id: 'demo-mine-shakshuka',
-      title: 'Weeknight shakshuka',
-      ingredients: ['1 onion', '3 cloves garlic', '1 red bell pepper', '28 oz canned tomatoes', '6 eggs', 'ground cumin', 'smoked paprika', 'feta', 'parsley'],
-      notes: 'Soften the onion and pepper, add the spices and tomatoes, simmer 10 minutes, then poach the eggs in wells until just set. Feta and parsley on top, crusty bread alongside.',
-      made: 2,
-    },
-  ];
+  cooking.mine = []; // the recipes are in the recipe box
   addKitchen(cooking, ['Salmon fillets', 'Eggs', 'Greek yogurt', 'Butter', 'Parmesan', 'Kale', 'Lemons', 'Kimchi', 'Miso paste'], 'fridge');
   addKitchen(cooking, ['Frozen dumplings', 'Frozen berries', 'Ground turkey'], 'freezer');
   addKitchen(cooking, ['Jasmine rice', 'Farro', 'Pasta', 'Chickpeas', 'Canned tomatoes', 'Olive oil', 'Soy sauce', 'Oats', 'Honey', 'Onions', 'Garlic', 'Sesame oil', 'Coconut milk'], 'pantry');
@@ -481,6 +467,7 @@ export function demoDocs(now = new Date()) {
   const oat = cooking.grocery.find((g) => g.name === 'Oat milk');
   if (oat) oat.done = true;
   docs.cooking = cooking;
+  docs.recipebox = demoBox(today);
 
   // Health: profile, a food log (every day for the last 7 weeks, today so far), and remembered foods
   const health = H.defaultHealth();

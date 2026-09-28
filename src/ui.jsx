@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Icon({ name, size = 22 }) {
+export function Icon({ name, size = 22, fill = false }) {
   const p = {
     home: 'M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
     budget: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
@@ -26,9 +26,23 @@ export function Icon({ name, size = 22 }) {
     close: 'M6 6l12 12M18 6 6 18',
     sidebar: 'M4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11A1.5 1.5 0 0 1 4.5 5zM9.5 5v14M5.5 8.5h2M5.5 11h2',
     game: 'M7.5 7h9a4.5 4.5 0 0 1 4.4 5.4l-.9 4.4a2.2 2.2 0 0 1-3.9.9L14.5 15h-5l-1.6 2.7a2.2 2.2 0 0 1-3.9-.9l-.9-4.4A4.5 4.5 0 0 1 7.5 7zM8 9.8v3M6.5 11.3h3M15.5 10.5h.01M17.5 12.3h.01',
+    clock: 'M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16zM12 8v4.5l3 2',
+    users: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2',
+    plus: 'M12 5v14M5 12h14',
+    minus: 'M5 12h14',
+    upload: 'M12 15V4M7.5 8.5 12 4l4.5 4.5M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15',
+    camera: 'M4 8.5A1.5 1.5 0 0 1 5.5 7h2.3l1.4-2h5.6l1.4 2h2.3A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5zM12 10a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4z',
+    play: 'M8 5.5v13l10.5-6.5z',
+    back: 'M15 6l-6 6 6 6',
+    edit: 'M5 19h3.5L19 8.5 15.5 5 5 15.5zM13.5 7l3.5 3.5',
+    trash: 'M5 7h14M10 7V5h4v2M7 7l1 12.5h8L17 7M10.5 11v5M13.5 11v5',
+    timer: 'M12 7a7 7 0 1 1 0 14 7 7 0 0 1 0-14zM12 10.5V14l2 1.5M10 3h4M18.5 6.5l1.5-1.5',
+    list: 'M9 7h11M9 12h11M9 17h11M4.5 7h.01M4.5 12h.01M4.5 17h.01',
+    fav: 'M12 19.5s-7-4.3-7-9.7A4 4 0 0 1 12 7.2a4 4 0 0 1 7 2.6c0 5.4-7 9.7-7 9.7z',
+    cart: 'M3.5 4.5h2l2 10.5h10l2-7.5H7M9.5 19.5h.01M16.5 19.5h.01',
   }[name];
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={fill ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d={p} />
     </svg>
   );
