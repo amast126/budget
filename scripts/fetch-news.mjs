@@ -4,7 +4,7 @@
  *
  *   Top stories  Google News' own top stories, each with the other outlets covering it
  *   US politics  AP and Reuters
- *   NYC politics THE CITY and Gothamist (their own feeds, kept to politics), City & State, Politico New York, amNY,
+ *   NYC politics THE CITY (its own feed, kept to politics), Gothamist, City & State, Politico New York, amNY,
  *                Daily News; plus Mamdani coverage anywhere
  *   Long Island  Newsday, News12 Long Island, Patch, LI Herald, TBR News Media, Long Island Press
  *   Tech & AI    The Verge, Ars Technica, TechCrunch, Wired (their own feeds, with photos and summaries) plus an
@@ -66,7 +66,6 @@ const SECTIONS = {
     maxAgeDays: 5,
     sources: {
       thecity: { name: 'THE CITY', feed: 'https://www.thecity.nyc/feed/', match: NYC_POLITICS },
-      gothamist: { name: 'Gothamist', feed: 'https://gothamist.com/feed', match: NYC_POLITICS },
       nyc: {
         name: 'NYC',
         outlet: true,
@@ -183,24 +182,22 @@ const SECTIONS = {
   },
 };
 // Reddit listings: [subreddit, sort, time window, how many]. r/popular's top of the day, then your subreddits' hot posts.
-const REDDIT = [
-  ['popular', 'top', 'day', 25],
-  ['GTA6', 'hot', null, 10],
-  ['CODZombies', 'hot', null, 8],
-  ['TeamfightTactics', 'hot', null, 8],
-  ['nyc', 'hot', null, 8],
-  ['longisland', 'hot', null, 8],
-];
+// Your subreddits come in one request (Reddit rate-limits a run of them), then are split up.
+const REDDIT_POPULAR = ['popular', 'top', 'day', 25];
+const MY_SUBS = ['GTA6', 'CODZombies', 'TeamfightTactics', 'nyc', 'longisland'];
+const PER_SUB = 8;
 // How many of each section's newest photo-less stories get a photo and summary from the article page per run.
 const ENRICH = { top: 12, politics: 4, nyc: 4, li: 4, tech: 3, markets: 3, gaming: 2, pop: 2, music: 2, marvel: 2 };
 const ENRICH_MAX = 36;
+// Sites that turn servers away (tested on the first run): their links are still resolved, but their pages aren't fetched.
+const NO_PREVIEW = /(^|\.)(apnews|reuters|nytimes|washingtonpost|politico|barrons|wsj|bloomberg)\.com$/;
 const ENRICH_MS = 100000; // and no more than this long, so a slow run still finishes well inside the workflow's 5 minutes
 const REDDIT_GAP = Number(process.env.NEWS_REDDIT_GAP_MS || 1200);
 // Bump a section's number after changing its searches: stories kept from the old searches are dropped on the next run.
 const SEARCH_VERSION = { nyc: 2, markets: 3, gaming: 2, marvel: 2 };
-// Pages that aren't stories: sign-in pages, and the stock quotes, filings and profile pages that finance sites publish
+// Pages that aren't stories: sign-in pages, forum threads, and the stock quotes, filings and profile pages that finance sites publish
 // under news searches.
-const NOT_NEWS = /(^(Log ?in|Sign ?in|Sign up|Subscribe)\b|\bSEC Filings\b|\bStock (Price|Quote)\b|\bProfile and Biography\b|\bPrice Data\b|\b(Annual|Quarterly) (Income Statement|Balance Sheet|Cash Flow)\b|^Restrict to |^[A-Z.]{1,6} \| .*\b(Profile|Filings)\b)/i;
+const NOT_NEWS = /(^(Log ?in|Sign ?in|Sign up|Subscribe)\b|^(FS|WTB|WTS|FT|PSA):|\| (Page \d+ \| )?Ars OpenForum$|\bSEC Filings\b|\bStock (Price|Quote)\b|\bProfile and Biography\b|\bPrice Data\b|\b(Annual|Quarterly) (Income Statement|Balance Sheet|Cash Flow)\b|^Restrict to |^[A-Z.]{1,6} \| .*\b(Profile|Filings)\b)/i;
 export const KEYS = ['top', 'politics', 'nyc', 'li', 'tech', 'markets', 'gaming', 'marvel', 'pop', 'music', 'reddit'];
 
 const nowISO = () => new Date().toISOString();
@@ -431,7 +428,7 @@ export function parseRedditJSON(j, from) {
         url: `https://www.reddit.com${d.permalink}`,
         date: new Date((Number(d.created_utc) || Date.now() / 1000) * 1000).toISOString(),
         source: d.subreddit_name_prefixed || `r/${d.subreddit}`,
-        from,
+        from: from || d.subreddit,
         score: Number(d.score) || 0,
         comments: Number(d.num_comments) || 0,
         image: image && /^https:\/\//.test(image) ? image : null,
@@ -453,7 +450,7 @@ export function parseRedditRSS(xml, from) {
         url: attr(e, 'link', 'href'),
         date: isoDate(tag(e, 'published') || tag(e, 'updated')),
         source: sub,
-        from,
+        from: from || attr(e, 'category', 'term'),
         image: thumb && /^https:\/\//.test(thumb) ? decode(thumb) : null,
       };
     })
@@ -578,7 +575,7 @@ async function enrich(out, checked) {
   for (const [sec, n] of Object.entries(ENRICH)) {
     (out[sec] || [])
       .slice(0, sec === 'top' ? 16 : 8)
-      .filter((i) => !i.image && !i.tried)
+      .filter((i) => !i.image && !i.tried && !NO_PREVIEW.test(i.domain || hostOf(i.url)))
       .slice(0, n)
       .forEach((i) => todo.push(i));
   }
@@ -610,8 +607,9 @@ async function enrich(out, checked) {
           i.domain = i.domain || hostOf(real);
           st.decoded++;
         }
-        st.tried++;
         i.tried = 1;
+        if (NO_PREVIEW.test(hostOf(i.url))) return;
+        st.tried++;
         const page = await fetchHead(i.url);
         const og = ogFrom(page.html, page.url);
         if (og.image) {
@@ -634,16 +632,20 @@ async function getSource(key, src) {
   return parseGoogleNews(await fetchText(src.url), key, src);
 }
 
-async function getReddit([sub, sort, t, n]) {
+let redditJson = true; // Reddit often turns cloud servers away from the JSON; the RSS usually still answers
+async function getReddit(sub, sort, t, n, from) {
   const q = `limit=${n}${t ? `&t=${t}` : ''}`;
-  try {
-    const j = JSON.parse(await fetchText(`https://www.reddit.com/r/${sub}/${sort}.json?${q}&raw_json=1`, { timeoutMs: 20000, accept: 'application/json' }));
-    const items = parseRedditJSON(j, sub);
-    if (items.length) return { items, via: 'json' };
-  } catch {
-    /* Reddit often turns cloud servers away from the JSON; the RSS usually still answers */
+  if (redditJson) {
+    try {
+      const j = JSON.parse(await fetchText(`https://www.reddit.com/r/${sub}/${sort}.json?${q}&raw_json=1`, { timeoutMs: 20000, accept: 'application/json' }));
+      const items = parseRedditJSON(j, from);
+      if (items.length) return { items, via: 'json' };
+    } catch {
+      redditJson = false;
+    }
+    await sleep(REDDIT_GAP);
   }
-  return { items: parseRedditRSS(await fetchText(`https://www.reddit.com/r/${sub}/${sort}/.rss?${q}`, { timeoutMs: 20000 }), sub), via: 'rss' };
+  return { items: parseRedditRSS(await fetchText(`https://www.reddit.com/r/${sub}/${sort}/.rss?${q}`, { timeoutMs: 20000 }), from), via: 'rss' };
 }
 
 export async function main(file = OUT) {
@@ -680,22 +682,34 @@ export async function main(file = OUT) {
   const oldReddit = (prev.reddit || []).map((i) => (i.from ? i : { ...i, from: 'popular' }));
   const oldById = new Map(oldReddit.map((i) => [i.id, i]));
   out.reddit = [];
-  for (const listing of REDDIT) {
-    const sub = listing[0];
-    const skey = sub === 'popular' ? 'reddit' : `reddit-${sub}`;
+  const subKey = (x) => MY_SUBS.find((m) => m.toLowerCase() === String(x || '').toLowerCase());
+  const listings = [
+    { skey: 'reddit', name: 'r/popular', subs: ['popular'], get: () => getReddit(...REDDIT_POPULAR, 'popular') },
+    { skey: 'reddit-subs', name: 'your subreddits', subs: MY_SUBS, get: () => getReddit(MY_SUBS.join('+'), 'hot', null, 100, null) },
+  ];
+  for (const L of listings) {
     try {
-      const { items, via } = await getReddit(listing);
+      let { items, via } = await L.get();
+      if (L.skey === 'reddit-subs') {
+        const per = new Map();
+        items = items
+          .map((i) => ({ ...i, from: subKey(i.from) }))
+          .filter((i) => i.from && (per.set(i.from, (per.get(i.from) || 0) + 1), per.get(i.from) <= PER_SUB));
+      }
       if (!items.length) throw new Error('empty');
       out.reddit.push(...items.map((i) => ({ ...i, seen: (oldById.get(i.id) || {}).seen || checked })));
-      sources[skey] = { ok: true, count: items.length, checked, section: 'reddit', kind: 'reddit', name: `r/${sub}`, via };
-      log(`Reddit r/${sub} (${via}): ${items.length}`);
+      sources[L.skey] = { ok: true, count: items.length, checked, section: 'reddit', kind: 'reddit', name: L.name, via };
+      log(`Reddit ${L.name} (${via}): ${items.length}`);
     } catch (e) {
-      out.reddit.push(...oldReddit.filter((i) => i.from === sub));
-      sources[skey] = { ...(sources[skey] || {}), ok: false, error: String(e.message || e).slice(0, 100), checked, section: 'reddit', kind: 'reddit', name: `r/${sub}` };
-      log(`Reddit r/${sub} FAILED: ${e.message}`);
+      out.reddit.push(...oldReddit.filter((i) => L.subs.includes(i.from)));
+      sources[L.skey] = { ...(sources[L.skey] || {}), ok: false, error: String(e.message || e).slice(0, 100), checked, section: 'reddit', kind: 'reddit', name: L.name };
+      log(`Reddit ${L.name} FAILED: ${e.message}`);
     }
-    await sleep(REDDIT_GAP); // Reddit asks for no more than about one request a second
+    await sleep(REDDIT_GAP * 2); // Reddit asks for no more than about one request a second
   }
+
+  const known = new Set([...jobs.map((j) => j.key), 'reddit', 'reddit-subs', 'photos']);
+  Object.keys(sources).forEach((k) => known.has(k) || delete sources[k]); // sources dropped from the lists above
 
   const st = await enrich(out, checked);
   sources.photos = { ok: !st.paused, count: st.images, checked, kind: 'enrich', decoded: st.decoded, tried: st.tried };
