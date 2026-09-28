@@ -2,12 +2,14 @@
  * Builds recipes.json for the Cooking tab. Runs once a week in GitHub Actions (.github/workflows/recipes.yml).
  * No dependencies: Node 20+ has fetch built in.
  *
- * Source: Budget Bytes' public recipe feed (WordPress / WP Recipe Maker REST API), about 20 requests a week.
- *   pool   popular recipes (at least 25 ratings, 4.3 stars or better): title, link, photo, cost, time, rating,
- *          nutrition per serving (for logging in the Health tab) and ingredient names, so the tab can match them
- *          against your kitchen
- *   picks  12 of those for this week (8 dinners, 2 breakfasts, 2 sides), not repeated for 12 weeks,
- *          with the full ingredient list. Cooking steps always stay on budgetbytes.com.
+ * Source: Budget Bytes' public recipe feed (WordPress / WP Recipe Maker REST API), about 30 requests a week.
+ *   pool   well-liked recipes (at least 10 ratings and 4.2 stars, or any rated recipe in Budget Bytes' own meal
+ *          prep collection): title, link, photo, cost, time, rating, nutrition per serving (for logging in the
+ *          Health tab), ingredient names (so the tab can match them against your kitchen) and meal prep tags
+ *          (chicken, beef, pork, vegetarian, breakfast, no-reheat) from the site's meal prep categories
+ *   picks  30 of those for this week (18 dinners and lunches, 6 breakfasts, 6 sides; meal prep recipes are
+ *          favored), not repeated for 8 weeks, with the full ingredient list. Cooking steps always stay on
+ *          budgetbytes.com.
  *
  * If the site can't be reached, the previous recipes.json stays and the error is noted in it.
  * Run locally: node scripts/fetch-recipes.mjs
@@ -25,21 +27,32 @@ const UA = 'Mozilla/5.0 (compatible; dashboard-recipes/1.0; personal weekly reci
 const FIELDS = 'id,link,recipe.name,recipe.rating,recipe.tags,recipe.image_id,recipe.servings,recipe.servings_unit,recipe.total_time,recipe.ingredients_flat,recipe.nutrition';
 
 // Edit these to change what counts as popular and how many picks you get.
-const MIN_RATINGS = 25;
-const MIN_STARS = 4.3;
-const PICKS = { main: 8, breakfast: 2, side: 2 };
-const NO_REPEAT_WEEKS = 12;
+const MIN_RATINGS = 10;
+const MIN_STARS = 4.2;
+// recipes in the meal prep collection only need a few ratings
+const PREP_MIN_RATINGS = 3;
+const PREP_MIN_STARS = 4;
+const PICKS = { main: 18, breakfast: 6, side: 6 };
+const NO_REPEAT_WEEKS = 8;
 const MIN_INGREDIENTS = 4;
+const PREP_WEIGHT = 2.5; // how much more likely a meal prep recipe is to be picked
+// Budget Bytes' meal prep categories → the tags the Cooking tab filters on
+const PREP_PARENT = 'budget-friendly-meal-prep';
+const PREP_TAG = { 'chicken-meal-prep': 'chicken', 'beef-meal-prep': 'beef', 'pork-meal-prep': 'pork', 'vegetarian-meal-prep': 'veg', 'breakfast-meal-prep': 'breakfast', 'no-re-heat': 'noreheat' };
 
 const log = (...a) => console.log(...a);
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let pause = 1;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms * pause));
+export const noWaits = () => (pause = 0); // tests skip the politeness delays
 
+let fetchImpl = (...a) => fetch(...a);
+export const useFetch = (f) => (fetchImpl = f); // tests swap in a stand-in
 async function getJSON(url, tries = 2) {
   for (let i = 1; i <= tries; i++) {
     const ctl = new AbortController();
     const t = setTimeout(() => ctl.abort(), 30000);
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': UA, Accept: 'application/json' }, signal: ctl.signal });
+      const res = await fetchImpl(url, { headers: { 'User-Agent': UA, Accept: 'application/json' }, signal: ctl.signal });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return { json: await res.json(), headers: res.headers };
     } catch (e) {
@@ -88,7 +101,7 @@ function nutritionOf(n) {
   return [Math.round(Number(n.calories)), num(n.protein), num(n.carbohydrates), num(n.fat)];
 }
 
-function shape(x) {
+export function shape(x) {
   const r = x.recipe || {};
   const ratings = Number((r.rating && r.rating.count) || 0);
   const stars = Number((r.rating && r.rating.average) || 0);
@@ -132,7 +145,7 @@ function shape(x) {
 }
 
 // ---------------------------------------------------------------- picking
-function isoWeek(d = new Date()) {
+export function isoWeek(d = new Date()) {
   const t = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
   const day = t.getUTCDay() || 7;
   t.setUTCDate(t.getUTCDate() + 4 - day);
@@ -154,7 +167,7 @@ function rng(seedText) {
 }
 // Weighted draw without replacement: more ratings, more stars and a lower cost per serving → more likely.
 function draw(cands, n, rand) {
-  const pool = cands.map((r) => ({ r, w: (Math.sqrt(r.ratings) * Math.pow(r.stars, 2)) / Math.sqrt(Math.max(0.75, r.perServing ?? 2)) }));
+  const pool = cands.map((r) => ({ r, w: ((Math.sqrt(r.ratings) * Math.pow(r.stars, 2)) / Math.sqrt(Math.max(0.75, r.perServing ?? 2))) * (r.mp ? PREP_WEIGHT : 1) }));
   const out = [];
   while (out.length < n && pool.length) {
     const tot = pool.reduce((a, x) => a + x.w, 0);
@@ -166,7 +179,7 @@ function draw(cands, n, rand) {
   }
   return out;
 }
-function choosePicks(pool, history, week) {
+export function choosePicks(pool, history, week) {
   const byId = new Map(pool.map((r) => [r.id, r]));
   const same = history.find((h) => h.week === week);
   if (same && same.ids.every((id) => byId.has(id))) return same.ids.map((id) => byId.get(id));
@@ -175,9 +188,9 @@ function choosePicks(pool, history, week) {
   const out = [];
   for (const [course, n] of Object.entries(PICKS)) {
     const all = pool.filter((r) => r.course === course);
-    let cands = all.filter((r) => !recent.has(r.id));
-    if (cands.length < n) cands = all; // ran through them all: start over
-    out.push(...draw(cands, n, rand));
+    const fresh = all.filter((r) => !recent.has(r.id));
+    if (fresh.length >= n) out.push(...draw(fresh, n, rand));
+    else out.push(...fresh, ...draw(all.filter((r) => recent.has(r.id)), n - fresh.length, rand)); // ran low: every unused one, then repeats
   }
   return out;
 }
@@ -213,29 +226,56 @@ async function fetchImages(ids) {
   }
   return out;
 }
+// Posts in Budget Bytes' meal prep collection and its sub-categories: slug → tags (e.g. ['chicken', 'noreheat']).
+export async function fetchMealPrep() {
+  const { json: parents } = await getJSON(`${API}/categories?slug=${PREP_PARENT}&_fields=id,slug`);
+  const parent = parents && parents[0];
+  if (!parent) throw new Error('meal prep category not found');
+  await sleep(1000);
+  const { json: kids } = await getJSON(`${API}/categories?parent=${parent.id}&per_page=100&_fields=id,slug`);
+  const tagOf = new Map([[parent.id, null], ...(kids || []).map((c) => [c.id, PREP_TAG[c.slug] || String(c.slug).replace(/-meal-prep$/, '')])]);
+  const ids = [...tagOf.keys()].join(',');
+  const out = new Map();
+  let page = 1;
+  let pages = 1;
+  do {
+    await sleep(1000);
+    const { json, headers } = await getJSON(`${API}/posts?categories=${ids}&per_page=100&page=${page}&_fields=link,categories`);
+    pages = Number(headers.get('x-wp-totalpages')) || 1;
+    for (const p of json || []) {
+      const slug = slugOf(p.link);
+      if (!slug) continue;
+      const tags = out.get(slug) || new Set();
+      (p.categories || []).forEach((c) => tagOf.get(c) && tags.add(tagOf.get(c)));
+      out.set(slug, tags);
+    }
+    page++;
+  } while (page <= pages && page <= 10);
+  log(`Meal prep collection: ${out.size} posts`);
+  return out;
+}
 
-const prev = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
-const week = isoWeek();
-let result;
-try {
-  const { items, total } = await fetchAll();
+// The recipes.json contents from the fetched recipes (pure, so it can be tested).
+export function build({ items, total, mealPrep = new Map(), images = new Map(), prev = null, week = isoWeek(), now = new Date() }) {
   const shaped = items.map(shape).filter(Boolean);
+  shaped.forEach((r) => {
+    const tags = mealPrep.get(r.slug);
+    if (tags) {
+      r.mp = 1;
+      if (tags.size) r.prep = [...tags].sort();
+    }
+  });
   // Real recipes only: technique posts like "how to boil an egg" have one or two ingredients.
-  const pool = shaped.filter((r) => r.ratings >= MIN_RATINGS && r.stars >= MIN_STARS && r.keys.length >= MIN_INGREDIENTS).sort((a, b) => b.ratings - a.ratings);
+  const liked = (r) => (r.ratings >= MIN_RATINGS && r.stars >= MIN_STARS) || (r.mp && r.ratings >= PREP_MIN_RATINGS && r.stars >= PREP_MIN_STARS);
+  const pool = shaped.filter((r) => liked(r) && r.keys.length >= MIN_INGREDIENTS).sort((a, b) => b.ratings - a.ratings);
   if (pool.length < 50) throw new Error(`only ${pool.length} popular recipes found; the feed may have changed`);
   const history = (prev && prev.history) || [];
   const picks = choosePicks(pool, history, week);
-  let images = new Map();
-  try {
-    images = await fetchImages([...new Set(pool.map((r) => r.imageId).filter(Boolean))]);
-  } catch (e) {
-    log('Photos skipped:', e.message);
-  }
   const freq = new Map();
   pool.forEach((r) => r.keys.forEach((k) => freq.set(k, (freq.get(k) || 0) + 1)));
   const base = (r) => {
     const img = images.get(r.imageId) || {};
-    return {
+    const out = {
       id: r.id,
       title: r.title,
       slug: r.slug,
@@ -247,35 +287,73 @@ try {
       minutes: r.minutes,
       servings: r.servings,
       thumb: img.thumb || null,
+      image: img.card || null,
       keys: r.keys,
       nutrition: r.nutrition,
     };
+    if (r.mp) out.mp = 1;
+    if (r.prep) out.prep = r.prep;
+    return out;
   };
-  result = {
-    generated: new Date().toISOString(),
+  return {
+    generated: now.toISOString(),
     week,
     site: SITE,
     uploads: UPLOADS,
-    source: { name: 'Budget Bytes', ok: true, recipes: total, popular: pool.length },
-    picks: picks.map((r) => ({ ...base(r), image: (images.get(r.imageId) || {}).card || null, servingsUnit: r.servingsUnit, lines: r.lines })),
+    source: { name: 'Budget Bytes', ok: true, recipes: total, popular: pool.length, mealPrep: pool.filter((r) => r.mp).length },
+    picks: picks.map((r) => ({ ...base(r), servingsUnit: r.servingsUnit, lines: r.lines })),
     pool: pool.map(base),
     common: [...freq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 80),
     history: [{ week, ids: picks.map((r) => r.id) }, ...history.filter((h) => h.week !== week)].slice(0, 26),
   };
-  log(`Week ${week}: ${pool.length} popular recipes, picks: ${picks.map((r) => r.title).join(' | ')}`);
-} catch (e) {
-  log('Recipe fetch failed:', e.message);
-  if (!prev) {
-    result = { generated: new Date().toISOString(), week, site: SITE, uploads: UPLOADS, source: { name: 'Budget Bytes', ok: false, error: String(e.message) }, picks: [], pool: [], common: [], history: [] };
-  } else {
-    result = { ...prev, source: { ...(prev.source || {}), ok: false, error: String(e.message), failedAt: new Date().toISOString() } };
-  }
 }
 
-// Only rewrite when something other than the timestamp changed.
-const strip = (o) => JSON.stringify({ ...o, generated: undefined, source: { ...(o && o.source), failedAt: undefined } });
-if (prev && strip(prev) === strip(result)) log('No change.');
-else {
-  fs.writeFileSync(OUT, JSON.stringify(result));
-  log(`Wrote ${OUT} (${(fs.statSync(OUT).size / 1024).toFixed(0)} KB)`);
+export async function main({ fetch: f } = {}) {
+  if (f) fetchImpl = f;
+  const prev = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
+  const week = isoWeek();
+  let result;
+  try {
+    const { items, total } = await fetchAll();
+    let mealPrep = new Map();
+    try {
+      mealPrep = await fetchMealPrep();
+    } catch (e) {
+      log('Meal prep tags skipped:', e.message);
+    }
+    const ids = [...new Set(items.map(shape).filter(Boolean).map((r) => r.imageId).filter(Boolean))];
+    let images = new Map();
+    try {
+      // photos only for recipes that can make the pool (the same bar as build(), before meal prep)
+      const keep = new Set(
+        items
+          .map(shape)
+          .filter((r) => r && r.imageId && ((r.ratings >= MIN_RATINGS && r.stars >= MIN_STARS) || (mealPrep.has(r.slug) && r.ratings >= PREP_MIN_RATINGS)))
+          .map((r) => r.imageId)
+      );
+      images = await fetchImages(ids.filter((id) => keep.has(id)));
+    } catch (e) {
+      log('Photos skipped:', e.message);
+    }
+    result = build({ items, total, mealPrep, images, prev, week });
+    log(`Week ${week}: ${result.pool.length} recipes (${result.source.mealPrep} meal prep), ${result.picks.length} picks: ${result.picks.map((r) => r.title).join(' | ')}`);
+  } catch (e) {
+    log('Recipe fetch failed:', e.message);
+    if (!prev) {
+      result = { generated: new Date().toISOString(), week, site: SITE, uploads: UPLOADS, source: { name: 'Budget Bytes', ok: false, error: String(e.message) }, picks: [], pool: [], common: [], history: [] };
+    } else {
+      result = { ...prev, source: { ...(prev.source || {}), ok: false, error: String(e.message), failedAt: new Date().toISOString() } };
+    }
+  }
+
+  // Only rewrite when something other than the timestamp changed.
+  const strip = (o) => JSON.stringify({ ...o, generated: undefined, source: { ...(o && o.source), failedAt: undefined } });
+  if (prev && strip(prev) === strip(result)) log('No change.');
+  else {
+    fs.writeFileSync(OUT, JSON.stringify(result));
+    log(`Wrote ${OUT} (${(fs.statSync(OUT).size / 1024).toFixed(0)} KB)`);
+  }
+  return result;
 }
+
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname)) await main();
