@@ -14,6 +14,8 @@ import * as BD from '../src/birthdays-logic.js';
 import * as NL from '../src/news-logic.js';
 import * as NJ from '../scripts/fetch-news.mjs';
 import { budgetUnit } from './budget-unit.mjs';
+import { makeRecipes } from './make-recipes-fixture.mjs';
+import { recipesUnit } from './recipes-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -31,9 +33,10 @@ const server = http.createServer((req, res) => {
   }
   if (p === '/news.json') p = '/test/news.fixture.json';
   if (p === '/gta6/news.json') p = '/test/gta6-news.fixture.json'; // the GTA 6 site's feed, next to /budget/ on the live site
-  if (p === '/recipes.json' && process.env.RECIPES_FIXTURE) {
+  if (p === '/recipes.json') {
+    // made-up recipes (test/make-recipes-fixture.mjs), or a real recipes.json in RECIPES_FIXTURE
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    return res.end(fs.readFileSync(process.env.RECIPES_FIXTURE));
+    return res.end(process.env.RECIPES_FIXTURE ? fs.readFileSync(process.env.RECIPES_FIXTURE) : JSON.stringify(makeRecipes()));
   }
   const file = path.join(ROOT, p);
   if (!file.startsWith(ROOT) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
@@ -195,6 +198,7 @@ const check = (cond, msg) => {
 };
 // the Budget tab's rules and the alerts job, on made-up data
 await budgetUnit(check);
+await recipesUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -278,7 +282,7 @@ check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news
   const nums = (c) => (c.match(/\d+/g) || []).slice(0, 3).map(Number);
   const near = (a, b) => a.length === 3 && a.every((v, i) => Math.abs(v - b[i]) <= 12);
   check(/^rgb/.test(edge.tone) && nums(edge.bg).join() === nums(edge.tone).join() && edge.meta === edge.tone && edge.h > edge.vh + 100, `the sky reaches past the screen's edges and the page color matches its top (${edge.tone})`);
-  check(near(nums(edge.stripTop), edge.pxTop) && near(nums(edge.stripBottom), edge.pxBottom) && edge.scrim === 'none', `Safari's bars get the sky's own edge colors (top ${edge.stripTop}, bottom ${edge.stripBottom}); nothing else full-width sits at the edges`);
+  check(near(nums(edge.stripTop), edge.pxTop) && near(nums(edge.stripBottom), edge.pxBottom) && edge.scrim === 'none', `Safari's bars get the sky's own edge colors (top ${edge.stripTop} vs sky ${edge.pxTop.map(Math.round)}, bottom ${edge.stripBottom} vs sky ${edge.pxBottom.map(Math.round)}, scrim ${edge.scrim}); nothing else full-width sits at the edges`);
 }
 // phone order: rings (and the weekly recap on Sun/Mon), weather, to-do, then money
 const order = (await page.$$eval('.home-grid .card .card-title', (els) => els.map((e) => [e.textContent, Math.round(e.getBoundingClientRect().top)]).sort((a, b) => a[1] - b[1]).map((x) => x[0]))).filter((t) => !/^(Your week|Last week)$/.test(t));
@@ -943,7 +947,7 @@ check(/Cooking/.test(await page.innerText('.col:nth-child(2)')) && /Grocery list
 await go('Cooking');
 await page.waitForSelector('.cooking .kitchen');
 await page.screenshot({ path: path.join(OUT, 'cooking-empty.png'), fullPage: true });
-check((await page.$$('.picks .pick')).length === 12, 'this week’s 12 picks render');
+check((await page.$$('.picks .pick')).length === 8 && /All 30 picks/.test(await page.innerText('.cooking .mp-more')), 'Kitchen shows 8 of this week’s 30 picks, with a way to all of them');
 check(/Chipotle-style steak/.test(await page.innerText('.cooking')), 'starter recipes in My recipes');
 // kitchen: add several at once
 await page.fill('input[aria-label="Add to kitchen"]', 'chicken breasts, garlic, olive oil, rice, yellow onion, soy sauce, eggs, butter, limes');
@@ -1026,10 +1030,70 @@ const b2 = await stored();
 C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
 check(b2.months[key].transactions.length === k0 && C.grocery.filter((g) => g.done).length === 2 && !C.kitchen.some((i) => i.name === 'Cilantro'), 'undo removes the expense and restores the list');
 await page.screenshot({ path: path.join(OUT, 'cooking.png'), fullPage: true });
+// ---------------- meal prep: every recipe, filters, and a plan for the week that becomes one grocery list
+await page.click('.cooking .mp-more');
+await page.waitForSelector('.mealprep .mp-grid');
+{
+  const n = () => page.$$eval('.mealprep .mp-card', (e) => e.length);
+  const count = async () => Number(((await page.innerText('.mp-count')).match(/(\d+) recipe/) || [])[1]);
+  check((await count()) === 30 && (await n()) === 30 && !/Show more/.test(await page.innerText('.mp-browse')), 'Meal prep: all of this week’s 30 picks');
+  await page.click('.mp-browse .seg-btn:has-text("All")');
+  const total = await count();
+  check(total >= 40, `All: the whole pool (${total} recipes)`);
+  await page.click('.mp-filters .chip:has-text("Meal prep")');
+  const mp = await count();
+  await page.click('.mp-filters .chip:has-text("Chicken & turkey")');
+  const mpChicken = await count();
+  check(mp > 5 && mp < total && mpChicken > 0 && mpChicken < mp, `filters: meal prep ${mp}, chicken meal prep ${mpChicken}`);
+  await page.click('.mp-filters .chip:has-text("No-reheat lunches")');
+  await page.click('.mp-filters .chip:has-text("Any protein")');
+  const noReheat = await page.$$eval('.mealprep .mp-card', (e) => e.map((x) => x.innerText));
+  check(noReheat.length >= 3 && noReheat.every((t) => /No reheat/.test(t)), `no-reheat lunches (${noReheat.length})`);
+  await page.click('.mp-browse button:has-text("Clear filters")');
+  await page.fill('input[aria-label="Search recipes"]', 'lentil');
+  await page.waitForTimeout(150);
+  check((await page.$$eval('.mealprep .mp-card', (e) => e.map((x) => x.innerText))).every((t) => /Lentil/i.test(t)) && (await n()) >= 1, 'search by name or ingredient');
+  await page.fill('input[aria-label="Search recipes"]', '');
+  await page.click('.mp-filters .chip:has-text("25g+ protein")');
+  await page.selectOption('.mp-count select', 'protein');
+  const prot = await page.$$eval('.mealprep .mp-card', (e) => e.map((x) => Number((x.innerText.match(/(\d+)g protein/) || [])[1])));
+  check(prot.length > 0 && prot.every((g) => g >= 25) && prot.every((g, i) => i === 0 || g <= prot[i - 1]), `25g+ protein, most first (${prot.slice(0, 4).join(', ')}…)`);
+  await page.click('.mp-browse button:has-text("Clear filters")');
+  // plan three recipes, one from a recipe's own sheet
+  const find = async (q) => {
+    await page.fill('input[aria-label="Search recipes"]', q);
+    await page.waitForTimeout(120);
+  };
+  await find('beef chili');
+  await page.click('.mp-card:has-text("Sample Beef Chili") .mp-add');
+  await find('lentil soup');
+  await page.click('.mp-card:has-text("Sample Lentil Soup") .mp-add');
+  await find('egg muffins');
+  await page.click('.mp-card:has-text("Sample Egg Muffins") .mp-open');
+  await page.waitForSelector('.sheet .ing');
+  await page.click('.sheet button:has-text("Add to this week’s prep")');
+  await page.click('.sheet button:has-text("Close")');
+  await find('');
+  await page.waitForTimeout(200);
+  C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+  const pt = await page.innerText('.mp-plan');
+  check(C.plan.length === 3 && C.plan.every((r) => r.keys && r.keys.length) && /3 recipes · 12 servings/.test(pt) && (await page.$$('.mp-card.planned')).length >= 2, `plan saved (${C.plan.map((r) => r.title).join(', ')})`);
+  const before = C.grocery.length;
+  await page.click('.mp-plan button:has-text("missing item")');
+  await page.waitForTimeout(200);
+  C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+  check(C.grocery.length > before && C.grocery.some((g) => (g.for || []).includes('Sample Lentil Soup')) && C.grocery.some((g) => (g.for || []).includes('Sample Beef Chili')), `the week’s missing ingredients go on the grocery list, each saying what it’s for (${C.grocery.length - before} added)`);
+  await page.click('.mp-plan-row:has-text("Sample Egg Muffins") .x');
+  await page.waitForTimeout(150);
+  C = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+  check(C.plan.length === 2, 'remove one from the plan');
+  await page.screenshot({ path: path.join(OUT, 'cooking-mealprep.png'), fullPage: true });
+}
 await go('Home');
 await page.waitForSelector('.money .big');
 const homeCook = await page.innerText('.col:nth-child(2)');
 check(/Tonight:/.test(homeCook), 'Home Cooking card suggests tonight’s dinner');
+check(/This week’s prep/.test(homeCook) && /2 recipes · 8 servings/.test(homeCook), 'and this week’s prep');
 await page.screenshot({ path: path.join(OUT, 'home-cooking.png'), fullPage: true });
 
 
@@ -1287,6 +1351,7 @@ check(/Body/.test(rt2) && /(workout|steps)/.test(rt2) && /Food logged/.test(rt2)
 await page.screenshot({ path: path.join(OUT, 'home-health.png'), fullPage: true });
 // Cooking → log a serving
 await go('Cooking');
+await page.click('.cooking .page-tabs .seg-btn:has-text("Kitchen")'); // the tab remembers Meal prep from before
 await page.waitForSelector('.picks .pick');
 await page.click('.picks .pick >> nth=1');
 await page.waitForSelector('.sheet .nutri');
