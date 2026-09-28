@@ -1,0 +1,30 @@
+name: Budget alerts
+
+on:
+  schedule:
+    # 12:03 UTC: about 8 am in New York (7 am in winter). GitHub can start scheduled jobs a little late.
+    - cron: "3 12 * * *"
+  workflow_dispatch:          # run it by hand from the Actions tab
+
+permissions:
+  contents: read              # it only reads the repo; the budget is read with the Firebase key
+
+concurrency:
+  group: budget-alerts
+  cancel-in-progress: false
+
+jobs:
+  alerts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check the budget and send alerts
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          TZ: America/New_York
+        # prints counts only: the log of a public repo is public
+        run: node --no-warnings scripts/budget-alerts.mjs
