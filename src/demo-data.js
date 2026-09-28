@@ -176,8 +176,16 @@ function budgetDoc(today, R) {
         { id: 'demo-h6', ticker: 'AAPL', shares: 40 },
       ],
       cash: 4200,
-      quotes: {},
-      refreshedAt: '',
+      // made-up prices, so the demo's Stocks view and net worth have numbers (they don't refresh in the demo)
+      quotes: {
+        VTI: { price: 301.12, change: 1.84, change_pct: 0.61, as_of: 'sample' },
+        VXUS: { price: 66.4, change: -0.21, change_pct: -0.32, as_of: 'sample' },
+        BND: { price: 73.05, change: 0.06, change_pct: 0.08, as_of: 'sample' },
+        NVDA: { price: 178.5, change: 3.9, change_pct: 2.23, as_of: 'sample' },
+        AMZN: { price: 221.3, change: -1.45, change_pct: -0.65, as_of: 'sample' },
+        AAPL: { price: 236.8, change: 0.92, change_pct: 0.39, as_of: 'sample' },
+      },
+      refreshedAt: `${today}T14:30:00.000Z`,
     },
     updatedAt: Date.now(),
   };

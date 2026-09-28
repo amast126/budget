@@ -55,7 +55,7 @@ function demoKeys() {
 }
 
 // Write the sample documents the first time, after a reset, or when the sample itself changes (VERSION).
-const VERSION = 4; // 4: News follows; 3: adds Entertainment, Guitar, Sourdough and Birthdays; 2: the Seattle sample; 1: an earlier sample
+const VERSION = 5; // 5: sample stock prices; 4: News follows; 3: adds Entertainment, Guitar, Sourdough and Birthdays; 2: the Seattle sample; 1: an earlier sample
 export function seedDemo(force = false) {
   const meta = readDoc(META);
   if (!force && meta && meta.version === VERSION) return false;

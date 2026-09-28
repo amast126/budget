@@ -21,7 +21,7 @@ export function Tip({ tip }) {
     <div className="chart-tip" style={{ left: tip.x, top: tip.y }} role="status">
       {tip.lines.map((l, i) => (
         <div key={i} className={i === 0 ? 'tip-head' : 'tip-row'}>
-          {l.key ? <span className={`tip-key ${l.key}`} /> : null}
+          {l.key ? <span className={`tip-key ${l.key}`} style={l.color ? { background: l.color } : undefined} /> : null}
           {l.value ? <b className="num">{l.value}</b> : null} {l.text}
         </div>
       ))}
@@ -175,7 +175,7 @@ export function BarChart({ points, slots, fmt = (v) => String(v), label, goal, g
     const cx = pad.l + slot * i + slot / 2;
     const lines = [{ text: pointLabel(p || { t, month: t.length === 7 }) }];
     if (!p) lines.push({ text: 'no data' });
-    else if (p.parts) p.parts.filter((x) => x.v).forEach((x) => lines.push({ key: `k-bar ${x.cls}`, value: fmt(x.v), text: x.label }));
+    else if (p.parts) p.parts.filter((x) => x.v).forEach((x) => lines.push({ key: `k-bar ${x.cls || ''}`, color: x.color, value: fmt(x.v), text: x.label }));
     else lines.push({ key: `k-bar c-${color}`, value: fmt(p.v), text: label || '' });
     if (p && tipExtra) tipExtra(p).forEach((l) => lines.push(l));
     setTip({ x: Math.min(width - 170, Math.max(0, cx - 70)), y: 0, i, lines });
@@ -212,7 +212,8 @@ export function BarChart({ points, slots, fmt = (v) => String(v), label, goal, g
                   const h = y(acc) - top;
                   acc += part.v;
                   const isTop = p.parts.slice(j + 1).every((q) => !q.v);
-                  return isTop ? <path key={j} className={`cbar ${part.cls}`} d={bar(x0, top, h)} /> : <rect key={j} className={`cbar ${part.cls}`} x={x0} y={top} width={bw} height={Math.max(0, h)} />;
+                  const st = part.color ? { fill: part.color } : undefined;
+                  return isTop ? <path key={j} className={`cbar ${part.cls || ''}`} style={st} d={bar(x0, top, h)} /> : <rect key={j} className={`cbar ${part.cls || ''}`} style={st} x={x0} y={top} width={bw} height={Math.max(0, h)} />;
                 })}
               </g>
             );

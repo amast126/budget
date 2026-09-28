@@ -29,6 +29,9 @@ import { defaultBirthdays, normalizeBirthdays, upcoming as upcomingBirthdays } f
 import { BirthdaysCard, BirthdaySheet } from './birthdays.jsx';
 import { PortfolioCard } from './portfolio.jsx';
 import { NewsPage } from './news.jsx';
+import { BudgetPage } from './budget.jsx';
+import { MerchantInput, RecentChips, useMerchants, AddSheet, parseAddLink } from './budget-add.jsx';
+import budgetCss from './budget.css';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
@@ -51,7 +54,7 @@ trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss + newsCss;
+  s.textContent = css + glassCss + newsCss + budgetCss;
   document.head.appendChild(s);
 }
 
@@ -169,11 +172,12 @@ function MoneyCard({ s, data }) {
   );
 }
 
-function QuickAdd({ s, onAdd }) {
+function QuickAdd({ s, data, onAdd }) {
   const blank = () => ({ date: todayISO(), desc: '', amount: '', category: s.categoryNames[0] || '', method: s.methods[0] || '' });
   const [d, setD] = useState(blank);
   const [busy, setBusy] = useState(false);
   const amtRef = useRef(null);
+  const index = useMerchants(data);
   useEffect(() => {
     // keep selections valid if the budget's categories or methods change
     setD((x) => ({
@@ -182,6 +186,18 @@ function QuickAdd({ s, onAdd }) {
       method: s.methods.includes(x.method) ? x.method : s.methods[0] || '',
     }));
   }, [s.categoryNames.join('|'), s.methods.join('|')]);
+  // a merchant you've used before fills in its category, card and usual amount
+  const pick = (e) => {
+    setD((x) => ({
+      ...x,
+      desc: e.name,
+      category: s.categoryNames.includes(e.category) ? e.category : x.category,
+      method: s.methods.includes(e.method) ? e.method : x.method,
+      amount: x.amount === '' || x.picked ? String(e.amount || '') : x.amount,
+      picked: true,
+    }));
+    setTimeout(() => amtRef.current && (amtRef.current.focus(), amtRef.current.select()), 0);
+  };
   const amount = Number(d.amount);
   const ok = d.desc.trim() && d.amount !== '' && !isNaN(amount) && amount !== 0 && d.date && d.category;
   const submit = async (e) => {
@@ -195,7 +211,7 @@ function QuickAdd({ s, onAdd }) {
       amtRef.current && amtRef.current.focus();
     }
   };
-  const set = (k) => (e) => setD({ ...d, [k]: e.target.value });
+  const set = (k) => (e) => setD({ ...d, [k]: e.target.value, picked: k === 'amount' ? false : d.picked });
   return (
     <section className="card">
       <div className="card-head">
@@ -208,7 +224,7 @@ function QuickAdd({ s, onAdd }) {
           <span className="qa-dollar">$</span>
           <input ref={amtRef} className="input num" inputMode="decimal" placeholder="0.00" value={d.amount} onChange={set('amount')} aria-label="Amount" />
         </label>
-        <input className="input qa-desc" placeholder="What was it?" value={d.desc} onChange={set('desc')} aria-label="Description" />
+        <MerchantInput index={index} value={d.desc} className="input qa-desc" onChange={(v) => setD({ ...d, desc: v })} onPick={pick} />
         <select className="input" value={d.category} onChange={set('category')} aria-label="Category">
           {s.categoryNames.map((c) => (
             <option key={c}>{c}</option>
@@ -223,6 +239,9 @@ function QuickAdd({ s, onAdd }) {
         <button className="btn primary" disabled={!ok || busy} type="submit">
           {busy ? 'Adding…' : 'Add expense'}
         </button>
+        <div className="qa-chips">
+          <RecentChips index={index} onPick={pick} n={5} />
+        </div>
       </form>
     </section>
   );
@@ -336,7 +355,7 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
                 <MoneyCard s={s} data={data} />
               </div>
               <div className="slot o8">
-                <QuickAdd s={s} onAdd={onAdd} />
+                <QuickAdd s={s} data={data} onAdd={onAdd} />
               </div>
               <div className="slot o9">
                 <BillsCard s={s} onToggle={onToggle} />
@@ -394,14 +413,6 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
         </div>
       </div>
       {week ? <WeekSheet ctx={ctx} onClose={() => setWeek(false)} /> : null}
-    </div>
-  );
-}
-
-function BudgetFrame({ visible }) {
-  return (
-    <div className={`frame-wrap ${visible ? '' : 'hidden'}`}>
-      <iframe className="frame" src={budgetSrc} title="Budget" />
     </div>
   );
 }
@@ -498,7 +509,7 @@ function Settings({ user, onClose, onToast, look }) {
           </button>
         ) : null}
         <a className="btn quiet block" href={budgetSrc} target="_blank" rel="noopener">
-          Open budget in its own tab <Icon name="ext" size={16} />
+          Classic budget app <Icon name="ext" size={16} />
         </a>
         {IS_DEMO ? (
           <button className="btn quiet block" onClick={resetDemo}>
@@ -598,6 +609,7 @@ const MODULES = {
   sourdough: [normalizeSourdough, defaultSourdough, 'the sourdough corner'],
   birthdays: [normalizeBirthdays, defaultBirthdays, 'birthdays'],
   news: [normalizeNewsPrefs, defaultNewsPrefs, 'your saved stories'],
+  alerts: [(d) => d || null, () => null, 'the alerts status'], // written by the Budget alerts job
 };
 function useModuleDoc(allowed, user, name) {
   const [doc, setDoc] = useState(null);
@@ -695,7 +707,6 @@ function App() {
   const [read, setRead] = useState(() => new Set(lsGet('dash.read', [])));
   const [toast, setToast] = useState(null);
   const [settings, setSettings] = useState(false);
-  const [budgetOpened, setBudgetOpened] = useState(route === 'budget');
   const [learning, setLearning] = useState(null);
   const [learningError, setLearningError] = useState('');
   const [cooking, setCooking] = useState(null);
@@ -712,9 +723,11 @@ function App() {
   const [menu, setMenu] = useState(false); // the sidebar on phones
   const [autoError, setAutoError] = useState('');
   const recalls = useRecalls(auto ? auto.car : null);
-  const [budgetRev, setBudgetRev] = useState(0);
   const [bdaySheet, setBdaySheet] = useState(false);
-  useEffect(() => (backend.onBudgetWrite ? backend.onBudgetWrite(() => setBudgetRev((n) => n + 1)) : undefined), []);
+  // Budget changes show at once (optimistic); snapshots from the server wait until our own writes have landed.
+  const budgetPending = useRef(0);
+  const budgetSince = useRef(0);
+  const budgetRemote = useRef(null);
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
@@ -727,12 +740,16 @@ function App() {
   const [sourdough] = useModuleDoc(allowed, user, 'sourdough');
   const [birthdays] = useModuleDoc(allowed, user, 'birthdays');
   const [newsPrefs] = useModuleDoc(allowed, user, 'news');
+  const [alertStatus] = useModuleDoc(allowed, user, 'alerts');
 
   useEffect(() => {
     if (!allowed) return;
     return backend.subscribeBudget(
       user,
       (d) => {
+        budgetRemote.current = d;
+        if (budgetPending.current > 0 || (d && (d.updatedAt || 0) < budgetSince.current)) return;
+        budgetSince.current = 0;
         setData(d);
         setDataError(d ? '' : 'No budget data found for this account yet.');
       },
@@ -876,7 +893,6 @@ function App() {
   }, [allowed, loadNews]);
 
   useEffect(() => {
-    if (route === 'budget') setBudgetOpened(true);
     window.scrollTo(0, 0);
     setMenu(false);
   }, [route]);
@@ -899,13 +915,47 @@ function App() {
     toastTimer.current = setTimeout(() => setToast(null), 6000);
   };
 
+  // Every budget change: applied on screen right away, then saved in a transaction.
+  const mutateBudget = async (fn, msg) => {
+    const t0 = Date.now();
+    budgetSince.current = t0;
+    budgetPending.current += 1;
+    setData((cur) => {
+      if (!cur) return cur;
+      const next = JSON.parse(JSON.stringify(cur));
+      try {
+        fn(next);
+      } catch {
+        return cur;
+      }
+      next.updatedAt = t0;
+      return next;
+    });
+    try {
+      await backend.mutateBudget(user, fn);
+      if (msg) showToast({ text: msg });
+      return true;
+    } catch (e) {
+      budgetSince.current = 0;
+      if (budgetRemote.current) setData(budgetRemote.current);
+      showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+      return false;
+    } finally {
+      budgetPending.current -= 1;
+      const r = budgetRemote.current;
+      if (budgetPending.current === 0 && r && (r.updatedAt || 0) >= budgetSince.current) {
+        budgetSince.current = 0;
+        setData(r);
+      }
+    }
+  };
   const onAdd = async (t) => {
     try {
-      await backend.mutateBudget(user, (d) => addTransaction(d, t));
+      if (!(await mutateBudget((d) => addTransaction(d, t)))) return false;
       showToast({
         text: `Added ${fmt(t.amount)} to ${t.category}${keyOf(t.date) !== keyOf(todayISO()) ? ` (${keyOf(t.date)})` : ''}`,
         undo: async () => {
-          await backend.mutateBudget(user, (d) => {
+          await mutateBudget((d) => {
             const m = d.months && d.months[keyOf(t.date)];
             if (m) m.transactions = m.transactions.filter((x) => x.id !== t.id);
           });
@@ -1118,7 +1168,7 @@ function App() {
 
   const onToggle = async (u) => {
     try {
-      await backend.mutateBudget(user, (d) => toggleBillPaid(d, u.key, u.id));
+      await mutateBudget((d) => toggleBillPaid(d, u.key, u.id));
     } catch (e) {
       showToast({ text: `Couldn’t update ${u.name}: ${e.message || e}`, error: true });
     }
@@ -1149,7 +1199,7 @@ function App() {
   const here = TABS.find(([k]) => k === (TABS.some(([t]) => t === route) ? route : 'home'));
 
   return (
-    <div className={`app ${route === 'budget' ? 'on-budget' : ''} ${IS_DEMO ? 'demo' : ''}`}>
+    <div className={`app ${IS_DEMO ? 'demo' : ''}`}>
       {glass ? <PageSky wx={forecast.s} /> : null}
       {glass ? <Lens selector=".nav" id="lens-nav" /> : null}
       {IS_DEMO ? <DemoBar /> : null}
@@ -1188,6 +1238,7 @@ function App() {
           <AutoPage auto={auto} data={data} recalls={recalls} mutate={mutateAuto} budget={autoBudget} onAddExpense={(d) => onAdd(newTransaction(d))} error={autoError} />
         ) : null}
         {route === 'health' ? <HealthPage health={health} years={healthYears} hk={hk} hkYears={hkYears} act={healthAct} error={healthError} /> : null}
+        {route === 'budget' ? <BudgetPage data={data} mutate={mutateBudget} error={dataError} onToast={showToast} dark={look.dark} auto={auto} route={location.hash} alertStatus={alertStatus} /> : null}
         {['budget', 'learning', 'cooking', 'news', 'auto', 'health', 'fun'].includes(route) ? null : (
           <Home
             user={user}
@@ -1220,7 +1271,16 @@ function App() {
             pageSky={glass}
           />
         )}
-        {budgetOpened ? <BudgetFrame key={budgetRev} visible={route === 'budget'} /> : null}
+        {route === 'add' && data ? (
+          <AddSheet
+            data={data}
+            link={parseAddLink(location.hash)}
+            onAdd={onAdd}
+            onClose={() => {
+              location.hash = '#/';
+            }}
+          />
+        ) : null}
       </main>
       {toast ? (
         <div className={`toast ${toast.error ? 'error' : ''}`} role="status">

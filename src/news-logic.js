@@ -205,6 +205,8 @@ function titleTerms(title, short) {
   return out;
 }
 const LI_ZIP = /^11[05789]/;
+// Shopping posts name companies too ("Early Amazon Prime Day deals"); they aren't news about your stocks.
+const DEALS = /(\b(deals?|sales?|discounts?|discounted|coupons?|price drops?|lowest price|Prime (Big Deal )?Days?|Black Friday|Cyber Monday|for sale)\b|% off\b|^(FS|WTB|WTS|FT):)/i;
 // What For you looks for, built from your own data on this device. First match wins, in this order.
 export function buildTopics({ data, profiles = {}, fun, auto, home, follow = [], today = new Date().toISOString().slice(0, 10) } = {}) {
   const topics = [];
@@ -213,7 +215,7 @@ export function buildTopics({ data, profiles = {}, fun, auto, home, follow = [],
     const names = namesFor(h.ticker, (profiles[h.ticker] || {}).name);
     const name = names[1] || h.ticker;
     const terms = names.filter((n) => n !== h.ticker || (n.length >= 3 && !STOP_TICKERS.has(n))).map((t) => ({ t, not: ['reddit'], anyCase: t !== h.ticker })); // "NVIDIA Corp" is "Nvidia" in headlines
-    if (terms.length) topics.push({ kind: 'stock', why: `Your stocks · ${name}`, label: name, terms });
+    if (terms.length) topics.push({ kind: 'stock', why: `Your stocks · ${name}`, label: name, terms, skip: DEALS });
   });
   if (fun) {
     (fun.playing || []).forEach((g) => topics.push({ kind: 'game', why: `You’re playing ${g.title}`, label: g.title, terms: titleTerms(g.title) }));
@@ -250,6 +252,7 @@ export function matchItem(item, sec, topics) {
   const plain = deaccent(raw);
   const low = plain.toLowerCase();
   for (const tp of topics) {
+    if (tp.skip && tp.skip.test(raw)) continue;
     for (const tm of tp.terms) {
       if ((tm.where && !tm.where.includes(sec)) || (tm.not && tm.not.includes(sec))) continue;
       if (tm.re.test(tm.cs ? plain : low)) return tp;
