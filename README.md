@@ -49,6 +49,7 @@ The dashboard and the classic budget app read and write the same Firestore docum
 |---|---|
 | `index.html` | Dashboard page. Bump `dashboard.js?v=` and `config.js?v=` when those files change. |
 | `dashboard.js` | Built dashboard. Rebuild with `./build.sh`; don't edit by hand. |
+| `src/wide.js` | Wide and ultrawide screens (1800px and up): every tab's two-column layout becomes as many columns as fit, 3 at 1920, 4 at 2560, 6 at 3440, each card going into the shortest column in priority order (Home by its slot order). Cards are measured and placed with CSS grid, never moved, so nothing reloads. News spreads its front page into one row and its list into columns. |
 | `src/theme.js`, `src/glass.css`, `src/lens.jsx` | The Liquid Glass look (setting, stylesheet over `styles.css`, the tab bar's refraction). `styles.css` alone is the Classic look. |
 | `src/app.jsx`, `src/budget-logic.js`, `src/backend.js`, `src/styles.css`, `src/ui.jsx` | Dashboard source. `budget-logic.js` mirrors the budget module's rules (paydays, bill dates, split bills, pacing). |
 | `src/learning.jsx`, `src/learning-logic.js`, `src/learning-catalog.js` | Learning tab. Edit the catalog to change certs, links or the roadmap order. |
