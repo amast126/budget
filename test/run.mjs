@@ -18,6 +18,7 @@ import { makeRecipes } from './make-recipes-fixture.mjs';
 import { recipesUnit } from './recipes-unit.mjs';
 import { recipeboxUnit } from './recipebox-unit.mjs';
 import { healthUnit } from './health-unit.mjs';
+import { steamUnit } from './steam-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -226,6 +227,7 @@ await budgetUnit(check);
 await recipesUnit(check);
 await recipeboxUnit(check);
 await healthUnit(check);
+await steamUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -2095,6 +2097,172 @@ check(FD.mcuMine.length === 1 && /Added by you/.test(await page.innerText('.watc
 }
 await page.screenshot({ path: path.join(OUT, 'fun-after.png'), fullPage: true });
 
+// ---------------------------------------------------------------- Entertainment: Steam (made-up library, stand-in art)
+await ctx.route(/steamstatic\.com|media\.steampowered\.com/, (route) => (/apps\/930003\/.*library/.test(route.request().url()) ? route.fulfill({ status: 404, body: '' }) : route.fulfill({ path: dishFile, contentType: 'image/jpeg' })));
+{
+  const zoneText = () => page.innerText('.steam-zone');
+  await page.waitForSelector('.steam-zone.steam-connect');
+  const btn = '.steam-connect .steam-form button';
+  await page.fill('.steam-connect input[aria-label="Steam profile link"]', 'https://example.com/not-steam');
+  check((await page.isDisabled(btn)) && /doesn’t look like a Steam profile/.test(await zoneText()), 'Steam: before it’s connected, a link box; a link that isn’t Steam can’t be saved');
+  await page.fill('.steam-connect input[aria-label="Steam profile link"]', 'https://steamcommunity.com/id/test_player/');
+  await page.click(btn);
+  await page.waitForSelector('.steam-zone:not(.steam-connect)');
+  FD = await mod('fun');
+  check(FD.steam.profile === 'https://steamcommunity.com/id/test_player/' && /Waiting for the first sync/.test(await zoneText()) && /STEAM_API_KEY/.test(await zoneText()) && (await page.getAttribute('.steam-steps a[href*="apikey"]', 'href')) === 'https://steamcommunity.com/dev/apikey', 'connect: the link is saved, then it waits for the first sync with the setup steps');
+  // the sync job's two documents, as it would write them
+  await page.evaluate(() => {
+    const nowS = Math.floor(Date.now() / 1000);
+    const day = (n) => {
+      const d = new Date();
+      d.setDate(d.getDate() - n);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
+    const art = (id, cover = true) => ({ f: `steam/apps/${id}/\${FILENAME}?t=1`, c: cover ? 'library_600x900_2x.jpg' : '', h: 'header.jpg', at: nowS });
+    const steam = {
+      version: 1,
+      profile: 'https://steamcommunity.com/id/test_player/',
+      steamid: '76561190000000001',
+      games: [
+        { id: 930001, n: 'Test Racer®', m: 3000, w: 180, l: nowS - 600, ic: '' },
+        { id: 930002, n: 'Test Farm Sim', m: 900, w: 60, l: nowS - 3 * 86400, ic: '' },
+        { id: 930003, n: 'Test Epic Quest', m: 12000, w: 0, l: nowS - 90 * 86400, ic: '' },
+        { id: 930004, n: 'Test Puzzle Box', m: 0, w: 0, l: 0, ic: '' },
+        { id: 930005, n: 'Test Space Sim', m: 0, w: 0, l: 0, ic: '' },
+        { id: 930006, n: 'Test Racer Soundtrack', m: 0, w: 0, l: 0, ic: '' },
+      ],
+      art: { 930001: art(930001), 930002: art(930002), 930003: art(930003), 930004: art(930004), 930005: art(930005, false), 920001: art(920001) },
+      lookups: { 'black ops 7 zombies': { id: 920001, n: 'Test Ops 7', at: nowS }, 'teamfight tactics': { id: 0, at: nowS } },
+      ach: { 930001: { t: 10, u: 3, last: nowS - 900, recent: [{ n: 'Test Podium', i: '', at: nowS - 900, p: 40.5 }], rare: [{ n: 'Test Photo Finish', i: '', at: nowS - 86400 * 5, p: 1.2 }], at: nowS } },
+      hist: [
+        { d: day(0), m: 90, g: { 930001: 90 } },
+        { d: day(2), m: 150, g: { 930001: 90, 930002: 60 } },
+        { d: day(20), m: 45, g: { 930003: 45 } },
+      ],
+      syncedAt: new Date().toISOString(),
+    };
+    const live = { version: 1, profile: steam.profile, steamid: steam.steamid, persona: 'TestPlayer', avatar: '', state: 1, game: { id: 930001, n: 'Test Racer®' }, since: new Date(Date.now() - 76 * 60000).toISOString(), seenAt: new Date(Date.now() - 3 * 60000).toISOString() };
+    localStorage.setItem('mod:steam', JSON.stringify(steam));
+    localStorage.setItem('mod:steam-live', JSON.stringify(live));
+    ['steam', 'steam-live'].forEach((n) => (window.__modSubs[n] || []).forEach((f) => f()));
+  });
+  await page.waitForSelector('.steam-stats');
+  await page.waitForSelector('.toast:has-text("2 Steam games added to Now playing")');
+  FD = await mod('fun');
+  const added = FD.playing.filter((g) => g.appid);
+  check(added.length === 2 && added.map((g) => g.title).join('|') === 'Test Racer|Test Farm Sim' && added.every((g) => g.note === 'Steam'), `games played on Steam in the last two weeks join Now playing on their own (${added.map((g) => g.title).join(', ')}; ® dropped)`);
+  const zt = await zoneText();
+  check(/TestPlayer/.test(zt) && /Playing Test Racer® · about 1 h 15 min so far/.test(zt) && /265 h/.test(zt) && /4 h\s*PAST 2 WEEKS/i.test(zt) && /\b5\s*GAMES/i.test(zt) && /\b2\s*NEVER PLAYED/i.test(zt), 'the Steam zone: who, what’s running and for how long, hours, games, never played (a soundtrack doesn’t count)');
+  const shelf = await page.$$eval('.steam-shelf li', (els) => els.map((e) => [e.className, e.querySelector('.shelf-name').textContent, !!e.querySelector('.live-tag')]));
+  check(shelf.length === 2 && shelf[0][1] === 'Test Racer®' && shelf[0][2] && /live/.test(shelf[0][0]), `recent: the running game first, tagged Playing (${shelf.map((s) => s[1]).join(', ')})`);
+  await page.waitForFunction(() => [...document.querySelectorAll('.steam-shelf img')].every((i) => i.complete && i.naturalWidth > 0));
+  check(true, 'recent covers load');
+  // Now playing: covers, Steam hours, the live marker, and a store cover for a game played elsewhere
+  const np = await page.$$eval('.now-playing .game', (els) => els.map((e) => ({ t: e.querySelector('.bill-name').textContent, art: !!e.querySelector('.game-badge.has-art'), live: !!e.querySelector('.game-badge.live'), steam: (e.querySelector('.game-steam') || {}).textContent || '' })));
+  const racer = np.find((g) => g.t === 'Test Racer');
+  const bo7 = np.find((g) => /Black Ops 7/.test(g.t));
+  const tft = np.find((g) => g.t === 'Teamfight Tactics');
+  check(racer.art && racer.live && /Playing now/.test(racer.steam) && /50 h on Steam · 3 h past 2 weeks · 3\/10 achievements/.test(racer.steam), `a Steam game in Now playing: cover, “${racer.steam}”`);
+  check(bo7.art && !bo7.steam && !tft.art, 'a game played elsewhere gets its store cover (no hours); one Steam doesn’t sell keeps its initials');
+  await page.locator('.now-playing').screenshot({ path: path.join(OUT, 'steam-now-playing.png') });
+  // taking an auto-added game out keeps it out, until it's played again
+  await page.click('button[aria-label="Remove Test Farm Sim"]');
+  await page.waitForTimeout(300);
+  await page.evaluate(() => ['steam'].forEach((n) => (window.__modSubs[n] || []).forEach((f) => f())));
+  await page.waitForTimeout(300);
+  FD = await mod('fun');
+  check(!FD.playing.some((g) => g.appid === 930002) && FD.steam.dismissed[930002] > 0, 'remove an auto-added game: it stays out');
+  await page.evaluate(() => {
+    const s = JSON.parse(localStorage.getItem('mod:steam'));
+    s.games.find((g) => g.id === 930002).l = Math.floor(Date.now() / 1000) + 60;
+    localStorage.setItem('mod:steam', JSON.stringify(s));
+    window.__modSubs.steam.forEach((f) => f());
+  });
+  await page.waitForSelector('.toast:has-text("Test Farm Sim added to Now playing")');
+  check(true, 'play it again and it comes back');
+  // the tabs
+  await page.click('.steam-zone .hub-tab:has-text("Playtime")');
+  await page.waitForSelector('.steam-zone .chart svg');
+  {
+    const t = await zoneText();
+    const bars = await page.$$('.steam-zone .chart .cbar');
+    const legend = await page.$$eval('.steam-legend li', (els) => els.map((e) => e.textContent.trim()));
+    check(bars.length === 4 && legend.join('|') === 'Test Racer®|Test Farm Sim|Test Epic Quest' && /4\.8 h in the last 30 days/.test(t) && /Most played/i.test(t), `playtime: bars by day split by game, with a legend (${legend.join(', ')}), and most played`);
+    await page.click('.steam-zone .seg-btn:has-text("12 weeks")');
+    await page.waitForTimeout(150);
+    check(/in the last 12 weeks/.test(await zoneText()), 'playtime by week');
+  }
+  await page.click('.steam-zone .hub-tab:has-text("Achievements")');
+  {
+    const t = await zoneText();
+    check(/3 of 10/.test(t) && /Test Podium/.test(t) && /Test Photo Finish/.test(t) && /1\.2% of players/.test(t), 'achievements: count, latest and rarest');
+  }
+  await page.click('.steam-zone .hub-tab:has-text("Library")');
+  {
+    const tiles = () => page.$$eval('.steam-grid .lib-name', (els) => els.map((e) => e.textContent));
+    check((await tiles())[0] === 'Test Epic Quest' && (await tiles()).length === 6, 'library: every game, most played first');
+    await page.fill('input[aria-label="Search your Steam library"]', 'racer');
+    await page.waitForTimeout(150);
+    check((await tiles()).length === 2, 'search the library');
+    await page.fill('input[aria-label="Search your Steam library"]', '');
+    await page.click('.steam-controls .seg-btn:has-text("Never played")');
+    await page.waitForTimeout(150);
+    check((await tiles()).join('|') === 'Test Puzzle Box|Test Racer Soundtrack|Test Space Sim', `never played: ${(await tiles()).join(', ')}`);
+    const framed = await page.$('.lib-tile:has-text("Test Space Sim") .gart-framed');
+    await page.click('.steam-controls .seg-btn:has-text("All")');
+    await page.waitForTimeout(150);
+    await page.waitForFunction(() => !!document.querySelector('.lib-tile[aria-label^="Test Epic Quest"] .gart-framed'));
+    check(!!framed, 'a game with no tall cover shows its wide art framed instead (and so does one whose cover fails to load)');
+  }
+  await page.click('.steam-zone .hub-tab:has-text("Backlog")');
+  await page.click('.steam-pick');
+  await page.waitForSelector('.steam-pick-card');
+  {
+    const name = await page.innerText('.steam-pick-card .pick-name');
+    check(['Test Puzzle Box', 'Test Space Sim'].includes(name), `backlog: pick one for me → ${name} (never a soundtrack)`);
+    await page.click('.steam-pick-card button:has-text("Add to Now playing")');
+    await page.waitForTimeout(300);
+    FD = await mod('fun');
+    check(FD.playing.some((g) => g.title === name && g.appid) && (await page.isDisabled('.steam-pick-card button:has-text("In Now playing")')), 'add the pick to Now playing');
+  }
+  await page.locator('.steam-zone').screenshot({ path: path.join(OUT, 'steam-zone.png') });
+  // problems the job saved show in the zone
+  await page.evaluate(() => {
+    const l = JSON.parse(localStorage.getItem('mod:steam-live'));
+    l.error = 'private';
+    localStorage.setItem('mod:steam-live', JSON.stringify(l));
+    window.__modSubs['steam-live'].forEach((f) => f());
+  });
+  await page.waitForSelector('.steam-alert');
+  check(/Privacy Settings → Game details → Public/.test(await page.innerText('.steam-alert')), 'a sync problem shows what to do (private game details)');
+  // Home: while you're in a game
+  await go('Home');
+  await page.waitForSelector('.steam-live');
+  check(/Playing now/i.test(await page.innerText('.steam-live')) && /Test Racer®/.test(await page.innerText('.steam-live')) && (await page.getAttribute('.steam-live', 'href')) === '#/fun', 'Home shows what you’re playing on Steam, linking to Entertainment');
+  await page.evaluate(() => {
+    const l = JSON.parse(localStorage.getItem('mod:steam-live'));
+    l.game = null;
+    l.error = null;
+    localStorage.setItem('mod:steam-live', JSON.stringify(l));
+    window.__modSubs['steam-live'].forEach((f) => f());
+  });
+  await page.waitForTimeout(300);
+  check(!(await page.$('.steam-live')), 'and it goes away when you stop');
+  await go('Entertainment');
+  await page.waitForSelector('.steam-zone .steam-foot');
+  await page.click('.steam-foot .link-btn');
+  await page.fill('.steam-settings input[aria-label="Steam profile link"]', '76561190000000001');
+  await page.click('.steam-settings .steam-form button');
+  await page.waitForTimeout(250);
+  FD = await mod('fun');
+  check(FD.steam.profile === '76561190000000001' && !(await page.$('.steam-settings')), 'settings: change the profile');
+  await page.click('.steam-foot .link-btn');
+  await page.click('.steam-settings button:has-text("Disconnect Steam")');
+  await page.waitForSelector('.steam-connect');
+  FD = await mod('fun');
+  check(FD.steam.profile === '' && FD.playing.some((g) => g.appid), 'disconnect: back to the link box; Now playing keeps its games');
+}
+
 // ---------------------------------------------------------------- Guitar
 await go('Learning');
 await page.click('.page-tabs .seg-btn:has-text("Guitar")');
@@ -2516,6 +2684,9 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     const ft = await tp.innerText('.fun');
     const np = await tp.innerText('.now-playing');
     check(/Dune: Part Three/i.test(await tp.innerText('.fun-hero')) && !/GTA 6 site/.test(ft) && !(await tp.$('.vice-zone')) && !(await tp.$('img[src*="gta6"]')) && (await tp.$('.doom-zone')) && /Mario Kart World/.test(np) && !/Black Ops/.test(np) && /\d+ of \d+ watched/.test(ft), 'demo Entertainment is the demo person’s own');
+    await tp.waitForSelector('.steam-zone .steam-stats');
+    const st = await tp.innerText('.steam-zone');
+    check(/jrivera_plays/.test(st) && /Playing Baldur's Gate 3 · about 50 min so far/.test(st) && /\b23\s*GAMES/i.test(st) && !/TestPlayer/.test(st), 'demo Steam: the demo person’s library, playing now');
     await tp.screenshot({ path: path.join(OUT, 'demo-fun.png'), fullPage: true });
   }
   await tp.click('a.nav-item:has-text("Budget")');
