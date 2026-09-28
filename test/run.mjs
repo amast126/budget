@@ -2169,6 +2169,43 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   check(!errs.length, `no errors in dark mode${errs.length ? ': ' + errs.join(' | ') : ''}`);
   await dk.close();
 }
+// wide and ultrawide screens: as many columns as fit (3 at 1920, 4 at 2560, 6 at 3440), cards never overlapping
+for (const [W, want] of [[1366, 0], [1920, 3], [2560, 4], [3440, 6]]) {
+  const wc = await browser.newContext({ viewport: { width: W, height: 1200 }, reducedMotion: 'reduce' });
+  await wc.addInitScript(init, EXPORT);
+  await mockWeather(wc);
+  const tp = await wc.newPage();
+  const errs = [];
+  tp.on('pageerror', (e) => errs.push(e.message));
+  const layout = () =>
+    tp.evaluate(() => {
+      const m = document.querySelector('.masonry');
+      if (!m) return { cols: 0, overlaps: 0, scrollW: document.documentElement.scrollWidth };
+      const rects = [...m.querySelectorAll(':scope > :not(.col), :scope > .col > *')].filter((e) => getComputedStyle(e).display !== 'none').map((e) => e.getBoundingClientRect());
+      let overlaps = 0;
+      for (let i = 0; i < rects.length; i++) for (let j = i + 1; j < rects.length; j++) if (rects[i].left < rects[j].right - 1 && rects[j].left < rects[i].right - 1 && rects[i].top < rects[j].bottom - 1 && rects[j].top < rects[i].bottom - 1) overlaps++;
+      return { cols: Number(m.style.getPropertyValue('--cols')), columns: new Set(rects.map((r) => Math.round(r.left))).size, overlaps, scrollW: document.documentElement.scrollWidth };
+    });
+  await tp.goto(base, { waitUntil: 'networkidle' });
+  await tp.waitForSelector('.hero');
+  await tp.waitForTimeout(700);
+  const h = await layout();
+  check(h.cols === want && (want === 0 || h.columns === want) && h.overlaps === 0 && h.scrollW <= W, `${W}px wide: Home in ${want || 'the usual two'} columns${want ? ` (${h.columns} used, no overlaps)` : ''}`);
+  if (want) {
+    await tp.fill('.todo input[aria-label="New to-do"]', 'A taller card');
+    await tp.press('.todo input[aria-label="New to-do"]', 'Enter');
+    await tp.waitForTimeout(300);
+    check((await layout()).overlaps === 0, `${W}px: a card that grows pushes the ones below it down`);
+    await tp.click('a.nav-item:has-text("Budget")');
+    await tp.waitForSelector('.budget .bud-summary');
+    await tp.waitForTimeout(500);
+    const b = await layout();
+    check(b.cols >= 3 && b.overlaps === 0, `${W}px: the Budget tab spreads out too (${b.cols} columns)`);
+    if (W === 3440) await tp.screenshot({ path: path.join(OUT, 'ultrawide-budget.png') });
+  }
+  check(!errs.length, `no errors at ${W}px${errs.length ? ': ' + errs.join(' | ') : ''}`);
+  await wc.close();
+}
 // the sky at different times of day
 for (const [label, hh, want] of [['night', 22, 'sky-night'], ['golden', 18, 'sky-golden'], ['morning', 9, 'sky-day']]) {
   const tp = await desk.newPage();
