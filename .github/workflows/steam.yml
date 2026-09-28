@@ -1,0 +1,31 @@
+name: Steam sync
+
+on:
+  schedule:
+    # every 15 minutes (GitHub can start scheduled jobs a few minutes late, or skip one when it's busy)
+    - cron: "*/15 * * * *"
+  workflow_dispatch:          # run it by hand from the Actions tab
+
+permissions:
+  contents: read              # it only reads the repo; Steam data goes to Firestore, never into the repo
+
+concurrency:
+  group: steam-sync
+  cancel-in-progress: false
+
+jobs:
+  steam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Sync Steam
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
+          TZ: America/New_York
+        # prints counts only: the log of a public repo is public
+        run: node --no-warnings scripts/steam-sync.mjs
