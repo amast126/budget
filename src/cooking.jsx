@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { SourdoughSection, SourdoughHomeRow } from './sourdough.jsx';
 import { SectionTabs } from './learning.jsx';
+import { MealPrepSection, planLine } from './mealprep.jsx';
 import { fmt, todayISO, dateLabel } from './budget-logic.js';
 import { normalize, covers, STAPLES } from './ingredients.mjs';
 import {
@@ -26,6 +27,8 @@ import {
   addMine,
   missingNames,
   label,
+  inPlan,
+  togglePlan,
 } from './cooking-logic.js';
 
 const money = (n) => (n == null ? null : `$${Number(n).toFixed(2)}`);
@@ -344,7 +347,8 @@ function CookNowCard({ data, recipes, onOpen }) {
   );
 }
 
-function PicksCard({ data, recipes, onOpen }) {
+const PREVIEW = 8;
+function PicksCard({ data, recipes, onOpen, onMore }) {
   const kKeys = useMemo(() => kitchenKeys(data), [data.kitchen]);
   const picks = (recipes && recipes.picks) || [];
   const src = recipes && recipes.source;
@@ -360,7 +364,7 @@ function PicksCard({ data, recipes, onOpen }) {
         <p className="empty">The weekly recipe list hasn’t been made yet. It fills in after the Saturday update.</p>
       ) : (
         <div className="picks">
-          {picks.map((r) => {
+          {picks.slice(0, PREVIEW).map((r) => {
             const m = data.kitchen.length ? match(r, kKeys) : null;
             return (
               <button key={r.id} className="pick" onClick={() => onOpen(r)}>
@@ -377,8 +381,13 @@ function PicksCard({ data, recipes, onOpen }) {
           })}
         </div>
       )}
+      {picks.length ? (
+        <button className="btn block mp-more" onClick={onMore}>
+          {picks.length > PREVIEW ? `All ${picks.length} picks` : 'Meal prep'} and {Math.max(0, ((recipes && recipes.pool) || []).length - picks.length)} more recipes to plan the week <Icon name="chev" size={16} />
+        </button>
+      ) : null}
       <p className="muted small note">
-        Popular budget recipes, 12 new ones every Saturday with no repeats for 12 weeks. Costs are Budget Bytes’ estimates.
+        Popular budget recipes, {picks.length || 30} new ones every Saturday. Costs are Budget Bytes’ estimates.
         {src && !src.ok ? ' The last update couldn’t reach the site, so these are from the week before.' : ''}
       </p>
     </section>
@@ -477,6 +486,9 @@ function RecipeSheet({ r, data, recipes, mutate, onLogRecipe, onClose }) {
         ) : (
           <p className="ok-note">You have everything for this.</p>
         )}
+        <button className={`btn block ${inPlan(data, r.id) ? 'quiet' : ''}`} onClick={() => mutate((d) => togglePlan(d, r), inPlan(data, r.id) ? `Removed ${r.title} from this week’s prep` : `Added ${r.title} to this week’s prep`)}>
+          {inPlan(data, r.id) ? 'In this week’s prep · remove' : 'Add to this week’s prep'}
+        </button>
         {r.nutrition && onLogRecipe ? (
           <button className="btn quiet block" onClick={() => onLogRecipe(r)}>
             Log a serving to Health · {r.nutrition[0]} cal
@@ -561,6 +573,7 @@ function AddRecipeSheet({ mutate, onClose }) {
 // ---------------------------------------------------------------- page + home card
 const COOK_SECTIONS = [
   ['kitchen', 'Kitchen'],
+  ['prep', 'Meal prep'],
   ['sourdough', 'Sourdough'],
 ];
 function initialSection() {
@@ -612,6 +625,22 @@ export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogR
   }
   // Keep the open recipe in sync with saved changes (My recipes edits).
   const current = open && open.mine ? data.mine.find((x) => x.id === open.id) || open : open;
+  const sheet = current ? <RecipeSheet r={current} data={data} recipes={recipes} mutate={mutate} onLogRecipe={onLogRecipe} onClose={() => setOpen(null)} /> : null;
+  if (section === 'prep') {
+    const t = planLine(data);
+    return (
+      <div className="home cooking">
+        <header className="page-head">
+          <h1 className="page-title">Cooking</h1>
+          <div className="muted">Meal prep · {t ? `this week: ${t}` : 'pick recipes for the week'}</div>
+        </header>
+        {tabs}
+        {error ? <div className="alert">{error}</div> : null}
+        <MealPrepSection data={data} recipes={recipes} mutate={mutate} onOpen={setOpen} />
+        {sheet}
+      </div>
+    );
+  }
   return (
     <div className="home cooking">
       <header className="page-head">
@@ -629,11 +658,11 @@ export function CookingPage({ data, recipes, mutate, error, onFinishShop, onLogR
         </div>
         <div className="col">
           <CookNowCard data={data} recipes={recipes} onOpen={setOpen} />
-          <PicksCard data={data} recipes={recipes} onOpen={setOpen} />
+          <PicksCard data={data} recipes={recipes} onOpen={setOpen} onMore={() => (setSection('prep'), window.scrollTo(0, 0))} />
           <MineCard data={data} recipes={recipes} onOpen={(r) => setOpen(r)} onAdd={() => setAdding(true)} />
         </div>
       </div>
-      {current ? <RecipeSheet r={current} data={data} recipes={recipes} mutate={mutate} onLogRecipe={onLogRecipe} onClose={() => setOpen(null)} /> : null}
+      {sheet}
       {adding ? <AddRecipeSheet mutate={mutate} onClose={() => setAdding(false)} /> : null}
     </div>
   );
@@ -680,6 +709,17 @@ export function CookingHomeCard({ data, recipes, sourdough }) {
       ) : (
         <p className="muted small note">{data.kitchen.length ? 'Add a few more kitchen items for dinner ideas.' : 'Add what’s in your kitchen to get dinner ideas.'}</p>
       )}
+      {planLine(data) ? (
+        <a className="home-row" href="#/cooking?prep">
+          <span className="grow">
+            <span className="bill-name">This week’s prep</span>
+            <span className="muted small block">
+              {planLine(data)}: {data.plan.slice(0, 3).map((r) => r.title).join(', ')}
+              {data.plan.length > 3 ? `, +${data.plan.length - 3} more` : ''}
+            </span>
+          </span>
+        </a>
+      ) : null}
       <SourdoughHomeRow data={sourdough} />
     </section>
   );

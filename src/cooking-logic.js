@@ -47,7 +47,7 @@ const SEED_MINE = [
 ];
 
 export function defaultCooking() {
-  return { version: 1, kitchen: [], grocery: [], mine: JSON.parse(JSON.stringify(SEED_MINE)), hidden: [] };
+  return { version: 1, kitchen: [], grocery: [], mine: JSON.parse(JSON.stringify(SEED_MINE)), hidden: [], plan: [] };
 }
 
 export function normalizeCooking(d) {
@@ -59,6 +59,7 @@ export function normalizeCooking(d) {
     grocery: Array.isArray(d.grocery) ? d.grocery.filter((i) => i && i.name) : [],
     mine: Array.isArray(d.mine) ? d.mine.filter((r) => r && r.title) : base.mine,
     hidden: Array.isArray(d.hidden) ? d.hidden : [],
+    plan: Array.isArray(d.plan) ? d.plan.filter((r) => r && r.id && r.title) : [],
     updatedAt: d.updatedAt,
   };
 }
@@ -252,4 +253,154 @@ export function missingNames(r, m) {
 // Grocery category in the budget (whatever it's called there).
 export function groceriesCategory(names) {
   return names.find((n) => /grocer/i.test(n)) || names.find((n) => /food/i.test(n)) || names[0] || 'Groceries';
+}
+
+// ---------------------------------------------------------------- meal prep: finding recipes and planning the week
+// A recipe's main protein, from Budget Bytes' meal prep tags or else its ingredients.
+const MEAT = [
+  ['poultry', /\b(chicken|turkey)\b(?!.*\b(broth|stock|bouillon|base)\b)/],
+  ['beef', /\b(beef|steak|brisket|chuck|sirloin|flank)\b(?!.*\b(broth|stock|bouillon|base)\b)/],
+  ['pork', /\b(pork|sausage|bacon|ham|chorizo|pancetta|prosciutto|andouille|kielbasa|pepperoni|salami)\b/],
+  ['seafood', /\b(shrimp|salmon|tuna|cod|tilapia|fish|crab|scallop|clam|mussel|anchov\w*)\b(?! sauce)/],
+];
+export function proteinOf(r) {
+  const tags = r.prep || [];
+  if (tags.includes('chicken')) return 'poultry';
+  for (const t of ['beef', 'pork']) if (tags.includes(t)) return t;
+  if (tags.includes('veg')) return 'veg';
+  const keys = keysOf(r);
+  for (const [name, re] of MEAT) if (keys.some((k) => re.test(k) && !/fish sauce/.test(k))) return name;
+  return 'veg';
+}
+export const MP_SHOW = [
+  ['all', 'All'],
+  ['mp', 'Meal prep'],
+  ['main', 'Dinners'],
+  ['breakfast', 'Breakfast'],
+  ['noreheat', 'No-reheat lunches'],
+  ['side', 'Sides'],
+];
+export const MP_PROTEIN = [
+  ['any', 'Any protein'],
+  ['poultry', 'Chicken & turkey'],
+  ['beef', 'Beef'],
+  ['pork', 'Pork'],
+  ['seafood', 'Seafood'],
+  ['veg', 'Vegetarian'],
+];
+export const MP_EXTRAS = [
+  ['cheap', 'Under $2 a serving'],
+  ['quick', '30 min or less'],
+  ['protein', '25g+ protein'],
+  ['have', 'Mostly in my kitchen'],
+];
+export const MP_SORT = [
+  ['best', 'Best picks first'],
+  ['popular', 'Most popular'],
+  ['cheap', 'Cheapest'],
+  ['quick', 'Quickest'],
+  ['protein', 'Most protein'],
+  ['missing', 'Fewest to buy'],
+];
+const proteinG = (r) => (r.nutrition ? Number(r.nutrition[1]) || 0 : 0);
+// Filter and sort recipes; returns [{ r, m }] (m: what you have and what's missing).
+export function findRecipes(list, { q = '', show = 'all', protein = 'any', extras = [], kKeys = [], sort = 'best' } = {}) {
+  const words = String(q).toLowerCase().split(/\s+/).filter(Boolean);
+  const ex = new Set(extras);
+  const out = [];
+  list.forEach((r, i) => {
+    if (show === 'mp' && !r.mp) return;
+    if (['main', 'breakfast', 'side'].includes(show) && r.course !== show) return;
+    if (show === 'noreheat' && !(r.prep || []).includes('noreheat')) return;
+    if (protein !== 'any' && proteinOf(r) !== protein) return;
+    if (ex.has('cheap') && !(r.perServing != null && r.perServing < 2)) return;
+    if (ex.has('quick') && !(r.minutes && r.minutes <= 30)) return;
+    if (ex.has('protein') && proteinG(r) < 25) return;
+    if (words.length) {
+      const hay = `${r.title} ${keysOf(r).join(' ')}`.toLowerCase();
+      if (!words.every((w) => hay.includes(w))) return;
+    }
+    const m = match(r, kKeys);
+    if (ex.has('have') && !(m.total && m.missing.length <= 2)) return;
+    out.push({ r, m, i });
+  });
+  const pop = (r) => Math.sqrt(r.ratings || 0) * Math.pow(r.stars || 4, 2) * (r.mp ? 1.3 : 1);
+  const num = (v, dflt) => (v == null || Number.isNaN(Number(v)) ? dflt : Number(v));
+  const by = {
+    best: (a, b) => a.i - b.i,
+    popular: (a, b) => pop(b.r) - pop(a.r),
+    cheap: (a, b) => num(a.r.perServing, 99) - num(b.r.perServing, 99),
+    quick: (a, b) => num(a.r.minutes, 999) - num(b.r.minutes, 999),
+    protein: (a, b) => proteinG(b.r) - proteinG(a.r),
+    missing: (a, b) => a.m.missing.length - b.m.missing.length || b.m.ratio - a.m.ratio || pop(b.r) - pop(a.r),
+  };
+  return out.sort(by[sort] || by.best);
+}
+
+// This week's prep: recipes you've lined up, kept with enough of each to work after they leave the weekly file.
+const PLAN_FIELDS = ['id', 'title', 'slug', 'url', 'course', 'perServing', 'total', 'servings', 'minutes', 'nutrition', 'thumb', 'image', 'mp', 'prep', 'webId'];
+export function planItem(r) {
+  const o = { added: todayISO() };
+  PLAN_FIELDS.forEach((f) => r[f] != null && (o[f] = r[f]));
+  o.keys = keysOf(r);
+  return o;
+}
+export const inPlan = (d, id) => (d.plan || []).some((x) => x.id === id);
+export function togglePlan(d, r) {
+  d.plan = d.plan || [];
+  if (inPlan(d, r.id)) {
+    d.plan = d.plan.filter((x) => x.id !== r.id);
+    return false;
+  }
+  d.plan.push(planItem(r));
+  return true;
+}
+export function removePlan(d, id) {
+  d.plan = (d.plan || []).filter((x) => x.id !== id);
+}
+export function clearPlan(d) {
+  const n = (d.plan || []).length;
+  d.plan = [];
+  return n;
+}
+// Servings, cost, and calories and protein per serving across the plan.
+export function planTotals(plan) {
+  let servings = 0;
+  let cost = 0;
+  let priced = 0;
+  let cal = 0;
+  let prot = 0;
+  let fed = 0;
+  for (const r of plan || []) {
+    const n = Number(r.servings) || 4;
+    servings += n;
+    const c = r.total != null ? Number(r.total) : r.perServing != null ? Number(r.perServing) * n : null;
+    if (c != null) {
+      cost += c;
+      priced++;
+    }
+    if (r.nutrition) {
+      cal += r.nutrition[0] * n;
+      prot += r.nutrition[1] * n;
+      fed += n;
+    }
+  }
+  return { recipes: (plan || []).length, servings, cost, priced, calories: fed ? cal / fed : null, protein: fed ? prot / fed : null };
+}
+// Everything the plan needs that isn't in the kitchen, merged: [{ name, key, for: [titles] }].
+export function planShopping(plan, kKeys) {
+  const out = new Map();
+  for (const r of plan || []) {
+    for (const k of match(r, kKeys).missing) {
+      const e = out.get(k) || { name: label(k), key: k, for: [] };
+      if (!e.for.includes(r.title)) e.for.push(r.title);
+      out.set(k, e);
+    }
+  }
+  return [...out.values()].sort((a, b) => b.for.length - a.for.length || a.name.localeCompare(b.name));
+}
+export function addPlanToGrocery(d, kKeys) {
+  let added = 0;
+  for (const r of d.plan || []) added += addGrocery(d, missingNames(r, match(r, kKeys)), r.title);
+  return added;
 }
