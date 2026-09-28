@@ -3,6 +3,8 @@
    import. Colors come from the theme tokens, so the classic look, Liquid Glass and dark glass all work.
    ===================================================================================================== */
 .budget { max-width: 1180px; margin: 0 auto; }
+@media (min-width: 1800px) { .budget { max-width: none; } }
+.bud-cols > .bud-full { grid-column: 1 / -1; min-width: 0; }
 .bud-head { align-items: flex-end; }
 .bud-import { flex: none; }
 .bud-tabs { position: static; margin-bottom: 10px; }
@@ -116,7 +118,7 @@ div.txrow { cursor: default; }
 .af-chips { grid-column: 1 / -1; min-width: 0; }
 .qa-chips { grid-column: 1 / -1; min-width: 0; }
 .qa > .minput { min-width: 0; }
-@media (min-width: 900px) {
+@container (min-width: 760px) {
   .ledger .addform { grid-template-columns: 130px minmax(0, 1.8fr) minmax(0, 1.1fr) minmax(0, 1fr) 160px auto; }
   .ledger .addform .btn { padding-left: 22px; padding-right: 22px; }
 }
@@ -232,6 +234,11 @@ div.txrow { cursor: default; }
 .paste { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 12px; }
 .paste textarea { font: 14px ui-monospace, SFMono-Regular, Menlo, monospace; resize: vertical; }
 .holds > li { padding: 10px 0; }
+.ledger, .card-panel, .holds-card { container-type: inline-size; }
+@container (max-width: 699px) {
+  .card-panel .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card-panel .bud-cols, .holds-card .bud-cols { grid-template-columns: minmax(0, 1fr); }
+}
 .hold { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; grid-template-areas: 'name val x' 'shares basis basis'; gap: 6px 10px; align-items: center; }
 .h-name { grid-area: name; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
 .h-name b { font-size: 16px; }
@@ -241,7 +248,7 @@ div.txrow { cursor: default; }
 .h-f .input { padding: 7px 9px; font-size: 15px; }
 .h-val { grid-area: val; display: flex; flex-direction: column; align-items: flex-end; }
 .hold > .x { grid-area: x; }
-@media (min-width: 700px) {
+@container (min-width: 640px) {
   .hold { grid-template-columns: minmax(0, 1.2fr) 110px 130px minmax(0, 1fr) auto; grid-template-areas: 'name shares basis val x'; }
 }
 .add-hold { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 6px; }

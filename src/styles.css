@@ -963,3 +963,11 @@ textarea.input { resize: vertical; font: inherit; font-size: 16px; }
 .pf-tabs { margin: 12px 0 2px; }
 .pf-news .story { padding: 9px 0; }
 .pf-news .story-title { font-size: 14px; }
+
+/* ---- wide screens: the two-column pages become as many columns as fit (src/wide.js) ---- */
+@media (min-width: 1800px) {
+  .main, .theme-glass .main { max-width: none; }
+}
+.main .masonry.masonry { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); grid-auto-rows: 4px; grid-auto-flow: row dense; row-gap: 0; column-gap: 16px; align-items: start; }
+.main .masonry.masonry > .col { display: contents; }
+.main .masonry.masonry > :not(.col), .main .masonry.masonry > .col > * { grid-column: auto; grid-row-end: span var(--span, 60); align-self: start; margin: 0; min-width: 0; }

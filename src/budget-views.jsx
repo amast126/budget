@@ -13,7 +13,10 @@ const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 const inDays = (n) => (n === 0 ? 'today' : n === 1 ? 'tomorrow' : `in ${n} days`);
 const byDateDesc = (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
 const listNames = (xs) => (xs.length <= 1 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
-const baseName = (n) => String(n || '').replace(/\s*\((previous|old|current|new)[^)]*\)\s*/i, ' ').trim();
+const baseName = (n) =>
+  String(n || '')
+    .replace(/\s*\((previous|old|current|new)[^)]*\)\s*/i, ' ')
+    .trim();
 
 // ---------------------------------------------------------------- paycheck
 export function PaycheckView({ data, openTxn, goSettings }) {
@@ -40,79 +43,89 @@ export function PaycheckView({ data, openTxn, goSettings }) {
   const billsLeft = v.bills.filter((b) => !b.paid);
   return (
     <div className="bud-paycheck">
-      <section className="card pc-hero">
-        <div className="bs-top">
-          <div>
-            <div className="muted small">{v.left >= 0 ? 'Left to spend until payday' : 'Over this paycheck by'}</div>
-            <div className={`big num ${v.left < 0 ? 'neg' : ''}`}>{fmt(Math.abs(v.left))}</div>
-            <div className="muted small">
-              {v.left >= 0 ? `About ${v.perDay >= 10 ? fmt0(v.perDay) : fmt(v.perDay)} a day for ${plural(v.daysLeft, 'day')}` : `${plural(v.daysLeft, 'day')} to go`}. Next payday {C.dateLabel(v.next)} ({inDays(nextDays)}).
-            </div>
-          </div>
-          <StatusPill st={st} />
-        </div>
-        <PaceBar spent={v.spent} budget={Math.max(0, v.spendable)} p={p} st={st} />
-        <ul className="list pc-flow">
-          <li className="row-between">
-            <span>Paycheck {C.dateLabel(v.start)}</span>
-            <Money v={v.income} className="c-green" />
-          </li>
-          <li className="row-between">
-            <span>To savings</span>
-            <Money v={-v.savings} />
-          </li>
-          <li className="row-between">
-            <span>
-              Bills before {C.dateLabel(C.addDays(v.end, 1))}
-              <span className="muted small"> · {plural(v.bills.length, 'bill')}</span>
-            </span>
-            <Money v={-v.billTotal} />
-          </li>
-          <li className="row-between pc-sub">
-            <b>To spend</b>
-            <b>
-              <Money v={v.spendable} />
-            </b>
-          </li>
-          <li>
-            <button className="row-between linkish pc-spent" onClick={() => setShowSpent(!showSpent)} aria-expanded={showSpent}>
-              <span>
-                Spent so far <span className="muted small">· {plural(spentRows.length, 'purchase')}</span>
-              </span>
-              <Money v={-v.spent} />
-            </button>
-          </li>
-          {showSpent ? (
-            <li>
-              <ul className="list txlist">
-                {spentRows.map((t) => (
-                  <li key={t.id}>
-                    <button className="txrow compact" onClick={() => openTxn(t.id)}>
-                      <CategoryMark category={t.category} size={22} />
-                      <span className="grow">
-                        {t.desc} <span className="muted small">· {C.dateLabel(t.date)}</span>
-                      </span>
-                      <span className="num">{fmt(t.amount)}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ) : null}
-          <li className="row-between pc-sub">
-            <b>Left</b>
-            <b className={v.left < 0 ? 'c-red' : ''}>
-              <Money v={v.left} />
-            </b>
-          </li>
-        </ul>
-        <p className="muted small note">
-          Evened out over the next three months, a paycheck leaves about <b className="num">{fmt0(avg)}</b> to spend; your spending budgets add up to {fmt0(v.budgetPerCheck)} a paycheck.
-          {v.spendable < avg * 0.7 && v.bills.length ? ` This one is lighter because ${listNames([...v.bills].sort((a, b) => b.cost - a.cost).slice(0, 3).map((b) => b.bill.name))} land before the next payday.` : ''}
-          {v.spendable > avg * 1.3 ? ' This one is roomier than usual: fewer bills land before the next payday.' : ''}
-        </p>
-      </section>
       <div className="bud-cols">
+        <div className="bud-full">
+          <section className="card pc-hero">
+            <div className="bs-top">
+              <div>
+                <div className="muted small">{v.left >= 0 ? 'Left to spend until payday' : 'Over this paycheck by'}</div>
+                <div className={`big num ${v.left < 0 ? 'neg' : ''}`}>{fmt(Math.abs(v.left))}</div>
+                <div className="muted small">
+                  {v.left >= 0 ? `About ${v.perDay >= 10 ? fmt0(v.perDay) : fmt(v.perDay)} a day for ${plural(v.daysLeft, 'day')}` : `${plural(v.daysLeft, 'day')} to go`}. Next payday{' '}
+                  {C.dateLabel(v.next)} ({inDays(nextDays)}).
+                </div>
+              </div>
+              <StatusPill st={st} />
+            </div>
+            <PaceBar spent={v.spent} budget={Math.max(0, v.spendable)} p={p} st={st} />
+            <ul className="list pc-flow">
+              <li className="row-between">
+                <span>Paycheck {C.dateLabel(v.start)}</span>
+                <Money v={v.income} className="c-green" />
+              </li>
+              <li className="row-between">
+                <span>To savings</span>
+                <Money v={-v.savings} />
+              </li>
+              <li className="row-between">
+                <span>
+                  Bills before {C.dateLabel(C.addDays(v.end, 1))}
+                  <span className="muted small"> · {plural(v.bills.length, 'bill')}</span>
+                </span>
+                <Money v={-v.billTotal} />
+              </li>
+              <li className="row-between pc-sub">
+                <b>To spend</b>
+                <b>
+                  <Money v={v.spendable} />
+                </b>
+              </li>
+              <li>
+                <button className="row-between linkish pc-spent" onClick={() => setShowSpent(!showSpent)} aria-expanded={showSpent}>
+                  <span>
+                    Spent so far <span className="muted small">· {plural(spentRows.length, 'purchase')}</span>
+                  </span>
+                  <Money v={-v.spent} />
+                </button>
+              </li>
+              {showSpent ? (
+                <li>
+                  <ul className="list txlist">
+                    {spentRows.map((t) => (
+                      <li key={t.id}>
+                        <button className="txrow compact" onClick={() => openTxn(t.id)}>
+                          <CategoryMark category={t.category} size={22} />
+                          <span className="grow">
+                            {t.desc} <span className="muted small">· {C.dateLabel(t.date)}</span>
+                          </span>
+                          <span className="num">{fmt(t.amount)}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : null}
+              <li className="row-between pc-sub">
+                <b>Left</b>
+                <b className={v.left < 0 ? 'c-red' : ''}>
+                  <Money v={v.left} />
+                </b>
+              </li>
+            </ul>
+            <p className="muted small note">
+              Evened out over the next three months, a paycheck leaves about <b className="num">{fmt0(avg)}</b> to spend; your spending budgets add up to {fmt0(v.budgetPerCheck)} a paycheck.
+              {v.spendable < avg * 0.7 && v.bills.length
+                ? ` This one is lighter because ${listNames(
+                    [...v.bills]
+                      .sort((a, b) => b.cost - a.cost)
+                      .slice(0, 3)
+                      .map((b) => b.bill.name),
+                  )} land before the next payday.`
+                : ''}
+              {v.spendable > avg * 1.3 ? ' This one is roomier than usual: fewer bills land before the next payday.' : ''}
+            </p>
+          </section>
+        </div>
         <div className="col">
           <section className="card">
             <div className="card-head">
@@ -195,8 +208,10 @@ export function PaycheckView({ data, openTxn, goSettings }) {
 export function SpendingView({ data, dark, openTxn, openMerchant, openCategory }) {
   return (
     <div className="bud-spending">
-      <SearchCard data={data} dark={dark} openTxn={openTxn} openMerchant={openMerchant} />
       <div className="bud-cols">
+        <div className="bud-full">
+          <SearchCard data={data} dark={dark} openTxn={openTxn} openMerchant={openMerchant} />
+        </div>
         <div className="col">
           <TrendsCard data={data} dark={dark} openCategory={openCategory} />
           <TopMerchants data={data} openMerchant={openMerchant} />
@@ -332,13 +347,18 @@ function TrendsCard({ data, dark, openCategory }) {
             <li key={c.name} className={c.diff > 0 ? 'co-up' : 'co-down'}>
               <CategoryMark category={c.name} size={22} />
               <span>
-                <b>{c.name}</b>: {fmt0(c.now)} so far this month, <b className="num">{fmt0(Math.abs(c.diff))}</b> {c.diff > 0 ? 'more' : 'less'} than your usual {fmt0(c.avg)} by the {C.ordinal(tr.day)}.
+                <b>{c.name}</b>: {fmt0(c.now)} so far this month, <b className="num">{fmt0(Math.abs(c.diff))}</b> {c.diff > 0 ? 'more' : 'less'} than your usual {fmt0(c.avg)} by the{' '}
+                {C.ordinal(tr.day)}.
               </span>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="muted small note">{tr.compared ? `Every category is within $25 of your ${plural(tr.compared, 'month')} average for this point in the month.` : 'Comparisons start once there’s a finished month to compare with.'}</p>
+        <p className="muted small note">
+          {tr.compared
+            ? `Every category is within $25 of your ${plural(tr.compared, 'month')} average for this point in the month.`
+            : 'Comparisons start once there’s a finished month to compare with.'}
+        </p>
       )}
       <ul className="list trend-rows">
         {used.map((c) => {
@@ -380,7 +400,7 @@ function TopMerchants({ data, openMerchant }) {
         <h2 className="card-title">Where it goes</h2>
         <div className="seg" role="group" aria-label="Range">
           {RANGES.map(([k, l]) => (
-            <button key={k} className={`seg-btn ${range === k ? "on" : ""}`} aria-pressed={range === k} onClick={() => setRange(k)}>
+            <button key={k} className={`seg-btn ${range === k ? 'on' : ''}`} aria-pressed={range === k} onClick={() => setRange(k)}>
               {l}
             </button>
           ))}
@@ -495,13 +515,12 @@ export function SavingsView({ data, upd, onToast }) {
     );
   return (
     <div className="bud-savings">
-      <SavingsPanel data={data} upd={upd} onToast={onToast} />
-      {data.card ? <CardPanel data={data} upd={upd} onToast={onToast} /> : null}
+      <SavingsPanel data={data} upd={upd} onToast={onToast} extra={data.card ? <CardPanel data={data} upd={upd} onToast={onToast} /> : null} />
     </div>
   );
 }
 
-function SavingsPanel({ data, upd, onToast }) {
+function SavingsPanel({ data, upd, onToast, extra }) {
   const sv = data.savings;
   const cfg = data.config;
   const cur = C.todayKey();
@@ -510,7 +529,10 @@ function SavingsPanel({ data, upd, onToast }) {
   const paydays = C.paydaysIn(cur, cfg.payAnchor);
   const per = sum(C.activeSavings(cfg, cur), (x) => x.biweekly);
   const due = paydays.length * per;
-  const deposited = sum(sv.entries.filter((e) => e.type === 'deposit' && e.date.startsWith(cur)), (e) => e.amount);
+  const deposited = sum(
+    sv.entries.filter((e) => e.type === 'deposit' && e.date.startsWith(cur)),
+    (e) => e.amount,
+  );
   const dcMonth = C.dailyCashEstimate(data.months[cur], cfg.bills, cur);
   const proj = useMemo(() => C.projectSavings(data, 16), [data]);
   const stats = C.monthStats(data, cur);
@@ -528,7 +550,10 @@ function SavingsPanel({ data, upd, onToast }) {
     const a = C.round2(Number(f.amount));
     const entry = { id: C.uid(), date: f.date, type: f.type, amount: f.type === 'withdrawal' ? -a : a, note: f.note.trim(), absorbed: false };
     await upd((d) => d.savings.entries.push(entry));
-    onToast({ text: `${C.ENTRY_LABEL[f.type]} of ${fmt(a)} logged`, undo: async () => (await upd((d) => (d.savings.entries = d.savings.entries.filter((x) => x.id !== entry.id))), onToast({ text: 'Removed' })) });
+    onToast({
+      text: `${C.ENTRY_LABEL[f.type]} of ${fmt(a)} logged`,
+      undo: async () => (await upd((d) => (d.savings.entries = d.savings.entries.filter((x) => x.id !== entry.id))), onToast({ text: 'Removed' })),
+    });
     setF({ ...f, amount: '', note: '' });
   };
   const remove = async (entry) => {
@@ -551,7 +576,12 @@ function SavingsPanel({ data, upd, onToast }) {
     <>
       <section className="card">
         <div className="kpis">
-          <Kpi label="Savings balance" value={fmt(bal)} tone="green" sub={`${sv.apy}% APY, about ${fmt(bal * C.monthlyRate(sv.apy))} a month${pendingDc > 0 ? `. Includes ${fmt(pendingDc)} Daily Cash since the last update` : ''}`} />
+          <Kpi
+            label="Savings balance"
+            value={fmt(bal)}
+            tone="green"
+            sub={`${sv.apy}% APY, about ${fmt(bal * C.monthlyRate(sv.apy))} a month${pendingDc > 0 ? `. Includes ${fmt(pendingDc)} Daily Cash since the last update` : ''}`}
+          />
           <Kpi label="Deposited this month" value={fmt(deposited)} sub={due > 0 ? `of ${fmt0(due)}: ${plural(paydays.length, 'payday')} × ${fmt0(per)}` : 'No paydays scheduled this month'} />
           <Kpi label="Daily Cash this month" value={fmt(dcMonth)} sub="3% at Apple and a few Apple Pay partners, 2% Apple Pay, 1% the card itself" />
           <Kpi label="Three months of fixed costs" value={fmt0(goal)} sub={bal >= goal ? 'Reached' : hit ? `On track for about ${C.monthShort(hit.key)}` : 'Beyond the 16-month projection'} />
@@ -653,6 +683,7 @@ function SavingsPanel({ data, upd, onToast }) {
             </ul>
           </section>
         </div>
+        {extra ? <div className="bud-full">{extra}</div> : null}
       </div>
     </>
   );
@@ -727,7 +758,13 @@ function CardPanel({ data, upd, onToast }) {
           <label className="carry">
             Paying <input className="input num" type="number" step="10" min="0" value={pay} onChange={(e) => setPay(e.target.value)} aria-label="Monthly payment" /> a month
           </label>
-          <p className="small">{bal <= 0 ? 'Nothing to carry.' : po ? `${plural(po.months, 'month')} to clear ${fmt(bal)}, and ${fmt(po.interest)} of it would be interest.` : 'That payment doesn’t cover the monthly interest, so the balance would grow.'}</p>
+          <p className="small">
+            {bal <= 0
+              ? 'Nothing to carry.'
+              : po
+                ? `${plural(po.months, 'month')} to clear ${fmt(bal)}, and ${fmt(po.interest)} of it would be interest.`
+                : 'That payment doesn’t cover the monthly interest, so the balance would grow.'}
+          </p>
         </div>
       </div>
     </section>
@@ -760,7 +797,10 @@ export function OutlookView({ data, auto, goSavings, dark }) {
                 </span>
               ) : null}
             </div>
-            <div className={`big num ${nw.total < 0 ? 'neg' : ''}`}>{nw.total < 0 ? '−' : ''}{fmt0(Math.abs(nw.total))}</div>
+            <div className={`big num ${nw.total < 0 ? 'neg' : ''}`}>
+              {nw.total < 0 ? '−' : ''}
+              {fmt0(Math.abs(nw.total))}
+            </div>
             <ul className="list nw-rows">
               <li className="row-between">
                 <span>Savings</span>
@@ -801,7 +841,11 @@ export function OutlookView({ data, auto, goSavings, dark }) {
           <section className="card">
             <div className="card-head">
               <h2 className="card-title">What’s coming</h2>
-              {freed > 0 && lastBill ? <span className="muted small num">+{fmt0(freed)} a month by {C.monthShort(lastBill.key)}</span> : null}
+              {freed > 0 && lastBill ? (
+                <span className="muted small num">
+                  +{fmt0(freed)} a month by {C.monthShort(lastBill.key)}
+                </span>
+              ) : null}
             </div>
             {ms.length ? (
               <ol className="mtl">
@@ -836,7 +880,17 @@ export function OutlookView({ data, auto, goSavings, dark }) {
 }
 
 // ---------------------------------------------------------------- stocks
-const tickersOf = (p) => [...new Set(p.holdings.map((h) => String(h.ticker || '').trim().toUpperCase()).filter(Boolean))];
+const tickersOf = (p) => [
+  ...new Set(
+    p.holdings
+      .map((h) =>
+        String(h.ticker || '')
+          .trim()
+          .toUpperCase(),
+      )
+      .filter(Boolean),
+  ),
+];
 const signed = (v) => `${v >= 0 ? '+' : '−'}${fmt(Math.abs(v))}`;
 const pctStr = (v) => (v == null ? '—' : `${v > 0 ? '+' : ''}${Number(v).toFixed(2)}%`);
 export function StocksView({ data, upd, onToast }) {
@@ -902,17 +956,18 @@ export function StocksView({ data, upd, onToast }) {
           ex.shares = h.shares;
           ex.basis = h.basis;
         } else d.portfolio.holdings.push({ id: C.uid(), ...h });
-      })
+      }),
     );
     setPaste('');
     setPasting(false);
     onToast({ text: `${plural(list.length, 'holding')} saved` });
     tried.current = false;
   };
-  const setField = (id, k, v) => upd((d) => {
-    const h = d.portfolio.holdings.find((x) => x.id === id);
-    if (h) h[k] = v === '' ? 0 : Number(v);
-  });
+  const setField = (id, k, v) =>
+    upd((d) => {
+      const h = d.portfolio.holdings.find((x) => x.id === id);
+      if (h) h[k] = v === '' ? 0 : Number(v);
+    });
   const remove = async (h) => {
     await upd((d) => (d.portfolio.holdings = d.portfolio.holdings.filter((x) => x.id !== h.id)));
     onToast({ text: `Removed ${h.ticker}`, undo: async () => (await upd((d) => d.portfolio.holdings.push(h)), onToast({ text: 'Restored' })) });
@@ -924,77 +979,97 @@ export function StocksView({ data, upd, onToast }) {
           <Kpi label="Account value" value={fmt(r.total)} sub={`${fmt0(r.positions)} in positions, ${fmt(r.cash)} cash`} />
           <Kpi label="Day’s change" value={signed(r.day)} tone={r.day < 0 ? 'red' : r.day > 0 ? 'green' : null} sub={`Prices refreshed ${when}`} />
           {based.length ? (
-            <Kpi label="Unrealized gain" value={signed(gain)} tone={gain < 0 ? 'red' : 'green'} sub={`${gain >= 0 ? '+' : '−'}${pct(Math.abs(invested ? gain / invested : 0))} on ${fmt0(invested)} invested${based.length < r.rows.length ? ` (${plural(based.length, 'holding')} with a cost basis)` : ''}`} />
+            <Kpi
+              label="Unrealized gain"
+              value={signed(gain)}
+              tone={gain < 0 ? 'red' : 'green'}
+              sub={`${gain >= 0 ? '+' : '−'}${pct(Math.abs(invested ? gain / invested : 0))} on ${fmt0(invested)} invested${based.length < r.rows.length ? ` (${plural(based.length, 'holding')} with a cost basis)` : ''}`}
+            />
           ) : (
             <Kpi label="Unrealized gain" value="—" sub="Add a cost basis to a holding to see its gain" />
           )}
           <Kpi label="Portfolio, savings, card" value={fmt(r.total + savings - owed)} sub={`${fmt0(r.total)} plus ${fmt0(savings)} saved, minus ${fmt0(owed)} owed`} />
         </div>
       </section>
-      <section className="card">
-        <div className="card-head">
-          <div>
-            <h2 className="card-title">Holdings</h2>
-            <span className="muted small">Shares and cost basis are yours to edit; prices come from Finnhub.</span>
-          </div>
-          <span className="row-gap">
-            <button className="btn small quiet" onClick={() => setPasting(!pasting)}>
-              {pasting ? 'Close' : 'Paste holdings'}
-            </button>
-            <button className="btn small" onClick={refresh} disabled={busy || !p.holdings.length}>
-              {busy ? 'Fetching…' : 'Refresh prices'}
-            </button>
-          </span>
+      <div className="bud-cols">
+        <div className="bud-full">
+          <section className="card holds-card">
+            <div className="card-head">
+              <div>
+                <h2 className="card-title">Holdings</h2>
+                <span className="muted small">Shares and cost basis are yours to edit; prices come from Finnhub.</span>
+              </div>
+              <span className="row-gap">
+                <button className="btn small quiet" onClick={() => setPasting(!pasting)}>
+                  {pasting ? 'Close' : 'Paste holdings'}
+                </button>
+                <button className="btn small" onClick={refresh} disabled={busy || !p.holdings.length}>
+                  {busy ? 'Fetching…' : 'Refresh prices'}
+                </button>
+              </span>
+            </div>
+            {err ? <p className="small c-red">{err}</p> : null}
+            {pasting ? (
+              <div className="paste">
+                <textarea
+                  className="input"
+                  rows={5}
+                  value={paste}
+                  onChange={(e) => setPaste(e.target.value)}
+                  placeholder={'One line per holding: ticker, shares, cost basis\nVTI 12.5 3100'}
+                  aria-label="Holdings to paste"
+                />
+                <button className="btn primary" onClick={doPaste} disabled={!paste.trim()}>
+                  Save holdings
+                </button>
+              </div>
+            ) : null}
+            {r.rows.length ? (
+              <ul className="list holds">
+                {r.rows.map((h) => (
+                  <li key={h.id} className="hold">
+                    <div className="h-name">
+                      <b>{h.ticker}</b>
+                      <span className="muted small num">{h.price != null ? fmt(h.price) : h.q && h.q.as_of === 'not found' ? 'not found' : 'no price yet'}</span>
+                      {h.q && h.q.change_pct != null ? <span className={`small num ${h.q.change_pct < 0 ? 'c-red' : 'c-green'}`}>{pctStr(h.q.change_pct)}</span> : null}
+                    </div>
+                    <label className="h-f">
+                      <span className="muted small">Shares</span>
+                      <Commit type="number" className="input num" step="0.001" min="0" value={h.shares} onCommit={(v) => setField(h.id, 'shares', v)} aria-label={`${h.ticker} shares`} />
+                    </label>
+                    <label className="h-f">
+                      <span className="muted small">Cost basis</span>
+                      <Commit type="number" className="input num" step="0.01" min="0" value={h.basis} onCommit={(v) => setField(h.id, 'basis', v)} aria-label={`${h.ticker} cost basis`} />
+                    </label>
+                    <div className="h-val">
+                      <b className="num">{h.value != null ? fmt(h.value) : '—'}</b>
+                      {h.gain != null && h.basis > 0 ? <span className={`small num ${h.gain < 0 ? 'c-red' : 'c-green'}`}>{signed(h.gain)}</span> : null}
+                    </div>
+                    <button className="x small-x" aria-label={`Remove ${h.ticker}`} onClick={() => remove(h)}>
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="empty">No holdings yet. Paste them, or add one below.</p>
+            )}
+            <div className="bud-cols tight">
+              <AddHolding upd={upd} onAdded={() => (tried.current = false)} />
+              <label className="h-cash">
+                <span className="muted small">Cash in the account</span>
+                <Commit type="number" className="input num" step="0.01" value={p.cash} onCommit={(v) => upd((d) => (d.portfolio.cash = v === '' ? 0 : Number(v)))} aria-label="Cash in the account" />
+              </label>
+            </div>
+            <p className="muted small note">A value tracker, not advice: it shows what the positions are worth and nothing about what to do with them.</p>
+          </section>
         </div>
-        {err ? <p className="small c-red">{err}</p> : null}
-        {pasting ? (
-          <div className="paste">
-            <textarea className="input" rows={5} value={paste} onChange={(e) => setPaste(e.target.value)} placeholder={'One line per holding: ticker, shares, cost basis\nVTI 12.5 3100'} aria-label="Holdings to paste" />
-            <button className="btn primary" onClick={doPaste} disabled={!paste.trim()}>
-              Save holdings
-            </button>
+        {r.rows.length ? (
+          <div className="bud-full">
+            <Movers data={data} upd={upd} rows={r.rows} day={r.day} />
           </div>
         ) : null}
-        {r.rows.length ? (
-          <ul className="list holds">
-            {r.rows.map((h) => (
-              <li key={h.id} className="hold">
-                <div className="h-name">
-                  <b>{h.ticker}</b>
-                  <span className="muted small num">{h.price != null ? fmt(h.price) : h.q && h.q.as_of === 'not found' ? 'not found' : 'no price yet'}</span>
-                  {h.q && h.q.change_pct != null ? <span className={`small num ${h.q.change_pct < 0 ? 'c-red' : 'c-green'}`}>{pctStr(h.q.change_pct)}</span> : null}
-                </div>
-                <label className="h-f">
-                  <span className="muted small">Shares</span>
-                  <Commit type="number" className="input num" step="0.001" min="0" value={h.shares} onCommit={(v) => setField(h.id, 'shares', v)} aria-label={`${h.ticker} shares`} />
-                </label>
-                <label className="h-f">
-                  <span className="muted small">Cost basis</span>
-                  <Commit type="number" className="input num" step="0.01" min="0" value={h.basis} onCommit={(v) => setField(h.id, 'basis', v)} aria-label={`${h.ticker} cost basis`} />
-                </label>
-                <div className="h-val">
-                  <b className="num">{h.value != null ? fmt(h.value) : '—'}</b>
-                  {h.gain != null && h.basis > 0 ? <span className={`small num ${h.gain < 0 ? 'c-red' : 'c-green'}`}>{signed(h.gain)}</span> : null}
-                </div>
-                <button className="x small-x" aria-label={`Remove ${h.ticker}`} onClick={() => remove(h)}>
-                  ×
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="empty">No holdings yet. Paste them, or add one below.</p>
-        )}
-        <div className="bud-cols tight">
-          <AddHolding upd={upd} onAdded={() => (tried.current = false)} />
-          <label className="h-cash">
-            <span className="muted small">Cash in the account</span>
-            <Commit type="number" className="input num" step="0.01" value={p.cash} onCommit={(v) => upd((d) => (d.portfolio.cash = v === '' ? 0 : Number(v)))} aria-label="Cash in the account" />
-          </label>
-        </div>
-        <p className="muted small note">A value tracker, not advice: it shows what the positions are worth and nothing about what to do with them.</p>
-      </section>
-      {r.rows.length ? <Movers data={data} upd={upd} rows={r.rows} day={r.day} /> : null}
+      </div>
     </div>
   );
 }
@@ -1145,7 +1220,16 @@ export function YearView({ data, openCategory }) {
             </select>
           ) : null}
         </div>
-        <BarChart points={pts} slots={slots} fmt={fmt} label="Spending by month" goal={budget || undefined} goalLabel={budget ? `Budget ${fmt0(budget)}` : undefined} height={170} xLabels={[slots[0], slots[5], slots[11]]} />
+        <BarChart
+          points={pts}
+          slots={slots}
+          fmt={fmt}
+          label="Spending by month"
+          goal={budget || undefined}
+          goalLabel={budget ? `Budget ${fmt0(budget)}` : undefined}
+          height={170}
+          xLabels={[slots[0], slots[5], slots[11]]}
+        />
       </section>
       <section className="card">
         <h2 className="card-title">By category</h2>
@@ -1231,17 +1315,19 @@ export function SettingsView({ data, upd, onToast, alertStatus }) {
   const [bill, setBill] = useState(null);
   const use = useMemo(() => C.categoryUse(data), [data]);
   const list = (path) => (d) => path.split('.').reduce((o, k) => o[k], d);
-  const setIn = (path, id, patch) => upd((d) => {
-    const arr = list(path)(d);
-    const x = arr.find((y) => y.id === id);
-    if (x) Object.assign(x, patch);
-  });
-  const removeIn = (path, id) => upd((d) => {
-    const parent = path.split('.');
-    const key = parent.pop();
-    const o = parent.reduce((a, k) => a[k], d);
-    o[key] = o[key].filter((y) => y.id !== id);
-  });
+  const setIn = (path, id, patch) =>
+    upd((d) => {
+      const arr = list(path)(d);
+      const x = arr.find((y) => y.id === id);
+      if (x) Object.assign(x, patch);
+    });
+  const removeIn = (path, id) =>
+    upd((d) => {
+      const parent = path.split('.');
+      const key = parent.pop();
+      const o = parent.reduce((a, k) => a[k], d);
+      o[key] = o[key].filter((y) => y.id !== id);
+    });
   const active = cfg.bills.filter((b) => !b.ends || b.ends >= cur);
   const ended = cfg.bills.filter((b) => b.ends && b.ends < cur);
   const incomeTotal = sum(cfg.incomes, (i) => i.biweekly);
@@ -1252,7 +1338,12 @@ export function SettingsView({ data, upd, onToast, alertStatus }) {
       onToast({ text: `There’s already a category called ${n}`, error: true });
       return;
     }
-    upd((d) => C.setCategories(d, d.config.categories.map((x) => (x.id === c.id ? { ...x, name: n } : x))));
+    upd((d) =>
+      C.setCategories(
+        d,
+        d.config.categories.map((x) => (x.id === c.id ? { ...x, name: n } : x)),
+      ),
+    );
     if (use[c.name]) onToast({ text: `Renamed to ${n}; ${plural(use[c.name], 'expense')} moved with it` });
   };
   return (
@@ -1266,7 +1357,14 @@ export function SettingsView({ data, upd, onToast, alertStatus }) {
               {cfg.incomes.map((x) => (
                 <li key={x.id} className="set-row">
                   <Commit className="input" value={x.name} onCommit={(v) => setIn('config.incomes', x.id, { name: v })} aria-label="Income source" />
-                  <Commit type="number" className="input num" step="0.01" value={x.biweekly} onCommit={(v) => setIn('config.incomes', x.id, { biweekly: v === '' ? 0 : v })} aria-label={`${x.name} biweekly`} />
+                  <Commit
+                    type="number"
+                    className="input num"
+                    step="0.01"
+                    value={x.biweekly}
+                    onCommit={(v) => setIn('config.incomes', x.id, { biweekly: v === '' ? 0 : v })}
+                    aria-label={`${x.name} biweekly`}
+                  />
                   <button className="x small-x" aria-label={`Remove ${x.name || 'income'}`} onClick={() => removeIn('config.incomes', x.id)}>
                     ×
                   </button>
@@ -1323,7 +1421,14 @@ export function SettingsView({ data, upd, onToast, alertStatus }) {
               {cfg.savings.map((x) => (
                 <li key={x.id} className="set-row wrap">
                   <Commit className="input" value={x.name} onCommit={(v) => setIn('config.savings', x.id, { name: v })} aria-label="Savings target" />
-                  <Commit type="number" className="input num" step="0.01" value={x.biweekly} onCommit={(v) => setIn('config.savings', x.id, { biweekly: v === '' ? 0 : v })} aria-label={`${x.name} per paycheck`} />
+                  <Commit
+                    type="number"
+                    className="input num"
+                    step="0.01"
+                    value={x.biweekly}
+                    onCommit={(v) => setIn('config.savings', x.id, { biweekly: v === '' ? 0 : v })}
+                    aria-label={`${x.name} per paycheck`}
+                  />
                   <input className="input" type="month" value={x.starts || ''} onChange={(e) => setIn('config.savings', x.id, { starts: e.target.value })} aria-label={`${x.name} from`} title="From" />
                   <input className="input" type="month" value={x.ends || ''} onChange={(e) => setIn('config.savings', x.id, { ends: e.target.value })} aria-label={`${x.name} until`} title="Until" />
                   <button className="x small-x" aria-label={`Remove ${x.name || 'target'}`} onClick={() => removeIn('config.savings', x.id)}>
@@ -1350,8 +1455,22 @@ export function SettingsView({ data, upd, onToast, alertStatus }) {
                 <li key={c.id} className="set-row">
                   <CategoryMark category={c.name} size={24} />
                   <Commit className="input" value={c.name} onCommit={(v) => renameCat(c, v)} aria-label={`Rename ${c.name}`} />
-                  <Commit type="number" className="input num" step="1" min="0" value={c.budget} onCommit={(v) => setIn('config.categories', c.id, { budget: v === '' ? 0 : v })} aria-label={`${c.name} monthly budget`} />
-                  <button className="x small-x" disabled={!!use[c.name]} title={use[c.name] ? `Used by ${plural(use[c.name], 'expense')}` : 'Remove'} aria-label={`Remove ${c.name}`} onClick={() => removeIn('config.categories', c.id)}>
+                  <Commit
+                    type="number"
+                    className="input num"
+                    step="1"
+                    min="0"
+                    value={c.budget}
+                    onCommit={(v) => setIn('config.categories', c.id, { budget: v === '' ? 0 : v })}
+                    aria-label={`${c.name} monthly budget`}
+                  />
+                  <button
+                    className="x small-x"
+                    disabled={!!use[c.name]}
+                    title={use[c.name] ? `Used by ${plural(use[c.name], 'expense')}` : 'Remove'}
+                    aria-label={`Remove ${c.name}`}
+                    onClick={() => removeIn('config.categories', c.id)}
+                  >
                     ×
                   </button>
                 </li>
@@ -1399,7 +1518,13 @@ export function SettingsView({ data, upd, onToast, alertStatus }) {
               {cfg.roommates.map((r) => (
                 <li key={r.id} className="set-row">
                   <Commit className="input" value={r.name} placeholder="Name" onCommit={(v) => setIn('config.roommates', r.id, { name: v })} aria-label="Roommate name" />
-                  <Commit className="input" value={r.venmo || ''} placeholder="Venmo username" onCommit={(v) => setIn('config.roommates', r.id, { venmo: String(v).trim().replace(/^@/, '') })} aria-label={`${r.name || 'Roommate'} Venmo username`} />
+                  <Commit
+                    className="input"
+                    value={r.venmo || ''}
+                    placeholder="Venmo username"
+                    onCommit={(v) => setIn('config.roommates', r.id, { venmo: String(v).trim().replace(/^@/, '') })}
+                    aria-label={`${r.name || 'Roommate'} Venmo username`}
+                  />
                   <button className="x small-x" aria-label={`Remove ${r.name || 'roommate'}`} onClick={() => removeIn('config.roommates', r.id)}>
                     ×
                   </button>
@@ -1465,13 +1590,29 @@ function BillRow({ b, onClick }) {
 }
 
 function BillSheet({ bill, onSave, onDelete, onClose }) {
-  const [f, setF] = useState(() => ({ ...bill, amount: String(bill.amount ?? ''), share: String(Math.round(C.billShare(bill) * 100)), dc: String(Math.round(C.billDc(bill) * 100)), day: bill.day === '' || bill.day == null ? '' : String(bill.day) }));
+  const [f, setF] = useState(() => ({
+    ...bill,
+    amount: String(bill.amount ?? ''),
+    share: String(Math.round(C.billShare(bill) * 100)),
+    dc: String(Math.round(C.billDc(bill) * 100)),
+    day: bill.day === '' || bill.day == null ? '' : String(bill.day),
+  }));
   const set = (k) => (e) => setF({ ...f, [k]: e.target.type === 'checkbox' ? e.target.checked : e.target.value });
   const ok = String(f.name).trim() && f.amount !== '' && Number.isFinite(Number(f.amount));
   const save = () => {
     if (!ok) return;
     const day = f.day === '' ? '' : Math.max(1, Math.min(31, Math.round(Number(f.day))));
-    const out = { ...f, name: String(f.name).trim(), category: String(f.category || '').trim(), amount: C.round2(Number(f.amount)), share: Math.max(0, Math.min(100, Number(f.share) || 0)) / 100, card: !!f.card, day, starts: f.starts || '', ends: f.ends || '' };
+    const out = {
+      ...f,
+      name: String(f.name).trim(),
+      category: String(f.category || '').trim(),
+      amount: C.round2(Number(f.amount)),
+      share: Math.max(0, Math.min(100, Number(f.share) || 0)) / 100,
+      card: !!f.card,
+      day,
+      starts: f.starts || '',
+      ends: f.ends || '',
+    };
     if (f.card) out.dc = Number(f.dc) / 100;
     else delete out.dc;
     onSave(out);
@@ -1526,7 +1667,9 @@ function BillSheet({ bill, onSave, onDelete, onClose }) {
           <input className="input" type="month" value={f.ends || ''} onChange={set('ends')} aria-label="Until month" />
         </label>
       </div>
-      <p className="muted small">Day 31 means the last day of the month. A bill with a day ticks itself once it passes. From and Until are for bills that start or end, like installments or a new rate.</p>
+      <p className="muted small">
+        Day 31 means the last day of the month. A bill with a day ticks itself once it passes. From and Until are for bills that start or end, like installments or a new rate.
+      </p>
       <div className="sheet-acts">
         <button className="btn primary" onClick={save} disabled={!ok}>
           Save
@@ -1570,7 +1713,11 @@ function AlertsCard({ data, upd, onToast, status }) {
     }
     setSending(true);
     try {
-      const r = await fetch(`https://ntfy.sh/${encodeURIComponent(a.topic)}`, { method: 'POST', body: 'Alerts from your budget will look like this.', headers: { Title: 'Test from your dashboard', Tags: 'bell' } });
+      const r = await fetch(`https://ntfy.sh/${encodeURIComponent(a.topic)}`, {
+        method: 'POST',
+        body: 'Alerts from your budget will look like this.',
+        headers: { Title: 'Test from your dashboard', Tags: 'bell' },
+      });
       onToast(r.ok ? { text: 'Test sent. Check your phone.' } : { text: `ntfy said ${r.status}`, error: true });
     } catch (e) {
       onToast({ text: `Couldn’t reach ntfy: ${e.message || e}`, error: true });
@@ -1588,7 +1735,9 @@ function AlertsCard({ data, upd, onToast, status }) {
   return (
     <section className="card alerts">
       <h2 className="card-title">Phone alerts</h2>
-      <p className="muted small">A daily job (GitHub Actions, about 8 am) checks the budget and sends these through ntfy. Your topic name is the only thing protecting them, so it’s long and random.</p>
+      <p className="muted small">
+        A daily job (GitHub Actions, about 8 am) checks the budget and sends these through ntfy. Your topic name is the only thing protecting them, so it’s long and random.
+      </p>
       {a.topic ? (
         <>
           <div className="topic">
@@ -1631,7 +1780,8 @@ function AlertsCard({ data, upd, onToast, status }) {
               </li>
               <li>In the Firebase console for this project: Project settings → Service accounts → Generate new private key. It downloads a JSON file.</li>
               <li>
-                In the GitHub repo: Settings → Secrets and variables → Actions → New repository secret. Name it <code>FIREBASE_SERVICE_ACCOUNT</code> and paste the whole file. Then delete the downloaded file.
+                In the GitHub repo: Settings → Secrets and variables → Actions → New repository secret. Name it <code>FIREBASE_SERVICE_ACCOUNT</code> and paste the whole file. Then delete the
+                downloaded file.
               </li>
               <li>Actions → Budget alerts → Run workflow, to try it once. After that it runs every morning on its own.</li>
             </ol>
@@ -1823,7 +1973,8 @@ export function ImportSheet({ data, upd, onToast, onClose, onDone }) {
       {!plan ? (
         <>
           <p className="small">
-            In Wallet: Apple Card → Card Balance → pick a monthly statement → Export Transactions → CSV. Then choose the file here. It’s read in this browser; expenses you already logged, card payments and your bills are skipped.
+            In Wallet: Apple Card → Card Balance → pick a monthly statement → Export Transactions → CSV. Then choose the file here. It’s read in this browser; expenses you already logged, card
+            payments and your bills are skipped.
           </p>
           <input ref={file} type="file" accept=".csv,text/csv" onChange={(e) => e.target.files[0] && read(e.target.files[0])} aria-label="Statement CSV" />
           {err ? <p className="small c-red">{err}</p> : null}
@@ -1861,13 +2012,12 @@ export function ImportSheet({ data, upd, onToast, onClose, onDone }) {
           )}
           {changedBills.length ? (
             <label className="check-row small">
-              <input type="checkbox" checked={overrides} onChange={(e) => setOverrides(e.target.checked)} /> Save what {changedBills.length === 1 ? 'this bill' : 'these bills'} actually charged ({changedBills.map((b) => `${b.bill.name} ${fmt(b.override)}`).join(', ')})
+              <input type="checkbox" checked={overrides} onChange={(e) => setOverrides(e.target.checked)} /> Save what {changedBills.length === 1 ? 'this bill' : 'these bills'} actually charged (
+              {changedBills.map((b) => `${b.bill.name} ${fmt(b.override)}`).join(', ')})
             </label>
           ) : null}
           <details className="imp-more">
-            <summary className="small">
-              Skipped rows ({dups.length + bills.length + skips.length})
-            </summary>
+            <summary className="small">Skipped rows ({dups.length + bills.length + skips.length})</summary>
             <ul className="list small">
               {[...dups, ...bills, ...skips].map((it) => (
                 <li key={it.ext} className="row-between">

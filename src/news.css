@@ -232,3 +232,22 @@
 .theme-glass .st-btn:hover { background: rgba(var(--glass), 0.5); }
 .theme-glass.dark .st-btn:hover { background: rgba(255, 255, 255, 0.08); }
 .theme-glass .since-line::before, .theme-glass .since-line::after { opacity: 0.55; }
+
+/* ---- wide screens: the lead with its four tiles in a 2×2 block beside it, then (wider still) all in one row; the
+   list in as many columns as fit ---- */
+@media (min-width: 1800px) {
+  .news2 { max-width: none; }
+  .news-front { grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr)); }
+  .st-lead { grid-column: 1; grid-row: 1 / span 2; }
+  .st-tile { grid-column: auto; flex-direction: column; min-height: 0; }
+  .st-tile .st-img { width: auto; aspect-ratio: 16 / 9; }
+  .st-tile .st-title { -webkit-line-clamp: 3; }
+  .st-tile.no-img .st-title { -webkit-line-clamp: 5; }
+  .news-list { columns: 6 440px; column-gap: 32px; }
+  .news-list > li { break-inside: avoid; }
+}
+@media (min-width: 2200px) {
+  .news-front { grid-template-columns: minmax(0, 1.8fr) repeat(4, minmax(0, 1fr)); }
+  .st-lead { grid-row: 1; }
+  .st-lead .st-img { aspect-ratio: 2 / 1; }
+}

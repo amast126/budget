@@ -30,6 +30,7 @@ import { BirthdaysCard, BirthdaySheet } from './birthdays.jsx';
 import { PortfolioCard } from './portfolio.jsx';
 import { NewsPage } from './news.jsx';
 import { BudgetPage } from './budget.jsx';
+import { startWideLayout } from './wide.js';
 import { MerchantInput, RecentChips, useMerchants, AddSheet, parseAddLink } from './budget-add.jsx';
 import budgetCss from './budget.css';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
@@ -731,6 +732,9 @@ function App() {
 
   useEffect(() => backend.onAuth((u) => setUser(u || null)), []);
   const allowed = user && backend.isAllowed(user);
+  // wide and ultrawide screens: as many columns as fit, on every tab
+  const mainRef = useRef(null);
+  useEffect(() => (allowed && mainRef.current ? startWideLayout(mainRef.current) : undefined), [allowed]);
   const look = useTheme();
   const glass = look.theme === 'glass';
   // The forecast feeds the sky behind every page (glass) and Home's weather; nothing is fetched before sign-in.
@@ -1225,7 +1229,7 @@ function App() {
           <span>Settings</span>
         </button>
       </SideNav>
-      <main className="main">
+      <main className="main" ref={mainRef}>
         {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} guitar={guitar} mutateGuitar={mutateGuitar} /> : null}
         {route === 'cooking' ? (
           <CookingPage data={cooking} recipes={recipes} mutate={mutateCooking} error={cookingError} onFinishShop={() => setShopping(true)} onLogRecipe={logRecipe} sourdough={sourdough} mutateSourdough={mutateSourdough} />
