@@ -46,7 +46,7 @@ export async function recipeboxUnit(check) {
   const sr = L('1 TBSP Sriracha');
   const amt = (i, s) => B.fmtAmount(B.amountFor(i, s, 2));
   check(amt(rice, 2) === '¾ cup' && amt(rice, 4) === '1½ cups' && amt(rice, 1) === '6 tbsp' && amt(rice, 3) === '1 cup + 2 tbsp' && amt(rice, 8) === '3 cups', `recipe box: rice scales (${[1, 2, 3, 4, 8].map((s) => amt(rice, s)).join(', ')})`);
-  check(amt(sr, 1) === '1½ tsp' && amt(sr, 6) === '3 tbsp' && amt(sr, 8) === '¼ cup', `recipe box: spoons tidy up as they scale (${[1, 6, 8].map((s) => amt(sr, s)).join(', ')})`);
+  check(amt(sr, 1) === '1½ tsp' && amt(sr, 6) === '3 tbsp' && amt(sr, 8) === '¼ cup' && amt(L('1½ tbsp sour cream'), 3) === '2¼ tbsp' && amt(L('8 tbsp crema'), 2.5) === '10 tbsp', `recipe box: spoons tidy up as they scale (${[1, 6, 8].map((s) => amt(sr, s)).join(', ')})`);
   const beef = L('10 oz ground beef');
   const shallot = L('1 unit Shallot');
   check(amt(beef, 3) === '15 oz' && amt(beef, 8) === '2½ lb' && amt(shallot, 1) === '½' && amt(shallot, 5) === '2½', 'recipe box: ounces become pounds past 2 lb; counts go by halves');
