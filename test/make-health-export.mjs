@@ -3,7 +3,9 @@
 //   steps: 5,700 a day (Watch and iPhone overlap for 13 hours; the iPhone alone adds 500 at 9 pm)
 //   sleep: 7h 15m a night for the last 60 nights (core 5h 15m, deep 1h, REM 1h), bedtime 11:15 pm, up 6:30 am
 //   rings: Move closed every other day, Exercise always, Stand never
-//   2 workouts (a 3.1 mi run with a route 10 days ago, a walk yesterday), 1 ECG, an audiogram, 3 weigh-ins in 2020
+//   3 workouts (a 3.1 mi run with a route 10 days ago, tennis 3 days ago, a walk yesterday), 1 ECG, an audiogram,
+//   3 weigh-ins in 2020
+//   heart rate every 30 s during the run (10 min each at 122, 152 and 172 bpm) and the tennis (45 min at 132, 30 at 158)
 import zlib from 'node:zlib';
 import fs from 'node:fs';
 
@@ -78,6 +80,11 @@ function xml() {
   out.push(`  <WorkoutRoute sourceName="${W}" sourceVersion="1" creationDate="${at(dayN(10), 18, 30)}" startDate="${at(dayN(10), 18, 0)}" endDate="${at(dayN(10), 18, 30)}">`, '   <FileReference path="/workout-routes/route_test_run.gpx"/>', '  </WorkoutRoute>');
   out.push(`  <Record type="${Q}HeartRate" sourceName="${W}" unit="count/min" startDate="${at(dayN(10), 18, 5)}" endDate="${at(dayN(10), 18, 5)}" value="150"/>`); // repeat of a top-level record: must be ignored
   out.push(' </Workout>');
+  // heart rate every 30 seconds through the run and the tennis
+  for (let i = 0; i < 60; i++) rec(`${Q}HeartRate`, W, 'count/min', at(dayN(10), 18, Math.floor(i / 2), (i % 2) * 30), at(dayN(10), 18, Math.floor(i / 2), (i % 2) * 30), i < 20 ? 122 : i < 40 ? 152 : 172);
+  for (let i = 0; i < 150; i++) rec(`${Q}HeartRate`, W, 'count/min', at(dayN(3), 17, Math.floor(i / 2), (i % 2) * 30), at(dayN(3), 17, Math.floor(i / 2), (i % 2) * 30), i < 90 ? 132 : 158);
+  out.push(` <Workout workoutActivityType="HKWorkoutActivityTypeTennis" duration="75" durationUnit="min" totalEnergyBurned="520" totalEnergyBurnedUnit="Cal" sourceName="${W}" sourceVersion="1" creationDate="${at(dayN(3), 18, 15)}" startDate="${at(dayN(3), 17, 0)}" endDate="${at(dayN(3), 18, 15)}">`);
+  out.push(`  <WorkoutStatistics type="HKQuantityTypeIdentifierHeartRate" startDate="${at(dayN(3), 17, 0)}" endDate="${at(dayN(3), 18, 15)}" average="142" minimum="96" maximum="171" unit="count/min"/>`, ' </Workout>');
   out.push(` <Workout workoutActivityType="HKWorkoutActivityTypeWalking" duration="20" durationUnit="min" totalDistance="0.9" totalDistanceUnit="mi" totalEnergyBurned="80" totalEnergyBurnedUnit="Cal" sourceName="${W}" sourceVersion="1" creationDate="${at(dayN(1), 7, 20)}" startDate="${at(dayN(1), 7, 0)}" endDate="${at(dayN(1), 7, 20)}">`, ' </Workout>');
   for (let n = 400; n >= 1; n--) {
     const d = isoOf(dayN(n));

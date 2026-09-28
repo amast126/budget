@@ -16,6 +16,7 @@ import * as NJ from '../scripts/fetch-news.mjs';
 import { budgetUnit } from './budget-unit.mjs';
 import { makeRecipes } from './make-recipes-fixture.mjs';
 import { recipesUnit } from './recipes-unit.mjs';
+import { healthUnit } from './health-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -162,7 +163,7 @@ async function mockWeather(context) {
     let foods;
     if (q.includes('banana'))
       foods = [
-        { fdcId: 2709224, description: 'Banana, raw', dataType: 'Survey (FNDDS)', foodMeasures: [{ disseminationText: '1 banana', gramWeight: 126 }, { disseminationText: '1 cup', gramWeight: 150 }], foodNutrients: [{ nutrientId: 1008, value: 97 }, { nutrientId: 1003, value: 0.74 }, { nutrientId: 1005, value: 22.71 }, { nutrientId: 1004, value: 0.28 }] },
+        { fdcId: 2709224, description: 'Banana, raw', dataType: 'Survey (FNDDS)', foodMeasures: [{ disseminationText: '1 banana', gramWeight: 126 }, { disseminationText: '1 cup', gramWeight: 150 }], foodNutrients: [{ nutrientId: 1008, value: 97 }, { nutrientId: 1003, value: 0.74 }, { nutrientId: 1005, value: 22.71 }, { nutrientId: 1004, value: 0.28 }, { nutrientId: 1079, value: 2.6 }, { nutrientId: 2000, value: 12.23 }, { nutrientId: 1093, value: 1 }] },
         { fdcId: 999, description: 'BANANA CHIPS', dataType: 'Branded', brandOwner: 'SNACK CO', servingSize: 30, servingSizeUnit: 'g', householdServingFullText: '1 oz', foodNutrients: [{ nutrientId: 1008, value: 520 }, { nutrientId: 1003, value: 2 }, { nutrientId: 1005, value: 58 }, { nutrientId: 1004, value: 33 }] },
       ];
     else foods = [];
@@ -171,7 +172,7 @@ async function mockWeather(context) {
   await context.route('https://world.openfoodfacts.org/**', (route) => {
     const url = route.request().url();
     if (url.includes('0818290019592'))
-      return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ code: '0818290019592', product: { product_name: 'Greek yogurt, coffee', brands: 'Chobani', serving_size: '150 g', serving_quantity: 150, nutriments: { 'energy-kcal_100g': 93, proteins_100g: 7.3, carbohydrates_100g: 10.7, fat_100g: 1.3 } } }) });
+      return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ code: '0818290019592', product: { product_name: 'Greek yogurt, coffee', brands: 'Chobani', serving_size: '150 g', serving_quantity: 150, nutriments: { 'energy-kcal_100g': 93, proteins_100g: 7.3, carbohydrates_100g: 10.7, fat_100g: 1.3, fiber_100g: 0, sugars_100g: 8.7, sodium_100g: 0.033 } } }) });
     route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ status: 0 }) });
   });
   // News photos and outlet logos (no network in tests)
@@ -199,6 +200,7 @@ const check = (cond, msg) => {
 // the Budget tab's rules and the alerts job, on made-up data
 await budgetUnit(check);
 await recipesUnit(check);
+await healthUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -1284,6 +1286,25 @@ check((await dayFood()).length === 4, 'undo restores it');
 htext = (await page.innerText('.today-health')).replace(/\n/g, ' ');
 const eaten = 244 + 122 + 160 + 140;
 check(new RegExp(`${eaten.toLocaleString()} eaten`).test(htext), `today total ${eaten}: ${htext}`);
+// fiber, sugar and sodium from the foods that list them (the quick add doesn't)
+const ntext = (await page.innerText('.nutrients')).replace(/\n/g, ' ');
+check(/from 3 of 4 foods/.test(ntext) && /Fiber\s*10\s*\/\s*35g goal/.test(ntext) && /Sodium\s*54\s*\/\s*2,300mg limit/.test(ntext) && /Protein by meal/i.test(ntext), `nutrients card: ${ntext.slice(0, 160)}`);
+F = await dayFood();
+{
+  const yog = F.find((e) => e.brand === 'Chobani');
+  check(F[0].fib === 6.6 && F[0].na === 3 && yog.sug === 13.1 && yog.na === 50, `nutrients stored on entries (${F[0].fib} g fiber, ${yog.na} mg sodium)`);
+}
+// habits: two glasses of water, vitamins ticked
+await page.click('button[aria-label="One more glass of Water"]');
+await page.waitForTimeout(150);
+await page.click('button[aria-label="One more glass of Water"]');
+await page.click('.hb-check:has-text("Vitamins")');
+await page.waitForTimeout(250);
+{
+  const hb = (await yDoc()).days[localToday].hb;
+  check(hb && hb.water === 2 && hb.vitamins === 1, `habits saved (${JSON.stringify(hb)})`);
+}
+check(/2 of 8 glasses/.test(await page.innerText('.habits')), 'water shows 2 of 8 glasses');
 // steps + workout
 await page.fill('input[aria-label="Steps"]', '9,500');
 await page.press('input[aria-label="Steps"]', 'Enter');
@@ -1313,6 +1334,11 @@ await page.mouse.move(wbox.x, wbox.y);
 await page.waitForTimeout(100);
 check(/weigh-in/.test(await page.innerText('.chart-tip')) && (await page.$$('.chart .crosshair')).length === 1, 'weight chart hover shows crosshair and tooltip');
 check((await page.$$('.chart .wbar')).length >= 1, 'week chart draws today’s calories');
+// weight goal: a trend rate and when you'd get there
+await page.fill('#goal-weight', '175');
+await page.click('.w-goal button:has-text("Save")');
+await page.waitForTimeout(250);
+check((await hDoc()).goalWeight === 175 && /Trend\s*[\d.]+ lb/.test(await page.innerText('.w-goal')), `weight goal saved: ${(await page.innerText('.w-goal')).replace(/\n/g, ' ').slice(0, 140)}`);
 await page.screenshot({ path: path.join(OUT, 'health.png'), fullPage: true });
 // copy yesterday's meal
 await page.evaluate(([y]) => {
@@ -1331,6 +1357,21 @@ if (copyBtn) {
   await page.waitForTimeout(200);
   check((await dayFood()).some((e) => e.name === 'Chipotle-style steak'), 'copy yesterday’s dinner');
 }
+ // save today's breakfast as a meal, then add it to snacks in one tap
+await page.click('.meal:has-text("Breakfast") .save-meal-btn');
+await page.fill('.save-meal input', 'Test breakfast combo');
+await page.click('.save-meal button[type=submit]');
+await page.waitForTimeout(250);
+check(((await hDoc()).meals || []).length === 1 && (await hDoc()).meals[0].items.length === 1 && !('id' in (await hDoc()).meals[0].items[0]), 'breakfast saved as a meal');
+const foodBefore = (await dayFood()).length;
+await page.click('.meal:has-text("Snacks") button:has-text("+ Add")');
+await page.waitForSelector('.add-food');
+await page.click('.add-food .seg-btn:has-text("Meals")');
+check(/Test breakfast combo/.test(await page.innerText('.meals-tab')) && /This week’s meal prep/i.test(await page.innerText('.meals-tab')), 'Meals tab lists saved meals and meal prep');
+await page.click('.meals-tab .sm-row .rc');
+await page.waitForTimeout(250);
+F = await dayFood();
+check(F.length === foodBefore + 1 && F[F.length - 1].meal === 'snack' && F[F.length - 1].k === 244, 'saved meal logged in one tap');
 // Home card
 await go('Home');
 await page.waitForSelector('.health-home');
@@ -1363,7 +1404,7 @@ await page.click('.sheet button:has-text("Close")');
 // ---------------------------------------------------------------- Apple Health import
 await go('Health');
 await page.waitForSelector('.health-tabs');
-check((await page.$$eval('.health-tabs .seg-btn', (b) => b.map((x) => x.innerText))).join(',') === 'Today,Activity,Heart,Sleep,Body,Hearing', 'Health has Today, Activity, Heart, Sleep, Body, Hearing');
+check((await page.$$eval('.health-tabs .seg-btn', (b) => b.map((x) => x.innerText))).join(',') === 'Today,Activity,Training,Heart,Sleep,Body,Hearing,Checkups,Report', 'Health has Today, Activity, Training, Heart, Sleep, Body, Hearing, Checkups, Report');
 await page.click('.health-tabs .seg-btn:has-text("Sleep")');
 check(/Import your Apple Health export/.test(await page.innerText('.health')), 'Sleep asks for an import before there is data');
 await page.click('.health button:has-text("Go to the importer")');
@@ -1372,12 +1413,12 @@ check(/Export All Health Data/.test(await page.innerText('.hk-import')), 'import
 await page.setInputFiles('.hk-import input[type=file]', HEALTH_ZIP);
 await page.waitForSelector('.hk-import .ok-note', { timeout: 20000 });
 const okNote = (await page.innerText('.hk-import .ok-note')).replace(/\n/g, ' ');
-check(/401 days/.test(okNote) && /60 nights/.test(okNote) && /2 workouts/.test(okNote) && /1 ECG/.test(okNote) && /3 weigh-ins added/.test(okNote), `import summary: ${okNote}`);
+check(/401 days/.test(okNote) && /60 nights/.test(okNote) && /3 workouts/.test(okNote) && /1 ECG/.test(okNote) && /3 weigh-ins added/.test(okNote), `import summary: ${okNote}`);
 const HK = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:health-hk')));
 const HKY = await page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-hk-' + y)), Y);
 const yIso = await page.evaluate(() => { const d = new Date(); d.setDate(d.getDate() - 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; });
 const HKYy = yIso.slice(0, 4) === Y ? HKY : await page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-hk-' + y)), yIso.slice(0, 4));
-check(HK.importedAt && HK.workouts.length === 2 && HK.ecg.length === 1 && HK.vo2.length === 4 && Object.keys(HK.months).length >= 13, 'summary document saved (workouts, ECG, VO2 max, months)');
+check(HK.importedAt && HK.workouts.length === 3 && HK.ecg.length === 1 && HK.vo2.length === 4 && Object.keys(HK.months).length >= 13, 'summary document saved (workouts, ECG, VO2 max, months)');
 check(HKYy.days[yIso].st === 5700 && HKYy.days[yIso].sl.a === 435 && HKYy.days[yIso].sh === 11, `yesterday: 5,700 steps (no double count), 7h 15m asleep (${JSON.stringify(HKYy.days[yIso]).slice(0, 80)}…)`);
 check((await page.evaluate(() => JSON.parse(localStorage.getItem('mod:health-hk-ecg')))).traces[HK.ecg[0].id].length === 3840, 'ECG trace saved at 128 samples a second');
 check(Object.keys((await page.evaluate(() => JSON.parse(localStorage.getItem('mod:health-hk-routes')))).routes).length === 1, 'workout route saved');
@@ -1407,6 +1448,10 @@ await page.click('.wk-list .rc:has-text("Running")');
 await page.waitForSelector('.route-map', { timeout: 5000 });
 const ws = (await page.innerText('.sheet')).replace(/\n/g, ' ');
 check(/3\.1 mi/.test(ws) && /9:41 \/mi|9:4\d \/mi/.test(ws) && /151 bpm/.test(ws), `workout sheet: ${ws.slice(0, 120)}`);
+{
+  const zt = (await page.innerText('.wk-zones')).replace(/\n/g, ' ');
+  check(/Z2 Aerobic.*10 min.*Z4 Threshold.*10 min.*Z5 Max.*10 min/.test(zt) && /max heart rate of 183/.test(zt) && /Training load 110/.test(zt), `run's heart-rate zones: ${zt.slice(0, 200)}`);
+}
 await page.screenshot({ path: path.join(OUT, 'health-workout.png') });
 await page.click('.sheet .x');
 // range switch + monthly bars
@@ -1459,6 +1504,130 @@ check(/Slept 7h 15m/.test(hh2), `Home health card shows last night: ${hh2}`);
 await go('Health');
 await page.waitForSelector('.health-tabs');
 check(/on/.test(await page.getAttribute('.health-tabs .seg-btn:has-text("Hearing")', 'class')), 'Health reopens on the last view');
+await page.click('.health-tabs .seg-btn:has-text("Today")');
+await page.waitForTimeout(200);
+// readiness: last night's sleep and heart against the last 30 days, and yesterday's load
+{
+  const rt = (await page.innerText('.readiness')).replace(/\n/g, ' ');
+  check(/Readiness/.test(rt) && /Normal|Ready|Take it easy/.test(rt) && /Slept 7h 15m, about your usual/.test(rt), `readiness card: ${rt.slice(0, 160)}`);
+}
+// sleep patterns: a perfectly regular made-up schedule, 45 minutes short of 8 hours a night
+await page.click('.health-tabs .seg-btn:has-text("Sleep")');
+await page.waitForTimeout(250);
+{
+  const ct = (await page.innerText('.consistency')).replace(/\n/g, ' ');
+  check(/100/.test(ct) && /Very regular/.test(ct) && /5h 15m short/.test(ct) && /lights out by 9:15 pm/.test(ct), `sleep schedule: ${ct.slice(0, 220)}`);
+  check(/What affects your sleep/.test(await page.innerText('.factors')), 'sleep factors card');
+}
+// training: tennis from the Watch plus the one logged by hand, notes, strength sets, a routine, load and zones
+await page.click('.health-tabs .seg-btn:has-text("Training")');
+await page.waitForSelector('.tennis-card');
+check((await page.$$('.tn-list .rc')).length === 2, 'tennis: the Watch session and the logged one');
+await page.click('.tn-list .rc >> nth=0');
+await page.click('.sheet .seg-btn:has-text("Doubles")');
+await page.fill('.sheet input[aria-label="Played with"]', 'Test partner');
+await page.fill('.sheet input[aria-label="Score"]', '6-4 6-2');
+await page.click('.sheet .seg-btn:has-text("Won")');
+await page.click('.sheet button:has-text("Save")');
+await page.waitForTimeout(250);
+{
+  const tn = Object.values((await hDoc()).tennis || {});
+  check(tn.length === 1 && tn[0].kind === 'doubles' && tn[0].partner === 'Test partner' && tn[0].result === 'W', 'tennis note saved');
+  check(/Won/.test(await page.innerText('.tn-list')) && /with Test partner/.test(await page.innerText('.tn-list')), 'tennis list shows the result and partner');
+}
+await page.selectOption('.strength select[aria-label="Exercise"]', 'bench');
+await page.click('.strength .add-row button:has-text("Add")');
+await page.waitForSelector('.lift');
+await page.fill('input[aria-label="Bench press reps"]', '8');
+await page.fill('input[aria-label="Bench press weight"]', '135');
+await page.click('.lift button:has-text("Add set")');
+await page.waitForTimeout(200);
+await page.click('.lift button:has-text("Add set")');
+await page.waitForTimeout(250);
+{
+  const lifts = (await yDoc()).days[localToday].lifts;
+  check(lifts.length === 1 && lifts[0].ex === 'bench' && lifts[0].sets.length === 2 && lifts[0].sets[1].r === 8 && lifts[0].sets[1].lb === 135, `strength sets saved (${JSON.stringify(lifts)})`);
+}
+await page.click('.strength button:has-text("Save as a routine")');
+await page.fill('.strength input[aria-label="Routine name"]', 'Test push');
+await page.click('.strength .add-row button:has-text("Save")');
+await page.waitForTimeout(250);
+check(((await hDoc()).strength.routines || [])[0].name === 'Test push' && /Start Test push/.test(await page.innerText('.strength')), 'routine saved and ready to start');
+{
+  const lt = (await page.innerText('.load-card')).replace(/\n/g, ' ');
+  check(/this week/.test(lt) && /4-week average/.test(lt) && (await page.$$('.load-card .zone-list li')).length === 5 && /Z3 Tempo.*45 min.*Z4 Threshold.*30 min/.test(lt), `training load and this week's zones: ${lt.slice(0, 260)}`);
+}
+await page.screenshot({ path: path.join(OUT, 'health-training.png'), fullPage: true });
+// checkups: a dentist visit 7 months ago is overdue (and shows on Home); a lab result flagged high
+await page.click('.health-tabs .seg-btn:has-text("Checkups")');
+await page.waitForSelector('.checkups');
+await page.click('.cu-row .rc:has-text("Dental cleaning")');
+const sevenAgo = await page.evaluate(() => { const d = new Date(); d.setMonth(d.getMonth() - 7); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; });
+await page.fill('input[aria-label="Dental cleaning last visit"]', sevenAgo);
+await page.waitForTimeout(250);
+check(((await hDoc()).checkups || []).find((c) => c.id === 'dentist').last === sevenAgo && /Overdue/.test(await page.innerText('.checkups')), 'dental cleaning overdue');
+await page.selectOption('select[aria-label="Test"]', 'ldl');
+await page.fill('input[aria-label="Result value"]', '130');
+await page.click('.lab-form button:has-text("Add")');
+await page.waitForTimeout(250);
+check(((await hDoc()).labs || []).length === 1 && /LDL cholesterol/.test(await page.innerText('.labs')) && /High/.test(await page.innerText('.labs')), 'lab result saved and flagged high');
+await page.screenshot({ path: path.join(OUT, 'health-checkups.png'), fullPage: true });
+// the monthly report
+await page.click('.health-tabs .seg-btn:has-text("Report")');
+await page.waitForSelector('.report-card');
+{
+  const rp = (await page.innerText('.report-card')).replace(/\n/g, ' ');
+  check(/\b(January|February|March|April|May|June|July|August|September|October|November|December) \d{4}/.test(rp) && /Steps a day/.test(rp) && /Sleep a night/.test(rp), `monthly report: ${rp.slice(0, 160)}`);
+}
+await page.screenshot({ path: path.join(OUT, 'health-report.png'), fullPage: true });
+// Home: readiness on the Body ring and the Health card; the overdue checkup
+await go('Home');
+await page.waitForSelector('.health-home');
+check(/Normal|Ready|Take it easy/.test(await page.innerText('.rings-card .lr-tag')), 'Body ring carries readiness');
+check((await page.$('.health-home .home-ready')) && /Dental cleaning overdue/.test(await page.innerText('.health-home')), 'Home health card: readiness and the overdue checkup');
+// the daily sync link from an iPhone Shortcut: without the key it asks first; with it, it saves right away
+const agoIso = (n) => page.evaluate((n) => { const d = new Date(); d.setDate(d.getDate() - n); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }, n);
+const d2 = await agoIso(2);
+await page.evaluate((d) => (location.hash = `#/health-sync?date=${d}&steps=12,345&active=610&sleep=6:30&hrv=41&weight=181.2&weighed=${d}&water=48`), d2);
+await page.waitForSelector('.sync-page h2');
+check(/Save these numbers\?/.test(await page.innerText('.sync-page')) && /doesn’t carry your sync key/.test(await page.innerText('.sync-page')), 'a link without the key asks before saving');
+await page.click('.sync-page button:has-text("Save")');
+await page.waitForSelector('.sync-page h2:text("Saved to Health")');
+{
+  const doc = await page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-hk-' + y)), d2.slice(0, 4));
+  const tdoc = await page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-hk-' + y)), localToday.slice(0, 4));
+  check(doc.days[d2].st === 12345 && doc.days[d2].ae === 610 && doc.days[d2].wat === 48 && doc.days[d2].sy === 1, `synced day saved (${JSON.stringify(doc.days[d2]).slice(0, 120)})`);
+  check(tdoc.days[localToday].hrv === 41 && tdoc.days[localToday].sl.a === 435, 'this morning’s HRV saved; the imported night with stages kept');
+  const hd = await hDoc();
+  check(hd.weights.some((w) => w.date === d2 && w.lb === 181.2 && w.src === 'sync') && hd.sync.count === 1, 'synced weigh-in added and the sync counted');
+}
+await go('Health');
+await page.waitForSelector('.health-tabs');
+await page.click('.health-tabs .seg-btn:has-text("Today")');
+await page.click('.sync-card .card-toggle');
+await page.click('.sync-card button:has-text("Make my link")');
+await page.waitForSelector('.sync-link');
+const syncKey = (await hDoc()).sync.key;
+check(syncKey && syncKey.length === 20 && (await page.innerText('.sync-link')).includes(`#/health-sync?k=${syncKey}&date=`), 'sync link made with a private key');
+const d3 = await agoIso(3);
+await page.evaluate(([d, k]) => (location.hash = `#/health-sync?k=${k}&date=${d}&on=${d}&steps=7777`), [d3, syncKey]);
+await page.waitForSelector('.sync-page h2:text("Saved to Health")');
+{
+  const doc = await page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-hk-' + y)), d3.slice(0, 4));
+  check(doc.days[d3].st === 7777 && (await hDoc()).sync.count === 2, 'a link with the key saves right away');
+}
+await page.screenshot({ path: path.join(OUT, 'health-sync.png') });
+// the same link again (a reload, or Back): nothing saved twice
+await page.reload();
+await page.waitForSelector('.sync-page h2:text("Already saved")');
+check((await hDoc()).sync.count === 2, 'reopening a saved link doesn’t save it again');
+// an old link (days later, no "on" date) asks first, since last night's numbers would land on today
+const d5 = await agoIso(5);
+await page.evaluate(([d, k]) => (location.hash = `#/health-sync?k=${k}&date=${d}&steps=4321&sleep=7:00`), [d5, syncKey]);
+await page.waitForSelector('.sync-page h2:text("Save these numbers?")');
+check(/This link is from/.test(await page.innerText('.sync-page')) && (await hDoc()).sync.count === 2, 'an old link asks before saving');
+await go('Health');
+await page.waitForSelector('.health-tabs');
 await page.click('.health-tabs .seg-btn:has-text("Today")');
 
 // ---------------------------------------------------------------- the news job and News logic (no browser)
