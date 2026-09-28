@@ -810,7 +810,8 @@ export function applyImport(box, items, stamps = {}) {
     const photo = stamps[r.id] || (cur && cur.photo) || undefined;
     if (cur && cur.photo && stamps[r.id] && cur.photo !== stamps[r.id]) replaced.push([r.id, cur.photo]);
     if (cur) {
-      const keep = { fav: cur.fav, made: cur.made, lastMade: cur.lastMade, added: cur.added, notes: r.notes || cur.notes };
+      // your own marks win; the file fills in what the box doesn't have yet (e.g. times made from past deliveries)
+      const keep = { fav: cur.fav, made: cur.made || r.made, lastMade: cur.lastMade || r.lastMade, added: cur.added, notes: r.notes || cur.notes };
       const i = box.recipes.indexOf(cur);
       box.recipes[i] = normalizeRecipe({ ...r, ...keep, photo });
     } else box.recipes.push(normalizeRecipe({ ...r, photo, added: todayISO() }));
