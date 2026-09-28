@@ -274,7 +274,7 @@ export function fmtNum(x, kind) {
   return (w ? String(w) : '') + g;
 }
 const nearest = (x, step) => Math.round(x / step) * step;
-// Tidy a scaled volume: 3 tsp → 1 tbsp, 4 tbsp → ¼ cup, ½ tbsp → 1½ tsp.
+// Tidy a scaled volume: 3 tsp → 1 tbsp, 6¾ tsp → 2¼ tbsp, 4 tbsp → ¼ cup, ½ tbsp → 1½ tsp.
 function tidyVolume(tsp) {
   const cups = tsp / 48;
   if (cups >= 0.25 - 1e-9) {
@@ -283,14 +283,14 @@ function tidyVolume(tsp) {
     const opts = [0, 1 / 4, 1 / 3, 1 / 2, 2 / 3, 3 / 4, 1];
     let b = 0;
     for (const o of opts) if (Math.abs(f - o) < Math.abs(f - b)) b = o;
-    if (Math.abs(w + b - cups) / cups < 0.07) return { unit: 'cup', per: 48 };
+    if (Math.abs(w + b - cups) / cups < 0.04) return { unit: 'cup', per: 48 };
     // 1⅛ cups → 1 cup + 2 tbsp
     const under = w + [0, 1 / 4, 1 / 3, 1 / 2, 2 / 3, 3 / 4].filter((o) => o <= f + 1e-9).pop();
     const restTbsp = ((cups - under) * 48) / 3;
     if (under >= 1 && restTbsp >= 0.5 && Math.abs(nearest(restTbsp, 0.5) - restTbsp) < 0.13) return { unit: 'cup', per: 48, whole: under, plus: nearest(restTbsp, 0.5) };
   }
-  const tbsp = tsp / 3;
-  if (tbsp >= 1 - 1e-9 && Math.abs(nearest(tbsp, 0.5) - tbsp) / tbsp < 0.1) return { unit: 'tbsp', per: 3 };
+  // a tablespoon or more reads in tablespoons (2¼ tbsp, not 6¾ tsp)
+  if (tsp / 3 >= 1 - 1e-9) return { unit: 'tbsp', per: 3 };
   return { unit: 'tsp', per: 1 };
 }
 const TSP = { tsp: 1, tbsp: 3, cup: 48 };
