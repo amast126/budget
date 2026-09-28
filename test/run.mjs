@@ -100,6 +100,11 @@ const init = (exportJson) => {
       return v ? JSON.parse(v) : null;
     },
     async setModule(user, name, data) {
+      // a test can make photo saves fail after a number of them (the connection dropping partway)
+      if (window.__photoFail != null && /^recipebox-(card|photo)-/.test(name)) {
+        if (window.__photoFail <= 0) throw new Error('Test: the connection dropped.');
+        window.__photoFail--;
+      }
       localStorage.setItem('mod:' + name, JSON.stringify({ ...data, updatedAt: Date.now() }));
     },
     async deleteModule(user, name) {
@@ -2749,6 +2754,37 @@ for (const v of ['Activity', 'Heart', 'Sleep', 'Body', 'Hearing']) {
   await dp.click(`.health-tabs .seg-btn:has-text("${v}")`);
   await dp.waitForTimeout(250);
   await dp.screenshot({ path: path.join(OUT, `desktop-health-${v.toLowerCase()}.png`), fullPage: true });
+}
+
+// A big import that stops partway keeps what it saved, and picks up the rest on the next try.
+{
+  const ip = await desk.newPage();
+  await ip.goto(base + '#/cooking?recipes');
+  await ip.waitForSelector('.rb');
+  const many = Array.from({ length: 12 }, (_, i) => ({ id: `kit-bulk-${i + 1}`, title: `Sample Bulk Dish ${i + 1}`, servings: 2, ingredients: [{ item: 'Rice', amount: '½ cup', per: { 4: '1 cup' } }], steps: ['Cook it.'], photo: { card: dish, full: dish } }));
+  const bulkFile = path.join(OUT, 'recipes-bulk.json');
+  fs.writeFileSync(bulkFile, JSON.stringify({ recipes: many }));
+  const bulk = async () => JSON.parse((await ip.evaluate(() => localStorage.getItem('mod:recipebox'))) || '{"recipes":[]}').recipes.filter((r) => /^kit-bulk-/.test(r.id));
+  const photoDocs = () => ip.evaluate(() => Object.keys(localStorage).filter((k) => /^mod:recipebox-(card|photo)-kit-bulk-/.test(k)).length);
+  await ip.evaluate(() => (window.__photoFail = 20)); // 10 photos go through, the 11th doesn't
+  await ip.click('.rb button:has-text("Import")');
+  await ip.setInputFiles('.rim input[type=file]', bulkFile);
+  await ip.waitForSelector('.rim-list li');
+  await ip.click('.rim button:has-text("Import 12 recipes")');
+  await ip.waitForSelector('.rim .alert');
+  const msg = await ip.innerText('.rim .alert');
+  const got = await bulk();
+  check(/^Saved 8 of 12 recipes, then it stopped: Test: the connection dropped\. Tap Import to send the other 4 recipes\.$/.test(msg.trim()) && got.length === 8 && got.every((r) => r.photo) && (await photoDocs()) === 16 && !!(await ip.$('.rim button:has-text("Import 4 recipes")')), `a stalled import keeps the first ${got.length} (with photos), cleans up the rest, and offers the other 4: “${msg.trim()}”`);
+  await ip.evaluate(() => (window.__photoFail = null));
+  await ip.click('.rim button:has-text("Import 4 recipes")');
+  await ip.waitForSelector('.toast:has-text("Imported 4 recipes")');
+  const all = await bulk();
+  check(all.length === 12 && new Set(all.map((r) => r.id)).size === 12 && all.every((r) => r.photo) && (await photoDocs()) === 24, 'trying again sends just the other 4: all 12 in, each once, with one photo each');
+  await ip.click('.rb button:has-text("Import")');
+  await ip.setInputFiles('.rim input[type=file]', bulkFile);
+  await ip.waitForSelector('.rim-list li');
+  check(/12 recipes · 12 already in your box \(updated\)$/.test((await ip.innerText('.rim-sum')).trim()), `choosing the same file again resends no photos: ${(await ip.innerText('.rim-sum')).trim()}`);
+  await ip.close();
 }
 
 await browser.close();

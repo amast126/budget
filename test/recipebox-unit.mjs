@@ -75,6 +75,8 @@ export async function recipeboxUnit(check) {
   const counted = B.planImport(box, { recipes: [{ title: 'Sample Plain Toast', steps: ['Toast the bread.'], made: 4 }, { ...card(), made: 9 }] });
   B.applyImport(box, counted.items, {});
   check(!toast.made && box.recipes.find((r) => r.title === 'Sample Plain Toast').made === 4 && box.recipes.find((r) => r.title === 'Sample Firecracker Meatballs').made === 3, 'recipe box: an import fills in times made when the box has none, but keeps yours');
+  const resend = B.planImport(box, { recipes: [card(), { title: 'Sample Plain Toast', steps: ['Toast the bread.'], photo: card().photo }] });
+  check(resend.update === 2 && resend.photos === 1 && !resend.items[0].photo && !!resend.items[1].photo, 'recipe box: importing again doesn’t resend a photo the box already has (a recipe without one still gets it)');
   check(B.planImport(box, { hello: 1 }).error && B.planImport(box, []).error, 'recipe box: a file without recipes is refused');
 
   // ---- search
