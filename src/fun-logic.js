@@ -309,3 +309,117 @@ export function setGroup(d, group, state) {
     .filter((t) => t.group === group)
     .forEach((t) => setMcu(d, t.id, state));
 }
+
+// ---------------------------------------------------------------- the Doomsday hub
+// Facts as of late September 2026: Marvel's own page for the cast and videos, Wikipedia and ABC News for dates,
+// runtime and formats. Written in our own words; the trailers link out to Marvel's YouTube uploads.
+export const DOOM_SOURCES = [
+  ['Marvel.com: Avengers: Doomsday', 'https://www.marvel.com/movies/avengers-doomsday'],
+  ['Wikipedia: Avengers: Doomsday', 'https://en.wikipedia.org/wiki/Avengers:_Doomsday'],
+  ['ABC News: trailers, tickets and dates', 'https://abcnews.com/GMA/Culture/avengers-doomsday-trailer-release-date-marvel-movie/story?id=134860279'],
+];
+export const DOOM_FACTS = [
+  ['In theaters', 'Friday, December 18, 2026'],
+  ['Directed by', 'Anthony and Joe Russo'],
+  ['Written by', 'Michael Waldron, Stephen McFeely, Chris McKenna and Erik Sommers'],
+  ['Runtime', 'About 2 hr 45 min (reported)'],
+  ['Formats', 'Dolby Cinema, ScreenX, 4DX and D-Box. No IMAX in the US for about its first three weeks, which go to Dune: Part Three'],
+  ['Tickets', 'On sale since August 23 (early access at premium screens from July 20)'],
+  ['Up next', 'Avengers: Secret Wars, December 17, 2027, closing out the Multiverse Saga'],
+];
+export const DOOM_ENCORE = { until: '2026-10-22', text: 'Avengers: Endgame is back in theaters (“Endgame: Encore,” from September 25), with an exclusive look at Doomsday.' };
+// Marvel Entertainment's uploads, newest first. [YouTube id, title, date, note]
+export const DOOM_TRAILERS = [
+  ['X1aFkAkFASk', 'Special Look', '2026-08-14', 'Doctor Doom front and center; premiered at D23'],
+  ['irVNGjRFZGk', 'Official Trailer', '2026-07-20', 'First shown to theater owners at CinemaCon in April'],
+  ['399Ez7WHK5s', 'The Wakandans and the Fantastic Four Will Return', '2026-01-13', 'Teaser 4'],
+  ['kH1XlwHQv9o', 'The X-Men Will Return', '2026-01-06', 'Teaser 3'],
+  ['1clWprLC5Ak', 'Thor Will Return', '2025-12-30', 'Teaser 2'],
+  ['UiMg566PREA', 'Steve Rogers Will Return', '2025-12-23', 'Teaser 1, first shown in theaters before Avatar: Fire and Ash'],
+].map(([id, title, date, note]) => ({ id, title, date, note }));
+// The 30 names on Marvel's cast list, grouped by team. [actor, character]
+export const DOOM_CAST = [
+  ['doom', 'The villain', [['Robert Downey Jr.', 'Victor von Doom / Doctor Doom']]],
+  [
+    'avengers',
+    'Avengers and allies',
+    [
+      ['Chris Evans', 'Steve Rogers'],
+      ['Chris Hemsworth', 'Thor'],
+      ['Anthony Mackie', 'Sam Wilson / Captain America'],
+      ['Danny Ramirez', 'Joaquin Torres / Falcon'],
+      ['Paul Rudd', 'Scott Lang / Ant-Man'],
+      ['Kathryn Newton', 'Cassie Lang'],
+      ['Simu Liu', 'Shang-Chi'],
+      ['Tom Hiddleston', 'Loki'],
+    ],
+  ],
+  [
+    'ff',
+    'Fantastic Four',
+    [
+      ['Pedro Pascal', 'Reed Richards / Mister Fantastic'],
+      ['Vanessa Kirby', 'Sue Storm / Invisible Woman'],
+      ['Joseph Quinn', 'Johnny Storm / Human Torch'],
+      ['Ebon Moss-Bachrach', 'Ben Grimm / The Thing'],
+    ],
+  ],
+  [
+    'thunderbolts',
+    'Thunderbolts*',
+    [
+      ['Florence Pugh', 'Yelena Belova'],
+      ['Sebastian Stan', 'Bucky Barnes'],
+      ['David Harbour', 'Alexei Shostakov / Red Guardian'],
+      ['Wyatt Russell', 'John Walker / U.S. Agent'],
+      ['Hannah John-Kamen', 'Ava Starr / Ghost'],
+      ['Lewis Pullman', 'Bob Reynolds / Sentry'],
+    ],
+  ],
+  [
+    'wakanda',
+    'Wakanda and Talokan',
+    [
+      ['Letitia Wright', 'Shuri / Black Panther'],
+      ['Winston Duke', 'M’Baku'],
+      ['Tenoch Huerta Mejía', 'Namor'],
+      ['Mabel Cadena', 'Namora'],
+    ],
+  ],
+  [
+    'xmen',
+    'X-Men',
+    [
+      ['Patrick Stewart', 'Charles Xavier / Professor X'],
+      ['Ian McKellen', 'Erik Lehnsherr / Magneto'],
+      ['James Marsden', 'Scott Summers / Cyclops'],
+      ['Rebecca Romijn', 'Raven Darkhölme / Mystique'],
+      ['Alan Cumming', 'Kurt Wagner / Nightcrawler'],
+      ['Kelsey Grammer', 'Hank McCoy / Beast'],
+      ['Channing Tatum', 'Remy LeBeau / Gambit'],
+    ],
+  ],
+].map(([id, name, people]) => ({ id, name, people: people.map(([actor, role]) => ({ actor, role })) }));
+// If time runs short: the titles that set up who's back and why, most important first.
+export const CRASH_COURSE = [
+  ['endgame', 'Where the Avengers left off, and the last we saw of Steve Rogers before his return.'],
+  ['first-steps', 'Meet the Fantastic Four; its end-credits scene points straight at Doom.'],
+  ['thunderbolts', 'Yelena, Bucky, Red Guardian, Walker, Ghost and Bob become the New Avengers.'],
+  ['loki-1', 'The TVA, variants and the branching timelines behind the Multiverse Saga.'],
+  ['loki-2', 'How Loki ends up holding the timelines together.'],
+  ['bnw', 'Sam Wilson as Captain America, with Joaquin Torres as the new Falcon.'],
+  ['wakanda-forever', 'Shuri takes up the mantle; Namor, Namora and M’Baku all return.'],
+  ['deadpool-wolverine', 'The Fox X-Men world collides with the MCU, Channing Tatum’s Gambit included.'],
+  ['x2', 'The original X-Men cast at their best, Nightcrawler included.'],
+  ['mom', 'Incursions, when whole universes collide, are introduced here.'],
+  ['shang-chi', 'Shang-Chi’s first film.'],
+].map(([id, why]) => ({ id, why }));
+export function crashCourse(d) {
+  const byId = new Map(MCU.map((t) => [t.id, t]));
+  const list = CRASH_COURSE.map((c) => ({ ...byId.get(c.id), why: c.why, st: d.mcu[c.id] || null })).filter((t) => t.title);
+  const done = list.filter((t) => t.st === 'w').length;
+  return { list, done, left: list.filter((t) => !t.st).length };
+}
+// Which zone a release belongs to (its own themed card on the Entertainment tab), if any.
+export const isDoomsday = (r) => !!r && (r.id === 'doomsday' || /\bdoomsday\b/i.test(`${r.title} ${r.short || ''}`));
+export const zoneOf = (r) => (isGta(r) ? 'gta' : isDoomsday(r) ? 'doom' : null);

@@ -1,13 +1,13 @@
-// Entertainment tab: the big countdown (GTA VI, with Rockstar's latest from the GTA 6 site's feed), everything
-// else coming up, what you're playing with challenge counters, the Avengers: Doomsday watch list, and gaming and
+// Entertainment tab: two themed zones (GTA VI and Avengers: Doomsday, in fun-zones.jsx), a big countdown for any
+// other release you feature, everything else coming up, what you're playing with challenge counters, and gaming and
 // Marvel news from news.json.
 import React, { useEffect, useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { celebrate, centerOf } from './fx.jsx';
-import { useNow } from './pulse.jsx';
 import { IS_DEMO } from './demo-flag.js';
 import { dateLabel } from './budget-logic.js';
 import * as F from './fun-logic.js';
+import { ViceZone, DoomZone, Countdown, ART } from './fun-zones.jsx';
 
 const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 const dayText = (n) => (n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : n < 0 ? 'Out now' : `${n} days`);
@@ -43,22 +43,10 @@ export function useGtaFeed(on) {
   return feed;
 }
 
-// ---------------------------------------------------------------- the big countdown
-function Tile({ n, l }) {
+// ---------------------------------------------------------------- the big countdown (for a release with no zone of its own)
+function ReleaseHero({ r }) {
   return (
-    <div className="cd-tile">
-      <b className="num">{String(n).padStart(2, '0')}</b>
-      <span>{l}</span>
-    </div>
-  );
-}
-function ReleaseHero({ r, feed }) {
-  const now = useNow(1000);
-  const t = F.timeLeft(r.date, now);
-  const gta = F.isGta(r);
-  const official = gta && feed && Array.isArray(feed.official) ? [...feed.official].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 3) : [];
-  return (
-    <section className={`card fun-hero ${gta ? 'vice' : ''}`} aria-label={`Countdown to ${r.title}`}>
+    <section className={`card fun-hero k-${r.kind || 'other'}`} aria-label={`Countdown to ${r.title}`}>
       <div className="fun-hero-top">
         <div className="grow">
           <div className="fun-kicker">{F.KIND_ICON[r.kind] || '📅'} Countdown</div>
@@ -69,48 +57,7 @@ function ReleaseHero({ r, feed }) {
           </div>
         </div>
       </div>
-      {t.ms > 0 ? (
-        <div className="cd-tiles" role="timer" aria-label={`${t.d} days, ${t.h} hours, ${t.m} minutes to go`}>
-          <Tile n={t.d} l={t.d === 1 ? 'day' : 'days'} />
-          <Tile n={t.h} l="hrs" />
-          <Tile n={t.m} l="min" />
-          <Tile n={t.s} l="sec" />
-        </div>
-      ) : (
-        <div className="fun-out">It’s out. Go play.</div>
-      )}
-      {gta ? (
-        <div className="vice-feed">
-          <div className="vice-feed-head">
-            <span>Latest from Rockstar</span>
-            {IS_DEMO ? null : (
-              <a href={new URL('../gta6/', location.href).href} target="_blank" rel="noopener">
-                My GTA 6 site <Icon name="ext" size={13} />
-              </a>
-            )}
-          </div>
-          {official.length ? (
-            <ul className="vice-list">
-              {official.map((o) => (
-                <li key={o.id || o.url}>
-                  <a href={o.url} target="_blank" rel="noopener">
-                    {o.image ? <img src={o.image} alt="" loading="lazy" onError={(e) => (e.currentTarget.style.display = 'none')} /> : null}
-                    <span className="grow">
-                      <span className="vice-title">{o.title}</span>
-                      <span className="vice-meta">
-                        {o.type === 'youtube' ? 'Video' : 'Newswire'}
-                        {o.date ? ` · ${timeAgo(o.date)}` : ''}
-                      </span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="vice-meta">{feed && feed.error ? 'Couldn’t reach the GTA 6 site’s feed.' : feed ? 'Nothing new from Rockstar yet.' : 'Loading…'}</p>
-          )}
-        </div>
-      ) : null}
+      <Countdown date={r.date} />
     </section>
   );
 }
@@ -161,10 +108,14 @@ function ComingUp({ data, mutate }) {
       ) : (
         <ul className="list">
           {list.map((r) => (
-            <li key={r.id} className={`release ${r.days < 0 ? 'out' : ''}`}>
-              <span className="release-icon" aria-hidden="true">
-                {F.KIND_ICON[r.kind] || '📅'}
-              </span>
+            <li key={r.id} className={`release k-${r.kind || 'other'} ${r.days < 0 ? 'out' : ''} ${F.zoneOf(r) ? `z-${F.zoneOf(r)}` : ''}`}>
+              {F.zoneOf(r) ? (
+                <img className="release-art" src={F.zoneOf(r) === 'gta' ? ART.gta : ART.doom} alt="" />
+              ) : (
+                <span className="release-icon" aria-hidden="true">
+                  {F.KIND_ICON[r.kind] || '📅'}
+                </span>
+              )}
               <div className="grow">
                 <div className="bill-name">{r.title}</div>
                 <div className="muted small">
@@ -271,9 +222,26 @@ function Game({ g, mutate }) {
   const [note, setNote] = useState(null);
   const open = g.challenges.filter((c) => c.n < c.goal).length;
   const doneN = g.challenges.length - open;
+  const hue = [...g.title].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) % 360, 7);
+  const initials = g.title
+    .replace(/[^A-Za-z0-9 ]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 3)
+    .map((w) => (/^\d+$/.test(w) ? w : w[0].toUpperCase()))
+    .join('')
+    .slice(0, 3);
   return (
-    <li className="game">
+    <li className="game" style={{ '--gh': hue }}>
       <div className="game-head">
+        <span className="game-badge" aria-hidden="true">
+          {initials}
+          {g.challenges.length ? (
+            <svg className="game-ring" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="16" pathLength="100" strokeDasharray={`${(doneN / g.challenges.length) * 100} 100`} />
+            </svg>
+          ) : null}
+        </span>
         <div className="grow">
           <div className="bill-name">{g.title}</div>
           {note != null ? (
@@ -374,192 +342,6 @@ function NowPlaying({ data, mutate }) {
   );
 }
 
-// ---------------------------------------------------------------- Doomsday watch list
-const TYPE = { film: 'Film', series: 'Series', special: 'Special' };
-const FILTERS = [
-  ['todo', 'To watch'],
-  ['all', 'All'],
-  ['w', 'Watched'],
-  ['s', 'Skipped'],
-];
-function WatchRow({ t, st, mutate }) {
-  const set = (s, e) => {
-    const next = st === s ? null : s;
-    if (next === 'w' && e) celebrate({ ...centerOf(e.currentTarget), count: 14 });
-    mutate((d) => F.setMcu(d, t.id, next));
-  };
-  return (
-    <li className={`watch-row ${st ? `st-${st}` : ''}`}>
-      <div className="grow">
-        <div className="watch-title">
-          {t.title}
-          {t.key ? <span className="tag tag-key" title="On most pre-Doomsday watch lists">Key</span> : null}
-        </div>
-        <div className="muted small">
-          {t.year || ''}
-          {t.year ? ' · ' : ''}
-          {TYPE[t.type] || 'Film'}
-          {t.out ? ` · out ${dateLabel(t.out)}` : ''}
-        </div>
-      </div>
-      <div className="watch-btns">
-        <button className={`pill-btn w ${st === 'w' ? 'on' : ''}`} aria-pressed={st === 'w'} onClick={(e) => set('w', e)} aria-label={`${t.title}: watched`}>
-          <Icon name="check" size={14} /> Watched
-        </button>
-        <button className={`pill-btn s ${st === 's' ? 'on' : ''}`} aria-pressed={st === 's'} onClick={() => set('s')} aria-label={`${t.title}: skip`}>
-          Skip
-        </button>
-        {t.group === 'mine' ? (
-          <button className="x" aria-label={`Remove ${t.title}`} onClick={() => mutate((d) => F.removeMcuTitle(d, t.id))}>
-            ×
-          </button>
-        ) : null}
-      </div>
-    </li>
-  );
-}
-function WatchList({ data, mutate }) {
-  const [filter, setFilter] = useState('todo');
-  const [keyOnly, setKeyOnly] = useState(false);
-  const [open, setOpen] = useState(() => new Set());
-  const [add, setAdd] = useState({ title: '', year: '' });
-  const p = F.mcuProgress(data);
-  const all = F.mcuList(data);
-  const show = (t) => {
-    const st = data.mcu[t.id] || null;
-    if (keyOnly && !t.key) return false;
-    return filter === 'all' ? true : filter === 'todo' ? !st : st === filter;
-  };
-  const groups = F.MCU_GROUPS.map(([id, name, years]) => ({ id, name, years, items: all.filter((t) => t.group === id), g: F.groupProgress(data, id) })).filter((g) => g.items.length);
-  const toggle = (id) => {
-    const n = new Set(open);
-    n.has(id) ? n.delete(id) : n.add(id);
-    setOpen(n);
-  };
-  const anyOpen = groups.some((g) => open.has(g.id));
-  return (
-    <section className="card watchlist">
-      <div className="card-head">
-        <h2 className="card-title">Road to Doomsday</h2>
-        <span className="muted small">{p.days > 0 ? `${plural(p.days, 'day')} to go` : p.days === 0 ? 'Out today' : 'Out now'}</span>
-      </div>
-      <div className="dd-banner">
-        <div className="grow">
-          <div className="dd-title">Avengers: Doomsday</div>
-          <div className="muted small">In theaters {longDate(F.DOOMSDAY)}</div>
-        </div>
-        <div className="dd-days">
-          <b className="num">{Math.max(0, p.days)}</b>
-          <span>days</span>
-        </div>
-      </div>
-      <div className="dd-progress">
-        <div className="row-between small">
-          <span>
-            <b className="num">{p.watched}</b> of <span className="num">{p.needed}</span> watched
-          </span>
-          <span className="muted num">{Math.round(p.pct * 100)}%</span>
-        </div>
-        <div className="bar slim">
-          <div className="bar-fill" style={{ width: `${p.pct * 100}%` }} />
-        </div>
-        <div className="muted small">
-          {p.left === 0
-            ? 'All caught up. See you on opening night.'
-            : p.perWeek
-              ? `${plural(p.left, 'title')} to go: about ${p.perWeek} a week gets you there by ${dateLabel(F.DOOMSDAY)}.`
-              : `${plural(p.left, 'title')} to go.`}
-          {p.skipped ? ` ${p.skipped} skipped.` : ''}
-        </div>
-      </div>
-      <div className="watch-tools">
-        <div className="seg mini-seg" role="group" aria-label="Show">
-          {FILTERS.map(([k, l]) => (
-            <button key={k} className={`seg-btn ${filter === k ? 'on' : ''}`} onClick={() => setFilter(k)}>
-              {l}
-            </button>
-          ))}
-        </div>
-        <label className="check-line small">
-          <input type="checkbox" checked={keyOnly} onChange={(e) => setKeyOnly(e.target.checked)} /> Key titles only
-        </label>
-      </div>
-      <ul className="watch-groups">
-        {groups.map((g) => {
-          const items = g.items.filter(show);
-          const isOpen = open.has(g.id);
-          return (
-            <li key={g.id} className={`wgroup ${isOpen ? 'open' : ''}`}>
-              <button className="wgroup-head" onClick={() => toggle(g.id)} aria-expanded={isOpen}>
-                <span className="grow">
-                  <span className="wgroup-name">{g.name}</span>
-                  <span className="muted small">
-                    {g.years ? `${g.years} · ` : ''}
-                    {g.g.total === g.g.skipped ? 'All skipped' : `${g.g.watched} of ${g.g.total - g.g.skipped} watched${g.g.skipped ? ` · ${g.g.skipped} skipped` : ''}`}
-                  </span>
-                </span>
-                <span className="wgroup-mini" aria-hidden="true">
-                  <span style={{ width: `${g.g.total - g.g.skipped ? (g.g.watched / (g.g.total - g.g.skipped)) * 100 : 0}%` }} />
-                </span>
-                <Icon name={isOpen ? 'down' : 'chev'} size={18} />
-              </button>
-              {isOpen ? (
-                <>
-                  {items.length ? (
-                    <ul className="list">
-                      {items.map((t) => (
-                        <WatchRow key={t.id} t={t} st={data.mcu[t.id] || null} mutate={mutate} />
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="empty small">Nothing here with this filter.</p>
-                  )}
-                  <div className="wgroup-acts">
-                    <button className="link-btn small" onClick={() => mutate((d) => F.setGroup(d, g.id, 'w'), `Marked all of ${g.name} watched`)}>
-                      Mark all watched
-                    </button>
-                    <button className="link-btn small muted-link" onClick={() => mutate((d) => F.setGroup(d, g.id, 's'), `Skipping ${g.name}`)}>
-                      Skip all
-                    </button>
-                    {g.g.watched || g.g.skipped ? (
-                      <button className="link-btn small muted-link" onClick={() => mutate((d) => F.setGroup(d, g.id, null))}>
-                        Reset
-                      </button>
-                    ) : null}
-                  </div>
-                </>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
-      <div className="row-between small watch-foot">
-        <button className="link-btn small" onClick={() => setOpen(anyOpen ? new Set() : new Set(groups.map((g) => g.id)))}>
-          {anyOpen ? 'Collapse all' : 'Expand all'}
-        </button>
-        <a className="muted small" href={F.MCU_SOURCE.url} target="_blank" rel="noopener">
-          “Key” per NME’s list
-        </a>
-      </div>
-      <form
-        className="add-row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (!add.title.trim()) return;
-          mutate((d) => F.addMcuTitle(d, add), `Added ${add.title.trim()}`);
-          setAdd({ title: '', year: '' });
-        }}
-      >
-        <input className="input" placeholder="Add a title" value={add.title} onChange={(e) => setAdd({ ...add, title: e.target.value })} aria-label="Add a title to the watch list" />
-        <input className="input num year-input" inputMode="numeric" placeholder="Year" value={add.year} onChange={(e) => setAdd({ ...add, year: e.target.value.replace(/\D/g, '').slice(0, 4) })} aria-label="Year" />
-        <button className="btn" type="submit" disabled={!add.title.trim()}>
-          Add
-        </button>
-      </form>
-    </section>
-  );
-}
-
 // ---------------------------------------------------------------- news
 const FUN_NEWS = [
   ['gaming', 'Gaming', 'Polygon, GameSpot, VGC, IGN, Kotaku, Eurogamer, plus stories on your games'],
@@ -629,8 +411,11 @@ function FunNews({ news, read, markRead }) {
 
 // ---------------------------------------------------------------- page
 export function FunPage({ data, mutate, error, news, read, markRead }) {
+  const list = data ? F.upcoming(data) : [];
+  const gta = list.find((r) => F.zoneOf(r) === 'gta') || null;
   const hero = data ? F.featured(data) : null;
-  const feed = useGtaFeed(!!hero && F.isGta(hero));
+  const other = hero && !F.zoneOf(hero) ? hero : null; // a featured release with no zone gets the big countdown
+  const feed = useGtaFeed(!!gta && !IS_DEMO);
   if (!data) {
     return (
       <div className="home">
@@ -643,22 +428,34 @@ export function FunPage({ data, mutate, error, news, read, markRead }) {
       </div>
     );
   }
-  const next = F.upcoming(data).filter((r) => r.days >= 0 && r.home).slice(0, 3);
+  const next = list.filter((r) => r.days >= 0 && r.home).slice(0, 4);
   return (
     <div className="home fun">
-      <header className="page-head">
+      <header className="page-head fun-head">
         <h1 className="page-title">Entertainment</h1>
-        <div className="muted">{next.length ? next.map((r) => `${r.short || r.title} in ${plural(r.days, 'day')}`).join(' · ') : 'Games, movies and shows'}</div>
+        {next.length ? (
+          <div className="fun-chips">
+            {next.map((r) => (
+              <span key={r.id} className={`fun-chip k-${r.kind || 'other'} ${F.zoneOf(r) ? `z-${F.zoneOf(r)}` : ''}`}>
+                <b className="num">{r.days}</b>
+                <span>{r.days === 1 ? 'day' : 'days'} to {r.short || r.title}</span>
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div className="muted">Games, movies and shows</div>
+        )}
       </header>
       {error ? <div className="alert">{error}</div> : null}
       <div className="grid">
         <div className="col">
-          {hero ? <ReleaseHero r={hero} feed={feed} /> : null}
+          {other ? <ReleaseHero r={other} /> : null}
+          {gta && !IS_DEMO ? <ViceZone r={gta} feed={feed} /> : null}
           <ComingUp data={data} mutate={mutate} />
           <NowPlaying data={data} mutate={mutate} />
         </div>
         <div className="col">
-          <WatchList data={data} mutate={mutate} />
+          <DoomZone data={data} mutate={mutate} />
           <FunNews news={news} read={read} markRead={markRead} />
         </div>
       </div>

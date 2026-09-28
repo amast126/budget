@@ -1,0 +1,236 @@
+/* ---- Entertainment: two themed zones (GTA VI in Vice City neon, Avengers: Doomsday in emerald and gold), plus the
+   rest of the tab dressed to match. Zones are always dark whatever the theme; they re-point the shared color tokens,
+   so buttons, inputs, pills and bars inside them follow along. Fonts are vendored (SIL OFL): Anton, Cinzel. ---- */
+@font-face { font-family: 'Anton'; src: url('fonts/anton-latin-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Cinzel'; src: url('fonts/cinzel-latin-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+/* ---------------------------------------------------------------- page head */
+.fun-head { display: block; }
+.fun-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.fun-chip { display: inline-flex; align-items: baseline; gap: 5px; padding: 4px 11px 5px; border-radius: 16px; font-size: 13px; background: var(--surface); box-shadow: 0 0 0 0.5px var(--rule-strong); color: var(--ink-soft); }
+.fun-chip b { font: 400 16px/1 var(--serif); color: var(--ink); }
+.fun-chip.z-gta { background: linear-gradient(100deg, #3a1760, #b3306f 60%, #f0874a); color: rgba(255, 255, 255, 0.86); box-shadow: 0 6px 16px -8px rgba(179, 48, 111, 0.9); }
+.fun-chip.z-gta b { font-family: 'Anton', var(--sans); font-size: 17px; color: #fff; letter-spacing: 0.02em; }
+.fun-chip.z-doom { background: linear-gradient(100deg, #0b2a1d, #154330); color: #e9d9a6; box-shadow: 0 0 0 1px rgba(216, 178, 90, 0.45), 0 6px 16px -8px rgba(0, 0, 0, 0.7); }
+.fun-chip.z-doom b { font-family: 'Cinzel', var(--serif); font-weight: 700; color: #f3dfa0; }
+
+/* ---------------------------------------------------------------- zones: shared */
+.card.zone,
+.theme-glass .card.zone {
+  --ink: #f7f2ff;
+  --ink-soft: rgba(247, 242, 255, 0.72);
+  --paper: rgba(255, 255, 255, 0.07);
+  --paper-deep: rgba(255, 255, 255, 0.13);
+  --rule: rgba(255, 255, 255, 0.18);
+  --rule-strong: rgba(255, 255, 255, 0.3);
+  --surface: rgba(255, 255, 255, 0.1);
+  --blue: #9cc7ff;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+  background: #120b22;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.35), 0 22px 44px -22px rgba(0, 0, 0, 0.75);
+}
+.card.zone { border-radius: 14px; }
+.theme-glass .card.zone { border-radius: 24px; }
+.zone-bg { position: absolute; inset: -40px; z-index: -2; background-size: cover; background-position: center; filter: saturate(1.35); transform: scale(1.08); }
+.zone::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.zone-hero { display: grid; grid-template-columns: 1fr; padding: 0; }
+.zone-art { display: block; width: 100%; aspect-ratio: 16 / 11; object-fit: cover; -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 100%); mask-image: linear-gradient(180deg, #000 62%, transparent 100%); }
+.zone-hero-text { position: relative; padding: 0 16px 4px; margin-top: -54px; }
+.zone-kicker { display: flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.82); }
+.zone-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; animation: zone-pulse 2.4s ease-in-out infinite; }
+@keyframes zone-pulse { 50% { opacity: 0.35; } }
+.zone-name { margin: 4px 0 2px; }
+.zone-sub { font-size: 13.5px; color: rgba(255, 255, 255, 0.8); }
+.zone .cd-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 14px 0 6px; }
+.zone .cd-tile { display: flex; flex-direction: column; align-items: center; padding: 9px 4px 7px; border-radius: 12px; }
+.zone .cd-tile span { font-size: 10.5px; font-weight: 700; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.85; }
+.zone-out { font: 400 26px/1.2 var(--serif); margin: 12px 0 6px; }
+.hub-tabs { display: flex; gap: 6px; overflow-x: auto; padding: 12px 16px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.hub-tabs::-webkit-scrollbar { display: none; }
+.hub-tab { flex: none; font: 700 13px var(--sans); padding: 7px 13px; border-radius: 18px; border: 0; cursor: pointer; color: rgba(255, 255, 255, 0.78); background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.18); transition: transform 0.18s cubic-bezier(0.3, 1.5, 0.5, 1), background 0.15s; }
+.hub-tab:active { transform: scale(0.94); }
+.zone-panel { padding: 10px 16px 14px; min-height: 120px; }
+.zone-h { font: 700 11.5px var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); margin: 4px 0 8px; }
+.zone-note { color: var(--ink-soft); font-size: 13px; margin: 10px 0 0; }
+.zone-note a, .zone-foot, .zone-panel a { color: inherit; }
+.zone-lede { font-size: 14px; line-height: 1.45; margin: 2px 0 12px; color: rgba(255, 255, 255, 0.88); }
+.zone-foot { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 12px 16px 14px; font-size: 13px; font-weight: 700; text-decoration: none; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.zone-rows { list-style: none; margin: 12px 0 0; padding: 0; }
+.zone-rows a { display: flex; flex-direction: column; gap: 2px; padding: 8px 0; text-decoration: none; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.zone-rows span { font-size: 12.5px; color: var(--ink-soft); }
+.gta-summary { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: 13px; line-height: 1.42; color: rgba(255, 255, 255, 0.78); margin-top: 4px; }
+/* controls inside a dark zone, whatever the page theme */
+.zone .input, .theme-glass .zone .input { background: rgba(0, 0, 0, 0.22); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; box-shadow: none; }
+.zone select.input option { background: #1b1430; color: #fff; }
+.theme-glass .zone .btn, .theme-glass .zone .seg-btn, .theme-glass .zone .pill-btn { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 0 0.5px rgba(255, 255, 255, 0.2); }
+.theme-glass .zone .btn.quiet { background: rgba(255, 255, 255, 0.08); }
+.zone .btn { color: #fff; }
+.zone .tag-key { background: rgba(255, 214, 120, 0.2); color: #ffd98a; }
+.zone .box { background: rgba(0, 0, 0, 0.2); }
+
+/* videos (both zones) */
+.vid-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px 10px; }
+.vid { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: inherit; }
+.vid-thumb { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.2), 0 10px 20px -12px rgba(0, 0, 0, 0.8); }
+.vid-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+.vid:hover .vid-thumb img { transform: scale(1.05); }
+.vid-play { position: absolute; left: 50%; top: 50%; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding-left: 3px; font-size: 14px; color: #fff; background: rgba(0, 0, 0, 0.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4); }
+.vid-title { display: block; font-weight: 700; font-size: 13.5px; line-height: 1.3; }
+.vid-sub { display: block; font-size: 12px; color: var(--ink-soft); line-height: 1.35; margin-top: 1px; }
+
+/* ---------------------------------------------------------------- GTA VI: Vice City */
+.vice-zone { --fill: #ff4fa3; --on-fill: #fff; --green: #ffa3d2; --green-soft: rgba(255, 79, 163, 0.22); --amber: #ffc46b; --amber-soft: rgba(255, 196, 107, 0.2); }
+.card.vice-zone, .theme-glass .card.vice-zone { background: #1a0d33; }
+.vice-zone::before { background: radial-gradient(120% 60% at 100% 0%, rgba(255, 110, 170, 0.28), transparent 60%), linear-gradient(180deg, rgba(34, 12, 70, 0.35) 0%, rgba(40, 12, 72, 0.82) 40%, rgba(22, 8, 44, 0.95) 100%); }
+.vice-zone .zone-kicker { color: #ffb3d9; }
+.vice-name { font: 400 44px/0.95 'Anton', 'Arial Narrow', Impact, sans-serif; text-transform: uppercase; letter-spacing: 0.01em; background: linear-gradient(92deg, #ffe08a 0%, #ff8fb8 42%, #ff4fa3 62%, #a98bff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 2px 14px rgba(255, 79, 163, 0.45)); }
+.vice-zone .cd-tile { background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)); box-shadow: inset 0 0 0 1px rgba(255, 143, 200, 0.45), 0 0 18px -6px rgba(255, 79, 163, 0.7); }
+.vice-zone .cd-tile b { font: 400 34px/1 'Anton', var(--sans); color: #fff; text-shadow: 0 0 12px rgba(255, 110, 190, 0.9), 0 0 2px rgba(255, 255, 255, 0.8); }
+.vice-zone .hub-tab.on { color: #fff; background: linear-gradient(100deg, #ff4fa3, #ff8a4c); box-shadow: 0 6px 16px -6px rgba(255, 79, 163, 0.85); }
+.vice-zone .zone-foot { color: #ffb3d9; }
+.vice-zone .zone-h { color: #ff9fcf; }
+.vice-list { list-style: none; margin: 0; padding: 0; }
+.vice-list li + li { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.vice-list a { display: flex; gap: 12px; align-items: center; padding: 9px 0; color: #fff; text-decoration: none; }
+.vice-list img, .vice-noimg { width: 88px; height: 50px; object-fit: cover; border-radius: 8px; flex: none; box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.25); }
+.vice-noimg { background: linear-gradient(135deg, #5b2a86, #ff4fa3 70%, #ff9a4d); }
+.vice-title { display: block; font-weight: 700; font-size: 14px; line-height: 1.3; }
+.vice-meta { display: block; font-size: 12px; opacity: 0.75; margin: 2px 0 0; }
+.gta-leads { list-style: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: 1fr; gap: 10px; }
+.gta-leads a { display: block; padding: 12px 14px; border-radius: 14px; text-decoration: none; background: linear-gradient(135deg, rgba(255, 79, 163, 0.22), rgba(120, 80, 255, 0.14)); box-shadow: inset 0 0 0 1px rgba(255, 143, 200, 0.3); }
+.gta-leads li:nth-child(2) a { background: linear-gradient(135deg, rgba(47, 224, 213, 0.18), rgba(255, 154, 77, 0.16)); box-shadow: inset 0 0 0 1px rgba(120, 240, 230, 0.28); }
+.gta-lead-name { display: block; font: 400 24px/1.05 'Anton', var(--sans); text-transform: uppercase; letter-spacing: 0.02em; }
+.gta-lead-sub { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ffb3d9; margin-top: 2px; }
+.gta-leads li:nth-child(2) .gta-lead-sub { color: #8ff3ea; }
+.gta-chips { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.gta-chips a { display: flex; flex-direction: column; gap: 1px; padding: 8px 10px; border-radius: 10px; text-decoration: none; background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.16); }
+.gta-chips b { font-size: 13.5px; line-height: 1.25; }
+.gta-chips span { font-size: 12px; color: var(--ink-soft); }
+.gta-regions { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 8px; }
+.gta-regions a { display: block; padding: 10px 12px 10px 14px; border-radius: 12px; text-decoration: none; background: rgba(255, 255, 255, 0.06); box-shadow: inset 3px 0 0 hsl(calc(330 - var(--i) * 32), 90%, 66%), inset 0 0 0 0.5px rgba(255, 255, 255, 0.14); }
+.gta-region-name { display: block; font: 400 19px/1.1 'Anton', var(--sans); text-transform: uppercase; letter-spacing: 0.03em; }
+.gta-region-sub { display: block; font-size: 12px; color: var(--ink-soft); margin-top: 1px; }
+.gta-when { display: block; padding: 12px 14px; margin-bottom: 10px; border-radius: 14px; text-decoration: none; background: linear-gradient(110deg, rgba(255, 79, 163, 0.3), rgba(255, 154, 77, 0.22)); box-shadow: inset 0 0 0 1px rgba(255, 170, 200, 0.35); }
+.gta-when-sub { display: block; font: 400 22px/1.1 'Anton', var(--sans); letter-spacing: 0.02em; text-transform: uppercase; }
+.gta-tickets { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 8px; }
+.gta-tickets a { position: relative; display: block; padding: 10px 14px 10px 16px; border-radius: 12px; text-decoration: none; background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.16); }
+.gta-tickets a::before, .gta-tickets a::after { content: ''; position: absolute; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: #1a0d33; box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.16); }
+.gta-tickets a::before { left: -6px; }
+.gta-tickets a::after { right: -6px; }
+.gta-ticket-name { display: block; font-weight: 700; font-size: 14.5px; }
+.gta-ticket-price { display: block; font: 400 18px/1.2 'Anton', var(--sans); letter-spacing: 0.03em; color: #ffd27a; margin-top: 1px; }
+
+/* ---------------------------------------------------------------- Avengers: Doomsday */
+.doom-zone { --ink: #f3eedf; --ink-soft: rgba(243, 238, 223, 0.7); --fill: #d8b25a; --on-fill: #17120a; --green: #e8c877; --green-soft: rgba(216, 178, 90, 0.2); --amber: #e8c877; --amber-soft: rgba(216, 178, 90, 0.18); --gold: #d8b25a; }
+.card.doom-zone, .theme-glass .card.doom-zone { background: #06140e; }
+.doom-zone::before { background: radial-gradient(90% 55% at 50% 0%, rgba(255, 196, 110, 0.16), transparent 70%), linear-gradient(180deg, rgba(4, 20, 13, 0.3) 0%, rgba(6, 22, 15, 0.84) 42%, rgba(4, 13, 9, 0.96) 100%); }
+.doom-zone .zone-art { object-position: center 38%; }
+.doom-zone .zone-kicker { color: #e8c877; }
+.doom-name { font: 700 30px/1.08 'Cinzel', 'Trajan Pro', Georgia, serif; letter-spacing: 0.05em; text-transform: uppercase; background: linear-gradient(180deg, #fbf1cf 0%, #e3c47a 48%, #a07a2c 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.6)); }
+.doom-zone .cd-tile { background: linear-gradient(180deg, rgba(216, 178, 90, 0.16), rgba(216, 178, 90, 0.04)); box-shadow: inset 0 0 0 1px rgba(216, 178, 90, 0.5); }
+.doom-zone .cd-tile b { font: 700 30px/1 'Cinzel', var(--serif); color: #f3dfa0; }
+.doom-zone .hub-tab { color: rgba(243, 238, 223, 0.78); }
+.doom-zone .hub-tab.on { color: #17120a; background: linear-gradient(180deg, #f3dfa0, #c9a24a); box-shadow: 0 6px 16px -8px rgba(216, 178, 90, 0.9); }
+.doom-zone .zone-h { color: #d8b25a; }
+.doom-zone .dd-progress { padding: 4px 16px 0; margin: 6px 0 0; }
+.doom-zone .dd-progress .bar { background: rgba(255, 255, 255, 0.1); }
+.doom-zone .dd-progress .bar-fill { background: linear-gradient(90deg, #a07a2c, #f3dfa0); box-shadow: 0 0 10px rgba(216, 178, 90, 0.6); }
+.dd-pace { color: var(--ink-soft); }
+.doom-zone .wgroup { border-top-color: rgba(255, 255, 255, 0.1); }
+.doom-zone .wgroup-head { color: var(--ink); }
+.doom-zone .wgroup-mini span { background: linear-gradient(90deg, #a07a2c, #f3dfa0); }
+.crash { list-style: none; margin: 0; padding: 0; }
+.crash-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.crash-row:first-child { border-top: 0; }
+.crash-n { flex: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 700 14px 'Cinzel', var(--serif); color: #f3dfa0; box-shadow: inset 0 0 0 1px rgba(216, 178, 90, 0.55); }
+.crash-row.st-w .crash-n { background: linear-gradient(180deg, #f3dfa0, #c9a24a); color: #17120a; }
+.crash-row.st-w .watch-title, .crash-row.st-s .watch-title { color: var(--ink-soft); }
+.crash-why { font-size: 12.5px; line-height: 1.4; color: var(--ink-soft); margin-top: 2px; }
+.cast-group + .cast-group { margin-top: 14px; }
+.cast-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.cast-card { display: flex; flex-direction: column; gap: 2px; padding: 9px 11px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); box-shadow: inset 0 0 0 0.5px rgba(216, 178, 90, 0.28); }
+.cast-card b { font-size: 13.5px; line-height: 1.25; }
+.cast-card span { font-size: 12px; line-height: 1.3; color: var(--ink-soft); }
+.cast-doom .cast-grid { grid-template-columns: 1fr; }
+.cast-doom .cast-card { padding: 12px 14px; background: linear-gradient(120deg, rgba(20, 70, 45, 0.7), rgba(216, 178, 90, 0.16)); box-shadow: inset 0 0 0 1px rgba(216, 178, 90, 0.6), 0 0 22px -10px rgba(120, 255, 170, 0.5); }
+.cast-doom .cast-card b { font: 700 18px 'Cinzel', var(--serif); letter-spacing: 0.04em; color: #f3dfa0; }
+.doom-encore { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; font-size: 13.5px; line-height: 1.4; background: rgba(216, 178, 90, 0.14); box-shadow: inset 0 0 0 1px rgba(216, 178, 90, 0.4); }
+.doom-facts { margin: 0; display: grid; grid-template-columns: 1fr; gap: 0; }
+.doom-facts > div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.doom-facts > div:first-child { border-top: 0; }
+.doom-facts dt { font: 700 11px var(--sans); letter-spacing: 0.1em; text-transform: uppercase; color: #d8b25a; padding-top: 2px; }
+.doom-facts dd { margin: 0; font-size: 13.5px; line-height: 1.4; }
+
+/* ---------------------------------------------------------------- zones on a roomier card: art beside the countdown */
+.zone { container-type: inline-size; }
+@container (min-width: 520px) {
+  .zone-hero { grid-template-columns: 188px minmax(0, 1fr); gap: 18px; padding: 18px 18px 4px; align-items: end; }
+  .zone-art { aspect-ratio: auto; height: auto; border-radius: 16px; -webkit-mask-image: none; mask-image: none; box-shadow: 0 18px 38px -14px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.14); }
+  .vice-zone .zone-art { aspect-ratio: 1; }
+  .doom-zone .zone-art { aspect-ratio: 2 / 3; object-position: center; }
+  .zone-hero-text { margin-top: 0; padding: 0 0 2px; }
+  .vice-name { font-size: 48px; }
+  .doom-name { font-size: 32px; }
+  .hub-tabs, .zone-panel, .zone-foot, .doom-zone .dd-progress { padding-left: 18px; padding-right: 18px; }
+  .gta-leads { grid-template-columns: 1fr 1fr; }
+  .gta-regions, .gta-tickets { grid-template-columns: 1fr 1fr; }
+}
+@container (max-width: 360px) {
+  .vice-name { font-size: 38px; }
+  .doom-name { font-size: 26px; }
+  .zone .cd-tile b { font-size: 28px; }
+}
+
+/* ---------------------------------------------------------------- a featured release with no zone */
+.fun-hero.k-game { background: radial-gradient(90% 90% at 100% 0%, rgba(120, 210, 255, 0.35), transparent 60%), linear-gradient(150deg, #0f1b3d 0%, #2b2f86 55%, #5a3fd1 100%); }
+.fun-hero.k-movie { background: radial-gradient(90% 90% at 100% 0%, rgba(255, 200, 120, 0.3), transparent 60%), linear-gradient(150deg, #2a0d0d 0%, #6b1b1b 55%, #a83226 100%); }
+.fun-hero.k-show { background: radial-gradient(90% 90% at 100% 0%, rgba(160, 255, 230, 0.3), transparent 60%), linear-gradient(150deg, #06262b 0%, #0f5561 55%, #1f8a8a 100%); }
+.fun-hero .fun-hero-title { font-family: 'Anton', var(--sans); font-size: 34px; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1; }
+.fun-hero .cd-tile b { font-family: 'Anton', var(--sans); }
+
+/* ---------------------------------------------------------------- coming up: tickets */
+.coming-up .release { position: relative; gap: 12px; }
+.release-art { flex: none; width: 46px; height: 46px; border-radius: 10px; object-fit: cover; box-shadow: 0 0 0 0.5px var(--rule-strong), 0 6px 14px -8px rgba(0, 0, 0, 0.6); }
+.release.z-doom .release-art { object-position: center 40%; }
+.coming-up .release-icon { width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; font-size: 22px; border-radius: 10px; background: var(--paper-deep); }
+.coming-up .release.k-game .release-icon { background: linear-gradient(135deg, rgba(90, 63, 209, 0.22), rgba(120, 210, 255, 0.22)); }
+.coming-up .release.k-movie .release-icon { background: linear-gradient(135deg, rgba(168, 50, 38, 0.2), rgba(255, 200, 120, 0.22)); }
+.coming-up .release.k-show .release-icon { background: linear-gradient(135deg, rgba(31, 138, 138, 0.22), rgba(160, 255, 230, 0.22)); }
+.coming-up .days-pill { font-size: 13px; padding: 4px 10px; }
+.release.z-gta .days-pill { background: linear-gradient(100deg, #ff4fa3, #ff8a4c); color: #fff; }
+.release.z-doom .days-pill { background: linear-gradient(180deg, #f3dfa0, #c9a24a); color: #17120a; }
+
+/* ---------------------------------------------------------------- now playing: game badges */
+.game-head { align-items: center; gap: 12px; }
+.game-badge { position: relative; flex: none; width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font: 400 17px/1 'Anton', var(--sans); letter-spacing: 0.03em; color: #fff; background: linear-gradient(140deg, hsl(var(--gh), 70%, 42%), hsl(calc(var(--gh) + 50), 80%, 58%)); box-shadow: 0 8px 16px -10px hsl(var(--gh), 70%, 30%), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+.game-ring { position: absolute; inset: -5px; width: 56px; height: 56px; transform: rotate(-90deg); pointer-events: none; }
+.game-ring circle { fill: none; stroke: hsl(calc(var(--gh) + 50), 85%, 60%); stroke-width: 2.5; stroke-linecap: round; }
+.game .bar-fill { background: linear-gradient(90deg, hsl(var(--gh), 70%, 45%), hsl(calc(var(--gh) + 50), 80%, 58%)); }
+.games > li { padding: 14px 0; }
+
+/* ---------------------------------------------------------------- news */
+.fun-news .story .thumb { border-radius: 10px; }
+
+/* ---------------------------------------------------------------- phones: the two zones first, then the rest */
+@media (max-width: 1099px) {
+  .fun > .grid > .col { display: contents; }
+  .fun .fun-hero { order: 0; }
+  .fun .vice-zone { order: 1; }
+  .fun .doom-zone { order: 2; }
+  .fun .coming-up { order: 3; }
+  .fun .now-playing { order: 4; }
+  .fun .fun-news { order: 5; }
+}
+/* on a narrow card the artwork carries the name, so the lettering below it would only repeat it */
+@container (max-width: 519px) {
+  .zone-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .zone-hero-text { margin-top: -34px; }
+  .zone-sub { font-size: 14px; font-weight: 600; margin-top: 4px; }
+}

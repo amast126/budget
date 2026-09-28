@@ -36,6 +36,7 @@ import { startWideLayout } from './wide.js';
 import { MerchantInput, RecentChips, useMerchants, AddSheet, parseAddLink } from './budget-add.jsx';
 import budgetCss from './budget.css';
 import healthCss from './health-more.css';
+import funCss from './fun.css';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
@@ -58,7 +59,7 @@ trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss + newsCss + budgetCss + healthCss;
+  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss;
   document.head.appendChild(s);
 }
 
