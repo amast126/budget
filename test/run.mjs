@@ -20,6 +20,7 @@ import { recipeboxUnit } from './recipebox-unit.mjs';
 import { healthUnit } from './health-unit.mjs';
 import { steamUnit } from './steam-unit.mjs';
 import { healthSyncUnit, makeSyncText } from './healthsync-unit.mjs';
+import { learningUnit } from './learning-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -230,6 +231,7 @@ await recipeboxUnit(check);
 await healthUnit(check);
 await steamUnit(check);
 await healthSyncUnit(check);
+await learningUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -969,6 +971,85 @@ await go('Home');
 await page.waitForSelector('.money .big');
 check(/exam in 20 days/.test(await page.innerText(learnCard)), 'Home learning card shows exam countdown');
 await page.screenshot({ path: path.join(OUT, 'home-learning.png'), fullPage: true });
+// Exam prep for the booked AI-901: rate skills, tick a module, log practice tests, clear and reset the date
+await go('Learning');
+await page.click('.page-tabs .seg-btn:has-text("Exam prep")');
+await page.waitForSelector('.exam-card');
+check(/20\s*days to go/.test(await page.innerText('.exam-card')) && /0\/29 rated/.test(await page.innerText('.exam-card')), 'exam prep: the booked exam counts down; nothing rated yet');
+await page.locator('.skill').nth(0).locator('.seg-btn:has-text("Solid")').click();
+await page.locator('.skill').nth(1).locator('.seg-btn:has-text("Shaky")').click();
+await page.waitForTimeout(200);
+L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+check(L.prep['ai-901'].skills['rai-fair'] === 2 && L.prep['ai-901'].skills['rai-safe'] === 1 && (await page.innerText('.ready-pct')).startsWith('5%') && /2\/29 rated/.test(await page.innerText('.exam-card')), `exam prep: two skills rated; readiness ${(await page.innerText('.ready-pct')).split('\n')[0]}`);
+await page.locator('.mod-list li').nth(0).locator('.mod-check').click();
+await page.waitForTimeout(200);
+L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+check(!!L.prep['ai-901'].modules['get-started-ai-fundamentals'] && /1 of 14/.test(await page.innerText('.modules .card-head')), 'exam prep: a course module ticked off');
+for (const [score, part] of [['74', '81'], ['83', ''], ['86', '90']]) {
+  await page.fill('input[aria-label="Score percent"]', score);
+  if (part) await page.fill('input[aria-label="AI concepts score percent"]', part);
+  await page.click('.test-form button[type=submit]');
+  await page.waitForTimeout(200);
+}
+L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+{
+  const t = await page.innerText('.tests');
+  check(L.prep['ai-901'].tests.length === 3 && L.prep['ai-901'].tests[2].parts.concepts === 90 && /Two in a row at 80% or better/.test(t) && /Latest 86%/.test(t) && /average 81%/.test(t), `practice tests: three logged, ready to book (${t.split('\n').slice(1, 3).join(' | ')})`);
+}
+await page.screenshot({ path: path.join(OUT, 'learning-prep.png'), fullPage: true });
+await page.click('.exam-card button:has-text("Clear date")');
+await page.waitForTimeout(200);
+L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+check(L.certs['ai-901'].status === 'studying' && !L.certs['ai-901'].examDate && /No date yet/.test(await page.innerText('.exam-card')), 'exam prep: clearing the date goes back to studying');
+await page.fill('.exam-card input[type=date]', exam);
+await page.waitForTimeout(200);
+L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+check(L.certs['ai-901'].status === 'booked' && L.certs['ai-901'].examDate === exam, 'exam prep: entering a date books it');
+// Flashcards: nothing pre-filled; add one, paste two, review them (keys and buttons), Again comes back once
+await page.click('.page-tabs .seg-btn:has-text("Flashcards")');
+await page.waitForSelector('.review');
+check(/No cards yet/.test(await page.innerText('.review')), 'flashcards: starts empty, nothing pre-filled');
+await page.fill('textarea[aria-label="Card front"]', 'What is RAG?');
+await page.fill('textarea[aria-label="Card back"]', 'Look up documents first, then generate from them');
+await page.click('.add-cards button:has-text("Add card")');
+await page.click('.add-cards .seg-btn:has-text("Paste many")');
+await page.fill('textarea[aria-label="Cards to add"]', 'Token | A chunk of text\nTemperature\tHow random the output is\nno separator here');
+check(/2 cards ready/.test(await page.innerText('.add-cards')) && /1 line without a separator/.test(await page.innerText('.add-cards')), 'flashcards: pasting shows how many cards it found');
+await page.click('.add-cards button:has-text("Add 2 cards")');
+await page.waitForTimeout(250);
+let CD = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cards') || 'null'));
+check(CD.cards.length === 3 && CD.cards.every((c) => c.deck === 'ai-901' && c.reps === 0), 'flashcards: three cards in the AI-901 deck');
+await page.click('.review button:has-text("Start review")');
+await page.waitForSelector('.fc-front');
+await page.keyboard.press('Space');
+await page.waitForSelector('.fc-back');
+await page.keyboard.press('3'); // Good
+await page.waitForTimeout(150);
+await page.click('.review button:has-text("Show answer")');
+await page.click('.fc-rate button:has-text("Again")');
+await page.waitForTimeout(150);
+await page.click('.review button:has-text("Show answer")');
+await page.click('.fc-rate button:has-text("Easy")');
+await page.waitForTimeout(150);
+check(/4 of 4/.test(await page.innerText('.fc-progress')), 'flashcards: the Again card comes back at the end');
+await page.click('.review button:has-text("Show answer")');
+await page.click('.fc-rate button:has-text("Good")');
+await page.waitForSelector('.fc-done');
+CD = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cards') || 'null'));
+{
+  const ld = (n) => {
+    const d = new Date();
+    d.setDate(d.getDate() + n);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
+  const t = ld(0);
+  const due = CD.cards.map((c) => c.due).sort();
+  check(/Done: 4 reviews/.test(await page.innerText('.fc-done')) && CD.log[t] === 4 && due[0] === ld(2) && due[1] === ld(2) && due[2] === ld(4) && CD.cards.every((c) => c.first === t), `flashcards: four reviews saved; two back in 2 days, one in 4 (${due.join(', ')})`);
+}
+await page.screenshot({ path: path.join(OUT, 'learning-cards.png'), fullPage: true });
+await go('Home');
+await page.waitForSelector('.money .big');
+check(/Flashcards/.test(await page.innerText(learnCard)) && /All caught up today/.test(await page.innerText(learnCard)) && /\d+% ready/.test(await page.innerText(learnCard)), 'Home learning card: readiness, and flashcards caught up');
 
 
 // ---------------- cooking: the recipe box (search, a recipe's page, servings, cook mode, import, add, edit, delete)
@@ -2369,6 +2450,30 @@ await page.waitForTimeout(700);
 const beatOn = (await page.$$('.met-dot.on')).length;
 await page.click('.metronome .btn.block');
 check(/85/.test(await page.innerText('.met-n')) && beatOn === 1 && /Start metronome/.test(await page.innerText('.metronome')), 'metronome: tempo up to 85, beats light up, stops');
+// tempo: log from the metronome, add an exercise and log its tempo
+await page.click('.met-log button:has-text("Log it")');
+await page.waitForTimeout(150);
+GD = await mod('guitar');
+check(GD.tempo.length === 1 && GD.tempo[0].bpm === 85 && GD.tempo[0].key === `song:${GD.songs[0].id}`, 'metronome: log the tempo for a song');
+await page.fill('input[aria-label="New exercise"]', 'Chromatic warm-up');
+await page.click('.tempo .add-row:last-of-type button');
+await page.waitForTimeout(150);
+await page.click('.tempo-item:has-text("Chromatic warm-up")');
+await page.fill('input[aria-label="Clean tempo for Chromatic warm-up"]', '70');
+await page.click('.tempo button:has-text("Log for Chromatic warm-up")');
+await page.waitForTimeout(150);
+GD = await mod('guitar');
+check(GD.exercises.length === 1 && GD.tempo.length === 2 && GD.tempo[1].bpm === 70 && /best 70 bpm/.test(await page.innerText('.tempo')), 'tempo: an exercise and its clean speed');
+// amp settings for the song
+await page.click('.songs .seg-btn:has-text("Can play")');
+await page.click('.songs .amp-btn');
+await page.click('.amp-ed .seg-btn:has-text("Crunch")');
+await page.check('.amp-ed .fx-row:has-text("Reverb") input[type=checkbox]');
+await page.click('.amp-ed .fx-row:has-text("Reverb") .fx-red');
+await page.click('.amp-ed button:has-text("Save")');
+await page.waitForTimeout(200);
+GD = await mod('guitar');
+check(GD.songs[0].amp && GD.songs[0].amp.type === 'Crunch' && GD.songs[0].amp.reverb.on && GD.songs[0].amp.reverb.color === 'red' && /Crunch · gain noon · reverb \(red\)/.test(await page.innerText('.songs')), 'amp settings saved on the song');
 await page.screenshot({ path: path.join(OUT, 'guitar.png'), fullPage: true });
 
 // ---------------------------------------------------------------- Sourdough
@@ -2725,7 +2830,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   check(/[?&]demo/.test(tp.url()) && /Good (morning|afternoon|evening), Jordan/.test(await tp.innerText('.hero')), `demo opens without signing in: ${(await tp.innerText('.hero-title')).trim()}`);
   check((await tp.$$('.lring')).length === 4 && /Seattle, WA/.test(await tp.innerText('.weather')) && /2024 Tesla Model Y/.test(await tp.innerText('.main')), 'demo home: rings, Seattle weather, the sample car');
   const chips = await tp.innerText('.chips-row');
-  check(!/GTA/.test(chips) && !/inspection/.test(chips) && /AIF-C01 exam/.test(chips) && /to Dune/.test(chips) && /Maya’s birthday/.test(chips), `demo countdowns are the demo person's: ${chips.replace(/\n/g, ' ')}`);
+  check(!/GTA/.test(chips) && !/inspection/.test(chips) && /AI-901 exam/.test(chips) && /to Dune/.test(chips) && /Maya’s birthday/.test(chips), `demo countdowns are the demo person's: ${chips.replace(/\n/g, ' ')}`);
   const spentBefore = await tp.innerText('.money .muted.small.num');
   await tp.fill('.qa input[aria-label="Amount"]', '12.34');
   await tp.fill('.qa input[aria-label="Description"]', 'Demo test lunch');

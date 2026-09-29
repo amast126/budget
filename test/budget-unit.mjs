@@ -143,7 +143,7 @@ export async function budgetUnit(check) {
   let jwtOk = false;
   const reply = (status, body) => ({ ok: status < 300, status, json: async () => body });
   const fetchImpl = async (url, o = {}) => {
-    calls.push({ url, method: o.method || 'GET', auth: (o.headers || {}).Authorization });
+    calls.push({ url, method: o.method || 'GET', auth: (o.headers || {}).Authorization, body: o.body });
     if (url === sa.token_uri) {
       const [h, p, s] = new URLSearchParams(o.body).get('assertion').split('.');
       const claims = JSON.parse(Buffer.from(p, 'base64url').toString());
@@ -160,18 +160,23 @@ export async function budgetUnit(check) {
         return record ? reply(200, { fields: { json: { stringValue: JSON.stringify(record) } } }) : reply(404, {});
       }
       if (url.endsWith('/test-doc')) return reply(200, { fields: { json: { stringValue: JSON.stringify(withTopic) }, updatedAt: { integerValue: '1' } } });
+      if (url.endsWith('/test-doc-learning')) return reply(200, { fields: { json: { stringValue: JSON.stringify(learningDoc) } } });
       return reply(404, {});
     }
     if (url === 'https://ntfy.sh') return reply(200, {});
     return reply(404, {});
   };
+  // a booked exam a week out, so the Learning countdown goes out with the budget's alerts
+  const learningDoc = { version: 1, hoursPerWeek: 4, plan: ['ai-901'], certs: { 'ai-901': { status: 'booked', examDate: C.addDays(today, 7) } }, log: [], prep: { 'ai-901': { skills: { 'rai-fair': 2 }, modules: {}, tests: [{ id: 't1', date: today, score: 78 }] } } };
   const logs = [];
   const at = new Date(`${today}T12:03:00`);
   const env = { FIREBASE_SERVICE_ACCOUNT: JSON.stringify(sa), BUDGET_DOC: 'test-doc' };
   const r1 = await runAlerts({ env, fetchImpl, now: at, log: (s) => logs.push(s) });
   const posts = calls.filter((c) => c.url === 'https://ntfy.sh');
-  check(jwtOk && r1.status === 'ok' && r1.sent === al.length && posts.length === al.length, `alerts job: signs in with the key, reads the budget, sends ${r1.sent} to ntfy`);
-  check(record && Object.keys(record.sent).length === al.length && record.lastSent === al.length, 'alerts job remembers what it sent');
+  const exam = posts.map((p) => JSON.parse(p.body)).find((b) => /AI-901 exam in 7 days/.test(b.title));
+  check(jwtOk && r1.status === 'ok' && r1.sent === al.length + 1 && posts.length === al.length + 1, `alerts job: signs in with the key, reads the budget, sends ${r1.sent} to ntfy`);
+  check(exam && /#\/learning\?prep$/.test(exam.click) && /practice tests averaging 78%/.test(exam.message), `alerts job: the Learning exam countdown goes out too, opening Exam prep (${exam && exam.message})`);
+  check(record && Object.keys(record.sent).length === al.length + 1 && record.lastSent === al.length + 1, 'alerts job remembers what it sent');
   const r2 = await runAlerts({ env, fetchImpl, now: at, log: (s) => logs.push(s) });
   check(r2.sent === 0 && r2.due === 0, 'a second run the same day sends nothing new');
   check(logs.every((l) => !/\$|Groceries|Sam|Test Internet|dash-testtopic/.test(l)), `the public log shows counts only: “${logs[0]}”`);
