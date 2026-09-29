@@ -4,8 +4,8 @@ import { MiniBars } from './spark.jsx';
 import { celebrate } from './fx.jsx';
 import { CERTS, OPTIONAL, TIPS, SOURCES, PRICES_NOTE } from './learning-catalog.js';
 import { IS_DEMO } from './demo-flag.js';
-import { GuitarSection, GuitarHomeRow } from './guitar.jsx';
-import { PrepSection, CardsSection, cardsDue, readinessOf, DateField } from './learning-prep.jsx';
+import { GuitarSection, GuitarHomeRow, AmpHero } from './guitar.jsx';
+import { PrepSection, CardsSection, cardsDue, readinessOf, DateField, certName } from './learning-prep.jsx';
 import {
   STATUSES,
   STATUS_TEXT,
@@ -37,7 +37,7 @@ const fmtH = (h) => (h >= 10 || Number.isInteger(h) ? `${Math.round(h)}h` : `${h
 function Progress({ value, tone = 'green' }) {
   return (
     <div className="bar slim">
-      <div className={`bar-fill ${tone === 'amber' ? 'bar-ahead' : ''}`} style={{ width: `${Math.min(100, value * 100)}%` }} />
+      <div className={`bar-fill ${tone === 'amber' ? 'bar-ahead' : tone === 'done' ? 'bar-done' : ''}`} style={{ width: `${Math.min(100, value * 100)}%` }} />
     </div>
   );
 }
@@ -277,7 +277,6 @@ const SECTIONS = [
   ['cards', 'Flashcards'],
   ['guitar', 'Guitar'],
 ];
-const SUBTITLE = { prep: 'Exam prep · the date, your readiness, the course and practice tests', cards: 'Flashcards · cards you write, reviewed a few each day', guitar: 'Guitar · practice, the course, and your songs' };
 function useSection(key, fallback) {
   const fromHash = () => {
     const q = (location.hash.split('?')[1] || '').split('&')[0];
@@ -325,41 +324,120 @@ export function SectionTabs({ list, value, onChange, label }) {
   );
 }
 
-export function LearningPage({ data, mutate, error, guitar, mutateGuitar, cards, mutateCards }) {
-  const [section, setSection] = useSection('dash.learnSection', 'certs');
-  if (section !== 'certs') {
-    return (
-      <div className="home learning">
-        <header className="page-head">
-          <h1 className="page-title">Learning</h1>
-          <div className="muted">{SUBTITLE[section]}</div>
-        </header>
-        <SectionTabs list={SECTIONS} value={section} onChange={setSection} label="Learning sections" />
-        {error && section !== 'guitar' ? <div className="alert">{error}</div> : null}
-        {section === 'guitar' ? <GuitarSection data={guitar} mutate={mutateGuitar} /> : null}
-        {section === 'prep' ? data ? <PrepSection data={data} mutate={mutate} /> : <section className="card"><p className="empty">Loading…</p></section> : null}
-        {section === 'cards' ? <CardsSection cards={cards} mutate={mutateCards} learning={data} /> : null}
+// The study sections' header: where you are on the roadmap, this week's hours, readiness and cards due, over a
+// blueprint grid, with the roadmap drawn as a route along the bottom.
+function StudyHero({ data, cards, mutate }) {
+  const cur = data ? currentStep(data) : null;
+  const c = cur ? CERTS[cur] : null;
+  const st = cur ? certState(data, cur) : null;
+  const days = st && st.status === 'booked' && st.examDate ? daysUntil(st.examDate) : null;
+  const week = data ? hoursThisWeek(data) : 0;
+  const goal = data ? data.hoursPerWeek : 4;
+  const ready = data && cur ? readinessOf(data, cur) : null;
+  const due = cardsDue(cards);
+  const steps = data ? data.plan.filter((id) => CERTS[id]) : [];
+  const pct = Math.min(1, week / goal);
+  const R = 34;
+  const C = 2 * Math.PI * R;
+  const short = (id) => (CERTS[id].kind === 'cert' ? certName(id) : CERTS[id].name.split(' ')[0]);
+  return (
+    <section className="learn-hero study-hero">
+      <div className="lh-body">
+        <div className="lh-kicker">
+          <Icon name="learn" size={15} /> {IS_DEMO ? 'AI for product work' : 'Cloud & AI path'}
+        </div>
+        <h1 className="page-title lh-title">Learning</h1>
+        {c ? (
+          <p className="lh-sub">
+            <b>{short(cur)}</b>
+            {days != null ? (days < 0 ? ` · exam was ${-days} days ago` : days === 0 ? ' · exam today' : ` · exam in ${days} ${days === 1 ? 'day' : 'days'}`) : ` · ${(STATUS_TEXT[st.status] || 'Planned').toLowerCase()}`}
+          </p>
+        ) : null}
+        <div className="lh-chips">
+          <span className="lh-chip">
+            <b>{fmtH(week)}</b> of {goal}h this week
+          </span>
+          {ready != null ? (
+            <a className="lh-chip" href="#/learning?prep">
+              <b>{Math.round(ready * 100)}%</b> ready
+            </a>
+          ) : null}
+          {due ? (
+            <a className="lh-chip hot" href="#/learning?cards">
+              <b>{due}</b> {due === 1 ? 'card' : 'cards'} due
+            </a>
+          ) : null}
+          {data ? (
+            <label className="lh-chip lh-pace">
+              Pace{' '}
+              <select value={goal} onChange={(e) => mutate((d) => (d.hoursPerWeek = Number(e.target.value)), `Pace set to ${e.target.value} hours a week`)} aria-label="Study hours per week">
+                {PACES.map((p) => (
+                  <option key={p} value={p}>
+                    {p} hrs/week
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
+          {IS_DEMO ? null : (
+            <a className="lh-chip" href={NOTES_URL} target="_blank" rel="noopener">
+              Study notes <Icon name="ext" size={12} />
+            </a>
+          )}
+        </div>
       </div>
-    );
-  }
-  return <CertsPage data={data} mutate={mutate} error={error} tabs={<SectionTabs list={SECTIONS} value={section} onChange={setSection} label="Learning sections" />} />;
+      <svg className="lh-ring" viewBox="0 0 84 84" aria-hidden="true">
+        <circle cx="42" cy="42" r={R} className="lh-ring-bg" />
+        <circle cx="42" cy="42" r={R} className="lh-ring-fg" strokeDasharray={C} strokeDashoffset={C * (1 - pct)} transform="rotate(-90 42 42)" />
+        <text x="42" y="41" textAnchor="middle" className="lh-ring-n">
+          {fmtH(week)}
+        </text>
+        <text x="42" y="54" textAnchor="middle" className="lh-ring-l">
+          this week
+        </text>
+      </svg>
+      {steps.length ? (
+        <ol className="lh-route" aria-label="Roadmap">
+          {steps.map((id) => {
+            const status = statusOf(data, id);
+            return (
+              <li key={id} className={`lr-${status} ${id === cur ? 'now' : ''}`}>
+                <span className="lr-dot">{status === 'passed' ? <Icon name="check" size={11} /> : null}</span>
+                <span className="lr-code">{short(id)}</span>
+              </li>
+            );
+          })}
+        </ol>
+      ) : null}
+    </section>
+  );
 }
 
-function CertsPage({ data, mutate, error, tabs }) {
+export function LearningPage({ data, mutate, error, guitar, mutateGuitar, cards, mutateCards }) {
+  const [section, setSection] = useSection('dash.learnSection', 'certs');
+  const amp = section === 'guitar';
+  return (
+    <div className={`home learning ${amp ? 'theme-amp' : 'theme-study'}`}>
+      {amp ? <AmpHero data={guitar} /> : <StudyHero data={data} cards={cards} mutate={mutate} />}
+      <SectionTabs list={SECTIONS} value={section} onChange={setSection} label="Learning sections" />
+      {error && !amp ? <div className="alert">{error}</div> : null}
+      {section === 'certs' ? <CertsPage data={data} mutate={mutate} error={error} /> : null}
+      {section === 'guitar' ? <GuitarSection data={guitar} mutate={mutateGuitar} /> : null}
+      {section === 'prep' ? data ? <PrepSection data={data} mutate={mutate} /> : <section className="card"><p className="empty">Loading…</p></section> : null}
+      {section === 'cards' ? <CardsSection cards={cards} mutate={mutateCards} learning={data} /> : null}
+    </div>
+  );
+}
+
+function CertsPage({ data, mutate, error }) {
   const [picked, setOpen] = useState(undefined); // undefined = follow the current cert
   const open = picked === undefined ? (data ? currentStep(data) : null) : picked;
   const steps = useMemo(() => (data ? projectPlan(data) : []), [data]);
   if (!data) {
     return (
-      <div className="home">
-        <header className="page-head">
-          <h1 className="page-title">Learning</h1>
-        </header>
-        {tabs}
-        <section className="card">
-          <p className="empty">{error || 'Loading…'}</p>
-        </section>
-      </div>
+      <section className="card">
+        <p className="empty">{error ? 'Couldn’t load your progress.' : 'Loading…'}</p>
+      </section>
     );
   }
   const cur = currentStep(data);
@@ -371,38 +449,7 @@ function CertsPage({ data, mutate, error, tabs }) {
   const toggle = (id) => setOpen(open === id ? null : id);
 
   return (
-    <div className="home learning">
-      <header className="page-head">
-        <h1 className="page-title">Learning</h1>
-        <div className="muted">
-          {IS_DEMO ? 'AI for product work' : 'Cloud & AI path'} ·{' '}
-          <label className="pace">
-            <select
-              className="inline-select"
-              value={goal}
-              onChange={(e) => mutate((d) => (d.hoursPerWeek = Number(e.target.value)), `Pace set to ${e.target.value} hours a week`)}
-              aria-label="Study hours per week"
-            >
-              {PACES.map((p) => (
-                <option key={p} value={p}>
-                  {p} hrs/week
-                </option>
-              ))}
-            </select>
-          </label>
-          {IS_DEMO ? null : (
-            <>
-              {' '}
-              ·{' '}
-              <a className="link" href={NOTES_URL} target="_blank" rel="noopener">
-                Study notes
-              </a>
-            </>
-          )}
-        </div>
-      </header>
-      {tabs}
-      {error ? <div className="alert">{error}</div> : null}
+    <>
       <div className="grid">
         <div className="col">
           <section className="card">
@@ -412,7 +459,7 @@ function CertsPage({ data, mutate, error, tabs }) {
                 {fmtH(week)} of {goal}h
               </span>
             </div>
-            <Progress value={week / goal} tone={week >= goal ? 'green' : 'amber'} />
+            <Progress value={week / goal} tone={week >= goal ? 'done' : 'amber'} />
             {cur ? (
               <div className="week-row">
                 <span className="small">
@@ -544,6 +591,6 @@ function CertsPage({ data, mutate, error, tabs }) {
           </section>
         </div>
       </div>
-    </div>
+    </>
   );
 }

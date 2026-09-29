@@ -834,6 +834,67 @@ function ToolsCard({ data, mutate }) {
   );
 }
 
+// ---------------------------------------------------------------- the header: an amp
+// The Guitar section's header, drawn as an amp: a control panel whose knobs read today's playing against the daily
+// goal, the week's minutes against seven days of it, and the days played this week, a power light that's on once
+// you've played today, the streak on a little display, and the grille with where you are in the course.
+function PanelKnob({ label, value, read }) {
+  const v = Math.max(0, Math.min(10, value));
+  const ticks = Array.from({ length: 11 }, (_, i) => -150 + i * 30);
+  return (
+    <div className="ak">
+      <svg viewBox="0 0 56 56" aria-hidden="true">
+        {ticks.map((a) => (
+          <line key={a} x1="28" y1="3.5" x2="28" y2="7" className="ak-tick" transform={`rotate(${a} 28 28)`} />
+        ))}
+        <circle cx="28" cy="28" r="18" className="ak-skirt" />
+        <circle cx="28" cy="28" r="14" className="ak-cap" />
+        <line x1="28" y1="28" x2="28" y2="13.5" className="ak-ptr" transform={`rotate(${-150 + v * 30} 28 28)`} />
+      </svg>
+      <span className="ak-label">{label}</span>
+      <span className="ak-read">{read}</span>
+    </div>
+  );
+}
+export function AmpHero({ data }) {
+  const today = todayISO();
+  const goal = data ? data.goalMin : 20;
+  const mins = data ? G.minutesOn(data, today) : 0;
+  const wk = data ? G.weekSummary(data, today) : { minutes: 0, played: 0 };
+  const st = data ? G.streak(data, today) : { current: 0 };
+  const c = data ? data.course : null;
+  const grade = c ? (G.GRADES.find(([g]) => g === c.grade) || [])[1] : null;
+  return (
+    <section className="learn-hero amp-hero">
+      <div className="amp-panel">
+        <div className="amp-power">
+          <span className={`amp-led ${mins ? 'on' : ''}`} />
+          <span className="ak-label">{mins ? 'Played today' : 'Not yet today'}</span>
+        </div>
+        <div className="amp-knobs">
+          <PanelKnob label="Today" value={(mins / goal) * 10} read={G.minutesLabel(mins)} />
+          <PanelKnob label="Week" value={(wk.minutes / (goal * 7)) * 10} read={G.minutesLabel(wk.minutes)} />
+          <PanelKnob label="Days" value={(wk.played / 7) * 10} read={`${wk.played} of 7`} />
+        </div>
+        <div className="amp-lcd" role="img" aria-label={`${st.current}-day streak`}>
+          <span>Streak</span>
+          <b>{st.current}</b>
+        </div>
+      </div>
+      <div className="amp-grille">
+        <div className="lh-kicker amp-kicker">Learning</div>
+        <h1 className="page-title amp-title">Guitar</h1>
+        {c ? (
+          <p className="amp-sub">
+            {grade}, {c.grade === 4 ? 'section' : 'module'} {c.module}
+            {c.lesson ? ` · ${c.lesson}` : ''}
+          </p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 // ---------------------------------------------------------------- the section, and a line for Home
 export function GuitarSection({ data, mutate }) {
   if (!data) return <section className="card"><p className="empty">Loading…</p></section>;

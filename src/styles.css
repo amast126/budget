@@ -892,6 +892,7 @@ textarea.input { resize: vertical; font: inherit; font-size: 16px; }
 .pair-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
 .pair-name { flex: none; min-width: 70px; font: 700 14px var(--sans); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 5px 8px; cursor: pointer; color: var(--ink); }
 .pair-spark .spark { margin: 0; }
+.pair-spark { padding-right: 10px; }
 .song { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
 .songs .seg { margin-bottom: 6px; }
 .songs .add-row { margin: 10px 0 0; }
