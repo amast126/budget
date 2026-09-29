@@ -1200,6 +1200,22 @@ check(C.kitchen.length === 10 && C.kitchen.some((i) => i.name === chipText), `co
 const rows = await page.$$eval('.cooking .cook-now .rc', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
 console.log('  cook now:', rows.slice(0, 4));
 check(rows.length > 0 && /Garlic butter rice/.test(rows[0]) && /You have everything/.test(rows[0]), 'cook-with-what-you-have: your own recipe tops it (you have everything)');
+// the recipe box shows the same: what you have for each recipe and what you'd need, and can sort by it
+await page.click('.cooking .page-tabs .seg-btn:has-text("Recipes")');
+await page.waitForSelector('.rb-grid .rb-tile');
+{
+  const tiles = await page.$$eval('.rb-grid .rb-tile', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
+  const own = tiles.find((t) => /Garlic butter rice/.test(t));
+  check(own && /You have everything/.test(own) && tiles.some((t) => /Have \d+ of \d+/.test(t) && /Need: /.test(t)), `recipe box tiles show what you have and need (${tiles.filter((t) => /Need:/.test(t))[0]})`);
+  await page.selectOption('select[aria-label="Sort recipes"]', 'have');
+  await page.waitForTimeout(150);
+  const first = await page.innerText('.rb-grid .rb-tile >> nth=0');
+  check(/Garlic butter rice/.test(first), 'Fewest to buy puts the one you have everything for first');
+  await page.screenshot({ path: path.join(OUT, 'cooking-box-have.png'), fullPage: true });
+  await page.selectOption('select[aria-label="Sort recipes"]', 'recent');
+}
+await page.click('.cooking .page-tabs .seg-btn:has-text("Kitchen")');
+await page.waitForSelector('.cooking .kitchen');
 // running low → grocery list
 await page.click('.k-row:has-text("Butter") .low-btn');
 await page.waitForTimeout(150);

@@ -173,4 +173,13 @@ export async function recipeboxUnit(check) {
   check(full && /full/.test(full.message) && B.boxBytes(big) > B.MAX_BOX_BYTES, 'recipe box: refuses to grow past what one document can hold');
   const norm = B.normalizeBox({ recipes: [{ id: 'x', title: 'A' }, { id: 'x', title: 'B' }, { title: '' }, null] });
   check(norm.recipes.length === 1 && norm.recipes[0].title === 'A', 'recipe box: drops duplicates and blanks when loading');
+  // Fewest to buy: nothing missing first, then fewest missing, then the bigger share on hand; recipes with no
+  // ingredients to compare go last
+  {
+    const R = (title) => ({ id: title, title });
+    const list = [R('none'), R('two'), R('all'), R('one-a'), R('one-b')];
+    const M = { none: { total: 0, have: [], missing: [], ratio: 0 }, two: { total: 5, have: [1, 2, 3], missing: [1, 2], ratio: 0.6 }, all: { total: 4, have: [1, 2, 3, 4], missing: [], ratio: 1 }, 'one-a': { total: 3, have: [1, 2], missing: [1], ratio: 0.67 }, 'one-b': { total: 8, have: [1, 2, 3, 4, 5, 6, 7], missing: [1], ratio: 0.88 } };
+    const order = B.sortRecipes(list, 'have', (r) => M[r.id]).map((r) => r.id).join(',');
+    check(order === 'all,one-b,one-a,two,none' && B.sortRecipes(list, 'have').length === 5, `recipe box: Fewest to buy order (${order})`);
+  }
 }
