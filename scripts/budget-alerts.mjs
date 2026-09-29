@@ -1,6 +1,7 @@
 // Phone alerts for the budget, run each morning by .github/workflows/budget-alerts.yml.
 // Reads the budget document with a Firebase service account (the FIREBASE_SERVICE_ACCOUNT secret), works out what's
-// due today (bills tomorrow, categories near or over budget, payday, roommates who haven't paid, the month's wrap-up)
+// due today (bills tomorrow, categories near or over budget, payday, roommates who haven't paid, the month's wrap-up,
+// and from the Learning document, a booked exam's countdown and a Sunday study check-in)
 // and posts each to your ntfy topic (Budget → Settings → Phone alerts). Each alert goes out once: what was sent is
 // kept in trackers/<doc>-alerts. The Actions log is public, so it only ever prints counts, never amounts or names.
 import fs from 'node:fs';
@@ -8,7 +9,8 @@ import path from 'node:path';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { computeAlerts } from '../src/budget-insights.js';
+import { computeAlerts, DEFAULT_ALERTS } from '../src/budget-insights.js';
+import { learningAlerts, normalize as normalizeLearning } from '../src/learning-logic.js';
 import { normalizeBudget } from '../src/budget-core.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -69,7 +71,8 @@ async function writeDoc(fetchImpl, token, project, id, data) {
 // ntfy's JSON publishing (so titles can have any characters).
 async function publish(fetchImpl, server, topic, a, click) {
   const body = { topic, title: a.title, message: a.body, tags: String(a.tags || '').split(',').filter(Boolean), priority: a.priority || 3 };
-  if (click) body.click = click;
+  // an alert can open its own tab (#/learning?prep); otherwise the budget
+  if (click) body.click = a.click ? click.replace(/#.*$/, '') + a.click : click;
   const r = await fetchImpl(server, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   return r.ok;
 }
@@ -104,6 +107,14 @@ export async function run({ env = process.env, fetchImpl = globalThis.fetch, now
   const record = (await readDoc(fetchImpl, token, project, recordId)) || { version: 1, sent: {} };
   record.sent = record.sent || {};
   const due = computeAlerts(data, today, prefs, record.sent);
+  if ({ ...DEFAULT_ALERTS, ...prefs }.learning) {
+    try {
+      const learning = await readDoc(fetchImpl, token, project, `${docId}-learning`);
+      if (learning) due.push(...learningAlerts(normalizeLearning(learning), today, record.sent));
+    } catch {
+      log('Couldn’t read Learning, so no study alerts this time.');
+    }
+  }
   const server = env.NTFY_SERVER || 'https://ntfy.sh';
   const click = env.DASH_URL || 'https://amast126.github.io/budget/#/budget';
   let sent = 0;
