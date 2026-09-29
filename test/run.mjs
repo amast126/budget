@@ -19,6 +19,7 @@ import { recipesUnit } from './recipes-unit.mjs';
 import { recipeboxUnit } from './recipebox-unit.mjs';
 import { healthUnit } from './health-unit.mjs';
 import { steamUnit } from './steam-unit.mjs';
+import { healthSyncUnit, makeSyncText } from './healthsync-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -228,6 +229,7 @@ await recipesUnit(check);
 await recipeboxUnit(check);
 await healthUnit(check);
 await steamUnit(check);
+await healthSyncUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -1834,7 +1836,14 @@ await page.click('.sync-card .card-toggle');
 await page.click('.sync-card button:has-text("Make my link")');
 await page.waitForSelector('.sync-link');
 const syncKey = (await hDoc()).sync.key;
-check(syncKey && syncKey.length === 20 && (await page.innerText('.sync-link')).includes(`#/health-sync?k=${syncKey}&date=`), 'sync link made with a private key');
+check(syncKey && syncKey.length === 20 && (await page.innerText('.sync-link')).includes(`#/health-sync?k=${syncKey}&v=2&d=`), 'sync link start made with a private key');
+{
+  const guide = await page.innerText('.sync-card .sync-steps');
+  const tpl = await page.innerText('.sync-card .sync-template');
+  check(/Health Sync/.test(guide) && /Start Date is in the last 3 days/.test(guide) && /Heart Rate Variability/.test(guide) && /Run Immediately/.test(guide) && tpl.startsWith('#today') && /\[Workouts › Start Date\]/.test(tpl), 'the sync card walks through building the Shortcut, with the Text to paste');
+  check(!(await page.$('.sync-now')), 'no Sync now button until the Shortcut has synced (and only on an iPhone)');
+}
+await page.screenshot({ path: path.join(OUT, 'health-sync-guide.png'), fullPage: true });
 const d3 = await agoIso(3);
 await page.evaluate(([d, k]) => (location.hash = `#/health-sync?k=${k}&date=${d}&on=${d}&steps=7777`), [d3, syncKey]);
 await page.waitForSelector('.sync-page h2:text("Saved to Health")');
@@ -1852,6 +1861,41 @@ const d5 = await agoIso(5);
 await page.evaluate(([d, k]) => (location.hash = `#/health-sync?k=${k}&date=${d}&steps=4321&sleep=7:00`), [d5, syncKey]);
 await page.waitForSelector('.sync-page h2:text("Save these numbers?")');
 check(/This link is from/.test(await page.innerText('.sync-page')) && (await hDoc()).sync.count === 2, 'an old link asks before saving');
+// version 2: the Shortcut's text with the last three days. The first one shows what it found before saving.
+{
+  const yday = await agoIso(1);
+  const first = makeSyncText({ today: localToday, now: 7 * 60 + 2 }).text;
+  await page.evaluate(([k, d]) => (location.hash = `#/health-sync?k=${k}&v=2&d=${encodeURIComponent(d)}`), [syncKey, first]);
+  await page.waitForSelector('.sync-page h2:text("First sync: check these numbers")');
+  const pg = await page.innerText('.sync-page');
+  check((await page.$$('.sync-days li')).length === 3 && /Yesterday/.test(pg) && /Tennis 1h 32m · 612 cal · avg \d+ bpm/.test(pg) && /3 days · 2 nights of sleep · 2 workouts · 1 weigh-in/.test(pg) && !(await page.$('.sync-page .sync-problems')) && (await hDoc()).sync.count === 2, 'the first link from the new Shortcut shows each day and waits');
+  await page.screenshot({ path: path.join(OUT, 'health-sync-v2-first.png'), fullPage: true });
+  await page.click('.sync-page button:has-text("Save")');
+  await page.waitForSelector('.sync-page h2:text("Saved to Health")');
+  const doc = await page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-hk-' + y)), yday.slice(0, 4));
+  const hkm = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:health-hk')));
+  const tennis = hkm.workouts.find((w) => w.id === `${yday}T18:00-tennis`);
+  const hd = await hDoc();
+  check(doc.days[yday].st >= 11230 && doc.days[yday].sy === 1 && doc.days[yday].hh >= 150 && doc.days[localToday].sl && tennis && tennis.kcal === 612 && tennis.hr > 130 && hd.sync.v2At && hd.sync.count === 3 && hd.weights.some((w) => w.date === yday) /* a weigh-in already there wins */, `v2 sync saved: days, heart rate, sleep, the tennis workout, the weigh-in (hh ${doc.days[yday].hh}, sl ${!!doc.days[localToday].sl}, tennis ${JSON.stringify(tennis && { kcal: tennis.kcal, hr: tennis.hr })}, v2At ${hd.sync.v2At}, count ${hd.sync.count}, weights ${JSON.stringify(hd.weights.filter((w) => w.date === yday))})`);
+  // the next run (Sync now, later that morning) saves straight away; reopening it doesn't save twice
+  const next = makeSyncText({ today: localToday, now: 9 * 60 + 30 }).text;
+  await page.evaluate(([k, d]) => (location.hash = `#/health-sync?k=${k}&v=2&d=${encodeURIComponent(d)}`), [syncKey, next]);
+  await page.waitForSelector('.sync-page h2:text("Saved to Health")');
+  check((await hDoc()).sync.count === 4 && (await page.evaluate(() => location.hash)) === '#/health-sync?saved=1', 'after the first, links from the Shortcut save right away, and the numbers leave the address');
+  await page.reload();
+  await page.waitForSelector('.sync-page h2:text("Already saved")');
+  await page.click('.sync-page a:has-text("Open Health")');
+  await page.waitForSelector('.health-tabs');
+  check((await hDoc()).sync.count === 4, 'a reload after saving says it’s saved; Open Health goes there');
+  await page.evaluate(([k, d]) => (location.hash = `#/health-sync?k=${k}&v=2&d=${encodeURIComponent(d)}`), [syncKey, next]);
+  await page.waitForSelector('.sync-page h2:text("Already saved")');
+  check((await hDoc()).sync.count === 4, 'reopening a v2 link (Back, or an old tab) doesn’t save it again');
+  // a broken Shortcut: the page says what to fix
+  await page.evaluate((k) => (location.hash = `#/health-sync?k=${k}&v=2&d=${encodeURIComponent('#today\n2026-09-28T07:00:00-04:00\n#steps\n8123\n#hr\n70')}`), syncKey);
+  await page.waitForSelector('.sync-page .empty');
+  check(/Steps: 1 value but 0 dates/.test(await page.innerText('.sync-page')), 'a link with a missing variable says which one');
+  await page.screenshot({ path: path.join(OUT, 'health-sync-v2-problem.png') });
+}
 await go('Health');
 await page.waitForSelector('.health-tabs');
 await page.click('.health-tabs .seg-btn:has-text("Today")');
