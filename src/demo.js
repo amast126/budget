@@ -69,7 +69,7 @@ function demoKeys() {
 }
 
 // Write the sample documents the first time, after a reset, or when the sample itself changes (VERSION).
-const VERSION = 9; // 9: the new Health Sync Shortcut; 8: Steam; 7: the recipe box; 6: Health training, habits, checkups, labs, sync; 5: sample stock prices; 4: News follows; 3: adds Entertainment, Guitar, Sourdough and Birthdays; 2: the Seattle sample; 1: an earlier sample
+const VERSION = 10; // 10: exam prep, flashcards, tempo and amp settings; 9: the new Health Sync Shortcut; 8: Steam; 7: the recipe box; 6: Health training, habits, checkups, labs, sync; 5: sample stock prices; 4: News follows; 3: adds Entertainment, Guitar, Sourdough and Birthdays; 2: the Seattle sample; 1: an earlier sample
 export function seedDemo(force = false) {
   const meta = readDoc(META);
   if (!force && meta && meta.version === VERSION) return false;

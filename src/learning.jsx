@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { MiniBars } from './spark.jsx';
 import { celebrate } from './fx.jsx';
 import { CERTS, OPTIONAL, TIPS, SOURCES, PRICES_NOTE } from './learning-catalog.js';
 import { IS_DEMO } from './demo-flag.js';
 import { GuitarSection, GuitarHomeRow } from './guitar.jsx';
+import { PrepSection, CardsSection, cardsDue, readinessOf, DateField } from './learning-prep.jsx';
 import {
   STATUSES,
   STATUS_TEXT,
@@ -77,7 +78,7 @@ function StudyWeeks({ data, goal }) {
   return <MiniBars values={weeks} goal={goal} fmt={(v) => `${Math.round(v * 10) / 10}h`} label="Study hours, last 8 weeks" />;
 }
 
-export function LearningHomeCard({ data, mutate, guitar, mutateGuitar }) {
+export function LearningHomeCard({ data, mutate, guitar, mutateGuitar, cards }) {
   if (!data) return null;
   const cur = currentStep(data);
   const week = hoursThisWeek(data);
@@ -106,6 +107,7 @@ export function LearningHomeCard({ data, mutate, guitar, mutateGuitar }) {
                 {STATUS_TEXT[st.status] || 'Planned'}
                 {exam != null ? ` · exam ${exam === 0 ? 'today' : exam === 1 ? 'tomorrow' : exam > 0 ? `in ${exam} days` : `${-exam} days ago`}` : ''}
                 {` · ${fmtH(loggedHours(data, cur))} of ~${c.estHours}h`}
+                {readinessOf(data, cur) != null ? ` · ${Math.round(readinessOf(data, cur) * 100)}% ready` : ''}
               </div>
             </div>
           </div>
@@ -126,6 +128,19 @@ export function LearningHomeCard({ data, mutate, guitar, mutateGuitar }) {
           {r.c.code} renewal is open. Free online assessment, due by {dayLabel(r.expires)}.
         </p>
       ))}
+      {cards && cards.cards.length ? (
+        <div className="home-row cards-row">
+          <a className="grow plain" href="#/learning?cards">
+            <span className="bill-name">Flashcards</span>
+            <span className="muted small block">{cardsDue(cards) ? `${cardsDue(cards)} due today` : 'All caught up today'}</span>
+          </a>
+          {cardsDue(cards) ? (
+            <a className="btn quiet small" href="#/learning?cards">
+              Review
+            </a>
+          ) : null}
+        </div>
+      ) : null}
       {guitar ? <GuitarHomeRow data={guitar} mutate={mutateGuitar} /> : null}
     </section>
   );
@@ -192,13 +207,13 @@ function CertDetail({ id, data, mutate, inPlan, afterId }) {
         {status === 'booked' ? (
           <label className="field">
             <span className="small muted">Exam date</span>
-            <input className="input" type="date" value={st.examDate || ''} onChange={(e) => mutate((d) => setField(d, id, 'examDate', e.target.value))} />
+            <DateField value={st.examDate || ''} label={`${label} exam date`} onCommit={(v) => mutate((d) => setField(d, id, 'examDate', v))} />
           </label>
         ) : null}
         {status === 'passed' ? (
           <label className="field">
             <span className="small muted">Passed on</span>
-            <input className="input" type="date" value={st.passedDate || ''} onChange={(e) => mutate((d) => setField(d, id, 'passedDate', e.target.value))} />
+            <DateField value={st.passedDate || ''} label={`${label} passed on`} onCommit={(v) => mutate((d) => setField(d, id, 'passedDate', v))} />
           </label>
         ) : null}
         {status === 'passed' && c.renewYearly && st.expires ? (
@@ -258,8 +273,11 @@ function CertDetail({ id, data, mutate, inPlan, afterId }) {
 // ---------------------------------------------------------------- page
 const SECTIONS = [
   ['certs', 'Certifications'],
+  ['prep', 'Exam prep'],
+  ['cards', 'Flashcards'],
   ['guitar', 'Guitar'],
 ];
+const SUBTITLE = { prep: 'Exam prep · the date, your readiness, the course and practice tests', cards: 'Flashcards · cards you write, reviewed a few each day', guitar: 'Guitar · practice, the course, and your songs' };
 function useSection(key, fallback) {
   const fromHash = () => {
     const q = (location.hash.split('?')[1] || '').split('&')[0];
@@ -281,7 +299,18 @@ function useSection(key, fallback) {
     } catch {
       /* private mode */
     }
+    // keep the address in step, so a reload stays here and a link to another section still switches
+    if (/^#\/learning/.test(location.hash)) history.replaceState(history.state, '', `#/learning?${k}`);
   };
+  // A link to a section while you're already on Learning (Home's Review, a phone alert) switches to it.
+  useEffect(() => {
+    const on = () => {
+      const k = /^#\/learning/.test(location.hash) && fromHash();
+      if (k) choose(k);
+    };
+    window.addEventListener('hashchange', on);
+    return () => window.removeEventListener('hashchange', on);
+  }, []);
   return [sec, choose];
 }
 export function SectionTabs({ list, value, onChange, label }) {
@@ -296,17 +325,20 @@ export function SectionTabs({ list, value, onChange, label }) {
   );
 }
 
-export function LearningPage({ data, mutate, error, guitar, mutateGuitar }) {
+export function LearningPage({ data, mutate, error, guitar, mutateGuitar, cards, mutateCards }) {
   const [section, setSection] = useSection('dash.learnSection', 'certs');
-  if (section === 'guitar') {
+  if (section !== 'certs') {
     return (
       <div className="home learning">
         <header className="page-head">
           <h1 className="page-title">Learning</h1>
-          <div className="muted">Guitar · practice, the course, and your songs</div>
+          <div className="muted">{SUBTITLE[section]}</div>
         </header>
         <SectionTabs list={SECTIONS} value={section} onChange={setSection} label="Learning sections" />
-        <GuitarSection data={guitar} mutate={mutateGuitar} />
+        {error && section !== 'guitar' ? <div className="alert">{error}</div> : null}
+        {section === 'guitar' ? <GuitarSection data={guitar} mutate={mutateGuitar} /> : null}
+        {section === 'prep' ? data ? <PrepSection data={data} mutate={mutate} /> : <section className="card"><p className="empty">Loading…</p></section> : null}
+        {section === 'cards' ? <CardsSection cards={cards} mutate={mutateCards} learning={data} /> : null}
       </div>
     );
   }

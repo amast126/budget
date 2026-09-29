@@ -1700,6 +1700,7 @@ const ALERT_KINDS = [
   ['payday', 'Payday: what this paycheck covers'],
   ['roommates', 'A roommate hasn’t paid after 7 and 14 days'],
   ['monthly', 'Month wrap-up on the 1st'],
+  ['learning', 'Learning: a booked exam’s countdown, and a Sunday check-in if study is behind'],
 ];
 function AlertsCard({ data, upd, onToast, status }) {
   const a = { ...I.DEFAULT_ALERTS, ...(data.config.alerts || {}) };

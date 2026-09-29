@@ -28,7 +28,7 @@ export const CHORDS = ['A', 'D', 'E', 'Am', 'Em', 'Dm', 'G', 'C', 'F', 'Fmaj7', 
 export const pairKey = (a, b) => `${a}–${b}`;
 
 export function defaultGuitar() {
-  return { version: 1, goalMin: 20, sessions: [], course: { grade: 1, module: 1, lesson: '', done: [] }, changes: [], songs: [] };
+  return { version: 1, goalMin: 20, sessions: [], course: { grade: 1, module: 1, lesson: '', done: [] }, changes: [], songs: [], tempo: [], exercises: [] };
 }
 export function normalizeGuitar(d) {
   const base = defaultGuitar();
@@ -46,6 +46,8 @@ export function normalizeGuitar(d) {
     },
     changes: Array.isArray(d.changes) ? d.changes.filter((x) => x && x.pair && Number(x.count) >= 0) : [],
     songs: Array.isArray(d.songs) ? d.songs.filter((s) => s && s.title) : [],
+    tempo: Array.isArray(d.tempo) ? d.tempo.filter((t) => t && t.key && Number(t.bpm) > 0) : [],
+    exercises: Array.isArray(d.exercises) ? d.exercises.filter((x) => x && x.id && x.name) : [],
     updatedAt: d.updatedAt,
   };
 }
@@ -169,6 +171,120 @@ export function setSongStatus(d, id, status) {
 }
 export function removeSong(d, id) {
   d.songs = d.songs.filter((s) => s.id !== id);
+  d.tempo = (d.tempo || []).filter((t) => t.key !== `song:${id}`);
+}
+
+// ---------------------------------------------------------------- tempo
+// The speed you can play something cleanly, logged over time: songs (as "song:<id>") and exercises you name
+// ("ex:<id>"), so a song's history follows it if you rename it.
+export const MIN_BPM = 30;
+export const MAX_BPM = 240;
+export function addExercise(d, name) {
+  const n = String(name || '').trim().slice(0, 60);
+  if (!n) return null;
+  const have = d.exercises.find((x) => x.name.toLowerCase() === n.toLowerCase());
+  if (have) return have;
+  const x = { id: uid(), name: n, added: todayISO() };
+  d.exercises.push(x);
+  return x;
+}
+export function removeExercise(d, id) {
+  d.exercises = d.exercises.filter((x) => x.id !== id);
+  d.tempo = d.tempo.filter((t) => t.key !== `ex:${id}`);
+}
+// What you can log a tempo for: songs you're learning or can play, then your exercises.
+export function tempoItems(d) {
+  return [
+    ...d.songs.filter((s) => s.status !== 'want').map((s) => ({ key: `song:${s.id}`, label: s.title, sub: s.artist || 'Song' })),
+    ...d.exercises.map((x) => ({ key: `ex:${x.id}`, label: x.name, sub: 'Exercise' })),
+  ];
+}
+export function logTempo(d, key, bpm, date = todayISO()) {
+  const n = Math.round(Number(bpm));
+  if (!key || !(n >= MIN_BPM && n <= MAX_BPM)) return null;
+  const t = { id: uid(), key, bpm: n, date };
+  d.tempo.push(t);
+  d.tempo = d.tempo.slice(-3000);
+  return t;
+}
+export function removeTempo(d, id) {
+  d.tempo = d.tempo.filter((t) => t.id !== id);
+}
+// Each item's history (oldest first; a day's best when you logged it more than once), latest and best.
+export function tempoHistory(d, key) {
+  const byDay = new Map();
+  for (const t of d.tempo.filter((x) => x.key === key)) if (!byDay.has(t.date) || byDay.get(t.date).bpm < t.bpm) byDay.set(t.date, t);
+  const history = [...byDay.values()].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  if (!history.length) return null;
+  const first = history[0];
+  const last = history[history.length - 1];
+  return { history, first, last, best: Math.max(...history.map((t) => t.bpm)), gain: last.bpm - first.bpm };
+}
+
+// ---------------------------------------------------------------- amp settings (Boss Katana)
+// The panel as it is on the Katana: amp type (plus the variation button; Gen 3 adds Pushed), the tone knobs, and the
+// effects, each on or off with its level and its button's color (green, red or orange, as the Mk II manual names
+// them). On a Mk I, Booster/Mod and Delay/FX share a knob; just turn on the one you use. Knobs don't have numbers,
+// so they're saved 0–10 in half steps and shown as a clock position too (0 = 7 o'clock, 5 = noon, 10 = 5 o'clock).
+export const AMP_TYPES = ['Acoustic', 'Clean', 'Pushed', 'Crunch', 'Lead', 'Brown'];
+export const AMP_KNOBS = [
+  ['gain', 'Gain'],
+  ['volume', 'Volume'],
+  ['bass', 'Bass'],
+  ['middle', 'Middle'],
+  ['treble', 'Treble'],
+];
+export const AMP_FX = [
+  ['booster', 'Booster'],
+  ['mod', 'Mod'],
+  ['fx', 'FX'],
+  ['delay', 'Delay'],
+  ['reverb', 'Reverb'],
+];
+export const FX_COLORS = [
+  ['green', 'Green'],
+  ['red', 'Red'],
+  ['orange', 'Orange'],
+];
+const fxOff = () => ({ on: false, level: 5, color: 'green' });
+export const defaultAmp = () => ({ type: 'Clean', variation: false, gain: 5, volume: 5, bass: 5, middle: 5, treble: 5, ...Object.fromEntries(AMP_FX.map(([k]) => [k, fxOff()])), notes: '' });
+const knob = (v, d = 5) => {
+  const n = Math.round(Number(v) * 2) / 2;
+  return Number.isFinite(n) ? Math.min(10, Math.max(0, n)) : d;
+};
+export function cleanAmp(a) {
+  const base = defaultAmp();
+  const x = a && typeof a === 'object' ? a : {};
+  const out = { type: AMP_TYPES.includes(x.type) ? x.type : base.type, variation: !!x.variation, notes: String(x.notes || '').trim().slice(0, 300) };
+  for (const [k] of AMP_KNOBS) out[k] = knob(x[k]);
+  for (const [k] of AMP_FX) {
+    const f = x[k] && typeof x[k] === 'object' ? x[k] : {};
+    const color = f.color === 'yellow' ? 'orange' : f.color;
+    out[k] = { on: !!f.on, level: knob(f.level), color: FX_COLORS.some(([c]) => c === color) ? color : 'green' };
+  }
+  return out;
+}
+export function setAmp(d, songId, amp) {
+  const s = d.songs.find((x) => x.id === songId);
+  if (s) s.amp = cleanAmp(amp);
+}
+export function clearAmp(d, songId) {
+  const s = d.songs.find((x) => x.id === songId);
+  if (s) delete s.amp;
+}
+export function clockOf(v) {
+  const h = 7 + knob(v); // hours past midnight on a dial that starts at 7
+  const whole = Math.floor(h);
+  const hour = ((whole - 1) % 12) + 1;
+  const half = h - whole >= 0.5;
+  if (hour === 12 && !half) return 'noon';
+  return half ? `${hour}:30` : `${hour} o’clock`;
+}
+// "Crunch · gain 2 o’clock · reverb (red)": the song row's one-line summary.
+export function ampSummary(a) {
+  if (!a) return '';
+  const fx = AMP_FX.filter(([k]) => a[k] && a[k].on).map(([k, l]) => `${k === 'fx' ? 'FX' : l.toLowerCase()} (${a[k].color})`);
+  return [`${a.type}${a.variation ? ' variation' : ''}`, `gain ${clockOf(a.gain)}`, ...fx].join(' · ');
 }
 
 // ---------------------------------------------------------------- tuner math

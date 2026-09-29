@@ -28,6 +28,7 @@ import { defaultFun, normalizeFun, steamToAdd, addSteamGames, cleanName } from '
 import { SteamLiveCard } from './steam.jsx';
 import { normalizeSteam, normalizeLive, liveStatus } from './steam-logic.js';
 import { defaultGuitar, normalizeGuitar } from './guitar-logic.js';
+import { defaultCards, normalizeCards } from './cards-logic.js';
 import { defaultSourdough, normalizeSourdough } from './sourdough-logic.js';
 import { defaultBirthdays, normalizeBirthdays, upcoming as upcomingBirthdays } from './birthdays-logic.js';
 import { BirthdaysCard, BirthdaySheet } from './birthdays.jsx';
@@ -40,6 +41,7 @@ import budgetCss from './budget.css';
 import healthCss from './health-more.css';
 import funCss from './fun.css';
 import cookCss from './cooking.css';
+import learnCss from './learning.css';
 import { normalizeBox, defaultBox, moveMine, mineId } from './recipebox-logic.js';
 import { createPhotoStore } from './recipe-photos.js';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
@@ -64,7 +66,7 @@ trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss;
+  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss + learnCss;
   document.head.appendChild(s);
 }
 
@@ -330,7 +332,7 @@ function WatchCard({ s }) {
 let homeSeen = false;
 // A birthday this week moves the Birthdays card up next to the to-do list on phones.
 const bdaySoon = (b, today) => upcomingBirthdays(b, today, 7).length > 0;
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, box, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, steam, steamLive, guitar, mutateGuitar, sourdough, birthdays, mutateBirthdays, onBirthdays, forecast, pageSky }) {
+function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, box, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, steam, steamLive, guitar, mutateGuitar, cards, sourdough, birthdays, mutateBirthdays, onBirthdays, forecast, pageSky }) {
   const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
   const first = String((user && user.displayName) || '').split(' ')[0];
   const place = (home && home.place) || DEFAULT_PLACE;
@@ -410,7 +412,7 @@ function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning
             <AutoHomeCard auto={auto} data={data} recalls={recalls} />
           </div>
           <div className="slot o13">
-            <LearningHomeCard data={learning} mutate={mutateLearning} guitar={guitar} mutateGuitar={mutateGuitar} />
+            <LearningHomeCard data={learning} mutate={mutateLearning} guitar={guitar} mutateGuitar={mutateGuitar} cards={cards} />
           </div>
           <div className="slot o14">
             <CookingHomeCard data={cooking} recipes={recipes} sourdough={sourdough} box={box} />
@@ -621,6 +623,7 @@ const normalizeHkYearInPlace = inPlace(HK.normalizeHkYear);
 const MODULES = {
   fun: [normalizeFun, defaultFun, 'Entertainment'],
   guitar: [normalizeGuitar, defaultGuitar, 'guitar practice'],
+  cards: [normalizeCards, defaultCards, 'your flashcards'],
   sourdough: [normalizeSourdough, defaultSourdough, 'the sourdough corner'],
   birthdays: [normalizeBirthdays, defaultBirthdays, 'birthdays'],
   news: [normalizeNewsPrefs, defaultNewsPrefs, 'your saved stories'],
@@ -758,6 +761,7 @@ function App() {
   const forecast = useForecast(allowed && home ? home.place || DEFAULT_PLACE : null);
   const [fun, funError] = useModuleDoc(allowed, user, 'fun');
   const [guitar] = useModuleDoc(allowed, user, 'guitar');
+  const [cards] = useModuleDoc(allowed, user, 'cards');
   const [sourdough] = useModuleDoc(allowed, user, 'sourdough');
   const [birthdays] = useModuleDoc(allowed, user, 'birthdays');
   const [newsPrefs] = useModuleDoc(allowed, user, 'news');
@@ -1060,6 +1064,7 @@ function App() {
     mutateFun((d) => addSteamGames(d, steamToAdd(d, steam)), add.length === 1 ? `${cleanName(add[0].n)} added to Now playing` : `${add.length} Steam games added to Now playing`).finally(() => add.forEach((g) => steamAdding.current.delete(g.id)));
   }, [allowed, steam, fun]);
   const mutateGuitar = mutateDoc('guitar');
+  const mutateCards = mutateDoc('cards');
   const mutateSourdough = mutateDoc('sourdough');
   const mutateBirthdays = mutateDoc('birthdays');
   const mutateNews = mutateDoc('news');
@@ -1327,7 +1332,7 @@ function App() {
         </button>
       </SideNav>
       <main className="main" ref={mainRef}>
-        {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} guitar={guitar} mutateGuitar={mutateGuitar} /> : null}
+        {route === 'learning' ? <LearningPage data={learning} mutate={mutateLearning} error={learningError} guitar={guitar} mutateGuitar={mutateGuitar} cards={cards} mutateCards={mutateCards} /> : null}
         {route === 'cooking' ? (
           <CookingPage
             data={cooking}
@@ -1381,6 +1386,7 @@ function App() {
             steamLive={steamLive}
             guitar={guitar}
             mutateGuitar={mutateGuitar}
+            cards={cards}
             sourdough={sourdough}
             birthdays={birthdays}
             mutateBirthdays={mutateBirthdays}

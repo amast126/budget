@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from './ui.jsx';
 import { MiniBars, Sparkline } from './spark.jsx';
+import { LineChart } from './chart-kit.jsx';
 import { celebrate, centerOf } from './fx.jsx';
 import { useNow } from './pulse.jsx';
 import { dateLabel, todayISO } from './budget-logic.js';
@@ -329,6 +330,7 @@ function SongsCard({ data, mutate }) {
   const [show, setShow] = useState('learning');
   const counts = Object.fromEntries(G.SONG_STATUS.map(([k]) => [k, data.songs.filter((s) => s.status === k).length]));
   const list = data.songs.filter((s) => s.status === show);
+  const [amp, setAmp] = useState(null); // the song whose amp settings are open
   return (
     <section className="card songs">
       <div className="card-head">
@@ -345,11 +347,15 @@ function SongsCard({ data, mutate }) {
       {list.length ? (
         <ul className="list">
           {list.map((s) => (
-            <li key={s.id} className="song">
+            <li key={s.id} className={`song ${amp === s.id ? 'amp-open' : ''}`}>
               <div className="grow">
                 <div className="bill-name">{s.title}</div>
                 {s.artist ? <div className="muted small">{s.artist}</div> : null}
+                {s.amp ? <div className="small amp-sum">{G.ampSummary(s.amp)}</div> : null}
               </div>
+              <button className={`icon-btn amp-btn ${s.amp ? 'set' : ''}`} onClick={() => setAmp(amp === s.id ? null : s.id)} aria-label={`Amp settings for ${s.title}`} aria-expanded={amp === s.id} title="Amp settings">
+                <Icon name="sliders" size={16} />
+              </button>
               <select className="inline-select small" value={s.status} onChange={(e) => {
                 if (e.target.value === 'can') celebrate(centerOf(e.currentTarget));
                 mutate((d) => G.setSongStatus(d, s.id, e.target.value), e.target.value === 'can' ? `You can play ${s.title}` : undefined);
@@ -360,9 +366,26 @@ function SongsCard({ data, mutate }) {
                   </option>
                 ))}
               </select>
-              <button className="x" aria-label={`Remove ${s.title}`} onClick={() => mutate((d) => G.removeSong(d, s.id))}>
+              <button
+                className="x"
+                aria-label={`Remove ${s.title}`}
+                onClick={() => {
+                  const song = { ...s };
+                  const tempos = data.tempo.filter((t) => t.key === `song:${s.id}`);
+                  mutate((d) => G.removeSong(d, s.id), {
+                    text: `Removed ${s.title}`,
+                    undo: () =>
+                      mutate((d) => {
+                        if (d.songs.some((x) => x.id === song.id)) return;
+                        d.songs.push(song);
+                        d.tempo.push(...tempos);
+                      }, `${song.title} is back`),
+                  });
+                }}
+              >
                 ×
               </button>
+              {amp === s.id ? <AmpEditor song={s} mutate={mutate} onClose={() => setAmp(null)} /> : null}
             </li>
           ))}
         </ul>
@@ -381,6 +404,200 @@ function SongsCard({ data, mutate }) {
         <input className="input" placeholder="Song" value={f.title} onChange={(e) => setF({ ...f, title: e.target.value })} aria-label="Song title" />
         <input className="input" placeholder="Artist" value={f.artist} onChange={(e) => setF({ ...f, artist: e.target.value })} aria-label="Artist" />
         <button className="btn" type="submit" disabled={!f.title.trim()}>
+          Add
+        </button>
+      </form>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------- amp settings (Boss Katana)
+// A knob drawn as on the amp (pointer from 7 o'clock to 5 o'clock), set with the slider under it.
+function Knob({ label, value, onChange, small }) {
+  const angle = -150 + value * 30;
+  return (
+    <label className={`knob ${small ? 'small-knob' : ''}`}>
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="15" className="knob-body" />
+        <line x1="20" y1="20" x2="20" y2="8" className="knob-ptr" transform={`rotate(${angle} 20 20)`} />
+      </svg>
+      <span className="knob-label small">{label}</span>
+      <input type="range" min="0" max="10" step="0.5" value={value} onChange={(e) => onChange(Number(e.target.value))} aria-label={label} aria-valuetext={`${value} (${G.clockOf(value)})`} />
+      <span className="knob-val small muted">{G.clockOf(value)}</span>
+    </label>
+  );
+}
+function AmpEditor({ song, mutate, onClose }) {
+  const [a, setA] = useState(() => G.cleanAmp(song.amp || G.defaultAmp()));
+  const fx = (k, patch) => setA({ ...a, [k]: { ...a[k], ...patch } });
+  return (
+    <div className="amp-ed">
+      <div className="seg mini-seg amp-types" role="group" aria-label="Amp type">
+        {G.AMP_TYPES.map((t) => (
+          <button key={t} className={`seg-btn ${a.type === t ? 'on' : ''}`} aria-pressed={a.type === t} onClick={() => setA({ ...a, type: t })}>
+            {t}
+          </button>
+        ))}
+      </div>
+      <label className="check-line small">
+        <input type="checkbox" checked={a.variation} onChange={(e) => setA({ ...a, variation: e.target.checked })} /> Variation
+      </label>
+      <div className="knobs">
+        {G.AMP_KNOBS.map(([k, l]) => (
+          <Knob key={k} label={l} value={a[k]} onChange={(v) => setA({ ...a, [k]: v })} />
+        ))}
+      </div>
+      <div className="fx-rows">
+        {G.AMP_FX.map(([k, l]) => (
+          <div key={k} className={`fx-row ${a[k].on ? 'on' : ''}`}>
+            <label className="check-line small">
+              <input type="checkbox" checked={a[k].on} onChange={(e) => fx(k, { on: e.target.checked })} /> {l}
+            </label>
+            {a[k].on ? (
+              <>
+                <Knob small label="Level" value={a[k].level} onChange={(v) => fx(k, { level: v })} />
+                <div className="fx-colors" role="group" aria-label={`${l} button color`}>
+                  {G.FX_COLORS.map(([c, cl]) => (
+                    <button key={c} className={`fx-color fx-${c} ${a[k].color === c ? 'on' : ''}`} aria-label={cl} aria-pressed={a[k].color === c} title={cl} onClick={() => fx(k, { color: c })} />
+                  ))}
+                </div>
+              </>
+            ) : null}
+          </div>
+        ))}
+      </div>
+      <input className="input" placeholder="Notes: pickup, which channel it’s saved to…" value={a.notes} onChange={(e) => setA({ ...a, notes: e.target.value })} aria-label="Amp notes" />
+      <div className="plan-actions">
+        <button className="btn primary small" onClick={() => mutate((d) => G.setAmp(d, song.id, a), `Amp settings saved for ${song.title}`).then((ok) => ok && onClose())}>
+          Save
+        </button>
+        <button className="btn quiet small" onClick={onClose}>
+          Cancel
+        </button>
+        {song.amp ? (
+          <button className="btn quiet small" onClick={() => mutate((d) => G.clearAmp(d, song.id)).then((ok) => ok && onClose())}>
+            Remove
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------- tempo
+function TempoCard({ data, mutate }) {
+  const items = G.tempoItems(data).map((it) => ({ ...it, h: G.tempoHistory(data, it.key) }));
+  const [sel, setSel] = useState(null);
+  const [bpm, setBpm] = useState('');
+  const [ex, setEx] = useState('');
+  const key = items.some((i) => i.key === sel) ? sel : (items.find((x) => x.h) || items[0] || {}).key;
+  const cur = items.find((x) => x.key === key);
+  const n = Math.round(Number(bpm));
+  const valid = n >= G.MIN_BPM && n <= G.MAX_BPM;
+  const recent = cur ? data.tempo.filter((t) => t.key === cur.key).slice(-4).reverse() : [];
+  return (
+    <section className="card tempo">
+      <div className="card-head">
+        <h2 className="card-title">Tempo</h2>
+        <span className="muted small">The speed you can play it cleanly</span>
+      </div>
+      {items.length ? (
+        <>
+          <ul className="tempo-list">
+            {items.map((it) => (
+              <li key={it.key}>
+                <button className={`tempo-item ${it.key === key ? 'on' : ''}`} onClick={() => setSel(it.key)} aria-pressed={it.key === key}>
+                  <span className="grow">
+                    <span className="bill-name">{it.label}</span>
+                    <span className="muted small block">
+                      {it.sub}
+                      {it.h ? ` · best ${it.h.best} bpm` : ' · no tempo yet'}
+                    </span>
+                  </span>
+                  {it.h ? (
+                    <b className="num tempo-now">
+                      {it.h.last.bpm}
+                      <span className="small muted"> bpm</span>
+                    </b>
+                  ) : null}
+                </button>
+              </li>
+            ))}
+          </ul>
+          {cur && cur.h && cur.h.history.length > 1 ? (
+            <LineChart points={cur.h.history.map((t) => ({ t: t.date, v: t.bpm }))} fmt={(v) => `${Math.round(v)} bpm`} label={`${cur.label} tempo`} color="purple" height={140} gap={4000} dots yLabel={(v) => String(Math.round(v))} />
+          ) : null}
+          {cur && cur.h ? (
+            <p className="small">
+              {cur.label}: <b>{cur.h.last.bpm} bpm</b> on {dateLabel(cur.h.last.date)}
+              {cur.h.gain > 0 ? `, up ${cur.h.gain} since ${dateLabel(cur.h.first.date)}` : ''}.
+            </p>
+          ) : null}
+          {cur ? (
+            <form
+              className="add-row"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!valid) return;
+                const best = cur.h ? cur.h.best : 0;
+                if (n > best && best) celebrate();
+                mutate((d) => G.logTempo(d, cur.key, n), n > best && best ? `New best: ${cur.label} at ${n} bpm` : `${cur.label} at ${n} bpm`);
+                setBpm('');
+              }}
+            >
+              <input className="input num" inputMode="numeric" placeholder="bpm" value={bpm} onChange={(e) => setBpm(e.target.value.replace(/[^\d]/g, '').slice(0, 3))} aria-label={`Clean tempo for ${cur.label}`} />
+              <button className="btn" type="submit" disabled={!valid}>
+                Log for {cur.label.length > 22 ? `${cur.label.slice(0, 20)}…` : cur.label}
+              </button>
+            </form>
+          ) : null}
+          {recent.length ? (
+            <ul className="log-list small">
+              {recent.map((t) => (
+                <li key={t.id}>
+                  <span className="muted">{dateLabel(t.date)}</span> · {t.bpm} bpm
+                  <button className="x" aria-label="Remove this tempo" onClick={() => mutate((d) => G.removeTempo(d, t.id))}>
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {cur && cur.key.startsWith('ex:') ? (
+            <button
+              className="link-btn small"
+              onClick={() => {
+                const ex = data.exercises.find((x) => `ex:${x.id}` === cur.key);
+                const tempos = data.tempo.filter((t) => t.key === cur.key);
+                mutate((d) => G.removeExercise(d, ex.id), {
+                  text: `Removed ${ex.name}`,
+                  undo: () =>
+                    mutate((d) => {
+                      if (d.exercises.some((x) => x.id === ex.id)) return;
+                      d.exercises.push(ex);
+                      d.tempo.push(...tempos);
+                    }, `${ex.name} is back`),
+                });
+              }}
+            >
+              Remove this exercise
+            </button>
+          ) : null}
+        </>
+      ) : (
+        <p className="empty small">Songs you’re learning show up here. Add an exercise too, then log the speed you can play it cleanly.</p>
+      )}
+      <form
+        className="add-row"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!ex.trim()) return;
+          mutate((d) => G.addExercise(d, ex), `Added ${ex.trim()}`);
+          setEx('');
+        }}
+      >
+        <input className="input" placeholder="Exercise, e.g. Strumming pattern 1" value={ex} onChange={(e) => setEx(e.target.value)} aria-label="New exercise" />
+        <button className="btn quiet" type="submit" disabled={!ex.trim()}>
           Add
         </button>
       </form>
@@ -482,7 +699,7 @@ function Tuner() {
 }
 
 // ---------------------------------------------------------------- metronome
-function Metronome() {
+function Metronome({ data, mutate }) {
   const [bpm, setBpm] = useState(() => Number(lsGet('dash.bpm')) || 80);
   const [beats, setBeats] = useState(4);
   const [on, setOn] = useState(false);
@@ -567,11 +784,35 @@ function Metronome() {
       <button className={`btn block ${on ? '' : 'primary'}`} onClick={on ? stop : start}>
         {on ? 'Stop' : 'Start metronome'}
       </button>
+      {data ? <LogTempo data={data} mutate={mutate} bpm={bpm} /> : null}
+    </div>
+  );
+}
+// Played it cleanly at this speed? Log it for a song or exercise, straight from the metronome.
+function LogTempo({ data, mutate, bpm }) {
+  const items = G.tempoItems(data);
+  const [key, setKey] = useState('');
+  const k = items.some((i) => i.key === key) ? key : items[0] ? items[0].key : '';
+  if (!items.length) return null;
+  const it = items.find((i) => i.key === k);
+  return (
+    <div className="met-log">
+      <span className="small">Clean at {bpm}?</span>
+      <select className="inline-select small" value={k} onChange={(e) => setKey(e.target.value)} aria-label="Log the tempo for">
+        {items.map((i) => (
+          <option key={i.key} value={i.key}>
+            {i.label}
+          </option>
+        ))}
+      </select>
+      <button className="btn quiet small" onClick={() => mutate((d) => G.logTempo(d, k, bpm), `${it.label} at ${bpm} bpm`)}>
+        Log it
+      </button>
     </div>
   );
 }
 
-function ToolsCard() {
+function ToolsCard({ data, mutate }) {
   const [tool, setTool] = useState('tuner');
   return (
     <section className="card tools">
@@ -588,7 +829,7 @@ function ToolsCard() {
           ))}
         </div>
       </div>
-      {tool === 'tuner' ? <Tuner /> : <Metronome />}
+      {tool === 'tuner' ? <Tuner /> : <Metronome data={data} mutate={mutate} />}
     </section>
   );
 }
@@ -605,7 +846,8 @@ export function GuitarSection({ data, mutate }) {
       </div>
       <div className="col">
         <CourseCard data={data} mutate={mutate} />
-        <ToolsCard />
+        <ToolsCard data={data} mutate={mutate} />
+        <TempoCard data={data} mutate={mutate} />
       </div>
     </div>
   );

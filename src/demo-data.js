@@ -445,15 +445,66 @@ export function demoDocs(now = new Date()) {
   learning.hoursPerWeek = 4;
   for (let n = 130; n >= 0; n--) {
     const dow = new Date(ty, tm - 1, Number(today.slice(8, 10)) - n).getDay();
-    if ((dow === 1 || dow === 3 || dow === 6) && R() < 0.75) logTime(learning, n > 75 ? 'ai-901' : 'aws-aif', 30 + Math.round(R() * 4) * 15, addDays(today, -n));
+    if ((dow === 1 || dow === 3 || dow === 6) && R() < 0.75) logTime(learning, n > 75 ? 'aws-aif' : 'ai-901', 30 + Math.round(R() * 4) * 15, addDays(today, -n));
   }
   learning.certs = {
-    'ai-901': { status: 'passed', passedDate: addDays(today, -72) },
-    'aws-aif': { status: 'booked', examDate: addDays(today, 16) },
+    'ai-901': { status: 'booked', examDate: addDays(today, 16) },
+    'aws-aif': { status: 'passed', passedDate: addDays(today, -72) },
     python: { status: 'planned' },
     'ai-103': { status: 'planned' },
   };
+  // Exam prep for AI-901: most of the concepts rated, the first course path done, three practice tests
+  const rated = { 'rai-fair': 2, 'rai-safe': 2, 'rai-priv': 2, 'rai-incl': 1, 'rai-trans': 2, 'rai-acct': 1, 'mod-genai': 2, 'mod-pick': 1, 'wl-scen': 2, 'wl-text': 2, 'wl-speech': 1, 'wl-vision': 1, 'ga-prompts': 2, 'ga-deploy': 1, 'ga-chat': 1, 'ts-text': 1, 'cv-input': 1 };
+  const mods = ['get-started-ai-fundamentals', 'fundamentals-generative-ai', 'introduction-language', 'introduction-ai-speech', 'introduction-computer-vision', 'introduction-information-extraction', 'rag-fundamentals', 'get-started-with-ai-in-azure', 'get-started-with-generative-ai-and-agents', 'get-started-text-analysis-azure'];
+  learning.prep = {
+    'ai-901': {
+      skills: rated,
+      modules: Object.fromEntries(mods.map((m, i) => [m, addDays(today, -40 + i * 3)])),
+      tests: [
+        { id: uid(), date: addDays(today, -15), score: 64, parts: { concepts: 74, foundry: 57 } },
+        { id: uid(), date: addDays(today, -8), score: 72, parts: { concepts: 80, foundry: 66 } },
+        { id: uid(), date: addDays(today, -2), score: 81, parts: { concepts: 86, foundry: 77 } },
+      ],
+    },
+  };
   docs.learning = learning;
+
+  // Flashcards the sample person wrote for AI-901, part way through learning them
+  const fc = [
+    ['What are Microsoft’s six responsible AI principles?', 'Fairness, reliability and safety, privacy and security, inclusiveness, transparency, accountability.'],
+    ['Sentiment analysis', 'Scores text as positive, negative, neutral or mixed.'],
+    ['Entity recognition', 'Finds names of people, places, organizations, dates and other things in text.'],
+    ['Key phrase extraction', 'Pulls out the main talking points of a piece of text.'],
+    ['Speech to text vs text to speech', 'Recognition turns audio into words; synthesis turns words into spoken audio.'],
+    ['What does a system prompt do?', 'Sets the model’s role, tone and rules before the user’s message.'],
+    ['Temperature', 'How random the model’s output is: lower is more focused and repeatable, higher more varied.'],
+    ['Retrieval-augmented generation (RAG)', 'Looks up relevant documents first and gives them to the model, so answers are grounded in your data.'],
+    ['What is an AI agent?', 'A model that can use tools and take steps toward a goal, not just answer one message.'],
+    ['Multimodal model', 'Takes more than one kind of input, like text and images together.'],
+    ['OCR', 'Optical character recognition: reading printed or handwritten text from an image.'],
+    ['Image classification vs object detection', 'Classification labels the whole image; detection finds and boxes each object in it.'],
+    ['Transparency (responsible AI)', 'People should understand how a system works and what its limits are.'],
+    ['Token', 'A chunk of text (often part of a word) that a language model reads and writes.'],
+    ['Grounding', 'Tying a model’s answer to trusted source material instead of what it memorized.'],
+    ['Content Understanding', 'Foundry tool that pulls structured fields out of documents, images, audio and video.'],
+    ['Fine-tuning vs prompting', 'Fine-tuning retrains a model on your examples; prompting just gives it instructions and context.'],
+    ['Accountability (responsible AI)', 'People stay answerable for how an AI system is built and used.'],
+    ['Summarization', 'Condenses a long text into its main points.'],
+    ['Why deploy a smaller model?', 'Lower cost and faster answers when the task doesn’t need the biggest model.'],
+    ['Backlog grooming', 'Keeping the backlog ordered, sized and clear enough to plan from.'],
+    ['North-star metric', 'The one number that best captures the value a product gives its users.'],
+  ];
+  const cardList = fc.map(([front, back], i) => {
+    const deck = i >= 20 ? 'general' : 'ai-901';
+    const added = addDays(today, -24 + Math.floor(i / 3));
+    if (i >= 16 && i < 20) return { id: uid(), deck, front, back, added, due: added, interval: 0, ease: 2.5, reps: 0, lapses: 0 };
+    const interval = [1, 3, 8, 21, 26, 4][i % 6];
+    const due = addDays(today, [0, 0, -1, 9, 14, 2][i % 6]);
+    return { id: uid(), deck, front, back, added, due, interval, ease: 2.5, reps: interval > 3 ? 3 : 2, lapses: 0, last: addDays(due, -interval), first: added };
+  });
+  const cardLog = {};
+  for (let n = 13; n >= 1; n--) if (R() < 0.7) cardLog[addDays(today, -n)] = 4 + Math.round(R() * 10);
+  docs.cards = { version: 1, newPerDay: 10, cards: cardList, log: cardLog };
 
   // Cooking: a well-stocked kitchen, a recipe box, a short grocery list
   const cooking = defaultCooking();
@@ -633,6 +684,27 @@ export function demoDocs(now = new Date()) {
   ].forEach(([pair, from, to], k) => {
     for (let i = 0; i < 6; i++) changes.push({ id: uid(), date: addDays(today, -40 + i * 7 + k), pair, count: Math.round(from + ((to - from) * i) / 5 + (R() - 0.5) * 3) });
   });
+  const amp = (type, gain, fx = {}, notes = '') => ({ type, variation: false, gain, volume: 5, bass: 5.5, middle: 5, treble: 6, booster: { on: false, level: 5, color: 'green' }, mod: { on: false, level: 5, color: 'green' }, fx: { on: false, level: 5, color: 'green' }, delay: { on: false, level: 4, color: 'green' }, reverb: { on: true, level: 4, color: 'green' }, ...fx, notes });
+  const gSongs = [
+    { id: uid(), title: 'Three Little Birds', artist: 'Bob Marley', status: 'can', added: addDays(today, -50), learned: addDays(today, -30), amp: amp('Clean', 3, {}, 'Neck pickup') },
+    { id: uid(), title: 'Riptide', artist: 'Vance Joy', status: 'can', added: addDays(today, -40), learned: addDays(today, -12) },
+    { id: uid(), title: 'Blackbird', artist: 'The Beatles', status: 'learning', added: addDays(today, -10), amp: amp('Acoustic', 2, { reverb: { on: true, level: 3, color: 'red' } }) },
+    { id: uid(), title: 'Fast Car', artist: 'Tracy Chapman', status: 'learning', added: addDays(today, -8) },
+    { id: uid(), title: 'Little Wing', artist: 'Jimi Hendrix', status: 'want', added: addDays(today, -20), amp: amp('Crunch', 6.5, { booster: { on: true, level: 4, color: 'green' }, delay: { on: true, level: 3, color: 'orange' } }) },
+  ];
+  const gEx = [
+    { id: uid(), name: 'Strumming pattern 2', added: addDays(today, -30) },
+    { id: uid(), name: 'Chromatic warm-up', added: addDays(today, -30) },
+  ];
+  const gTempo = [];
+  [
+    [`song:${gSongs[2].id}`, 56, 72, 5],
+    [`song:${gSongs[3].id}`, 70, 84, 4],
+    [`ex:${gEx[0].id}`, 80, 104, 6],
+    [`ex:${gEx[1].id}`, 60, 92, 6],
+  ].forEach(([key, from, to, n]) => {
+    for (let i = 0; i < n; i++) gTempo.push({ id: uid(), key, bpm: Math.round(from + ((to - from) * i) / (n - 1) + (i && i < n - 1 ? (R() - 0.5) * 4 : 0)), date: addDays(today, -(n - 1 - i) * 5 - 1) });
+  });
   docs.guitar = {
     version: 1,
     goalMin: 20,
@@ -648,13 +720,9 @@ export function demoDocs(now = new Date()) {
       ],
     },
     changes,
-    songs: [
-      { id: uid(), title: 'Three Little Birds', artist: 'Bob Marley', status: 'can', added: addDays(today, -50), learned: addDays(today, -30) },
-      { id: uid(), title: 'Riptide', artist: 'Vance Joy', status: 'can', added: addDays(today, -40), learned: addDays(today, -12) },
-      { id: uid(), title: 'Blackbird', artist: 'The Beatles', status: 'learning', added: addDays(today, -10) },
-      { id: uid(), title: 'Fast Car', artist: 'Tracy Chapman', status: 'learning', added: addDays(today, -8) },
-      { id: uid(), title: 'Little Wing', artist: 'Jimi Hendrix', status: 'want', added: addDays(today, -20) },
-    ],
+    songs: gSongs,
+    exercises: gEx,
+    tempo: gTempo,
   };
 
   // Sourdough: a starter on the counter, fed this morning, and a few bakes

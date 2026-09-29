@@ -653,7 +653,7 @@ export function roommateDues(data, key, today = todayISO()) {
 }
 
 // ---------------------------------------------------------------- phone alerts
-export const DEFAULT_ALERTS = { bills: true, budget: true, threshold: 0.9, payday: true, roommates: true, monthly: true };
+export const DEFAULT_ALERTS = { bills: true, budget: true, threshold: 0.9, payday: true, roommates: true, monthly: true, learning: true };
 // The alerts due today. `sent` holds keys already sent, so each goes out once.
 export function computeAlerts(data, today = todayISO(), prefs = {}, sent = {}) {
   const p = { ...DEFAULT_ALERTS, ...prefs };
