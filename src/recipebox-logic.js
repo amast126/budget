@@ -935,8 +935,10 @@ export const BOX_SORT = [
   ['made', 'Most made'],
   ['quick', 'Quickest'],
   ['light', 'Fewest calories'],
+  ['have', 'Fewest to buy'],
 ];
-export function sortRecipes(list, how) {
+// matchOf(r): what you have and still need for a recipe (from the kitchen); 'have' sorts by it, fewest missing first.
+export function sortRecipes(list, how, matchOf) {
   const a = [...list];
   const num = (v, d) => (v == null ? d : v);
   const by = {
@@ -946,6 +948,12 @@ export function sortRecipes(list, how) {
     quick: (x, y) => num(x.minutes, 999) - num(y.minutes, 999) || x.title.localeCompare(y.title),
     light: (x, y) => num(calOf(x), 1e6) - num(calOf(y), 1e6) || x.title.localeCompare(y.title),
   };
+  if (how === 'have' && matchOf) {
+    const m = new Map(list.map((r) => [r, matchOf(r)]));
+    const miss = (r) => (m.get(r) && m.get(r).total ? m.get(r).missing.length : 1e3);
+    const ratio = (r) => (m.get(r) && m.get(r).total ? m.get(r).ratio : 0);
+    return a.sort((x, y) => miss(x) - miss(y) || ratio(y) - ratio(x) || x.title.localeCompare(y.title));
+  }
   return a.sort(by[how] || by.recent);
 }
 // Filter chips: favorites, each source, quick, and the most common tags.

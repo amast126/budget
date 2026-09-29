@@ -375,6 +375,26 @@ export function RecentStrip({ box }) {
 }
 
 // ---------------------------------------------------------------- the box
+// What you have for a recipe and what you'd still need, from your kitchen (as in Cook what you have).
+function Have({ m }) {
+  const n = m.missing.length;
+  return (
+    <span className="rb-have">
+      <span className="rb-have-row">
+        <span className="rb-bar" aria-hidden="true">
+          <span style={{ width: `${Math.round((m.have.length / m.total) * 100)}%` }} />
+        </span>
+        <span className={n ? 'rb-have-n' : 'rb-have-n all'}>{n ? `Have ${m.have.length} of ${m.total}` : 'You have everything'}</span>
+      </span>
+      {n ? (
+        <span className="rb-need">
+          Need: {m.missing.slice(0, 2).map(label).join(', ')}
+          {n > 2 ? ` +${n - 2} more` : ''}
+        </span>
+      ) : null}
+    </span>
+  );
+}
 function Tile({ r, m }) {
   const bits = [RB.calOf(r) != null ? `${Math.round(RB.calOf(r))} cal` : null, r.source].filter(Boolean);
   return (
@@ -396,10 +416,8 @@ function Tile({ r, m }) {
         <span className="rb-body">
           <span className="rb-title">{r.title}</span>
           {r.subtitle ? <span className="rb-sub">{r.subtitle}</span> : null}
-          <span className="rb-meta">
-            {bits.join(' · ')}
-            {m && m.total && !m.missing.length ? <span className="rb-ok"> · have it all</span> : null}
-          </span>
+          <span className="rb-meta">{bits.join(' · ')}</span>
+          {m && m.total ? <Have m={m} /> : null}
         </span>
       </a>
     </li>
@@ -412,9 +430,20 @@ export function RecipeBoxSection({ box, data, onAdd, onImport }) {
   const [limit, setLimit] = useState(PAGE);
   const filters = useMemo(() => RB.boxFilters(box.recipes), [box.recipes]);
   const f = filters.some(([k]) => k === filter) ? filter : 'all';
-  const shown = useMemo(() => RB.sortRecipes(RB.applyFilter(box.recipes, f), sort), [box.recipes, f, sort]);
   const kKeys = useMemo(() => (data ? kitchenKeys(data) : []), [data && data.kitchen]);
-  useEffect(() => setLimit(PAGE), [f, sort]);
+  const matchOf = useMemo(() => {
+    const memo = new Map();
+    return (r) => {
+      if (!kKeys.length) return null;
+      if (!memo.has(r)) memo.set(r, match(RB.asCookable(r), kKeys));
+      return memo.get(r);
+    };
+  }, [kKeys, box.recipes]);
+  // "Fewest to buy" needs a kitchen to compare with.
+  const sorts = kKeys.length ? RB.BOX_SORT : RB.BOX_SORT.filter(([k]) => k !== 'have');
+  const how = sorts.some(([k]) => k === sort) ? sort : 'recent';
+  const shown = useMemo(() => RB.sortRecipes(RB.applyFilter(box.recipes, f), how, matchOf), [box.recipes, f, how, matchOf]);
+  useEffect(() => setLimit(PAGE), [f, how]);
   return (
     <section className="card rb">
       <div className="card-head wrap">
@@ -452,8 +481,8 @@ export function RecipeBoxSection({ box, data, onAdd, onImport }) {
           ) : null}
           <div className="row-between rb-count">
             <span className="muted small">{plural(shown.length, 'recipe')}</span>
-            <select className="inline-select small" value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort recipes">
-              {RB.BOX_SORT.map(([k, l]) => (
+            <select className="inline-select small" value={how} onChange={(e) => setSort(e.target.value)} aria-label="Sort recipes">
+              {sorts.map(([k, l]) => (
                 <option key={k} value={k}>
                   {l}
                 </option>
@@ -462,7 +491,7 @@ export function RecipeBoxSection({ box, data, onAdd, onImport }) {
           </div>
           <ul className="rb-grid">
             {shown.slice(0, limit).map((r) => (
-              <Tile key={r.id} r={r} m={kKeys.length ? match(RB.asCookable(r), kKeys) : null} />
+              <Tile key={r.id} r={r} m={matchOf(r)} />
             ))}
           </ul>
           {shown.length > limit ? (
