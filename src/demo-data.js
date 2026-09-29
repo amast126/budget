@@ -13,7 +13,9 @@ import { defaultLearning, logTime } from './learning-logic.js';
 import { DEMO_PLAN } from './learning-catalog.js';
 import { defaultCooking, addKitchen, addGrocery } from './cooking-logic.js';
 import { demoBox } from './demo-recipes.js';
-import { defaultAuto, logService } from './auto-logic.js';
+import { defaultAuto, logService, addTread, addPads } from './auto-logic.js';
+import { addFill } from './auto-fuel.js';
+import { addWatch, compareWith } from './auto-costs.js';
 import { MCU } from './fun-logic.js';
 import { demoSteam } from './demo-steam.js';
 
@@ -436,7 +438,22 @@ export function demoDocs(now = new Date()) {
   auto.insuranceRenews = isoOf(new Date(ty, tm + 3, 14));
   auto.loan = { lender: 'BECU', balance: 29400, apr: 4.49 };
   logService(auto, { date: addDays(today, -190), miles: 23100, items: ['cabin', 'wipers'], cost: 139, shop: 'Tesla Service, Seattle', note: '' });
-  logService(auto, { date: addDays(today, -40), miles: 27500, items: ['rotate'], cost: 30, shop: 'Discount Tire', note: 'Tread even all around' });
+  logService(auto, { date: addDays(today, -40), miles: 27500, items: ['rotate'], cost: 30, shop: 'Discount Tire', note: 'Tread even all around', tread: 6 });
+  addPads(auto, { date: addDays(today, -40), miles: 27500, front: 9, rear: 9 });
+  // charging at home about once a week (Seattle City Light rates), ~3.5 mi/kWh; Supercharger stops are in the budget
+  let lastMiles = null;
+  for (let ago = 119, i = 0; ago >= 2; ago -= 6 + (i % 3), i++) {
+    const miles = Math.round(24300 + (4110 / 141) * (150 - ago));
+    const eff = 3.3 + ((i * 7) % 5) * 0.1;
+    const kwh = Math.round((lastMiles == null ? 180 : miles - lastMiles) / eff); // what those miles took
+    lastMiles = miles;
+    addFill(auto, { date: addDays(today, -ago), miles, qty: kwh, cost: Math.round(kwh * 0.1325 * 100) / 100, where: 'Home' });
+  }
+  auto.next.fund = { target: 20000, saved: 6500, monthly: 500 };
+  addWatch(auto, { name: 'Rivian R2', price: 45000, mpg: 3.4 });
+  addWatch(auto, { name: 'Kia EV9', price: 56000, mpg: 3 });
+  compareWith(auto, auto.next.watch[0].id);
+  Object.assign(auto.next, { down: 6500, tradeIn: 31000, apr: 5.4, term: 60 });
   docs.auto = auto;
 
   // Learning: AI for product work, one fundamentals exam passed, the next one booked

@@ -42,6 +42,7 @@ import healthCss from './health-more.css';
 import funCss from './fun.css';
 import cookCss from './cooking.css';
 import learnCss from './learning.css';
+import autoCss from './auto.css';
 import { normalizeBox, defaultBox, moveMine, mineId } from './recipebox-logic.js';
 import { createPhotoStore } from './recipe-photos.js';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
@@ -66,7 +67,7 @@ trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss + learnCss;
+  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss + learnCss + autoCss;
   document.head.appendChild(s);
 }
 
@@ -1035,9 +1036,11 @@ function App() {
   const mutateAuto = async (fn, msg) => {
     try {
       await backend.mutateModule(user, 'auto', (d) => fn(normalizeAutoInPlace(d)), defaultAuto);
-      if (msg) showToast({ text: msg });
+      if (msg) showToast(typeof msg === 'string' ? { text: msg } : msg);
+      return true;
     } catch (e) {
       showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
+      return false;
     }
   };
   const saveErr = (e) => showToast({ text: navigator.onLine === false ? 'You’re offline. Try again when you’re connected.' : `Couldn’t save: ${e.message || e}`, error: true });
@@ -1219,7 +1222,9 @@ function App() {
   const autoBudget = useMemo(() => {
     if (!data) return null;
     const s = homeSummary(data);
-    return { methods: s.methods, category: s.categoryNames.find((n) => /gas|auto/i.test(n)) || s.categoryNames[0] };
+    // the same category the Auto tab reads its car costs from; with none, it doesn't offer to add to the budget
+    const category = s.categoryNames.find((n) => /gas|auto|charging/i.test(n));
+    return category ? { methods: s.methods, category } : null;
   }, [data]);
   const onDeleteTodo = async (t) => {
     let removed = null;
@@ -1354,7 +1359,20 @@ function App() {
           <NewsPage news={news} read={read} markRead={markRead} prefs={newsPrefs} mutatePrefs={mutateNews} data={data} fun={fun} auto={auto} home={home} onToast={showToast} dark={look.dark} />
         ) : null}
         {route === 'auto' ? (
-          <AutoPage auto={auto} data={data} recalls={recalls} mutate={mutateAuto} budget={autoBudget} onAddExpense={(d) => onAdd(newTransaction(d))} error={autoError} />
+          <AutoPage
+            auto={auto}
+            data={data}
+            recalls={recalls}
+            mutate={mutateAuto}
+            budget={autoBudget}
+            onAddExpense={(d) => {
+              const t = newTransaction(d);
+              onAdd(t);
+              return t.id;
+            }}
+            error={autoError}
+            onToast={(text) => showToast({ text })}
+          />
         ) : null}
         {route === 'health' ? <HealthPage health={health} years={healthYears} hk={hk} hkYears={hkYears} act={healthAct} error={healthError} plan={cooking && cooking.plan} wx={forecast.s} /> : null}
         {route === 'health-sync' ? <HealthSyncPage health={health} hk={hk} hkYears={hkYears} years={healthYears} act={healthAct} /> : null}
