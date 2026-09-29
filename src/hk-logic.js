@@ -75,6 +75,8 @@ export function pick(d, key) {
 }
 
 // ---------------------------------------------------------------- monthly averages (for the "All" views)
+// A day the daily sync saved partway through (pt: today so far): its totals wait for the whole day.
+const PARTIAL = new Set(['st', 'di', 'fl', 'ae', 'ab', 'ex', 'sh', 'wat', 'mm', 'caf', 'ha', 'dl']);
 const MONTH_AVG = ['st', 'di', 'fl', 'ae', 'ab', 'ex', 'sh', 'dl', 'rhr', 'hrv', 'whr', 'ha', 'o2', 'rr', 'ws', 'wl', 'wd', 'wa', 'su', 'sd', 'hp', 'hpm', 'en'];
 const MONTH_SUM = ['hre', 'lre', 'ire', 'lde', 'hpe', 'hw', 'cy', 'mm'];
 const rnd = (v, k) => (['di', 'o2', 'rr', 'ws', 'wl', 'wd', 'wa', 'su', 'sd', 'cy'].includes(k) ? Math.round(v * 100) / 100 : Math.round(v));
@@ -85,13 +87,13 @@ export function monthsFrom(days) {
     const m = iso.slice(0, 7);
     const a = (acc[m] = acc[m] || { sums: {}, ns: {}, rings: [0, 0, 0, 0], sl: { a: [0, 0], c: [0, 0], d: [0, 0], r: [0, 0], s: [0, 0], e: [0, 0] } });
     for (const k of MONTH_AVG) {
-      if (d[k] != null) {
+      if (d[k] != null && !(d.pt && PARTIAL.has(k))) {
         a.sums[k] = (a.sums[k] || 0) + d[k];
         a.ns[k] = (a.ns[k] || 0) + 1;
       }
     }
     for (const k of MONTH_SUM) if (d[k]) a.sums[k] = (a.sums[k] || 0) + d[k];
-    const r = ringsOf(d);
+    const r = d.pt ? null : ringsOf(d);
     if (r) {
       a.rings[3]++;
       r.closed.forEach((c, i) => c && a.rings[i]++);
@@ -149,7 +151,7 @@ export function seriesOf(hk, hkYears, key, range, today = todayISO()) {
   }
   const from = addDays(today, -range + 1);
   return daysBetween(hkYears, from, today)
-    .map(({ iso, d }) => ({ t: iso, v: pick(d, key) }))
+    .map(({ iso, d }) => ({ t: iso, v: d && d.pt && PARTIAL.has(key) ? null : pick(d, key) }))
     .filter((p) => p.v != null);
 }
 // Latest reading of a daily key: from loaded days, then from monthly averages.
@@ -241,7 +243,19 @@ export function planImport(bundle) {
           // Each day from the file replaces the same fields already saved; anything else there (water and
           // caffeine from the daily sync, say) stays.
           const out = { ...(doc.days || {}) };
-          for (const iso in days) out[iso] = { ...(out[iso] || {}), ...days[iso] };
+          for (const iso in days) {
+            const cur = { ...(out[iso] || {}) };
+            // The file has the whole day now: drop the sync's "today so far" mark, and its reading counts for
+            // whatever the file brings (so a later sync doesn't take a partial average over the file's full one).
+            delete cur.pt;
+            if (cur.sc) {
+              const sc = { ...cur.sc };
+              for (const k of Object.keys(sc)) if (days[iso][k === 'hr' ? 'ha' : k] != null) delete sc[k];
+              if (Object.keys(sc).length) cur.sc = sc;
+              else delete cur.sc;
+            }
+            out[iso] = { ...cur, ...days[iso] };
+          }
           doc.days = out;
         },
       ])

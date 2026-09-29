@@ -560,7 +560,7 @@ export function demoDocs(now = new Date()) {
     ['tc', 540, 212], ['ldl', 540, 128], ['hdl', 540, 58], ['tg', 540, 110], ['vitd', 540, 22], ['a1c', 540, 5.3],
     ['tc', 170, 196], ['ldl', 170, 112], ['hdl', 170, 61], ['tg', 170, 96], ['vitd', 170, 31], ['a1c', 170, 5.2], ['tsh', 170, 1.9],
   ].map(([test, ago, value], i) => ({ id: `lab${i}`, test, date: addDays(today, -ago), value }));
-  health.sync = { key: 'demo0sample0key0000x', lastAt: Date.now() - 2 * 3600e3, lastDate: addDays(today, -1), count: 23 };
+  health.sync = { key: 'demo0sample0key0000x', lastAt: Date.now() - 2 * 3600e3, lastDate: today, count: 23, v2At: Date.now() - 20 * 86400e3 };
 
   docs.health = health;
   docs[`health-${year}`] = years[year];

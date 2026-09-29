@@ -8,6 +8,7 @@ import { uid, todayISO, addDays, sum } from './budget-logic.js';
 import { getDay, dayOf, totals, targets, latestWeight, GOALS, ageOf } from './health-logic.js';
 import { hkDay, fmtMins } from './hk-logic.js';
 import { dayLoad } from './health-training.js';
+import { parseSyncText, planSyncText, syncTextSummary } from './health-sync.js';
 
 const r1 = (n) => Math.round(n * 10) / 10;
 const n0 = (n) => Math.round(Number(n) || 0).toLocaleString('en-US');
@@ -112,6 +113,12 @@ const inRange = (v, [lo, hi]) => v != null && v >= lo && v <= hi;
 export function parseSync(query, today = todayISO()) {
   const q = new URLSearchParams(String(query || '').replace(/^.*?\?/, ''));
   const get = (k) => q.get(k);
+  // Version 2: the last few days as text (see health-sync.js).
+  if (get('v') === '2' || q.has('d')) {
+    const blob = get('d') || '';
+    const t = parseSyncText(blob, today);
+    return { ...t, key: get('k') || '', dry: get('dry') === '1', link: `v2:${hashText(blob)}`, date: t.last || t.today, on: t.today, onGiven: true, act: {}, morn: {}, sl: null, weight: null };
+  }
   const date = parseDate(get('date'), addDays(today, -1));
   const on = parseDate(get('on'), today);
   const act = {};
@@ -181,6 +188,7 @@ export function parseSync(query, today = todayISO()) {
 }
 // The changes to each document. Days keep whatever else is already saved there (an import's heart-rate range, say).
 export function planSync(s) {
+  if (s.v === 2) return planSyncText(s);
   const years = {};
   const put = (iso, fn) => {
     const y = iso.slice(0, 4);
@@ -238,12 +246,26 @@ export function planSync(s) {
     },
   };
 }
+// A short fingerprint of a link, so opening it again (a reload, Back) is recognized without storing the whole thing.
+export function hashText(str) {
+  let h1 = 0xdeadbeef;
+  let h2 = 0x41c6ce57;
+  for (let i = 0; i < str.length; i++) {
+    const c = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ c, 2654435761);
+    h2 = Math.imul(h2 ^ c, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
 export const newSyncKey = () => Array.from({ length: 20 }, () => 'abcdefghjkmnpqrstuvwxyz23456789'[Math.floor(Math.random() * 31)]).join('');
 export function syncTemplate(base, key) {
   const p = ['k=' + key, 'date=[Yesterday]', 'steps=[Steps]', 'active=[Active]', 'resting=[Resting]', 'exercise=[Exercise]', 'stand=[Stand]', 'sleep=[Sleep]', 'bed=[Bedtime]', 'wake=[Wake]', 'hrv=[HRV]', 'rhr=[Resting HR]', 'weight=[Weight]', 'water=[Water]'];
   return `${base}#/health-sync?${p.join('&')}`;
 }
 export function syncSummary(s) {
+  if (s.v === 2) return syncTextSummary(s);
   const bits = [];
   if (s.act.st) bits.push(`${n0(s.act.st)} steps`);
   if (s.act.ae) bits.push(`${n0(s.act.ae)} active cal`);

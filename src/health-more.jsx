@@ -7,6 +7,7 @@ import { dateLabel } from './budget-logic.js';
 import { MEALS, totals, todayISO, addDays, targets } from './health-logic.js';
 import { fmtMins, clock } from './hk-logic.js';
 import * as M from './health-more.js';
+import * as S from './health-sync.js';
 
 const n0 = (n) => (n == null ? '—' : Math.round(Number(n)).toLocaleString());
 const g1 = (n) => {
@@ -428,69 +429,174 @@ export function SaveMealForm({ meal, onSave, onCancel }) {
 
 // ---------------------------------------------------------------- daily sync from the iPhone
 const SITE = () => `${location.origin}${location.pathname}`;
-function copyText(text) {
-  try {
-    navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    return false;
-  }
+// Only an iPhone or iPad can run the Shortcut.
+export const canRunShortcuts = () => typeof navigator !== 'undefined' && (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+const syncedText = (at) => new Date(at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+// "Sync now": opens the Shortcuts app, which reads Health and opens the sync link back here.
+export function SyncNow({ health, small }) {
+  const sync = (health && health.sync) || {};
+  if (!sync.v2At || !canRunShortcuts()) return null;
+  return (
+    <a className={`btn ${small ? 'quiet small' : 'small'} sync-now`} href={S.runShortcutUrl()} title={`Runs the ${S.SHORTCUT_NAME} shortcut`}>
+      <Icon name="sync" size={small ? 15 : 16} /> {small ? 'Sync' : 'Sync now'}
+    </a>
+  );
 }
-export const SHORTCUT_STEPS = [
-  'In the Shortcuts app on your iPhone, go to Automation, tap +, choose Time of Day, set 8:00 AM Daily, pick Run Immediately, then New Blank Automation.',
-  'Dates: add Date (Current Date), then Adjust Date → Get Start of Day (this is Today), then Adjust Date → Subtract 1 day from Today (this is Yesterday).',
-  'Yesterday’s totals: Find Health Samples where Type is Steps and Start Date is between Yesterday and Today, Group By Day, then Get Details of Health Sample → Value. Repeat for Active Energy, Resting Energy, Exercise Minutes, Stand Hours and Water.',
-  'Last night: Find Health Samples where Type is Sleep Analysis, Start Date is after Yesterday + 18 hours, Value is not In Bed and not Awake, sorted by Start Date (oldest first). Get Details → Duration, then Calculate Statistics → Sum: that’s sleep. The first sample’s Start Date is bed and the last one’s End Date is wake.',
-  'This morning: Find Health Samples for Heart Rate Variability, sorted newest first, Limit 1, then Get Details → Value. Same for Resting Heart Rate and Weight.',
-  'Add a Text action with your link below. Replace each [Name] with the matching result (tap it to insert the variable). For date, use Format Date on Yesterday with the custom format yyyy-MM-dd; for bed and wake, Format Date with HH:mm.',
-  'Finish with Open URLs on that Text. Try it once with &dry=1 added to the end: the page shows what it would save without saving. Leave out anything you don’t want; every value is optional. Safari needs to be signed in to the dashboard once.',
+function CopyButton({ text, label, quiet }) {
+  const [done, setDone] = useState(null); // null | 'ok' | 'no'
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setDone('ok');
+    } catch {
+      setDone('no');
+    }
+    setTimeout(() => setDone(null), 2500);
+  };
+  return (
+    <button className={`btn small${quiet ? ' quiet' : ''}`} onClick={copy}>
+      {done === 'ok' ? 'Copied' : done === 'no' ? 'Couldn’t copy: press and hold the text' : label}
+    </button>
+  );
+}
+// The Find Health Samples actions: [Type, Group By]
+export const FINDS = [
+  ['Steps', 'Day'],
+  ['Active Energy', 'Day'],
+  ['Exercise Minutes', 'Day'],
+  ['Heart Rate', 'None'],
+  ['Resting Heart Rate', 'None'],
+  ['Heart Rate Variability', 'None'],
+  ['Sleep Analysis', 'None'],
+  ['Workouts', 'None'],
 ];
+export const FINDS_EXTRA = [
+  ['Resting Energy', 'Day'],
+  ['Walking + Running Distance', 'Day'],
+  ['Flights Climbed', 'Day'],
+  ['Weight', 'None'],
+];
+function ShortcutGuide({ sync }) {
+  const start = S.linkStart(SITE(), sync.key);
+  const template = S.templateText();
+  const extras = S.templateText(S.TEXT_EXTRAS);
+  return (
+    <ol className="sync-steps small">
+      <li>
+        <b>Make the shortcut.</b> In the Shortcuts app, tap <b>+</b> and name it <b>{S.SHORTCUT_NAME}</b>, spelled exactly like that so the Sync now button can find it.
+      </li>
+      <li>
+        <b>Add the first search.</b> Add <b>Find Health Samples</b>. Set Type to <b>Steps</b>, add the filter <b>Start Date is in the last 3 days</b>, and set <b>Group By</b> to <b>Day</b>.
+      </li>
+      <li>
+        <b>Duplicate it for the rest.</b> Press and hold the action, tap <b>Duplicate</b>, and change the Type (and Group By) to each of these, in any order:
+        <table className="sync-finds">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Group By</th>
+            </tr>
+          </thead>
+          <tbody>
+            {FINDS.slice(1).map(([t, g]) => (
+              <tr key={t}>
+                <td>{t}</td>
+                <td>{g}</td>
+              </tr>
+            ))}
+            {FINDS_EXTRA.map(([t, g]) => (
+              <tr key={t} className="muted">
+                <td>{t} (optional)</td>
+                <td>{g}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        Group By None means no grouping: those send every reading, so the dashboard can work out each day’s lowest and highest heart rate and each workout’s average.
+      </li>
+      <li>
+        <b>Add a Text action</b> and paste this in:
+        <pre className="sync-template">{template}</pre>
+        <div className="plan-actions">
+          <CopyButton text={template} label="Copy text" />
+          <CopyButton text={extras} label="Copy optional lines" quiet />
+        </div>
+        Then swap each <b>[bracketed]</b> line for its variable:
+        <ul className="sync-sub">
+          <li>
+            Delete the placeholder, tap <b>Select Variable</b> above the keyboard, and tap the result under the matching Find action. Current Date is in the Select Variable list.
+          </li>
+          <li>
+            Tap the bubble you just added and pick the part after the <b>›</b> (Value, Start Date, End Date, Source). For workouts pick <b>Workout Type</b> (it may be called Workout Activity Type or Name, not plain Type), and for calories <b>Active Energy</b>.
+          </li>
+          <li>
+            Keep <b>#end</b> as the last line. If you added the optional searches, paste the optional lines just above <b>#hr</b> and fill them in the same way.
+          </li>
+          <li className="muted">Optional: set each date bubble’s Date Format to ISO 8601 with Include ISO 8601 Time on. The default format works too; ISO makes the link a little shorter.</li>
+        </ul>
+      </li>
+      <li>
+        <b>Add URL Encode.</b> It picks up the Text on its own.
+      </li>
+      <li>
+        <b>Add a second Text</b> with your link start, then insert <b>URL Encoded Text</b> right after <code>d=</code> with no space:
+        <code className="sync-link">{start}</code>
+        <div className="plan-actions">
+          <CopyButton text={start} label="Copy link start" />
+        </div>
+      </li>
+      <li>
+        <b>Add Open URLs</b> and run the shortcut once. Allow Health access for everything it asks about. The first time, this page shows what it found and asks before saving, so you can check the numbers.
+      </li>
+      <li>
+        <b>Run it every morning.</b> On the Automation tab, tap <b>+</b>, choose <b>Time of Day</b>, pick a time you’re usually on your phone, Daily, and <b>Run Immediately</b>. Then choose <b>{S.SHORTCUT_NAME}</b>. An iPhone only lets Shortcuts read Health while it’s unlocked, so if a run happens while it’s locked, the next run fills in the missed day: every run sends the last 3 days.
+      </li>
+    </ol>
+  );
+}
 export function SyncCard({ health, hk, mutateHealth }) {
   const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
   const sync = health.sync || {};
-  const link = sync.key ? M.syncTemplate(SITE(), sync.key) : '';
-  const last = sync.lastAt ? new Date(sync.lastAt) : null;
+  const last = sync.lastAt ? syncedText(sync.lastAt) : null;
   return (
     <section className="card sync-card">
       <button className="step-head card-toggle" onClick={() => setOpen(!open)} aria-expanded={open}>
         <span className="grow">
           <span className="card-title">Daily sync from iPhone</span>
-          <span className="muted small block">{last ? `Last synced ${last.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}` : 'A Shortcut that sends yesterday’s numbers every morning'}</span>
+          <span className="muted small block">
+            {last ? `Last synced ${last}` : 'A Shortcut that sends Apple Health here every morning'}
+            {sync.problems && sync.problems.length ? ' · needs a look' : ''}
+          </span>
         </span>
         <Icon name={open ? 'down' : 'chev'} size={18} />
       </button>
       {open ? (
         <div className="sync-body">
           <p className="small">
-            An iPhone Shortcut can read Apple Health each morning and open a link that saves steps, calories, exercise, stand hours, last night’s sleep, HRV, resting heart rate, weight and water here. That feeds readiness, the sleep and activity charts, and your habits without a full export. The full export is still the way to bring in workouts with heart-rate zones, ECGs and routes.
+            An iPhone Shortcut reads Apple Health and opens a link that saves it here: steps, calories and exercise, heart rate through the day (average, lowest, highest), resting heart rate and HRV, each night’s sleep with its stages, and workouts with calories and average heart rate. It runs on its own every morning, and <b>Sync now</b> runs it whenever you want today’s numbers so far (the button is at the top of the Health tab on your iPhone once the Shortcut has synced). Each run sends the last 3 days, so a missed morning fills itself in.
           </p>
+          {sync.problems && sync.problems.length ? (
+            <div className="alert small sync-problems">
+              <b>The last sync had trouble with part of the Shortcut:</b>
+              <ul>
+                {sync.problems.map((x, i) => (
+                  <li key={i}>{x}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           {sync.key ? (
             <>
-              <h3 className="k-head">Your link</h3>
-              <code className="sync-link">{link}</code>
+              <h3 className="k-head">Set up the Shortcut (about 15 minutes)</h3>
+              <ShortcutGuide sync={sync} />
+              <p className="muted small note">Your link start carries a private key (k=…). A link without it asks before saving, so nobody can slip numbers into your log by sending you a link. Safari needs to be signed in to the dashboard once.</p>
               <div className="plan-actions">
-                <button
-                  className="btn small"
-                  onClick={() => {
-                    setCopied(copyText(link));
-                    setTimeout(() => setCopied(false), 2500);
-                  }}
-                >
-                  {copied ? 'Copied' : 'Copy link'}
-                </button>
                 <button className="btn quiet small" onClick={() => mutateHealth((h) => (h.sync = { ...(h.sync || {}), key: M.newSyncKey() }))}>
                   New key
                 </button>
+                <span className="muted small">A new key means pasting the new link start into the Shortcut.</span>
               </div>
-              <p className="muted small note">The key (k=…) marks links your Shortcut made. A link without it asks before saving, so nobody can slip numbers into your log by sending you a link. A new key means updating the Shortcut.</p>
-              <h3 className="k-head">Set up the Shortcut</h3>
-              <ol className="sync-steps small">
-                {SHORTCUT_STEPS.map((s) => (
-                  <li key={s}>{s}</li>
-                ))}
-              </ol>
-              {sync.count ? <p className="muted small">{plural(sync.count, 'sync')} so far{sync.lastDate ? `, the latest for ${shortDate(sync.lastDate)}` : ''}.</p> : null}
+              {sync.count ? <p className="muted small">{plural(sync.count, 'sync')} so far{sync.lastDate ? `, the latest through ${shortDate(sync.lastDate)}` : ''}.</p> : null}
             </>
           ) : (
             <button className="btn primary" onClick={() => mutateHealth((h) => (h.sync = { ...(h.sync || {}), key: M.newSyncKey() }))}>
@@ -500,6 +606,65 @@ export function SyncCard({ health, hk, mutateHealth }) {
         </div>
       ) : null}
     </section>
+  );
+}
+const dayName = (iso) => {
+  const t = todayISO();
+  if (iso === t) return 'Today (so far)';
+  if (iso === addDays(t, -1)) return 'Yesterday';
+  return new Date(`${iso}T12:00:00`).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+};
+// Each day the link had, newest first.
+function SyncDays({ parsed }) {
+  const rows = S.syncDays(parsed);
+  if (!rows.length) return null;
+  return (
+    <ul className="sync-days">
+      {rows.map((r) => (
+        <li key={r.iso}>
+          <b>{dayName(r.iso)}</b>
+          {r.lines.map((l, i) => (
+            <span key={i} className="small block">
+              {l}
+            </span>
+          ))}
+          {r.workouts.map((w, i) => (
+            <span key={`w${i}`} className="small block sync-workout">
+              {w}
+            </span>
+          ))}
+        </li>
+      ))}
+    </ul>
+  );
+}
+function SyncProblems({ parsed, quiet }) {
+  const p = parsed.problems || [];
+  const skipped = parsed.skipped || [];
+  return (
+    <>
+      {p.length ? (
+        <div className={quiet ? 'muted small sync-problems' : 'alert small sync-problems'}>
+          <b>Check the Shortcut:</b>
+          <ul>
+            {p.map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      {skipped.length ? <p className="muted small">Skipped (didn’t look right): {skipped.join(', ')}.</p> : null}
+      {parsed.v === 2 && parsed.found && parsed.found.length ? (
+        <details className="sync-found small">
+          <summary>What the link had</summary>
+          <ul>
+            {parsed.found.map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+    </>
   );
 }
 // The page the Shortcut opens: save, say what was saved, then offer the Health tab.
@@ -516,10 +681,17 @@ export function HealthSyncPage({ health, hk, hkYears, years, act }) {
   const [err, setErr] = useState('');
   const started = useRef(null);
   const ready = !!(health && hk);
+  const v2 = parsed.v === 2;
+  // Once a v2 link is in, take its numbers out of the address, so the tab and history don't keep them; a reload
+  // then just says it's saved.
+  const forget = () => {
+    if (v2 && /[?&]d=/.test(location.hash)) history.replaceState(history.state, '', '#/health-sync?saved=1');
+  };
   const save = async () => {
     setState('saving');
     try {
       await act.applySync(parsed);
+      forget();
       setState('done');
     } catch (e) {
       setErr(e.message || String(e));
@@ -530,17 +702,26 @@ export function HealthSyncPage({ health, hk, hkYears, years, act }) {
     if (!ready || started.current === hash) return;
     started.current = hash;
     setWhy('');
+    if (/[?&]saved=1/.test(hash)) return setState('dup');
     if (!parsed.count) return setState('empty');
     if (parsed.dry) return setState('confirm');
     // Opened again (a reload, or Back from Health): it's already in.
-    if (health.sync && health.sync.lastLink && health.sync.lastLink === parsed.link) return setState('dup');
+    if (health.sync && health.sync.lastLink && health.sync.lastLink === parsed.link) {
+      forget();
+      return setState('dup');
+    }
     const key = health.sync && health.sync.key;
     if (!key || key !== parsed.key) {
       setWhy('key');
       return setState('confirm');
     }
+    // The first link from the new Shortcut: show what it found before anything is saved.
+    if (v2 && !health.sync.v2At) {
+      setWhy('first');
+      return setState('confirm');
+    }
     // An old link opened days later would put "last night" on the wrong night.
-    if (!parsed.onGiven && parsed.date < addDays(todayISO(), -2)) {
+    if (!v2 && !parsed.onGiven && parsed.date < addDays(todayISO(), -2)) {
       setWhy('old');
       return setState('confirm');
     }
@@ -548,6 +729,7 @@ export function HealthSyncPage({ health, hk, hkYears, years, act }) {
   }, [ready, hash]);
   const bits = M.syncSummary(parsed);
   const r = state === 'done' && hkYears ? M.readiness({ health, hk, hkYears, years }, todayISO()) : null;
+  const title = parsed.dry ? 'Preview' : why === 'first' ? 'First sync: check these numbers' : 'Save these numbers?';
   return (
     <div className="home health">
       <header className="page-head">
@@ -558,25 +740,35 @@ export function HealthSyncPage({ health, hk, hkYears, years, act }) {
         {state === 'empty' ? (
           <>
             <p className="empty">This link didn’t have any numbers in it.</p>
-            <p className="muted small">Check that the Shortcut puts each value after its name, like steps=8123&amp;sleep=7:12. Values that come out blank are skipped.</p>
+            {v2 ? <SyncProblems parsed={parsed} /> : null}
+            <p className="muted small">{v2 ? 'Check the Text action in the Shortcut: each #section line, with its variables on the lines under it.' : 'Check that the Shortcut puts each value after its name, like steps=8123&sleep=7:12. Values that come out blank are skipped.'}</p>
           </>
         ) : null}
         {state === 'confirm' ? (
           <>
-            <h2 className="card-title">{parsed.dry ? 'Preview' : 'Save these numbers?'}</h2>
+            <h2 className="card-title">{title}</h2>
             <p className="small">{bits.join(' · ')}</p>
-            <p className="muted small">
-              Activity for {longDate(parsed.date)}; sleep and morning readings for {longDate(parsed.on)}.
-            </p>
+            {v2 ? <SyncDays parsed={parsed} /> : <p className="muted small">Activity for {longDate(parsed.date)}; sleep and morning readings for {longDate(parsed.on)}.</p>}
             {why === 'key' ? <p className="alert small">This link doesn’t carry your sync key, so it may not be from your Shortcut. Only save it if you made it.</p> : null}
             {why === 'old' ? <p className="alert small">This link is from {longDate(parsed.date)}. Saving it now would put its sleep and morning readings on today.</p> : null}
+            {why === 'first' ? <p className="small">If these look like your numbers, save them. From now on, links from your Shortcut save right away.</p> : null}
+            {parsed.dry ? <p className="muted small">Nothing was saved. Take dry=1& out of the link in the Shortcut to save for real.</p> : null}
+            {v2 ? <SyncProblems parsed={parsed} /> : null}
             <div className="plan-actions">
               {!parsed.dry ? (
                 <button className="btn primary" onClick={save}>
                   Save
                 </button>
               ) : null}
-              <a className="btn quiet" href="#/health">
+              <a
+                className="btn quiet"
+                href="#/health"
+                onClick={(e) => {
+                  if (!v2) return;
+                  e.preventDefault();
+                  location.replace('#/health');
+                }}
+              >
                 {parsed.dry ? 'Close' : 'Don’t save'}
               </a>
             </div>
@@ -586,7 +778,8 @@ export function HealthSyncPage({ health, hk, hkYears, years, act }) {
           <>
             <h2 className="card-title">Saved to Health</h2>
             <p className="small">{bits.join(' · ')}</p>
-            {parsed.skipped.length ? <p className="muted small">Skipped (didn’t look right): {parsed.skipped.join(', ')}.</p> : null}
+            {v2 ? <SyncDays parsed={parsed} /> : null}
+            {v2 ? <SyncProblems parsed={parsed} quiet /> : parsed.skipped.length ? <p className="muted small">Skipped (didn’t look right): {parsed.skipped.join(', ')}.</p> : null}
             {r ? (
               <div className="rd-top">
                 <ReadinessDial score={r.score} level={r.level} size={52} />

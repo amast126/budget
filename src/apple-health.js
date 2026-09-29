@@ -175,7 +175,7 @@ const READINGS = {
   [`${Q}HeartRateRecoveryOneMinute`]: 'hrr',
   [`${Q}Height`]: 'height',
 };
-const WORKOUT_NAMES = {
+export const WORKOUT_NAMES = {
   Walking: 'walk',
   Running: 'run',
   Cycling: 'bike',
@@ -565,7 +565,7 @@ function sumHourly(byHour) {
   return out;
 }
 
-function sleepNight(night, bySource) {
+export function sleepNight(night, bySource) {
   // Prefer the source that tracks sleep stages (the Watch), then whichever recorded the most sleep.
   let best = null;
   for (const src in bySource) {
@@ -601,7 +601,7 @@ function sleepNight(night, bySource) {
   return out;
 }
 
-function hrInWindow(st, a, b) {
+export function hrInWindow(st, a, b) {
   // Heart-rate samples come in time order per source; a binary search on the merged list is plenty here.
   const T = st.hrT;
   let lo = 0;
@@ -626,7 +626,7 @@ function hrInWindow(st, a, b) {
 
 // Minutes at each heart rate during a workout, in 5 bpm bins: [first bin's bpm, minutes, minutes, …]. Each sample
 // counts until the next one (at most a minute), so zones can be worked out later for any max heart rate.
-function hrHist(st, a, b) {
+export function hrHist(st, a, b) {
   const T = st.hrT;
   const s = a / 1000;
   const e = b / 1000;

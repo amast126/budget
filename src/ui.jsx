@@ -42,6 +42,7 @@ export function Icon({ name, size = 22, fill = false }) {
     cart: 'M3.5 4.5h2l2 10.5h10l2-7.5H7M9.5 19.5h.01M16.5 19.5h.01',
     trophy: 'M8 4h8v5a4 4 0 0 1-8 0zM8 6H5v1.5A3.5 3.5 0 0 0 8.5 11M16 6h3v1.5A3.5 3.5 0 0 1 15.5 11M12 13v4M8.5 20h7M10 17h4v3h-4z',
     shuffle: 'M4 7h3c3 0 4 2 5.5 5S16 17 19 17h1M4 17h3c1.5 0 2.5-.6 3.3-1.6M14 8.6C14.8 7.6 15.8 7 17 7h3M17 4l3 3-3 3M17 14l3 3-3 3',
+    sync: 'M19.5 12a7.5 7.5 0 0 1-13.3 4.8M4.5 12a7.5 7.5 0 0 1 13.3-4.8M18.5 3.8v3.9h-3.9M5.5 20.2v-3.9h3.9',
   }[name];
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill={fill ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

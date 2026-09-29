@@ -29,7 +29,7 @@ import {
   ageOf,
 } from './health-logic.js';
 import { searchUsda, lookupBarcode, startScanner, decodePhoto } from './food-api.js';
-import { ReadinessCard, ReadinessDial, NutrientsCard, HabitsCard, CheckInCard, AdaptiveNote, WeightGoal, MealsTab, SaveMealForm, SyncCard, CheckupsView } from './health-more.jsx';
+import { ReadinessCard, ReadinessDial, NutrientsCard, HabitsCard, CheckInCard, AdaptiveNote, WeightGoal, MealsTab, SaveMealForm, SyncCard, SyncNow, CheckupsView } from './health-more.jsx';
 import { TrainingView, WorkoutZones } from './health-training.jsx';
 import { ConsistencyCard, FactorsCard, ReportView } from './health-report.jsx';
 import { readiness, checkupReminders, mealTotals, acceptAdaptive, skipAdaptive, adaptiveOff } from './health-more.js';
@@ -1222,6 +1222,8 @@ export function HealthPage({ health, years, hk, hkYears, act, error, plan, wx })
       <header className="page-head row-between">
         <h1 className="page-title">Health</h1>
         {view === 'today' ? (
+          <div className="head-right">
+          <SyncNow health={health} small />
           <div className="day-nav">
             <button className="btn quiet small" onClick={() => setIso(addDays(iso, -1))} aria-label="Previous day">
               ‹
@@ -1232,6 +1234,7 @@ export function HealthPage({ health, years, hk, hkYears, act, error, plan, wx })
             <button className="btn quiet small" onClick={() => setIso(addDays(iso, 1))} disabled={isToday} aria-label="Next day">
               ›
             </button>
+          </div>
           </div>
         ) : null}
       </header>

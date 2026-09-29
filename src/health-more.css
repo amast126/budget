@@ -82,6 +82,25 @@ html.dark { --rd-ready: #5fd08f; --rd-normal: #f0c05a; --rd-easy: #ff8c7d; --z1:
 .sync-steps { margin: 4px 0 0; padding-left: 20px; }
 .sync-steps li { margin: 5px 0; }
 .sync-page { max-width: 560px; }
+.sync-now { display: inline-flex; align-items: center; gap: 5px; flex: none; }
+.sync-steps li > b:first-child { color: var(--ink); }
+.sync-finds { border-collapse: collapse; margin: 6px 0 6px; font-size: 12.5px; }
+.sync-finds th { text-align: left; font-weight: 600; color: var(--ink-soft); padding: 2px 14px 2px 0; }
+.sync-finds td { padding: 3px 14px 3px 0; border-top: 1px solid var(--paper-deep); }
+.sync-template { font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px; margin: 6px 0; max-height: 220px; overflow: auto; white-space: pre; }
+.sync-steps .sync-link { margin: 6px 0; }
+.sync-steps .plan-actions { margin: 6px 0 8px; }
+.sync-sub { margin: 4px 0 2px; padding-left: 18px; }
+.sync-sub li { margin: 3px 0; }
+.sync-days { list-style: none; margin: 8px 0; padding: 0; }
+.sync-days li { padding: 7px 0; border-top: 1px solid var(--paper-deep); }
+.sync-days li:first-child { border-top: 0; }
+.sync-workout { color: var(--ink-soft); }
+.sync-workout::before { content: '• '; }
+.sync-problems ul, .sync-found ul { margin: 4px 0 0; padding-left: 18px; }
+.sync-found { margin: 8px 0; color: var(--ink-soft); }
+.sync-found summary { cursor: pointer; }
+.head-right { display: flex; align-items: center; gap: 6px; }
 
 /* checkups and labs */
 .cu-row { border-top: 1px solid var(--paper-deep); }
