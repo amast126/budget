@@ -21,6 +21,7 @@ import { healthUnit } from './health-unit.mjs';
 import { steamUnit } from './steam-unit.mjs';
 import { healthSyncUnit, makeSyncText } from './healthsync-unit.mjs';
 import { learningUnit } from './learning-unit.mjs';
+import { autoUnit } from './auto-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -232,6 +233,7 @@ await healthUnit(check);
 await steamUnit(check);
 await healthSyncUnit(check);
 await learningUnit(check);
+await autoUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -1425,6 +1427,13 @@ await page.screenshot({ path: path.join(OUT, 'home-cooking.png'), fullPage: true
 
 
 // ---------------- auto
+// Amounts are read from the export's own bills, so nothing from it is written here.
+const EXP = JSON.parse(EXPORT);
+const expBills = ((EXP.data || EXP).config || {}).bills || [];
+const carBill = expBills.find((b) => /car payment|auto loan|car loan/i.test(b.name));
+const insNext = expBills.find((b) => /geico|insurance/i.test(b.name) && b.starts && b.starts > curKey);
+const money2 = (n) => `$${Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const monLabel = (ym) => new Date(`${ym}-15T12:00:00`).toLocaleString('en-US', { month: 'short', year: 'numeric' });
 await go('Home');
 await page.waitForSelector('.auto-home');
 let autoHome = await page.innerText('.auto-home');
@@ -1434,34 +1443,74 @@ check(/2 recalls to check/.test(autoHome), 'Home auto card flags recalls');
 await go('Auto');
 await page.waitForSelector('.auto .mt-row');
 let atext = await page.innerText('.auto');
-check(/2021 Nissan Altima SL/.test(atext) && /52,000/.test(atext), 'Auto tab shows the car and mileage');
-check(await page.$eval('.auto-hero .hero-car', (i) => i.complete && i.naturalWidth > 0), 'car photo loads in the Auto banner');
-const heroText = (await page.innerText('.auto-hero')).replace(/\n/g, ' ');
-check(/payments left/.test(heroText) && /to inspection/.test(heroText), `banner stats: ${heroText}`);
+check(/2021 Nissan Altima SL/.test(atext) && /05\d{4}/.test(await page.innerText('.cl-odo')), 'Auto tab shows the car and its odometer');
+check(await page.$eval('.cluster .cl-car', (i) => i.complete && i.naturalWidth > 0), 'car photo loads in the cluster');
+{
+  const heroText = (await page.innerText('.cluster')).replace(/\n/g, ' ');
+  const gauges = await page.$$eval('.cluster .cl-gauge[role=img]', (l) => l.map((g) => g.getAttribute('aria-label')));
+  check(/payments left/.test(heroText) && gauges.length === 2 && /^Next service: /.test(gauges[0]) && /^Gas & Auto this month: \$[\d,.]+ of \$[\d,.]+ spent$/.test(gauges[1]), `cluster: two gauges (${gauges.join(' / ')})`);
+  const lights = await page.$$eval('.cl-light', (l) => l.map((b) => `${b.getAttribute('aria-label')}|${b.className}`));
+  check(lights.length === 6 && lights.some((l) => /^Battery: due soon\|.*on-soon/.test(l)) && lights.some((l) => /^Recalls: due soon\|.*on-soon/.test(l)) && lights.some((l) => /^Brake pads: OK\|cl-light $/.test(l)), `warning lights: ${lights.map((l) => l.split('|')[0]).join(', ')}`);
+  check(/NYS inspection (due|expired)/.test(await page.innerText('.cl-msg')), 'the message line shows the most pressing thing');
+}
 check((await page.$$('.auto .mt-row')).length === 7, 'seven maintenance items on Nissan’s schedule');
-check(/Car payment/.test(atext) && /\$400\.58\/mo/.test(atext) && /Geico Car Insurance/.test(atext) && /\$190\.28\/mo from Nov 2026/.test(atext), 'costs come from the budget (payment, Geico and its November change)');
 check(/Powertrain/.test(atext) && /Add your purchase month/.test(atext), 'warranty asks for the purchase month');
+check(/215\/55R17/.test(atext) && /0W-20/.test(atext) && /26 in driver, 17 in passenger/.test(atext), 'specs for the Altima');
+{
+  const visit = await page.innerText('#auto-visit');
+  check(/Battery test/.test(visit) && /NYS inspection/.test(visit) && /Check 2 open recalls for your VIN/.test(visit) && /Measure tread depth and brake pads/.test(visit), `next visit: ${visit.replace(/\n/g, ' | ').slice(0, 200)}`);
+}
 await page.screenshot({ path: path.join(OUT, 'auto.png'), fullPage: true });
-// log a service with a cost that goes to the budget
+// tires, brakes and battery, read on their own
+await page.fill('input[aria-label="Tread depth in 32nds of an inch"]', '5');
+await page.click('form:has(input[aria-label="Tread depth in 32nds of an inch"]) button[type=submit]');
+await page.waitForTimeout(200);
+let A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.tires.readings.length === 1 && A.tires.readings[0].tread === 5, 'tread reading saved');
+check(/5\/32" on .*; 4\/32" in about [\d,]+ mi, around \w{3} \d{4}/.test(await page.innerText('#auto-wear')), 'tires: wear estimated from new to the reading');
+await page.fill('input[aria-label="Front brake pads in mm"]', '3');
+await page.fill('input[aria-label="Rear brake pads in mm"]', '6');
+await page.click('form:has(input[aria-label="Front brake pads in mm"]) button[type=submit]');
+await page.waitForTimeout(200);
+check(/Front\s+3 mm: time for new pads/.test(await page.innerText('#auto-wear')) && /on-soon/.test(await page.getAttribute('.cl-light[aria-label^="Brake pads"]', 'class')), 'brakes: 3 mm is due, and its light comes on');
+await page.selectOption('select[aria-label="Battery test result"]', 'weak');
+await page.click('form:has(select[aria-label="Battery test result"]) button[type=submit]');
+await page.waitForTimeout(200);
+check(/Tested weak on .*: replace it before winter/.test(await page.innerText('#auto-wear')), 'battery: a weak test');
+// log a service with a cost that goes to the budget, a new battery, and what the shop measured
 const bA = await stored();
 const kA = bA.months[key] ? bA.months[key].transactions.length : 0;
 await page.click('.auto button:has-text("Log service")');
 await page.click('.sheet .chip:has-text("Oil & filter")');
 await page.click('.sheet .chip:has-text("Tire rotation")');
+await page.click('.sheet .chip:has-text("New battery")');
 await page.fill('.sheet input[aria-label="Mileage at service"]', '52100');
 await page.fill('.sheet input[aria-label="Cost"]', '89.99');
 await page.fill('.sheet input[placeholder^="Dealer"]', 'Nissan dealer');
+await page.click('.sheet button:has-text("What the shop measured")');
+await page.fill('.sheet input[aria-label="Tread depth at service"]', '4.5');
 await page.screenshot({ path: path.join(OUT, 'auto-log.png') });
 await page.click('.sheet button:has-text("Save")');
 await page.waitForTimeout(300);
-let A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
-check(A.service.length === 1 && A.service[0].items.join() === 'oil,rotate' && A.service[0].miles === 52100, 'service logged');
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.service.length === 1 && A.service[0].items.join() === 'oil,rotate,battery' && A.service[0].miles === 52100 && A.service[0].budgeted === true, 'service logged, marked as in the budget');
 check(A.odo[A.odo.length - 1].miles === 52100, 'mileage moves up with the service');
+check(A.battery.installedDate === A.service[0].date && A.tires.readings.some((r) => r.tread === 4.5 && r.svc === A.service[0].id), 'the new battery and the measured tread are kept with the visit');
+check(!/on-soon|on-over/.test(await page.getAttribute('.cl-light[aria-label^="Battery"]', 'class')), 'the battery light goes out with a new battery');
 const bB = await stored();
 const svc = bB.months[key].transactions.slice(-1)[0];
-check(bB.months[key].transactions.length === kA + 1 && svc.category === 'Gas & Auto' && svc.amount === 89.99 && /^Car: Oil & filter, Tire rotation/.test(svc.desc), `service cost in the budget (${svc.desc})`);
+check(bB.months[key].transactions.length === kA + 1 && svc.category === 'Gas & Auto' && svc.amount === 89.99 && /^Car: Oil & filter, Tire rotation, New battery/.test(svc.desc), `service cost in the budget (${svc.desc})`);
 atext = await page.innerText('.auto');
 check(/next 62,100 mi/.test(atext) && /next 57,100 mi/.test(atext), 'oil and rotation now count from this service');
+// deleting the visit takes its readings with it; undo brings everything back
+await page.click('.card:has(.card-title:text-is("Service history")) button[aria-label="Delete this entry"]');
+await page.waitForTimeout(200);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.service.length === 0 && !A.battery.installedDate && !A.tires.readings.some((r) => r.tread === 4.5), 'deleting a visit removes its battery and readings');
+await page.click('.toast button:has-text("Undo")');
+await page.waitForTimeout(250);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.service.length === 1 && !!A.battery.installedDate && A.tires.readings.some((r) => r.tread === 4.5), 'undo restores the visit, the battery and the reading');
 // inspection done
 await page.click('.dl-row:has-text("NYS inspection") button:has-text("Inspected")');
 await page.waitForTimeout(200);
@@ -1476,15 +1525,98 @@ A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
 check(A.recalls['21V138000'] === 'na', 'recall status saved');
 // mileage update
 await page.fill('input[aria-label="Current mileage"]', '52,500');
-await page.click('.auto form.add-row button[type=submit]');
+await page.click('form:has(input[aria-label="Current mileage"]) button[type=submit]');
 await page.waitForTimeout(150);
 A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
 check(A.odo[A.odo.length - 1].miles === 52500, 'mileage update saved');
+// specs: your own value, then back
+await page.click('#auto-specs button:has-text("Edit")');
+await page.fill('#auto-specs input[aria-label="Tire pressure"]', '34 psi');
+await page.click('#auto-specs button:has-text("Save")');
+await page.waitForTimeout(200);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.specs.psi === '34 psi' && /34 psi/.test(await page.innerText('#auto-specs')), 'a spec changed by hand');
 await page.screenshot({ path: path.join(OUT, 'auto-after.png'), fullPage: true });
+
+// fill-ups: a gas charge in the budget becomes a fill-up with its gallons; one logged by hand goes to the budget
+await page.evaluate((d) => window.__DASH_BACKEND__.mutateBudget(null, (b) => b.months[d.slice(0, 7)] && b.months[d.slice(0, 7)].transactions.push({ id: 'gas-test-1', date: d, desc: 'Shell', category: 'Gas & Auto', amount: 41.3, method: 'Apple Card' })), todayL);
+await page.click('.page-tabs .seg-btn:has-text("Fill-ups")');
+await page.waitForSelector('.pend');
+check(/#\/auto\?fuel$/.test(await page.evaluate(() => location.hash)), 'sections have their own address');
+check(/Shell/.test(await page.innerText('.pend-list')) && !/Uber|OMNY|LIRR/.test(await page.innerText('.pend-list')), 'gas charges wait for their gallons; rides and transit don’t');
+await page.fill('.pend:has-text("Shell") input[aria-label^="Gallons"]', '11.8');
+await page.fill('.pend:has-text("Shell") input[aria-label^="Odometer"]', '52600');
+await page.click('.pend:has-text("Shell") button:has-text("Add")');
+await page.waitForTimeout(250);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.fills.length === 1 && A.fills[0].txId === 'gas-test-1' && A.fills[0].qty === 11.8 && A.fills[0].cost === 41.3 && A.fills[0].miles === 52600, 'charge turned into a fill-up');
+check(!(await page.$('.pend:has-text("Shell")')), 'and it leaves the list');
+const kF = (await stored()).months[key].transactions.length;
+await page.fill('input[aria-label="Gallons"]', '9.9');
+await page.fill('input[aria-label="Total cost"]', '35.64');
+await page.fill('input[aria-label="Odometer at fill-up"]', '52900');
+await page.fill('input[aria-label="Station"]', 'Sunoco');
+await page.click('button:has-text("Save fill-up")');
+await page.waitForTimeout(300);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+const bF = await stored();
+const gasTx = bF.months[key].transactions.slice(-1)[0];
+check(A.fills.length === 2 && bF.months[key].transactions.length === kF + 1 && gasTx.desc === 'Sunoco' && gasTx.amount === 35.64 && A.fills[1].txId === gasTx.id, 'a fill-up by hand goes into the budget, linked');
+check(!(await page.$('.pend:has-text("$35.64")')), 'so it isn’t asked about again');
+{
+  const ft = await page.innerText('#auto-fuel');
+  check(/30\.3\s*MPG average/.test(ft) && /\$3\.60/.test(ft) && /right at|under|over/.test(ft), `real MPG from two full fills: ${ft.replace(/\n/g, ' ').slice(0, 120)}`);
+}
+check(/30\.3/.test(await page.innerText('.cl-trip')), 'the cluster shows the average');
+await page.click('button[aria-label^="Delete the fill-up"]');
+await page.waitForTimeout(200);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.fills.length === 1, 'fill-up deleted');
+await page.click('.toast button:has-text("Undo")');
+await page.waitForTimeout(250);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.fills.length === 2, 'and undone');
+await page.screenshot({ path: path.join(OUT, 'auto-fuel.png'), fullPage: true });
+
+// costs
+await page.click('.page-tabs .seg-btn:has-text("Costs")');
+await page.waitForSelector('#auto-own');
+atext = await page.innerText('.auto');
+check(!!carBill && new RegExp(`Car payment\\s+${money2(carBill.amount).replace(/[$.]/g, '\\$&')}/mo`).test(atext), 'ownership: the car payment from the budget');
+check(!insNext || atext.includes(`${money2(insNext.amount)}/mo from ${monLabel(insNext.starts)}`), 'ownership: insurance and its coming change');
+check(/Gas\s+\$[\d,.]+\/mo/.test(atext) && /Upkeep & driving costs/.test(atext) && /Rides and transit in Gas & Auto \(\$[\d,.]+\/mo\) aren’t counted/.test(atext) && /with the loan paid off/.test(atext), 'ownership: gas from your fill-ups, upkeep, transit left out, and after the payoff');
+await page.fill('input[aria-label="Car to watch"]', '2027 Kia EV4');
+await page.fill('input[aria-label="Its price"]', '41000');
+await page.click('.watch-form button[type=submit]');
+await page.waitForTimeout(200);
+check(/CarPlay Ultra: coming soon/.test(await page.innerText('.watch-row:has-text("Kia EV4")')), 'watch list: CarPlay Ultra status by brand');
+await page.click('.watch-row:has-text("Kia EV4") button:has-text("Compare")');
+await page.waitForTimeout(200);
+await page.fill('input[aria-label="Trade-in value"]', '14000');
+await page.press('input[aria-label="Trade-in value"]', 'Enter');
+await page.fill('input[aria-label="APR"]', '5.9');
+await page.press('input[aria-label="APR"]', 'Enter');
+await page.waitForTimeout(250);
+A = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:auto')));
+check(A.next.price === 41000 && A.next.tradeIn === 14000 && A.next.apr === 5.9 && A.next.comparing === A.next.watch[0].id, 'keep vs replace: the watched car and your numbers');
+check(/Over the next year, (keeping|replacing) costs \$[\d,.]+ a month less/.test(await page.innerText('#auto-keep')) && /\$[\d,]+\.\d\d financed/.test(await page.innerText('#auto-keep')) && /The trade-in pays off the ~\$[\d,]+ still owed on the Altima first/.test(await page.innerText('#auto-keep')), 'keep vs replace: a verdict and the loan');
+await page.fill('input[aria-label="Next car fund goal"]', '15000');
+await page.press('input[aria-label="Next car fund goal"]', 'Enter');
+await page.fill('input[aria-label="Next car fund saved"]', '3000');
+await page.press('input[aria-label="Next car fund saved"]', 'Enter');
+await page.waitForTimeout(250);
+check(/\$3,000 of \$15,000\. Putting the \$[\d,.]+ car payment in once the loan ends \(Jul 2027\): \w{3} \d{4}\./.test(await page.innerText('#auto-next')), 'fund: when the payment would get you there');
+await page.click('button:has-text("Which brands have CarPlay Ultra?")');
+check(/Aston Martin/.test(await page.innerText('.ultra-list')) && (await page.$$('.ultra-list li')).length === 13, 'CarPlay Ultra list');
+await page.screenshot({ path: path.join(OUT, 'auto-costs.png'), fullPage: true });
+// a warning light takes you to what it's about
+await page.click('.cl-light[aria-label^="Recalls"]');
+await page.waitForSelector('#auto-recalls');
+check(/#\/auto\?car$/.test(await page.evaluate(() => location.hash)), 'a warning light opens the Car section at its card');
 await go('Home');
 await page.waitForSelector('.auto-home');
 autoHome = await page.innerText('.auto-home');
-check(/1 recall to check/.test(autoHome) && !/NYS inspection/.test(autoHome), 'Home card updates (inspection done, one recall left)');
+check(/1 recall to check/.test(autoHome) && !/NYS inspection/.test(autoHome) && /Front brake pads are getting thin/.test(autoHome), `Home card updates (inspection done, one recall left, pads): ${autoHome.replace(/\n/g, ' | ')}`);
 
 
 // ---------------------------------------------------------------- health
@@ -2608,7 +2740,7 @@ check((await dp.$$('canvas.confetti')).length === 1, 'finishing a to-do sets off
 await dp.waitForTimeout(1600);
 check((await dp.$$('canvas.confetti')).length === 0, 'confetti cleans itself up');
 // every tab opened directly from a fresh load (data arrives after the first render)
-for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.page-title'], ['auto', '.auto-hero'], ['news', '.news-body']]) {
+for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.page-title'], ['auto', '.cluster'], ['news', '.news-body']]) {
   const tp = await desk.newPage();
   const errs = [];
   tp.on('pageerror', (e) => errs.push(e.message));
@@ -2838,10 +2970,26 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(300);
   const spentAfter = await tp.innerText('.money .muted.small.num');
   check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
-  for (const [route, sel] of [['budget', '.bud-summary'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.rb-grid'], ['cooking?r=demo-miso-salmon', '.rp-title'], ['auto', '.auto-hero'], ['news', '.news-body'], ['fun', '.doom-zone'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
+  for (const [route, sel] of [['budget', '.bud-summary'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.rb-grid'], ['cooking?r=demo-miso-salmon', '.rp-title'], ['auto', '.cluster'], ['news', '.news-body'], ['fun', '.doom-zone'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
     await tp.goto(`${base}?demo#/${route}`);
     await tp.waitForSelector(sel, { timeout: 8000 }).catch(() => {});
     check(!!(await tp.$(sel)) && !!(await tp.$('.demo-bar')), `demo #/${route} renders`);
+  }
+  // the demo's Tesla: charging sessions and mi/kWh, a Supercharger charge waiting for its kWh, a next-car plan
+  await tp.goto(`${base}?demo#/auto?fuel`);
+  await tp.waitForSelector('#auto-fuel');
+  {
+    const ft = await tp.innerText('.auto');
+    check(/Charging/.test(await tp.innerText('.page-tabs')) && /\d\.\d\d\s*mi\/kWh average/.test(ft) && /Tesla Supercharger/.test(ft) && /Home/.test(ft) && !/MPG/.test(ft), 'demo Auto: charging, in mi/kWh');
+    await tp.click('.page-tabs .seg-btn:has-text("Costs")');
+    await tp.waitForSelector('#auto-next');
+    const ct = await tp.innerText('.auto');
+    check(/Rivian R2/.test(ct) && /Kia EV9/.test(ct) && /CarPlay Ultra: coming soon/.test(ct) && /\$6,500 of \$20,000/.test(ct) && !/Altima/.test(ct), 'demo Auto: the demo person’s next-car plan');
+    await tp.click('.page-tabs .seg-btn:has-text("Car")');
+    await tp.waitForSelector('#auto-wear');
+    const wt = await tp.innerText('#auto-wear');
+    check(/6\/32"/.test(wt) && /9 mm/.test(wt) && !/Battery/.test(wt) && (await tp.$$('.cl-light')).length === 5, 'demo Auto: tires and pads from its visits; no battery for the Tesla');
+    await tp.screenshot({ path: path.join(OUT, 'demo-auto.png'), fullPage: true });
   }
   await tp.goto(`${base}?demo#/fun`);
   await tp.waitForSelector('.fun-hero');
@@ -3077,7 +3225,7 @@ await dp.evaluate(() => {});
 await dp.waitForTimeout(300);
 await dp.screenshot({ path: path.join(OUT, 'desktop-cooking.png'), fullPage: true });
 await dp.click('a.nav-item:has-text("Auto")');
-await dp.waitForSelector('.auto-hero');
+await dp.waitForSelector('.cluster');
 await dp.waitForTimeout(300);
 await dp.screenshot({ path: path.join(OUT, 'desktop-auto.png') });
 await dp.click('a.nav-item:has-text("Health")');
