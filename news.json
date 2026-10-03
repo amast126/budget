@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-03T20:46:08.400Z",
+ "generated": "2026-10-03T23:35:59.287Z",
  "searchVersion": {
   "nyc": 2,
   "markets": 3,
@@ -8,138 +8,153 @@
  },
  "sources": {
   "ap": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "politics",
    "kind": "google",
-   "name": "AP"
+   "name": "AP",
+   "error": "HTTP 503"
   },
   "reuters": {
-   "ok": true,
+   "ok": false,
    "count": 17,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "politics",
    "kind": "google",
-   "name": "Reuters"
+   "name": "Reuters",
+   "error": "HTTP 503"
   },
   "reddit": {
    "ok": true,
    "count": 25,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/popular",
    "via": "rss"
   },
   "tech": {
-   "ok": true,
+   "ok": false,
    "count": 98,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "tech",
    "kind": "google",
-   "name": "Tech"
+   "name": "Tech",
+   "error": "HTTP 503"
   },
   "ai": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "tech",
    "kind": "google",
-   "name": "AI"
+   "name": "AI",
+   "error": "HTTP 503"
   },
   "pop": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "pop",
    "kind": "google",
-   "name": "Pop culture"
+   "name": "Pop culture",
+   "error": "HTTP 503"
   },
   "music": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "music",
    "kind": "google",
-   "name": "Music"
+   "name": "Music",
+   "error": "HTTP 503"
   },
   "nyc": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "nyc",
    "kind": "google",
-   "name": "NYC"
+   "name": "NYC",
+   "error": "HTTP 503"
   },
   "mamdani": {
-   "ok": true,
+   "ok": false,
    "count": 11,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "nyc",
    "kind": "google",
-   "name": "Mamdani"
+   "name": "Mamdani",
+   "error": "HTTP 503"
   },
   "energy": {
-   "ok": true,
+   "ok": false,
    "count": 94,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "markets",
    "kind": "google",
-   "name": "Energy"
+   "name": "Energy",
+   "error": "HTTP 503"
   },
   "quantum": {
-   "ok": true,
+   "ok": false,
    "count": 35,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "markets",
    "kind": "google",
-   "name": "Quantum"
+   "name": "Quantum",
+   "error": "HTTP 503"
   },
   "robotics": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "markets",
    "kind": "google",
-   "name": "Robotics"
+   "name": "Robotics",
+   "error": "HTTP 503"
   },
   "games": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "gaming",
    "kind": "google",
-   "name": "Gaming"
+   "name": "Gaming",
+   "error": "HTTP 503"
   },
   "mygames": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "gaming",
    "kind": "google",
-   "name": "Your games"
+   "name": "Your games",
+   "error": "HTTP 503"
   },
   "marvel": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "marvel",
    "kind": "google",
-   "name": "Marvel"
+   "name": "Marvel",
+   "error": "HTTP 503"
   },
   "top": {
-   "ok": true,
+   "ok": false,
    "count": 38,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "top",
    "kind": "google",
-   "name": "Top stories"
+   "name": "Top stories",
+   "error": "HTTP 503"
   },
   "thecity": {
    "ok": true,
    "count": 6,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "nyc",
    "kind": "feed",
    "name": "THE CITY",
@@ -148,7 +163,7 @@
   "lipress": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "li",
    "kind": "feed",
    "name": "Long Island Press",
@@ -157,7 +172,7 @@
   "verge": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "tech",
    "kind": "feed",
    "name": "The Verge",
@@ -166,7 +181,7 @@
   "ars": {
    "ok": true,
    "count": 20,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "tech",
    "kind": "feed",
    "name": "Ars Technica",
@@ -175,7 +190,7 @@
   "techcrunch": {
    "ok": true,
    "count": 20,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "tech",
    "kind": "feed",
    "name": "TechCrunch",
@@ -184,24 +199,25 @@
   "wired": {
    "ok": true,
    "count": 30,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "tech",
    "kind": "feed",
    "name": "Wired",
    "url": "https://www.wired.com/feed/rss"
   },
   "li": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "li",
    "kind": "google",
-   "name": "Long Island"
+   "name": "Long Island",
+   "error": "HTTP 503"
   },
   "gamespot": {
    "ok": true,
    "count": 30,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "gaming",
    "kind": "feed",
    "name": "GameSpot",
@@ -210,7 +226,7 @@
   "vgc": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "gaming",
    "kind": "feed",
    "name": "VGC",
@@ -219,7 +235,7 @@
   "polygon": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "gaming",
    "kind": "feed",
    "name": "Polygon",
@@ -228,7 +244,7 @@
   "variety": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "pop",
    "kind": "feed",
    "name": "Variety",
@@ -237,7 +253,7 @@
   "thr": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "pop",
    "kind": "feed",
    "name": "The Hollywood Reporter",
@@ -246,7 +262,7 @@
   "billboard": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "music",
    "kind": "feed",
    "name": "Billboard",
@@ -255,24 +271,24 @@
   "pitchfork": {
    "ok": true,
    "count": 30,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "music",
    "kind": "feed",
    "name": "Pitchfork",
    "url": "https://pitchfork.com/feed/feed-news/rss"
   },
   "photos": {
-   "ok": true,
-   "count": 21,
-   "checked": "2026-10-03T20:46:08.400Z",
+   "ok": false,
+   "count": 2,
+   "checked": "2026-10-03T23:35:59.287Z",
    "kind": "enrich",
-   "decoded": 19,
-   "tried": 22
+   "decoded": 0,
+   "tried": 2
   },
   "reddit-subs": {
    "ok": false,
    "error": "HTTP 429",
-   "checked": "2026-10-03T20:46:08.400Z",
+   "checked": "2026-10-03T23:35:59.287Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "your subreddits"
@@ -3564,6 +3580,17 @@
  ],
  "tech": [
   {
+   "id": "ars-82122l",
+   "title": "Milt Windler, NASA flight director who helped save Apollo 13, dies at 94",
+   "url": "https://arstechnica.com/space/2026/10/milt-windler-nasa-flight-director-who-helped-save-apollo-13-dies-at-94/",
+   "date": "2026-10-03T19:45:17.000Z",
+   "source": "Ars Technica",
+   "domain": "arstechnica.com",
+   "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/news-100326a-lg-1152x648.jpg",
+   "summary": "Milt Windler, one of the four leaders of Mission Control who in 1970 directed the round-the-clock efforts to bring the Apollo 13 astronauts back to Earth safely, has died at the age of 94.",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
+  {
    "id": "techcrunch-1va9kvy",
    "title": "Federal judge calls Flock ‘indiscriminate mass surveillance’",
    "url": "https://techcrunch.com/2026/10/03/federal-judge-calls-flock-indiscriminate-mass-surveillance/",
@@ -3571,9 +3598,9 @@
    "source": "TechCrunch",
    "domain": "techcrunch.com",
    "summary": "A federal judge ruled that a sheriff’s deputy violated a woman’s Fourth Amendment rights when using Flock to search for her license plate without a warrant.",
-   "seen": "2026-10-03T20:46:08.400Z",
+   "image": "https://techcrunch.com/wp-content/uploads/2026/08/flock-camera-pole.jpg?resize=1200,799",
    "tried": 1,
-   "image": "https://techcrunch.com/wp-content/uploads/2026/08/flock-camera-pole.jpg?resize=1200,799"
+   "seen": "2026-10-03T20:46:08.400Z"
   },
   {
    "id": "techcrunch-1siaeg9",
@@ -3583,9 +3610,9 @@
    "source": "TechCrunch",
    "domain": "techcrunch.com",
    "summary": "The CEO of Amazon Web Services tried to push back against widespread suspicion of data centers.",
-   "seen": "2026-10-03T20:46:08.400Z",
+   "image": "https://techcrunch.com/wp-content/uploads/2026/08/GettyImages-2283113936-maller.jpg?w=1024",
    "tried": 1,
-   "image": "https://techcrunch.com/wp-content/uploads/2026/08/GettyImages-2283113936-maller.jpg?w=1024"
+   "seen": "2026-10-03T20:46:08.400Z"
   },
   {
    "id": "tech-rezs0d",
@@ -4386,17 +4413,6 @@
    "source": "The Verge",
    "domain": "theverge.com",
    "seen": "2026-10-02T22:50:45.191Z"
-  },
-  {
-   "id": "wired-dvsihv",
-   "title": "This Shoe Company’s Instagram Ad With a Frat Is Pissing People Off",
-   "url": "https://www.wired.com/story/this-shoe-companys-instagram-ad-with-a-frat-is-pissing-people-off/",
-   "date": "2026-10-02T18:19:53.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/6abeb53be6bd248b69d52cab/master/pass/GettyImages-2240863414.jpg",
-   "summary": "A collaborative Instagram post between footwear line HeyDude and a University of Florida frat is sparking backlash due to sexual cyber-harassment allegations against two former members.",
-   "seen": "2026-10-02T18:37:04.111Z"
   }
  ],
  "markets": [
@@ -5078,6 +5094,28 @@
   }
  ],
  "gaming": [
+  {
+   "id": "polygon-lp4jhl",
+   "title": "Uncharted: The Lost Legacy Is Still the Best Uncharted Game",
+   "url": "https://www.polygon.com/uncharted-lost-legacy-rec-playstation-naughty-dog/",
+   "date": "2026-10-03T23:00:16.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/lost-legacy-chloe-cropped.jpg",
+   "summary": "Naughty Dog's 2017 standalone spinoff that leaves Nathan Drake behind is an underappreciated masterpiece, and its director is leading Uncharted 5",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
+  {
+   "id": "polygon-q143h0",
+   "title": "Stephen King’s Bleakest Movie, With an Ending He Couldn’t Imagine, Is Free on Streaming",
+   "url": "https://www.polygon.com/stephen-king-the-mist-movie-free-to-stream/",
+   "date": "2026-10-03T22:00:17.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/the-mist-lede.jpg",
+   "summary": "The 2007 Stephen King adaptation remains one of horror's most devastating movies, and it's free on Roku.",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
   {
    "id": "vgc-fsimv3",
    "title": "Banjo-Kazooie PC port ‘decomp’ developer says AI-generated PC ports are ‘a race to the bottom’ and ‘disrespectful’",
@@ -5765,26 +5803,6 @@
    "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/image-w1280.jpg",
    "summary": "John Boorman's take on the Arthurian saga still stands as one of the best attempts to translate myth into movies.",
    "seen": "2026-10-03T13:09:14.337Z"
-  },
-  {
-   "id": "games-1s9yot8",
-   "title": "Save Big On Tolkien's Lord of the Rings and Hobbit Books Ahead of Prime Day",
-   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOc2o5ODdINDJENlQ3bkl2THctbVo1Uk5RcHNLRUlNTXZqbGNxcmowSDg2VGJSNVhnSHNHLVNRbVJELXNWa0RTR1dsSFIzckREcEloWUJ4VjM5d3RGQmdORjJpX0VCRnhIYmI3WElUY3FIVkJwV19BRE9ES3liVGducDNHV3dSVFVqdkxtNlpKWlUtZFM3VjNLVVZ6d09xaUwxb3kwQXZn?oc=5",
-   "date": "2026-10-03T08:40:51.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-10-03T17:31:37.670Z"
-  },
-  {
-   "id": "polygon-sbaza7",
-   "title": "Sicario 3 is Happening with Taylor Sheridan Returning to Write",
-   "url": "https://www.polygon.com/sicario-3-script-taylor-sheridan-paramount/",
-   "date": "2026-10-03T08:20:15.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/07/sicario-3.jpg",
-   "summary": "The follow-up to Sicario and Sicario: Day of the Soldado is finally happening, with Yellowstone creator Taylor Sheridan returning to the franchise.",
-   "seen": "2026-10-03T13:09:14.337Z"
   }
  ],
  "marvel": [
@@ -6120,6 +6138,52 @@
  ],
  "pop": [
   {
+   "id": "variety-13ir3dy",
+   "title": "Jeremy Strong Defends Method Acting, Says He Doesn’t Feel the Need to ‘Apologize’ to Co-Stars Who May Think ‘I’m Taking It Too Seriously’",
+   "url": "https://variety.com/2026/film/news/jeremy-strong-defends-method-acting-social-reckoning-1236898328/",
+   "date": "2026-10-03T23:05:10.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/10/GettyImages-2246536320.jpg",
+   "summary": "Jeremy Strong, now infamous for his dedication to method acting, recently admitted he doesn’t feel the “need to apologize” to those he works with who may feel he is taking the process “too seriously” on a recent episode…",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
+  {
+   "id": "thr-4vv39l",
+   "title": "Florence Pugh on How Zoe Kazan ‘East of Eden’ Collaboration Helped Boost Her Confidence",
+   "url": "https://www.hollywoodreporter.com/tv/tv-features/florence-pugh-east-of-eden-zoe-kazan-boosted-confidence-1236721680/",
+   "date": "2026-10-03T22:06:56.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The actress who plays the central character of Cathy and serves as an executive producer on the well-reviewed Netflix adaptation was Kazan's first and only choice for the role: \"I didn't have a backup.\"",
+   "seen": "2026-10-03T23:35:59.287Z",
+   "tried": 1,
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/10/East_of_Eden_n_S1_E3_00_08_04_02RX.jpg?crop=0px%2C127px%2C3600px%2C2014px&resize=1440%2C810"
+  },
+  {
+   "id": "thr-a4fqbl",
+   "title": "Annabelle Wallis on the Defining Question of ‘Unabomber,’ a Potential James Wan Reunion and ‘Peaky Blinders’ What-Ifs",
+   "url": "https://www.hollywoodreporter.com/movies/movie-features/annabelle-wallis-unabomber-netflix-1236720760/",
+   "date": "2026-10-03T21:15:42.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "Plus: how an old The Hollywood Reporter interview with Wallis sparked a false viral story about the real-life Annabelle doll escaping the Warren Museum in Connecticut.",
+   "seen": "2026-10-03T23:35:59.287Z",
+   "tried": 1,
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/10/GettyImages-2199861084-H-2026.jpg?w=1296&h=730&crop=1"
+  },
+  {
+   "id": "variety-14mj75w",
+   "title": "‘RuneScape’-Inspired Animation Series in the Works From Lyrical Animation and Jagex",
+   "url": "https://variety.com/2026/gaming/news/runescape-animation-series-lyrical-animation-jagex-1236898308/",
+   "date": "2026-10-03T21:00:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/07/Runescape-Dragonwilds.jpg",
+   "summary": "Lyrical Animation is developing a new animation series based on “RuneScape” in partnership with creator Charlie “MoistCr1TiKaL” White and game developer Jagex, the company’s CEO Jon Bellamy announced on stage at…",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
+  {
    "id": "variety-1xfht3",
    "title": "Guillermo Del Toro Defends ‘Digger,’ Calls the Film ‘Daring, Bold and Cinematically Complex’",
    "url": "https://variety.com/2026/film/news/guillermo-del-toro-defends-digger-1236898266/",
@@ -6138,9 +6202,9 @@
    "source": "The Hollywood Reporter",
    "domain": "hollywoodreporter.com",
    "summary": "Alejandro G. Iñárritu helmed the big-budget Warner Bros. release that is struggling in its opening weekend.",
-   "seen": "2026-10-03T20:46:08.400Z",
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/07/digger.image-H-2026.jpg?w=1296&h=730&crop=1",
    "tried": 1,
-   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/07/digger.image-H-2026.jpg?w=1296&h=730&crop=1"
+   "seen": "2026-10-03T20:46:08.400Z"
   },
   {
    "id": "variety-qs3p3n",
@@ -6788,45 +6852,6 @@
    "source": "au.variety.com",
    "domain": "au.variety.com",
    "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "pop-1fzzuzm",
-   "title": "'Behemoth!' Review: Pedro Pascal in Tony Gilroy's Wan Character Study",
-   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNSHZIVmV6V3FzakhQYUJ6VUNsWDdOVm1VRkJDVWlUdzU3Q01yb1J4RU53M0xtV1F3dEZlZkNVV0dUaHJBZUozNF9BZDM2dnJVNXVCU19UTzNfbS04cUZ5amc2c3lEMzZqQnd3LXl3VzY2OFYtRlFNWHlNUnpnSGZBa1p4dTd3ZEdIcWtDZk5mX0toMEdQYU5qckZmODUydDhXM3pRU2hqYmZnNXVvaUxpNXhIQXJmeG5vdFp0OA?oc=5",
-   "date": "2026-10-03T00:00:28.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "seen": "2026-10-03T01:47:16.202Z"
-  },
-  {
-   "id": "pop-1qsgsxn",
-   "title": "Stray Kids Join BTS in Sitting Out Grammy Awards",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOQWQ0ZUE0UVdOMUtMS3V2bm1hMy1fTFctQjJmbjlzTkxtUXFfb2tfWGdaX2dTaVZmN0xGTHg0WHRRU25Bc3VoNUZ3aDFHTFpVUTBuX0pGZWYxS2tKUENqanlhcU9BZVJYMlhRdFQ1a3FBRE0wNmltekFGV3B3eWFqdWNJcEN4SlZXTHNCa1VxLThLMFE?oc=5",
-   "date": "2026-10-03T00:00:22.000Z",
-   "source": "au.variety.com",
-   "domain": "au.variety.com",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "variety-1p17i2o",
-   "title": "‘Behemoth!’ Review: Pedro Pascal Is a Classical Cellist Skating Through a Midlife Crisis in Tony Gilroy’s Elevated Bauble of a Music Drama",
-   "url": "https://variety.com/2026/film/reviews/behemoth-review-pedro-pascal-tony-gilroy-1236897613/",
-   "date": "2026-10-03T00:00:04.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/10/BHMTH_SG_18138_V1.jpg",
-   "summary": "\"Behemoth!\" is a classical-musician movie. It’s a midlife-crisis movie. It’s a romantic mystery. It’s Tony Gilroy fiddling around with pure movie form.",
-   "seen": "2026-10-03T01:47:16.202Z"
-  },
-  {
-   "id": "thr-1rnd6lq",
-   "title": "‘Behemoth!’ Review: Pedro Pascal Hints at Soulful Depths, but the Drama Keeps Stalling in Tony Gilroy’s Wan Character Study of a Virtuoso Cellist",
-   "url": "https://www.hollywoodreporter.com/movies/movie-reviews/behemoth-review-pedro-pascal-olivia-wilde-tony-gilroy-1236721313/",
-   "date": "2026-10-03T00:00:00.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "summary": "Olivia Wilde, Eva Victor, Will Arnett and Alexa Swinton also star in the story of a former child prodigy struggling to free himself from the burden of his famous family.",
-   "seen": "2026-10-03T01:47:16.202Z"
   }
  ],
  "music": [
@@ -7570,23 +7595,13 @@
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
-   "id": "rd-4nxsy",
-   "title": "John C Woods, hangman of Nuremberg trials, who lied about his experience to get the job (he actually learned about hanging from old cowboy films). His lack of expertise led to excessive suffering of condemned Nazis.",
-   "url": "https://www.reddit.com/r/interestingasfuck/comments/1ww5371/john_c_woods_hangman_of_nuremberg_trials_who_lied/",
-   "date": "2026-10-02T21:00:44.000Z",
+   "id": "rd-8rxw3p",
+   "title": "A raccoon figured out that if he blocks the drive-thru, they’ll give him a donut to make him leave",
+   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wwd8vw/a_raccoon_figured_out_that_if_he_blocks_the/",
+   "date": "2026-10-03T03:40:31.000Z",
    "source": "r/interestingasfuck",
    "from": "popular",
-   "image": "https://preview.redd.it/bpw1xympb4th1.jpeg?width=640&crop=smart&auto=webp&s=91bc0ee79983d758cb261d9d3eca01dd707d462b",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "rd-82cinm",
-   "title": "Gave our son his first Switch, and he's already taking a page out of the book of my own childhood.",
-   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1ww7syi/gave_our_son_his_first_switch_and_hes_already/",
-   "date": "2026-10-02T23:00:27.000Z",
-   "source": "r/MadeMeSmile",
-   "from": "popular",
-   "image": "https://preview.redd.it/l5td6ky2x4th1.jpeg?width=640&crop=smart&auto=webp&s=5e69f4a2b632eecae1b9efbdac2b7e2699155a68",
+   "image": "https://external-preview.redd.it/YnptbGRjNzFiNnRoMf4PAjQg3IbdVorRZG6T8vNr0hudPM0Z6z8-QEh7m1f5.png?width=640&crop=smart&auto=webp&s=688750703a97cb21b9a5f4829b8c4b775b96b844",
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
@@ -7600,16 +7615,6 @@
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
-   "id": "rd-8rxw3p",
-   "title": "A raccoon figured out that if he blocks the drive-thru, they’ll give him a donut to make him leave",
-   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wwd8vw/a_raccoon_figured_out_that_if_he_blocks_the/",
-   "date": "2026-10-03T03:40:31.000Z",
-   "source": "r/interestingasfuck",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/YnptbGRjNzFiNnRoMf4PAjQg3IbdVorRZG6T8vNr0hudPM0Z6z8-QEh7m1f5.png?width=640&crop=smart&auto=webp&s=688750703a97cb21b9a5f4829b8c4b775b96b844",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
    "id": "rd-1sn3380",
    "title": "Country singer Zach Bryan wears “Free Palestine” shirt at his Gillette Stadium show in Massachusetts",
    "url": "https://www.reddit.com/r/popculturechat/comments/1wwccca/country_singer_zach_bryan_wears_free_palestine/",
@@ -7617,66 +7622,6 @@
    "source": "r/popculturechat",
    "from": "popular",
    "image": "https://external-preview.redd.it/emlyZ3hkOGMyNnRoMYn7Fn8Q7tWS-AlgaDgk8JyeQtlNe9NwOA5DTtJNqYFA.png?width=320&crop=smart&auto=webp&s=0cba4ae215823e6d2fd002c1284bb42a6c0ba9a8",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "rd-1sjvbnu",
-   "title": "Wife finds out found husband was cheating on her with call girls, exposes everything on Insta through his profile",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1ww79b6/wife_finds_out_found_husband_was_cheating_on_her/",
-   "date": "2026-10-02T22:34:25.000Z",
-   "source": "r/SipsTea",
-   "from": "popular",
-   "image": "https://preview.redd.it/4pe7d1vfs4th1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=d0829d539e476ddd806374d55f612a2863ddc3bc",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "rd-1yanlfv",
-   "title": "Scrub Zombie",
-   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1ww8dnq/scrub_zombie/",
-   "date": "2026-10-02T23:27:39.000Z",
-   "source": "r/mildlyinfuriating",
-   "from": "popular",
-   "image": "https://preview.redd.it/6pyj7fox15th1.jpeg?width=640&crop=smart&auto=webp&s=954c0a035aeac354617ec7d70393bbe4d4abb9e6",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "rd-1q7de4v",
-   "title": "New Cornell study: Trump has taken more control of federal spending than any president in modern history by freezing funds Congress approved and imposing tariffs on his own, yet Congress whose job it is to control the money, has done almost nothing to stop it, even though most Americans oppose this.",
-   "url": "https://www.reddit.com/r/science/comments/1ww7os4/new_cornell_study_trump_has_taken_more_control_of/",
-   "date": "2026-10-02T22:54:49.000Z",
-   "source": "r/science",
-   "from": "popular",
-   "image": null,
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "rd-d7slhf",
-   "title": "Today I was radicalized",
-   "url": "https://www.reddit.com/r/antiai/comments/1ww4yn4/today_i_was_radicalized/",
-   "date": "2026-10-02T20:55:21.000Z",
-   "source": "r/antiai",
-   "from": "popular",
-   "image": null,
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "rd-2q17im",
-   "title": "My Protectron Cosplay",
-   "url": "https://www.reddit.com/r/Fallout/comments/1ww9hjq/my_protectron_cosplay/",
-   "date": "2026-10-03T00:20:30.000Z",
-   "source": "r/Fallout",
-   "from": "popular",
-   "image": "https://preview.redd.it/4accbh1db5th1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=e889f74bbaa0daea21fd02d5a7f9dac1142e1961",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "rd-1jvlgab",
-   "title": "Et tu Brute",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wwb6j1/et_tu_brute/",
-   "date": "2026-10-03T01:49:33.000Z",
-   "source": "r/SipsTea",
-   "from": "popular",
-   "image": "https://preview.redd.it/t0d0dkz8r5th1.jpeg?width=640&crop=smart&auto=webp&s=86d7768bacbb8d627a7f05e2c1f94c1fe22e523b",
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
@@ -7690,6 +7635,16 @@
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
+   "id": "rd-1dfe679",
+   "title": "Bro pulled out the neutral walk to neutralize his opponent",
+   "url": "https://www.reddit.com/r/nextfuckinglevel/comments/1wwsuh1/bro_pulled_out_the_neutral_walk_to_neutralize_his/",
+   "date": "2026-10-03T17:29:04.000Z",
+   "source": "r/nextfuckinglevel",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/a2Jidnp2MHZlYXRoMcQHSy7mHVK0AFWbzh7pYBzK1DeolvikVeS34kBZKDn-.png?width=320&crop=smart&auto=webp&s=4ce76ee19b437bfb1323c0ec71e256597d0af6c4",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
+  {
    "id": "rd-149pwfl",
    "title": "Found at a titanium plant",
    "url": "https://www.reddit.com/r/whatisit/comments/1wwdb61/found_at_a_titanium_plant/",
@@ -7697,6 +7652,66 @@
    "source": "r/whatisit",
    "from": "popular",
    "image": "https://preview.redd.it/ugi59e8ob6th1.jpeg?width=640&crop=smart&auto=webp&s=bbc425e02ea59511908db77e15a53dc61801e2f2",
+   "seen": "2026-10-03T20:46:08.400Z"
+  },
+  {
+   "id": "rd-18w7b35",
+   "title": "Gray squirrel from Japan's Hokkaido island. Woah.",
+   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wwojco/gray_squirrel_from_japans_hokkaido_island_woah/",
+   "date": "2026-10-03T14:25:01.000Z",
+   "source": "r/interestingasfuck",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/aWZqNGNlYTFpOXRoMWhjqffKiwzdxQdp9FshXNd2Gdx_rFu1Y7AS2dhwA9i0.jpeg?width=320&crop=smart&auto=webp&s=94555e3e4780f714499677573cc89e3a73949771",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
+  {
+   "id": "rd-1m57voy",
+   "title": "Bro had to lock in on his marriage 🙏",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wwmkio/bro_had_to_lock_in_on_his_marriage/",
+   "date": "2026-10-03T12:55:00.000Z",
+   "source": "r/SipsTea",
+   "from": "popular",
+   "image": "https://preview.redd.it/w426i6ml19th1.jpeg?width=640&crop=smart&auto=webp&s=fed14ddb35f44345c41741babf894179b219987b",
+   "seen": "2026-10-03T20:46:08.400Z"
+  },
+  {
+   "id": "rd-zmwb7e",
+   "title": "Father Throws Chair at judge after Driver who K!lled his Family got 120 Hours of Community Service",
+   "url": "https://www.reddit.com/r/interesting/comments/1wwo1fj/father_throws_chair_at_judge_after_driver_who/",
+   "date": "2026-10-03T14:02:57.000Z",
+   "source": "r/interesting",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/dG92ZnI0NDNlOXRoMXjqZjczb91O0_CWXvjucWSMaSW4oItlCDUUH0LFxcYZ.jpeg?width=320&crop=smart&auto=webp&s=a8c184b2903cfa6fac7e07037b9ea7d2b3db1cc5",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
+  {
+   "id": "rd-5pe7d",
+   "title": "This is a baby flamingo. Flamingos are not pink. They are born with grey feathers, which gradually turn pink in the wild because of a dye called canthaxanthin obtained from their diet of brine shrimp and blue-green algae",
+   "url": "https://www.reddit.com/r/Damnthatsinteresting/comments/1wwivek/this_is_a_baby_flamingo_flamingos_are_not_pink/",
+   "date": "2026-10-03T09:20:47.000Z",
+   "source": "r/Damnthatsinteresting",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/NGUxZWdndXF6N3RoMX2zLtJb4BhpH512J06e5hplRnl6CtG8fMUm2ZskpW7l.png?width=320&crop=smart&auto=webp&s=2adcbe8ffc8c7384fee35c3af0f5213890c33941",
+   "seen": "2026-10-03T20:46:08.400Z"
+  },
+  {
+   "id": "rd-1jvlgab",
+   "title": "Et tu Brute",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wwb6j1/et_tu_brute/",
+   "date": "2026-10-03T01:49:33.000Z",
+   "source": "r/SipsTea",
+   "from": "popular",
+   "image": "https://preview.redd.it/t0d0dkz8r5th1.jpeg?width=640&crop=smart&auto=webp&s=86d7768bacbb8d627a7f05e2c1f94c1fe22e523b",
+   "seen": "2026-10-03T20:46:08.400Z"
+  },
+  {
+   "id": "rd-2q17im",
+   "title": "My Protectron Cosplay",
+   "url": "https://www.reddit.com/r/Fallout/comments/1ww9hjq/my_protectron_cosplay/",
+   "date": "2026-10-03T00:20:30.000Z",
+   "source": "r/Fallout",
+   "from": "popular",
+   "image": "https://preview.redd.it/4accbh1db5th1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=e889f74bbaa0daea21fd02d5a7f9dac1142e1961",
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
@@ -7710,13 +7725,13 @@
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
-   "id": "rd-1q9pj1x",
-   "title": "Utility guy stepped through my ceiling. So now it’s a Halloween decoration.",
-   "url": "https://www.reddit.com/r/pics/comments/1ww5qc2/utility_guy_stepped_through_my_ceiling_so_now_its/",
-   "date": "2026-10-02T21:27:42.000Z",
-   "source": "r/pics",
+   "id": "rd-1u4h1io",
+   "title": "I've heard that Elon isn't a big fan of this photo (allegedly)",
+   "url": "https://www.reddit.com/r/SpaceXBets/comments/1ww9fju/ive_heard_that_elon_isnt_a_big_fan_of_this_photo/",
+   "date": "2026-10-03T00:17:47.000Z",
+   "source": "r/SpaceXBets",
    "from": "popular",
-   "image": "https://preview.redd.it/banl4w6jg4th1.jpeg?width=640&crop=smart&auto=webp&s=b67e4a40a04d71219dd4520686d33630b9263e56",
+   "image": "https://preview.redd.it/69limerva5th1.jpeg?width=640&crop=smart&auto=webp&s=6c1ca4c5c36628cf762d4e3c41765cb83cd265f9",
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
@@ -7730,44 +7745,54 @@
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
-   "id": "rd-1m57voy",
-   "title": "Bro had to lock in on his marriage 🙏",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wwmkio/bro_had_to_lock_in_on_his_marriage/",
-   "date": "2026-10-03T12:55:00.000Z",
-   "source": "r/SipsTea",
+   "id": "rd-1u4na0y",
+   "title": "Cats orbiting his human like a tiny fluffy satellite",
+   "url": "https://www.reddit.com/r/AnimalsBeingDerps/comments/1wws01f/cats_orbiting_his_human_like_a_tiny_fluffy/",
+   "date": "2026-10-03T16:53:31.000Z",
+   "source": "r/AnimalsBeingDerps",
    "from": "popular",
-   "image": "https://preview.redd.it/w426i6ml19th1.jpeg?width=640&crop=smart&auto=webp&s=fed14ddb35f44345c41741babf894179b219987b",
-   "seen": "2026-10-03T20:46:08.400Z"
+   "image": "https://external-preview.redd.it/eGZ6c3ZkcGk4YXRoMVeVR9LcsXCrKwqc2lFAYAUl_mMIEXxckom-JOdtRIFu.jpeg?width=640&crop=smart&auto=webp&s=39121821274b479324f96eb8f9e8d8434fb37a17",
+   "seen": "2026-10-03T23:35:59.287Z"
   },
   {
-   "id": "rd-1u4h1io",
-   "title": "I've heard that Elon isn't a big fan of this photo (allegedly)",
-   "url": "https://www.reddit.com/r/SpaceXBets/comments/1ww9fju/ive_heard_that_elon_isnt_a_big_fan_of_this_photo/",
-   "date": "2026-10-03T00:17:47.000Z",
-   "source": "r/SpaceXBets",
+   "id": "rd-1xo94yz",
+   "title": "The most viciously accurate comeback I've seen in a while...",
+   "url": "https://www.reddit.com/r/PoursTea/comments/1wwp0ud/the_most_viciously_accurate_comeback_ive_seen_in/",
+   "date": "2026-10-03T14:46:10.000Z",
+   "source": "r/PoursTea",
    "from": "popular",
-   "image": "https://preview.redd.it/69limerva5th1.jpeg?width=640&crop=smart&auto=webp&s=6c1ca4c5c36628cf762d4e3c41765cb83cd265f9",
-   "seen": "2026-10-03T20:46:08.400Z"
+   "image": "https://preview.redd.it/ppnybf6tl9th1.jpeg?width=640&crop=smart&auto=webp&s=d165baf782c6cd6ee8a58f76e2e93e69be37c6aa",
+   "seen": "2026-10-03T23:35:59.287Z"
   },
   {
-   "id": "rd-rduntr",
-   "title": "￼this burn is forever",
-   "url": "https://www.reddit.com/r/clevercomebacks/comments/1ww6o1e/this_burn_is_forever/",
-   "date": "2026-10-02T22:07:41.000Z",
-   "source": "r/clevercomebacks",
+   "id": "rd-1uxcoof",
+   "title": "Cutting pipe lagging to fit around copper pipes",
+   "url": "https://www.reddit.com/r/oddlysatisfying/comments/1wwnlw0/cutting_pipe_lagging_to_fit_around_copper_pipes/",
+   "date": "2026-10-03T13:43:28.000Z",
+   "source": "r/oddlysatisfying",
    "from": "popular",
-   "image": "https://preview.redd.it/48l6zxhmn4th1.png?width=640&crop=smart&auto=webp&s=b0006e51604b317bd4c4e7eb12db481e616ff0b8",
-   "seen": "2026-10-03T20:46:08.400Z"
+   "image": "https://external-preview.redd.it/a255ZGg4emxhOXRoMTYqOlCwwaJB2Qnnj1zvTofsVPFneeOC5ZNdjfmhTF0p.png?width=320&crop=smart&auto=webp&s=6367b69a0c4856af3772c7833d53c93f9c2d0bcc",
+   "seen": "2026-10-03T23:35:59.287Z"
   },
   {
-   "id": "rd-5pe7d",
-   "title": "This is a baby flamingo. Flamingos are not pink. They are born with grey feathers, which gradually turn pink in the wild because of a dye called canthaxanthin obtained from their diet of brine shrimp and blue-green algae",
-   "url": "https://www.reddit.com/r/Damnthatsinteresting/comments/1wwivek/this_is_a_baby_flamingo_flamingos_are_not_pink/",
-   "date": "2026-10-03T09:20:47.000Z",
-   "source": "r/Damnthatsinteresting",
+   "id": "rd-1g2vhj9",
+   "title": "They’re Not Wrong…",
+   "url": "https://www.reddit.com/r/rareinsults/comments/1wwicn7/theyre_not_wrong/",
+   "date": "2026-10-03T08:47:44.000Z",
+   "source": "r/rareinsults",
    "from": "popular",
-   "image": "https://external-preview.redd.it/NGUxZWdndXF6N3RoMX2zLtJb4BhpH512J06e5hplRnl6CtG8fMUm2ZskpW7l.png?width=320&crop=smart&auto=webp&s=2adcbe8ffc8c7384fee35c3af0f5213890c33941",
-   "seen": "2026-10-03T20:46:08.400Z"
+   "image": "https://preview.redd.it/4dcfnh1vt7th1.jpeg?width=640&crop=smart&auto=webp&s=41838b90a7f897eb71e08d63a1b26e55ff3c384d",
+   "seen": "2026-10-03T23:35:59.287Z"
+  },
+  {
+   "id": "rd-hsh4za",
+   "title": "This boy packed a Christmas gift for a girl in the Philippines and 14 years later she found him on Facebook. They fell in love and got married.",
+   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wwunjk/this_boy_packed_a_christmas_gift_for_a_girl_in/",
+   "date": "2026-10-03T18:43:53.000Z",
+   "source": "r/MadeMeSmile",
+   "from": "popular",
+   "image": "https://preview.redd.it/v69zntr3sath1.png?width=320&crop=smart&auto=webp&s=569680d53a3d6046bd904668ddce2b1fe87343d9",
+   "seen": "2026-10-03T23:35:59.287Z"
   },
   {
    "id": "rd-e0od30",
@@ -7780,14 +7805,14 @@
    "seen": "2026-10-03T20:46:08.400Z"
   },
   {
-   "id": "rd-17yb7h7",
-   "title": "He knows ball",
-   "url": "https://www.reddit.com/r/BlackPeopleTwitter/comments/1ww5ky8/he_knows_ball/",
-   "date": "2026-10-02T21:21:12.000Z",
-   "source": "r/BlackPeopleTwitter",
+   "id": "rd-l4uqgg",
+   "title": "What I asked for vs. what I got",
+   "url": "https://www.reddit.com/r/ExpectationVsReality/comments/1wwttum/what_i_asked_for_vs_what_i_got/",
+   "date": "2026-10-03T18:09:30.000Z",
+   "source": "r/ExpectationVsReality",
    "from": "popular",
-   "image": "https://preview.redd.it/kae63fkdf4th1.jpeg?width=640&crop=smart&auto=webp&s=dd449c299843bc8ba30701601232de49e9992c83",
-   "seen": "2026-10-03T20:46:08.400Z"
+   "image": "https://preview.redd.it/wxdmdo43math1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=84b8dd480001a795b436b523cf7e0ce18a577b00",
+   "seen": "2026-10-03T23:35:59.287Z"
   }
  ]
 }
