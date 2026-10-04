@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-04T19:20:28.894Z",
+ "generated": "2026-10-04T22:26:39.702Z",
  "searchVersion": {
   "nyc": 2,
   "markets": 3,
@@ -8,138 +8,153 @@
  },
  "sources": {
   "ap": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "politics",
    "kind": "google",
-   "name": "AP"
+   "name": "AP",
+   "error": "HTTP 503"
   },
   "reuters": {
-   "ok": true,
+   "ok": false,
    "count": 15,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "politics",
    "kind": "google",
-   "name": "Reuters"
+   "name": "Reuters",
+   "error": "HTTP 503"
   },
   "reddit": {
    "ok": true,
    "count": 25,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/popular",
    "via": "rss"
   },
   "tech": {
-   "ok": true,
+   "ok": false,
    "count": 79,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "tech",
    "kind": "google",
-   "name": "Tech"
+   "name": "Tech",
+   "error": "HTTP 503"
   },
   "ai": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "tech",
    "kind": "google",
-   "name": "AI"
+   "name": "AI",
+   "error": "HTTP 503"
   },
   "pop": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "pop",
    "kind": "google",
-   "name": "Pop culture"
+   "name": "Pop culture",
+   "error": "HTTP 503"
   },
   "music": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "music",
    "kind": "google",
-   "name": "Music"
+   "name": "Music",
+   "error": "HTTP 503"
   },
   "nyc": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "nyc",
    "kind": "google",
-   "name": "NYC"
+   "name": "NYC",
+   "error": "HTTP 503"
   },
   "mamdani": {
-   "ok": true,
+   "ok": false,
    "count": 7,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "nyc",
    "kind": "google",
-   "name": "Mamdani"
+   "name": "Mamdani",
+   "error": "HTTP 503"
   },
   "energy": {
-   "ok": true,
+   "ok": false,
    "count": 94,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "markets",
    "kind": "google",
-   "name": "Energy"
+   "name": "Energy",
+   "error": "HTTP 503"
   },
   "quantum": {
-   "ok": true,
+   "ok": false,
    "count": 29,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "markets",
    "kind": "google",
-   "name": "Quantum"
+   "name": "Quantum",
+   "error": "HTTP 503"
   },
   "robotics": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "markets",
    "kind": "google",
-   "name": "Robotics"
+   "name": "Robotics",
+   "error": "HTTP 503"
   },
   "games": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "gaming",
    "kind": "google",
-   "name": "Gaming"
+   "name": "Gaming",
+   "error": "HTTP 503"
   },
   "mygames": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "gaming",
    "kind": "google",
-   "name": "Your games"
+   "name": "Your games",
+   "error": "HTTP 503"
   },
   "marvel": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "marvel",
    "kind": "google",
-   "name": "Marvel"
+   "name": "Marvel",
+   "error": "HTTP 503"
   },
   "top": {
-   "ok": true,
+   "ok": false,
    "count": 38,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "top",
    "kind": "google",
-   "name": "Top stories"
+   "name": "Top stories",
+   "error": "HTTP 503"
   },
   "thecity": {
    "ok": true,
    "count": 6,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "nyc",
    "kind": "feed",
    "name": "THE CITY",
@@ -148,7 +163,7 @@
   "lipress": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "li",
    "kind": "feed",
    "name": "Long Island Press",
@@ -157,7 +172,7 @@
   "verge": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "tech",
    "kind": "feed",
    "name": "The Verge",
@@ -166,7 +181,7 @@
   "ars": {
    "ok": true,
    "count": 20,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "tech",
    "kind": "feed",
    "name": "Ars Technica",
@@ -175,7 +190,7 @@
   "techcrunch": {
    "ok": true,
    "count": 20,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "tech",
    "kind": "feed",
    "name": "TechCrunch",
@@ -184,24 +199,25 @@
   "wired": {
    "ok": true,
    "count": 30,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "tech",
    "kind": "feed",
    "name": "Wired",
    "url": "https://www.wired.com/feed/rss"
   },
   "li": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "li",
    "kind": "google",
-   "name": "Long Island"
+   "name": "Long Island",
+   "error": "HTTP 503"
   },
   "gamespot": {
    "ok": true,
    "count": 30,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "gaming",
    "kind": "feed",
    "name": "GameSpot",
@@ -210,7 +226,7 @@
   "vgc": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "gaming",
    "kind": "feed",
    "name": "VGC",
@@ -219,7 +235,7 @@
   "polygon": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "gaming",
    "kind": "feed",
    "name": "Polygon",
@@ -228,7 +244,7 @@
   "variety": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "pop",
    "kind": "feed",
    "name": "Variety",
@@ -237,7 +253,7 @@
   "thr": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "pop",
    "kind": "feed",
    "name": "The Hollywood Reporter",
@@ -246,7 +262,7 @@
   "billboard": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "music",
    "kind": "feed",
    "name": "Billboard",
@@ -255,24 +271,24 @@
   "pitchfork": {
    "ok": true,
    "count": 30,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "music",
    "kind": "feed",
    "name": "Pitchfork",
    "url": "https://pitchfork.com/feed/feed-news/rss"
   },
   "photos": {
-   "ok": true,
-   "count": 20,
-   "checked": "2026-10-04T19:20:28.894Z",
+   "ok": false,
+   "count": 4,
+   "checked": "2026-10-04T22:26:39.702Z",
    "kind": "enrich",
-   "decoded": 25,
-   "tried": 25
+   "decoded": 0,
+   "tried": 4
   },
   "reddit-subs": {
    "ok": false,
    "error": "HTTP 429",
-   "checked": "2026-10-04T19:20:28.894Z",
+   "checked": "2026-10-04T22:26:39.702Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "your subreddits"
@@ -3581,6 +3597,52 @@
  ],
  "tech": [
   {
+   "id": "verge-an7d0j",
+   "title": "The new Fitbit Edge leaks",
+   "url": "https://www.theverge.com/gadgets/1004616/the-new-fitbit-edge-leaks",
+   "date": "2026-10-04T21:02:09.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/24438538/Fitbit_STK151_01.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "We don't know a ton about the Fitbit Edge, but it appears to be a successor to the midrange Charge line.",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "techcrunch-1uqp73o",
+   "title": "Google froze its open source bug bounty program due to a ‘significant rise’ in AI submissions",
+   "url": "https://techcrunch.com/2026/10/04/google-froze-its-open-source-bug-bounty-program-due-to-a-significant-rise-in-ai-submissions/",
+   "date": "2026-10-04T20:31:07.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "AI slop seems to be overwhelming bug bounty programs.",
+   "seen": "2026-10-04T22:26:39.702Z",
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2025/07/ai-slop-bug-bounty-reports-1646637201.jpg?resize=1200,863"
+  },
+  {
+   "id": "techcrunch-1retys0",
+   "title": "Can ‘super intelligence’ and a non-binding safety pact solve AI’s image problem?",
+   "url": "https://techcrunch.com/2026/10/04/can-super-intelligence-and-a-non-binding-safety-pact-solve-ais-image-problem/",
+   "date": "2026-10-04T20:08:34.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "On Equity, we discussed the Trump administration's attempts to rebrand AI.",
+   "seen": "2026-10-04T22:26:39.702Z",
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2026/10/GettyImages-2297262633.jpg?resize=1200,800"
+  },
+  {
+   "id": "verge-tg17yr",
+   "title": "Prick’s theatrical industrial punk is perfect for spooky season",
+   "url": "https://www.theverge.com/entertainment/1004595/prick-industrial-glam-punk-album-review",
+   "date": "2026-10-04T20:00:00.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/Prick.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "While deep in the recording process for The Downward Spiral, Trent Reznor lent some of his production talents to old friend Kevin McMahon, from the new wave band Lucky Pierre (which Reznor was briefly a member of).",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
    "id": "tech-cgk08b",
    "title": "Watch Is All the Doom Talk Just a Distraction From the Real Problems With AI?",
    "url": "https://www.wired.com/video/watch/is-all-the-doom-talk-just-a-distraction-from-the-real-problems-with-ai",
@@ -4385,48 +4447,6 @@
    "image": "https://media.wired.com/photos/6ac0197d8e2ff9873e4241c1/master/pass/The%20Best%20E-Readers%20That%20Aren't%20a%20Kindle%20102026%20top%20art%20SOURCE%20Kobo.jpg",
    "summary": "Want to untether your reading from Amazon? These Kindle alternatives deserve a spot on your nightstand.",
    "seen": "2026-10-03T13:09:14.337Z"
-  },
-  {
-   "id": "tech-zgjzyc",
-   "title": "Jess Weatherbed Profile and Activity - Page 282",
-   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9HaHFmV19ZTFE1ajhVVk1kSWEtT0ZoN2w4eTJyOUwtMU53UlJYRUdEenprQVVxYmxJSWMyeDdSXy03UWZGUVVKWXBNblFMNG1GMWs5Rl9HTXRhRUNlamN1Y0o3OWhXTjZlWEdzZDBB?oc=5",
-   "date": "2026-10-03T10:22:35.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "seen": "2026-10-03T17:31:37.670Z"
-  },
-  {
-   "id": "wired-1vkn8r5",
-   "title": "Best Mosquito Repellents for Your Yard: What Works and What Doesn’t (2026)",
-   "url": "https://www.wired.com/story/best-mosquito-repellents/",
-   "date": "2026-10-03T10:03:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/6abfcf9ffd75bc6c14087517/master/pass/I%E2%80%99ve%20Spent%20Years%20Fighting%20Mosquitoes%20102026%20top%20art%20SOURCE%20Amazon.jpg",
-   "summary": "After years of testing repellents, traps, and sprays, I found a few ways to keep the bugs at bay—and plenty that aren’t worth the effort.",
-   "seen": "2026-10-03T13:09:14.337Z"
-  },
-  {
-   "id": "tech-18r5ylb",
-   "title": "The Mosquito-Fighting Gear Worth Trying—and What to Skip",
-   "url": "https://www.wired.com/story/best-mosquito-repellents/",
-   "date": "2026-10-03T10:03:00.000Z",
-   "source": "wired.com",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/6abfcf9ffd75bc6c14087517/191:100/w_1280,c_limit/I%E2%80%99ve%20Spent%20Years%20Fighting%20Mosquitoes%20102026%20top%20art%20SOURCE%20Amazon.jpg",
-   "summary": "I tested portable repellents, yard-wide systems, traps, and more. Some kept mosquitoes away; others mostly caught moths.",
-   "tried": 1,
-   "seen": "2026-10-03T13:09:14.337Z",
-   "direct": 1
-  },
-  {
-   "id": "tech-1qyiqye",
-   "title": "Jay Peters Profile and Activity - Page 775",
-   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9JSzdla2VHLVR5SzU4VmVhdnU0Y2xyMFI4cGlDLWtvalVFeUhSVDhaajdOX1VBTEtTZjBJam9JWUJVVzA3azlya2tvak1lY1JyYWdMZ1dVR29BQ2F1QkpBMmV4SEV2dVE?oc=5",
-   "date": "2026-10-03T09:28:50.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "seen": "2026-10-04T04:59:26.116Z"
   }
  ],
  "markets": [
@@ -5052,6 +5072,17 @@
   }
  ],
  "gaming": [
+  {
+   "id": "polygon-1iecdqx",
+   "title": "8 Video Game Villains With Motives You Can't Argue With",
+   "url": "https://www.polygon.com/video-game-villains-who-were-right/",
+   "date": "2026-10-04T20:00:15.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/22989776/ss_4b2b412307b72a21f68148c32fab7a278875d139.jpg",
+   "summary": "From Renoir to Andrew Ryan, these 8 video game villains perhaps had a point…buried under the body count",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
   {
    "id": "games-1cgvjgw",
    "title": "Tom Cruise's Digger Bombs Hard With $20 Million Global Opening in Theaters",
@@ -5740,15 +5771,6 @@
    "source": "ign.com",
    "domain": "ign.com",
    "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "games-1tyi4mk",
-   "title": "Freeze Frame Walkthrough",
-   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1EN2tzVlVYNDU0djZtYUhpbTdNdUJwdHZRY1lkT0VQdy13bGZTd21fcFFUTGhmd2Jwd25vVlZrVG5oODEzM0w0SllhTzE0NnAwQXJhTGlDRzM0UzZRckxYb2V0cGVwWGVtSmR3NWFKTzMtd2s5VlE?oc=5",
-   "date": "2026-10-04T06:09:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-10-04T04:59:26.116Z"
   }
  ],
  "marvel": [
@@ -6053,6 +6075,84 @@
   }
  ],
  "pop": [
+  {
+   "id": "thr-sc5u2r",
+   "title": "Rachel Reid on Upcoming Book ‘Unrivaled’ and Keeping All Those ‘Heated Rivalry’ Season 2 Secrets",
+   "url": "https://www.hollywoodreporter.com/lifestyle/arts/rachel-reid-unrivaled-heated-rivalry-season-2-interview-1236721934/",
+   "date": "2026-10-04T22:26:44.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The 'Heated Rivalry' author is currently on a tour for the deluxe edition of the best-selling hockey romance novel.",
+   "seen": "2026-10-04T22:26:39.702Z",
+   "tried": 1,
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/10/GettyImages-2278714457-e1791137013635.jpg?w=1440&h=810&crop=1"
+  },
+  {
+   "id": "variety-1gd8s06",
+   "title": "What David Zaslav Got Wrong About ‘Coyote vs. Acme’",
+   "url": "https://variety.com/2026/film/box-office/coyote-vs-acme-proves-david-zaslav-wrong-box-office-1236895011/",
+   "date": "2026-10-04T22:20:52.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/10/MCDCOVS_EC012.jpg",
+   "summary": "Three years after “Coyote vs. Acme” was shelved by Warner Bros.",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "variety-1f4saax",
+   "title": "Peacock’s Free Trial Offer Returns – But You Won’t Find It On the Streaming Service",
+   "url": "https://variety.com/2026/shopping/news/best-peacock-streaming-deals-offers-1235625188/",
+   "date": "2026-10-04T22:08:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2025/05/best-peacock-deals-2026.jpg",
+   "summary": "Peacock subscribers were hit with another rate hike over the summer, with prices for the NBCUniversal streaming service rising for the fourth time in four years.",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "thr-lsatrb",
+   "title": "Newport Beach Film Fest: ‘Furious’ Star Emmy Rossum Will Receive TV Performance Award, Guest on Live Episode of ‘Awards Chatter’ Pod",
+   "url": "https://www.hollywoodreporter.com/tv/tv-news/newport-beach-film-fest-furious-emmy-rossum-award-podcast-1236721462/",
+   "date": "2026-10-04T21:52:51.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The critically acclaimed and popular actress best known for 'Shameless' will be feted on Oct. 18.",
+   "seen": "2026-10-04T22:26:39.702Z",
+   "tried": 1,
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/10/Emmy-Rossum-Awards-Chatter-Getty-H-2026.jpg?w=1296&h=730&crop=1"
+  },
+  {
+   "id": "variety-gs53xc",
+   "title": "Taylor Swift’s ‘Encore’ Edition Boosts ‘The Life of a Showgirl’ Back to No. 1 for First Time Since January, Adding a 13th Week on Top",
+   "url": "https://variety.com/2026/music/news/taylor-swift-showgirl-encore-album-chart-number-one-1236898681/",
+   "date": "2026-10-04T21:17:51.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/09/Album-Cover-Treatment-8.jpg",
+   "summary": "Taylor Swift’s “The Life of a Showgirl” returned to the No. 1 spot on the Billboard 200 album chart after last vacating that position in January, thanks to the release of an expanded edition titled “The Life of a…",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "thr-slh5o5",
+   "title": "J. Todd Anderson, ‘The Nice Guys’ and ‘The Big Lebowski’ Storyboard Artist, Dies at 67",
+   "url": "https://www.hollywoodreporter.com/movies/movie-news/j-todd-anderson-dead-storyboard-artist-1236721947/",
+   "date": "2026-10-04T20:12:37.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "He was a frequent collaborator of the Coen Brothers, storyboarding ‘Fargo,’ ‘Drive-Away Dolls’ and ‘The Tragedy of Macbeth,’ among other films.",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "variety-1m4cj6g",
+   "title": "James Gunn Confirms He’s ‘Already’ Writing His Next Film Ahead of ‘Superman: Man of Tomorrow’",
+   "url": "https://variety.com/2026/film/news/james-gunn-next-project-superman-man-of-tomorrow-1236898696/",
+   "date": "2026-10-04T19:46:28.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2023/04/GettyImages-1332042699.jpg",
+   "summary": "James Gunn announced on Threads that he is actively working on writing his next film ahead of the release of “Superman: Man of Tomorrow,” due in theaters July 9, 2027.",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
   {
    "id": "pop-1etj6u3",
    "title": "Digger’s Grave Is Dug at the Box Office",
@@ -6674,72 +6774,42 @@
    "source": "The Hollywood Reporter",
    "domain": "hollywoodreporter.com",
    "seen": "2026-10-04T15:55:32.171Z"
-  },
-  {
-   "id": "pop-1d28w3y",
-   "title": "John Malkovich Returning to Israel With ‘The Music Critic’",
-   "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9BU2liMTZqNFU5ZHhOX2ViYVBHY0J3MzJkelVMZHZzYlZGdk5OdVFJbjlqZ1lWdkF6R3FDYXUxcVFiVUdpRWlLbnFFRlg1bFJOd3NRdTZya1BvQ2M?oc=5",
-   "date": "2026-10-04T08:38:46.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "seen": "2026-10-04T15:55:32.171Z"
-  },
-  {
-   "id": "pop-1fdrw7x",
-   "title": "Roberto Prieto",
-   "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE1zb1A0S0pqUWx1VDB4ZWkwUGVYYlpWWFFkNjBNcEs1NGx4M0ExQnllVXp5bzh6OVMzV1QzQjZwWXpyemF6OVZpOEdlc2pUOHBxeVNvVndUSQ?oc=5",
-   "date": "2026-10-04T07:55:07.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-13nvyka",
-   "title": "Spaghetti Westerns",
-   "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE56X3hCeVNkNGNYMkJ3Y3h4N0R3LW80S1RmRk9Sd0hkZEZRbnFaY05vUEkwRktOSHJXSGxSdVpuNzJ2VDctal9HbXE3QlZuR3Q5czI5T05iYndIMlB3Z0FuRWhXaWFKZWo0?oc=5",
-   "date": "2026-10-04T07:38:56.000Z",
-   "source": "vulture.com",
-   "domain": "vulture.com",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "pop-w77jan",
-   "title": "Latest Lifestyle News",
-   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1BZmJocGpMdjhUY1Bja0pBbkVhbGVRRDBNZDNvd21DRW5wWFIxRVNIQUI0cGRCS1BLV252NGtnRkExb0dYdE8tUDh6SXJrdFp6dERZaV9FZVF1RkhGRmpndWlZWFlTaTRkem0xVzZB?oc=5",
-   "date": "2026-10-04T07:37:14.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "pop-v926b7",
-   "title": "How a Sweet, Horny Hockey Show Rewrote the Rules of Independent TV",
-   "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE4xWWpycE1kQ2RWWlp0czg5cHdTaFRnclZ6bWxFc2ZQQU1EQXB1UkpoTVhsUkxjSjVsVlphenVNeHZNNGtybE9YUnppZzJpWEtXcERzU2stRGtZaVE?oc=5",
-   "date": "2026-10-04T06:39:02.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "pop-1jnyoxs",
-   "title": "‘The Morning Show’ to End With Season 5",
-   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFB5QWJ3LXJyRXJWUjU3ZnZtNXJqeElNU3owZENmNWpUOVF4VlU1VFBMZ2ZETlZOblFUb1FxWHlQODIwaUNPaUZwQVRYd0RuWVJBeXR0b3pBV0d3dFlm?oc=5",
-   "date": "2026-10-04T05:10:41.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "seen": "2026-10-04T15:55:32.171Z"
-  },
-  {
-   "id": "pop-ey21b1",
-   "title": "Inside Zegna’s Runway Show Afterparty at Bar Marmont With Surprise Performance by The Sparks",
-   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5ia1pld29JLVQ2ZUJTSG80MVdnNlNBVHBNdnRQakpYdVZlZnZnMzNwdWRmRm9Jci05NUE1Mlc3RzlVaEtpVHg4UjBwSWVEbG55SkZHa3VMQXE0MW83?oc=5",
-   "date": "2026-10-04T05:09:41.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "seen": "2026-10-04T11:04:11.493Z"
   }
  ],
  "music": [
+  {
+   "id": "billboard-owm4d4",
+   "title": "Taylor Swift, The Beatles, Elvis & More Artists With the Most Weeks at No. 1 on the Billboard 200: Full List",
+   "url": "https://www.billboard.com/lists/most-weeks-at-no-1-billboard-200-taylor-swift-the-beatles/",
+   "date": "2026-10-04T21:29:11.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/09/01-taylor-swift-tloas-encore-billboard-1800.jpg?w=237&h=147&crop=1",
+   "summary": "Will Swift eventually equal or top the Fab Four's record?",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "billboard-ezn6mv",
+   "title": "Taylor Swift’s ‘The Life of a Showgirl’ Returns to No. 1 After ‘Encore’ Reissue",
+   "url": "https://www.billboard.com/music/chart-beat/taylor-swift-life-of-a-showgirl-no-1-encore-1236353941/",
+   "date": "2026-10-04T21:00:07.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2022/12/120522-Billboard-200-Most-Weeks-at-No-1548.jpg?w=237&h=147&crop=1",
+   "summary": "Plus, Tinashe and Kenny Chesney debut in the top 10.",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "billboard-19i6yc3",
+   "title": "Sass Jordan, Rock Singer and ‘Canadian Idol’ Judge, Dies at 65",
+   "url": "https://www.billboard.com/music/music-news/sass-jordan-death-canadian-rock-singer-dies-obituary-1236353927/",
+   "date": "2026-10-04T20:24:59.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/08/dolly-parton-1974-billboard-1800.jpg?w=237&h=147&crop=1",
+   "summary": "The rock and blues singer won a Juno Award in 1989 and went on to serve as a judge on Canadian Idol for all six seasons.",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
   {
    "id": "music-28ozo8",
    "title": "Grupo Frontera Talks ‘Con Dolor,’ Collabs & Tour Life Over Carne Asada | Takes Us Out",
@@ -7414,35 +7484,6 @@
    "source": "Rolling Stone",
    "domain": "rollingstone.com",
    "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "music-1k6d8xn",
-   "title": "Music – Page 1990",
-   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOLXRlNUdLRTExa3NKdmI3cGZqUEZNb2o3YTNhQzhuQm5YQzdwOW1PZHhRTnI3NTcyd1pXT0FXNHdMSm9LU2c2Yk54RTk4b0xST3dUbEhmYzdCajI5bW1sVWhtaTA1cDRqR2FPRkVrR1lkV1dBY3lIT1J5b2RfX3FWSEhkek1KZ0dBRldEWWdka2xVM3ZfX1pZQUNJNWNISFZQSDhmMEtqbw?oc=5",
-   "date": "2026-10-03T00:46:24.000Z",
-   "source": "Rolling Stone",
-   "domain": "rollingstone.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "billboard-1eyc6v6",
-   "title": "Ye’s Two Russian Stadium Concerts Canceled, Promoters Announce: ‘Sincere Regret’",
-   "url": "https://www.billboard.com/music/rb-hip-hop/kanye-west-russian-stadium-concerts-canceled-1236351799/",
-   "date": "2026-10-03T00:36:09.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com",
-   "image": "https://www.billboard.com/wp-content/uploads/2026/09/02-taylor-swift-tloas-encore-billboard-1800.jpg?w=237&h=147&crop=1",
-   "summary": "The two announced gigs at St. Peterburg's Gazprom Arena were in limbo from the start after the venue stated that it had not signed a rental agreement.",
-   "seen": "2026-10-03T01:47:16.202Z"
-  },
-  {
-   "id": "music-xqfvdh",
-   "title": "“It’s one of the most mythical amp brands of all time. And now it’s actually returned”: The best guitar gear launched this week, ft. one of John Mayer’s favorite amp heads and the world’s tiniest six-string bass",
-   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9SLU56MHFJMnVoaHdkZjRURnhxSjlzMHhxd2VMVDVtOXpLZFJRUmVMT0dGRUd5bUFuM3J1S2dwajM3X0ZwOTMzSkxsLVV0ZlBqU0I1TXhnbmhNaTFWZEhDQkMzN1JkODY4dUdZ?oc=5",
-   "date": "2026-10-03T00:00:00.000Z",
-   "source": "guitarworld.com",
-   "domain": "guitarworld.com",
-   "seen": "2026-10-03T07:46:58.230Z"
   }
  ],
  "reddit": [
@@ -7467,16 +7508,6 @@
    "seen": "2026-10-04T04:59:26.116Z"
   },
   {
-   "id": "rd-497gtz",
-   "title": "Forever the best F&F",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wwz4t5/forever_the_best_ff/",
-   "date": "2026-10-03T21:56:49.000Z",
-   "source": "r/SipsTea",
-   "from": "popular",
-   "image": "https://preview.redd.it/lhucbt1nqbth1.jpeg?width=640&crop=smart&auto=webp&s=8d9de85e8f5cfd6e52fa49491230307be9ff02b0",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
    "id": "rd-md9ysb",
    "title": "This guy got people from around the world to teach him their favourite dance moves. Credit: Ed People",
    "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wxcut8/this_guy_got_people_from_around_the_world_to/",
@@ -7487,14 +7518,14 @@
    "seen": "2026-10-04T19:20:28.894Z"
   },
   {
-   "id": "rd-jvyzl0",
-   "title": "Oh to be adored!",
-   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wx14r0/oh_to_be_adored/",
-   "date": "2026-10-03T23:34:22.000Z",
-   "source": "r/MadeMeSmile",
+   "id": "rd-1segkxg",
+   "title": "need a scientist to explain to me why this tiny paw has the same weight as a truck :/",
+   "url": "https://www.reddit.com/r/cats/comments/1wxjott/need_a_scientist_to_explain_to_me_why_this_tiny/",
+   "date": "2026-10-04T16:21:19.000Z",
+   "source": "r/cats",
    "from": "popular",
-   "image": "https://external-preview.redd.it/NDl6Zmg0OTE4Y3RoMdShQ9siSxwlt6HbT2tLbGsefwsBGaOXmtzgo5mlmRV-.jpeg?width=640&crop=smart&auto=webp&s=f73a7a73772a269f56ea23eb8dc6e10e76e0ce77",
-   "seen": "2026-10-04T15:55:32.171Z"
+   "image": "https://preview.redd.it/gj950e3p7hth1.jpeg?width=640&crop=smart&auto=webp&s=79feb0e5e26cf9544d01817cd2e9db2f9cc1814e",
+   "seen": "2026-10-04T22:26:39.702Z"
   },
   {
    "id": "rd-luyic9",
@@ -7504,6 +7535,16 @@
    "source": "r/reddeadredemption",
    "from": "popular",
    "image": "https://preview.redd.it/n61ijrdkjdth1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=e881d5d03ddafff67540f18c4da93612908dc289",
+   "seen": "2026-10-04T15:55:32.171Z"
+  },
+  {
+   "id": "rd-jvyzl0",
+   "title": "Oh to be adored!",
+   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wx14r0/oh_to_be_adored/",
+   "date": "2026-10-03T23:34:22.000Z",
+   "source": "r/MadeMeSmile",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/NDl6Zmg0OTE4Y3RoMdShQ9siSxwlt6HbT2tLbGsefwsBGaOXmtzgo5mlmRV-.jpeg?width=640&crop=smart&auto=webp&s=f73a7a73772a269f56ea23eb8dc6e10e76e0ce77",
    "seen": "2026-10-04T15:55:32.171Z"
   },
   {
@@ -7537,24 +7578,14 @@
    "seen": "2026-10-04T15:55:32.171Z"
   },
   {
-   "id": "rd-1bnxc3n",
-   "title": "This is my friend’s average daily screen time for CHATGPT despite being against data centres",
-   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1wwz5cu/this_is_my_friends_average_daily_screen_time_for/",
-   "date": "2026-10-03T21:57:31.000Z",
-   "source": "r/mildlyinfuriating",
+   "id": "rd-18fyl04",
+   "title": "Wait seriously.",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wxd1u7/wait_seriously/",
+   "date": "2026-10-04T11:06:26.000Z",
+   "source": "r/SipsTea",
    "from": "popular",
-   "image": "https://preview.redd.it/bq350kmrqbth1.jpeg?width=640&crop=smart&auto=webp&s=0f7de976988a8d40ffa5491cd9541dae8f9e677c",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "rd-bah6gh",
-   "title": "Exactly.",
-   "url": "https://www.reddit.com/r/PoursTea/comments/1wwxf6i/exactly/",
-   "date": "2026-10-03T20:40:03.000Z",
-   "source": "r/PoursTea",
-   "from": "popular",
-   "image": "https://preview.redd.it/wqy7ox1ycbth1.jpeg?width=320&crop=smart&auto=webp&s=46ccc9c3436ce4d137625c5f3118bbf9da522ff3",
-   "seen": "2026-10-04T11:04:11.493Z"
+   "image": "https://preview.redd.it/l8o54ylinfth1.jpeg?width=640&crop=smart&auto=webp&s=0dca3656197fe89ffca35948922b350f5160a569",
+   "seen": "2026-10-04T19:20:28.894Z"
   },
   {
    "id": "rd-nxb2bt",
@@ -7567,76 +7598,6 @@
    "seen": "2026-10-04T15:55:32.171Z"
   },
   {
-   "id": "rd-1chcflg",
-   "title": "Carrot Unraveling",
-   "url": "https://www.reddit.com/r/oddlysatisfying/comments/1wwzz9i/carrot_unraveling/",
-   "date": "2026-10-03T22:36:41.000Z",
-   "source": "r/oddlysatisfying",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/c3Fjb3U2ZnF4YnRoMeD8eSiVP9xDCRbilkoJnmDNQ-j75NHxb72th4MmdbBU.png?width=320&crop=smart&auto=webp&s=f83dfeb3651150fcf4afacd1aac9a1a899d638cb",
-   "seen": "2026-10-04T15:55:32.171Z"
-  },
-  {
-   "id": "rd-n14nqr",
-   "title": "Pro wrestler comes out on TV and crowd is overwhelmingly supportive",
-   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wx18g6/pro_wrestler_comes_out_on_tv_and_crowd_is/",
-   "date": "2026-10-03T23:39:48.000Z",
-   "source": "r/MadeMeSmile",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/NGN6em8yOXA4Y3RoMc7bl4Hyg38jLfs-l31VRf9iR29aFGQQeUoMGZY9MfsS.jpeg?width=640&crop=smart&auto=webp&s=17821a770b763be09a91f8fede06fee2e58865fe",
-   "seen": "2026-10-04T15:55:32.171Z"
-  },
-  {
-   "id": "rd-18fyl04",
-   "title": "Wait seriously.",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wxd1u7/wait_seriously/",
-   "date": "2026-10-04T11:06:26.000Z",
-   "source": "r/SipsTea",
-   "from": "popular",
-   "image": "https://preview.redd.it/l8o54ylinfth1.jpeg?width=640&crop=smart&auto=webp&s=0dca3656197fe89ffca35948922b350f5160a569",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-2fv7zh",
-   "title": "This is Fruit Stripe Gum. He's a foster cat who doesn't really care if he ever gets adopted.",
-   "url": "https://www.reddit.com/r/aww/comments/1wx2d88/this_is_fruit_stripe_gum_hes_a_foster_cat_who/",
-   "date": "2026-10-04T00:36:54.000Z",
-   "source": "r/aww",
-   "from": "popular",
-   "image": "https://preview.redd.it/l2akljdyicth1.jpeg?width=640&crop=smart&auto=webp&s=3b9f61a114372f97f529eecd1b4ce22592c51965",
-   "seen": "2026-10-04T15:55:32.171Z"
-  },
-  {
-   "id": "rd-xzyq3o",
-   "title": "meirl",
-   "url": "https://www.reddit.com/r/meirl/comments/1wwy8kd/meirl/",
-   "date": "2026-10-03T21:16:01.000Z",
-   "source": "r/meirl",
-   "from": "popular",
-   "image": "https://preview.redd.it/i0drej3djbth1.jpeg?width=640&crop=smart&auto=webp&s=eb508b88c092de59647a0ca01109130917720074",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-vnxjem",
-   "title": "I think that's valid",
-   "url": "https://www.reddit.com/r/NonPoliticalTwitter/comments/1wwy6bg/i_think_thats_valid/",
-   "date": "2026-10-03T21:13:06.000Z",
-   "source": "r/NonPoliticalTwitter",
-   "from": "popular",
-   "image": "https://preview.redd.it/jry6or6uibth1.jpeg?width=640&crop=smart&auto=webp&s=20dcb46df21f0fffda8c4747ae5fa1800fc80ad1",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-1jbp9k8",
-   "title": "Study of 2.5 million children finds no link between MMR vaccine and autism.",
-   "url": "https://www.reddit.com/r/science/comments/1wxemcr/study_of_25_million_children_finds_no_link/",
-   "date": "2026-10-04T12:34:02.000Z",
-   "source": "r/science",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/vZvKjFy1QaKGT-q0yymNxa0Ypu6x328rK2CTewcD5xg.jpeg?width=640&crop=smart&auto=webp&s=84714b098b60c847ab2cb260ffe80eba2df8fb28",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
    "id": "rd-1kwd27g",
    "title": "Let's Chat",
    "url": "https://www.reddit.com/r/comics/comments/1wxfiye/lets_chat/",
@@ -7647,14 +7608,14 @@
    "seen": "2026-10-04T19:20:28.894Z"
   },
   {
-   "id": "rd-tp0of1",
-   "title": "Fossil of friendship",
-   "url": "https://www.reddit.com/r/Damnthatsinteresting/comments/1wxe4wp/fossil_of_friendship/",
-   "date": "2026-10-04T12:08:12.000Z",
-   "source": "r/Damnthatsinteresting",
+   "id": "rd-1chcflg",
+   "title": "Carrot Unraveling",
+   "url": "https://www.reddit.com/r/oddlysatisfying/comments/1wwzz9i/carrot_unraveling/",
+   "date": "2026-10-03T22:36:41.000Z",
+   "source": "r/oddlysatisfying",
    "from": "popular",
-   "image": "https://external-preview.redd.it/eG5rMG43NGp5ZnRoMYuLCPBJvjzl3HJGLRf8FYhV2BE81xEah5kKMCQ37I4u.jpeg?width=320&crop=smart&auto=webp&s=864f6413777c8ef88ef033b0ea29417f0fa219bf",
-   "seen": "2026-10-04T19:20:28.894Z"
+   "image": "https://external-preview.redd.it/c3Fjb3U2ZnF4YnRoMeD8eSiVP9xDCRbilkoJnmDNQ-j75NHxb72th4MmdbBU.png?width=320&crop=smart&auto=webp&s=f83dfeb3651150fcf4afacd1aac9a1a899d638cb",
+   "seen": "2026-10-04T15:55:32.171Z"
   },
   {
    "id": "rd-1qd2pas",
@@ -7667,6 +7628,86 @@
    "seen": "2026-10-04T19:20:28.894Z"
   },
   {
+   "id": "rd-n14nqr",
+   "title": "Pro wrestler comes out on TV and crowd is overwhelmingly supportive",
+   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wx18g6/pro_wrestler_comes_out_on_tv_and_crowd_is/",
+   "date": "2026-10-03T23:39:48.000Z",
+   "source": "r/MadeMeSmile",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/NGN6em8yOXA4Y3RoMc7bl4Hyg38jLfs-l31VRf9iR29aFGQQeUoMGZY9MfsS.jpeg?width=640&crop=smart&auto=webp&s=17821a770b763be09a91f8fede06fee2e58865fe",
+   "seen": "2026-10-04T15:55:32.171Z"
+  },
+  {
+   "id": "rd-2fv7zh",
+   "title": "This is Fruit Stripe Gum. He's a foster cat who doesn't really care if he ever gets adopted.",
+   "url": "https://www.reddit.com/r/aww/comments/1wx2d88/this_is_fruit_stripe_gum_hes_a_foster_cat_who/",
+   "date": "2026-10-04T00:36:54.000Z",
+   "source": "r/aww",
+   "from": "popular",
+   "image": "https://preview.redd.it/l2akljdyicth1.jpeg?width=640&crop=smart&auto=webp&s=3b9f61a114372f97f529eecd1b4ce22592c51965",
+   "seen": "2026-10-04T15:55:32.171Z"
+  },
+  {
+   "id": "rd-1jbp9k8",
+   "title": "Study of 2.5 million children finds no link between MMR vaccine and autism.",
+   "url": "https://www.reddit.com/r/science/comments/1wxemcr/study_of_25_million_children_finds_no_link/",
+   "date": "2026-10-04T12:34:02.000Z",
+   "source": "r/science",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/vZvKjFy1QaKGT-q0yymNxa0Ypu6x328rK2CTewcD5xg.jpeg?width=640&crop=smart&auto=webp&s=84714b098b60c847ab2cb260ffe80eba2df8fb28",
+   "seen": "2026-10-04T19:20:28.894Z"
+  },
+  {
+   "id": "rd-lp4xw4",
+   "title": "Monkey Smells a Century Egg.",
+   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wxiqcf/monkey_smells_a_century_egg/",
+   "date": "2026-10-04T15:41:31.000Z",
+   "source": "r/interestingasfuck",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/b2xrOHRoZ2owaHRoMesOCSXSnIRQYeYJ4GOVKjD3P7t6uNfB66F5lRIzKVHD.png?width=320&crop=smart&auto=webp&s=5def9098a06a23e2b155fe03e186fd16026a53b3",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "rd-tp0of1",
+   "title": "Fossil of friendship",
+   "url": "https://www.reddit.com/r/Damnthatsinteresting/comments/1wxe4wp/fossil_of_friendship/",
+   "date": "2026-10-04T12:08:12.000Z",
+   "source": "r/Damnthatsinteresting",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/eG5rMG43NGp5ZnRoMYuLCPBJvjzl3HJGLRf8FYhV2BE81xEah5kKMCQ37I4u.jpeg?width=320&crop=smart&auto=webp&s=864f6413777c8ef88ef033b0ea29417f0fa219bf",
+   "seen": "2026-10-04T19:20:28.894Z"
+  },
+  {
+   "id": "rd-1gp7kov",
+   "title": "Routers in Australia:",
+   "url": "https://www.reddit.com/r/pcmasterrace/comments/1wxfxc7/routers_in_australia/",
+   "date": "2026-10-04T13:38:41.000Z",
+   "source": "r/pcmasterrace",
+   "from": "popular",
+   "image": "https://preview.redd.it/naakghdoegth1.jpeg?width=640&crop=smart&auto=webp&s=f993efb0e2726cb6ef4aa9084e45ba76b9e67323",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
+   "id": "rd-xtgmf4",
+   "title": "Max reactions to fans chanting his national anthem before the actual national anthem",
+   "url": "https://www.reddit.com/r/formula1/comments/1wxfxds/max_reactions_to_fans_chanting_his_national/",
+   "date": "2026-10-04T13:38:44.000Z",
+   "source": "r/formula1",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/MjU4N2FzY29lZ3RoMaLRYtivemYDqTWyKwwjO1GuhK47i6NiOh7KLwHguMCk.jpeg?width=640&crop=smart&auto=webp&s=fb58c07e1049adba74a3630f52078f5e249f165b",
+   "seen": "2026-10-04T19:20:28.894Z"
+  },
+  {
+   "id": "rd-1qki563",
+   "title": "She almost ruined a proposal.",
+   "url": "https://www.reddit.com/r/TikTokCringe/comments/1wxccpb/she_almost_ruined_a_proposal/",
+   "date": "2026-10-04T10:24:16.000Z",
+   "source": "r/TikTokCringe",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/MWtmODRxc3lmZnRoMbr-iyiQei3LG44At3PM-I6_9JiO0txs_OvQc1LXp9LT.jpeg?width=320&crop=smart&auto=webp&s=89362bf7bdb3557a859073c487bae41635de2e2e",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
    "id": "rd-1foe0k5",
    "title": "Max Verstappen wins the 2026 Bahrain Grand Prix in Malaysia! Antonelli 2nd, Hamilton 3rd!",
    "url": "https://www.reddit.com/r/formula1/comments/1wxcb74/max_verstappen_wins_the_2026_bahrain_grand_prix/",
@@ -7677,6 +7718,16 @@
    "seen": "2026-10-04T19:20:28.894Z"
   },
   {
+   "id": "rd-tf80fp",
+   "title": "Thoughts on this?",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wxoipr/thoughts_on_this/",
+   "date": "2026-10-04T19:38:57.000Z",
+   "source": "r/SipsTea",
+   "from": "popular",
+   "image": "https://preview.redd.it/aumgstby6ith1.png?width=640&crop=smart&auto=webp&s=c5646717d0dee0693f3a3317e94efad9886b0872",
+   "seen": "2026-10-04T22:26:39.702Z"
+  },
+  {
    "id": "rd-9sv6v5",
    "title": "Amazing work 👏",
    "url": "https://www.reddit.com/r/PoursTea/comments/1wx0xei/amazing_work/",
@@ -7684,16 +7735,6 @@
    "source": "r/PoursTea",
    "from": "popular",
    "image": "https://preview.redd.it/vbuftji56cth1.jpeg?width=640&crop=smart&auto=webp&s=8368ef92309f2943006f6977469785dcd122bf2a",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-xtgmf4",
-   "title": "Max reactions to fans chanting his national anthem before the actual national anthem",
-   "url": "https://www.reddit.com/r/formula1/comments/1wxfxds/max_reactions_to_fans_chanting_his_national/",
-   "date": "2026-10-04T13:38:44.000Z",
-   "source": "r/formula1",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/MjU4N2FzY29lZ3RoMaLRYtivemYDqTWyKwwjO1GuhK47i6NiOh7KLwHguMCk.jpeg?width=640&crop=smart&auto=webp&s=fb58c07e1049adba74a3630f52078f5e249f165b",
    "seen": "2026-10-04T19:20:28.894Z"
   }
  ]
