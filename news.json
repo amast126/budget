@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-05T07:31:27.526Z",
+ "generated": "2026-10-05T16:56:08.531Z",
  "searchVersion": {
   "nyc": 2,
   "markets": 3,
@@ -8,138 +8,153 @@
  },
  "sources": {
   "ap": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "politics",
    "kind": "google",
-   "name": "AP"
+   "name": "AP",
+   "error": "HTTP 503"
   },
   "reuters": {
-   "ok": true,
+   "ok": false,
    "count": 12,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "politics",
    "kind": "google",
-   "name": "Reuters"
+   "name": "Reuters",
+   "error": "HTTP 503"
   },
   "reddit": {
    "ok": true,
    "count": 25,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/popular",
    "via": "rss"
   },
   "tech": {
-   "ok": true,
+   "ok": false,
    "count": 86,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "tech",
    "kind": "google",
-   "name": "Tech"
+   "name": "Tech",
+   "error": "HTTP 503"
   },
   "ai": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "tech",
    "kind": "google",
-   "name": "AI"
+   "name": "AI",
+   "error": "HTTP 503"
   },
   "pop": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "pop",
    "kind": "google",
-   "name": "Pop culture"
+   "name": "Pop culture",
+   "error": "HTTP 503"
   },
   "music": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "music",
    "kind": "google",
-   "name": "Music"
+   "name": "Music",
+   "error": "HTTP 503"
   },
   "nyc": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "nyc",
    "kind": "google",
-   "name": "NYC"
+   "name": "NYC",
+   "error": "HTTP 503"
   },
   "mamdani": {
-   "ok": true,
+   "ok": false,
    "count": 3,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "nyc",
    "kind": "google",
-   "name": "Mamdani"
+   "name": "Mamdani",
+   "error": "HTTP 503"
   },
   "energy": {
-   "ok": true,
+   "ok": false,
    "count": 95,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "markets",
    "kind": "google",
-   "name": "Energy"
+   "name": "Energy",
+   "error": "HTTP 503"
   },
   "quantum": {
-   "ok": true,
+   "ok": false,
    "count": 30,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "markets",
    "kind": "google",
-   "name": "Quantum"
+   "name": "Quantum",
+   "error": "HTTP 503"
   },
   "robotics": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "markets",
    "kind": "google",
-   "name": "Robotics"
+   "name": "Robotics",
+   "error": "HTTP 503"
   },
   "games": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "gaming",
    "kind": "google",
-   "name": "Gaming"
+   "name": "Gaming",
+   "error": "HTTP 503"
   },
   "mygames": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "gaming",
    "kind": "google",
-   "name": "Your games"
+   "name": "Your games",
+   "error": "HTTP 503"
   },
   "marvel": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "marvel",
    "kind": "google",
-   "name": "Marvel"
+   "name": "Marvel",
+   "error": "HTTP 503"
   },
   "top": {
-   "ok": true,
+   "ok": false,
    "count": 38,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "top",
    "kind": "google",
-   "name": "Top stories"
+   "name": "Top stories",
+   "error": "HTTP 503"
   },
   "thecity": {
    "ok": true,
    "count": 6,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "nyc",
    "kind": "feed",
    "name": "THE CITY",
@@ -148,7 +163,7 @@
   "lipress": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "li",
    "kind": "feed",
    "name": "Long Island Press",
@@ -157,7 +172,7 @@
   "verge": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "tech",
    "kind": "feed",
    "name": "The Verge",
@@ -166,7 +181,7 @@
   "ars": {
    "ok": true,
    "count": 20,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "tech",
    "kind": "feed",
    "name": "Ars Technica",
@@ -175,7 +190,7 @@
   "techcrunch": {
    "ok": true,
    "count": 20,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "tech",
    "kind": "feed",
    "name": "TechCrunch",
@@ -184,24 +199,25 @@
   "wired": {
    "ok": true,
    "count": 30,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "tech",
    "kind": "feed",
    "name": "Wired",
    "url": "https://www.wired.com/feed/rss"
   },
   "li": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "li",
    "kind": "google",
-   "name": "Long Island"
+   "name": "Long Island",
+   "error": "HTTP 503"
   },
   "gamespot": {
    "ok": true,
    "count": 30,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "gaming",
    "kind": "feed",
    "name": "GameSpot",
@@ -210,7 +226,7 @@
   "vgc": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "gaming",
    "kind": "feed",
    "name": "VGC",
@@ -219,7 +235,7 @@
   "polygon": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "gaming",
    "kind": "feed",
    "name": "Polygon",
@@ -228,7 +244,7 @@
   "variety": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "pop",
    "kind": "feed",
    "name": "Variety",
@@ -237,7 +253,7 @@
   "thr": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "pop",
    "kind": "feed",
    "name": "The Hollywood Reporter",
@@ -246,7 +262,7 @@
   "billboard": {
    "ok": true,
    "count": 10,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "music",
    "kind": "feed",
    "name": "Billboard",
@@ -254,8 +270,8 @@
   },
   "pitchfork": {
    "ok": true,
-   "count": 30,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "count": 29,
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "music",
    "kind": "feed",
    "name": "Pitchfork",
@@ -263,16 +279,16 @@
   },
   "photos": {
    "ok": true,
-   "count": 25,
-   "checked": "2026-10-05T07:31:27.526Z",
+   "count": 5,
+   "checked": "2026-10-05T16:56:08.531Z",
    "kind": "enrich",
-   "decoded": 26,
-   "tried": 27
+   "decoded": 0,
+   "tried": 5
   },
   "reddit-subs": {
    "ok": false,
    "error": "HTTP 429",
-   "checked": "2026-10-05T07:31:27.526Z",
+   "checked": "2026-10-05T16:56:08.531Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "your subreddits"
@@ -2237,6 +2253,17 @@
  ],
  "nyc": [
   {
+   "id": "thecity-16yev5g",
+   "title": "‘But I’m Not From Ghana’: ICE Targets Longtime New Yorkers for Third-Country Deportation",
+   "url": "https://www.thecityreporter.nyc/2026/10/05/third-country-deportations-ice-dhs-26-federal-plaza-west-africa/",
+   "date": "2026-10-05T09:04:00.000Z",
+   "source": "THE CITY",
+   "domain": "thecityreporter.nyc",
+   "image": "https://i0.wp.com/www.thecityreporter.nyc/wp-content/uploads/2026/10/093026_west_africans_deportation_presser-2-2.jpg?fit=1024%2C683&ssl=1",
+   "summary": "This article was published in partnership with Documented. A house cleaner, a certified nurse’s assistant, a hair braider and a home health aid.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
    "id": "nyc-9okovy",
    "title": "Brooklyn DA brings back warrant-clearing event as quality-of-life tickets surge",
    "url": "https://gothamist.com/news/brooklyn-da-brings-back-warrant-clearing-event-as-quality-of-life-tickets-surge",
@@ -2884,18 +2911,53 @@
    "tried": 1,
    "seen": "2026-10-01T01:29:20.576Z",
    "direct": 1
-  },
-  {
-   "id": "nyc-f26x5y",
-   "title": "Push to strengthen NY sexual assault laws gathers steam after Cornell rape allegations",
-   "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE1BS0s2OVZKYUtiallEQW5PV3AwckJpYjVYU2ZrVDhiXzhYWTczSXRYckZYeWU4YXI0Rzd5M0kzTTdNTzNLb0xvd1B3?oc=5",
-   "date": "2026-10-02T01:04:00.000Z",
-   "source": "Gothamist",
-   "domain": "gothamist.com",
-   "seen": "2026-10-02T06:01:15.076Z"
   }
  ],
  "li": [
+  {
+   "id": "lipress-1qvwtev",
+   "title": "Syosset tops Niche’s Nassau County high school rankings",
+   "url": "https://www.longislandpress.com/2026/10/05/syosset-tops-nassau-school-rankings/",
+   "date": "2026-10-05T14:10:24.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/download-64.jpeg?w=384",
+   "summary": "Syosset Senior High School has taken the top spot among Nassau County’s public high schools for the second consecutive year, according to Niche’s 2027 rankings, while several of the county’s traditionally high-ranked…",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "lipress-1ho43sc",
+   "title": "A Wantagh mother’s journey From BRCA1 diagnosis to breast cancer survivor",
+   "url": "https://www.longislandpress.com/2026/10/05/wantagh-brca1-cancer/",
+   "date": "2026-10-05T13:30:14.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/2591169407121147234-1-e1791207042342.jpeg?w=363",
+   "summary": "At 28, Margot Casino took a 23andMe ancestry test for fun. The Wantagh resident was particularly interested in learning more about her father’s Ashkenazi Jewish heritage.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "lipress-1fzld0w",
+   "title": "Hair We Share Gala unites Long Island in a powerful night of community, compassion and hope",
+   "url": "https://www.longislandpress.com/2026/10/05/hair-we-share-gala-long-island/",
+   "date": "2026-10-05T13:00:10.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/Image-1-Cover-Angela-LaRosa-2026-Miss-Long-Island-Teen-Shyla-Silva-Co-Founders-of-Hair-We-Share-Dean-Riskin-Suzanne-Chimera-2026-Miss-Long-Island-Geanna-Koulouris-Photo-by-Ed-Shin.jpg?w=384",
+   "summary": "Hair We Share, a Long Island–based national nonprofit providing free custom human‑hair wigs to children and adults experiencing medical hair loss, hosted its Annual Fundraising Gala at Crest Hollow Country Club.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "lipress-1prda1d",
+   "title": "Westbury restaurant granted 30-day extension on special use permit renewal",
+   "url": "https://www.longislandpress.com/2026/10/05/westbury-restaurant-permit/",
+   "date": "2026-10-05T13:00:00.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/IMG_5028.jpg?w=384",
+   "summary": "A public hearing for an Italian restaurant to renew its special use permit for cabaret usage will continue at a later date, because the owner and his son were not present at the meeting.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
   {
    "id": "li-1ywfiy4",
    "title": "The ultimate Long Island fall farm guide",
@@ -2936,6 +2998,50 @@
    "summary": "Educators say rising costs of health insurance, salaries, fuel and other essentials contribute to the increase, along with state and federal mandates."
   },
   {
+   "id": "lipress-1ga2xti",
+   "title": "LIU Research Initiatives Drive Digital Health Discovery and Personalized Medicine",
+   "url": "https://www.longislandpress.com/2026/10/05/liu-research-initiatives/",
+   "date": "2026-10-05T05:00:58.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-9.33.41-AM.png?w=384",
+   "summary": "Long Island University is advancing a rapidly expanding research enterprise that brings together science, medicine, engineering, data analytics and emerging technologies to address some of the most complex challenges…",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "lipress-1rhg3pq",
+   "title": "Hicksville Middle School students play welcome back Bingo",
+   "url": "https://www.longislandpress.com/2026/10/04/welcome-back-bingo/",
+   "date": "2026-10-05T03:57:01.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/Hicksville-5.jpg?w=384",
+   "summary": "Hicksville Middle School’s Student Activities recently hosted a Welcome Back Bingo event for students.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "lipress-o2r2pr",
+   "title": "Hicksville High School named a 2026 School of Excellence",
+   "url": "https://www.longislandpress.com/2026/10/04/hicksville-school-of-excellence/",
+   "date": "2026-10-05T03:55:57.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/Hicksville-High-School.png?w=384",
+   "summary": "Hicksville High School has been named a 2025-26 School of Excellence by the New York State Public High School Athletic Association.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "lipress-1udchop",
+   "title": "Manhasset Chamber of Commerce launches $45 scarecrow sponsorship for fall beautification",
+   "url": "https://www.longislandpress.com/2026/10/04/manhasset-chamber-of-commerce-fall-beautification/",
+   "date": "2026-10-05T03:54:38.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/GettyImages-1392543087.jpg?w=384",
+   "summary": "The fall decorations along a local business district will soon feature cornstalks and scarecrows, giving residents and businesses a chance to support a community beautification effort.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
    "id": "li-u1t42i",
    "title": "Fair Lawn Brings Centuries Old Tradition Back With First Ever Junior Town Crier Competition",
    "url": "https://longisland.news12.com/fair-lawn-brings-centuries-old-tradition-back-with-first-ever-junior-town-crier-competition",
@@ -2958,6 +3064,17 @@
    "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/IMG_9440.jpeg?w=384",
    "summary": "Classroom intercoms crackle a declaration that the school building is in lockdown, halting scholastics as teachers pull anyone in the halls into rooms, lock doors, close blinds, shut lights, and quietly hunker students…",
    "seen": "2026-10-05T07:31:27.526Z"
+  },
+  {
+   "id": "lipress-r4puuf",
+   "title": "Floral Park-Bellerose School goes gold for pediatric cancer awareness",
+   "url": "https://www.longislandpress.com/2026/10/04/pediatric-cancer-awareness/",
+   "date": "2026-10-05T03:33:08.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/10/FPBS-Pediatric-Cancer-Awareness-1.jpg?w=384",
+   "summary": "Students and staff turned a school day into a show of support for children and families affected by pediatric cancer, wearing yellow and gold to symbolize hope, strength and solidarity.",
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
    "id": "li-1d8go84",
@@ -3492,112 +3609,303 @@
    "tried": 1,
    "seen": "2026-10-03T17:31:37.670Z",
    "direct": 1
-  },
-  {
-   "id": "li-1iegi00",
-   "title": "Family rescued from Baldwin house fire as teen suffers smoke inhalation, officials say",
-   "url": "https://www.newsday.com/long-island/nassau/house-fire-baldwin-rescue-yqz7f1wp",
-   "date": "2026-10-03T12:33:44.000Z",
-   "source": "Newsday",
-   "domain": "newsday.com",
-   "image": "https://cdn.newsday.com/ace/c:OTU1NjI1MGYtMWExOC00:YjdjZjE0NzktZjRjZS00/landscape/1280",
-   "summary": "First responders rescued three people from a house fire early Saturday morning, officials said.",
-   "tried": 1,
-   "seen": "2026-10-03T13:09:14.337Z",
-   "direct": 1
-  },
-  {
-   "id": "lipress-1n6nxy3",
-   "title": "Preventing falls: Simple steps to protect your independence",
-   "url": "https://www.longislandpress.com/2026/10/03/preventing-falls-simple-steps-to-protect-your-independence/",
-   "date": "2026-10-03T11:36:59.000Z",
-   "source": "Long Island Press",
-   "domain": "longislandpress.com",
-   "image": "https://www.longislandpress.com/wp-content/uploads/2026/09/Raymond-Cecora-Headshot-Light-Background.png?w=384",
-   "summary": "For older adults, a fall can be much more than a temporary setback. It can lead to serious injury, hospitalization, loss of independence and, in severe cases, paralysis or death.",
-   "seen": "2026-10-03T13:09:14.337Z"
-  },
-  {
-   "id": "li-g813aw",
-   "title": "Spotlight New Jersey: Life Center Stage",
-   "url": "https://longisland.news12.com/spotlight-new-jersey-life-center-stage",
-   "date": "2026-10-03T11:12:19.000Z",
-   "source": "News12 | Long Island",
-   "domain": "longisland.news12.com",
-   "image": "https://images-cf.news12static.com/3kqcuzntcg31/3eXJCO0J0LJDPRfTBDjWyE/119053cdafbba13231261a6baa93c544/ebc75583-f1f6-4b43-88f6-1689584c4b0a.jpg",
-   "summary": "Founder and Executive Director Vicky Mulligan joins News 12’s Della Crews to talk more about the organization’s mission.",
-   "tried": 1,
-   "seen": "2026-10-03T13:09:14.337Z",
-   "direct": 1
-  },
-  {
-   "id": "li-230d91",
-   "title": "Man Killed In Major Deegan Crash Lanes Closed At Macombs Dam Bridge",
-   "url": "https://longisland.news12.com/man-killed-in-major-deegan-crash-lanes-closed-at-macombs-dam-bridge",
-   "date": "2026-10-03T10:21:19.000Z",
-   "source": "longisland.news12.com",
-   "domain": "longisland.news12.com",
-   "image": "https://images-cf.news12static.com/3kqcuzntcg31/6Mz01BaNJIzd3qTX53giCV/3195bd2a23ce8ed890c4c18b8affa22b/Screenshot_2026-10-03_054444.png",
-   "summary": "All northbound lanes of the Major Deegan are closed at the Macombs Dam Bridge.",
-   "tried": 1,
-   "seen": "2026-10-03T13:09:14.337Z",
-   "direct": 1
-  },
-  {
-   "id": "li-vrv5at",
-   "title": "Police Find 70 Envelopes Of Heroin After Stopping E Biker In Seaford",
-   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOYUZ3V1FhNGlidXRONE1FX0VYZmVIdlQweVpDeXNmX2YwQ1FYdnJHREU0clNyVE12bGNJTFNDbzZXLVNONklvQlZFSUsyc1RXMEh0YnZveWowUXpKckdkOVEzRS1HU3k5WlNCRk5zTEdEd2VhU3BvZVU1R0Y0Q3NaNEkxNjdwYlBidmdwRENCMG90aHo1UzdYclRTak5MTVU?oc=5",
-   "date": "2026-10-03T10:20:36.000Z",
-   "source": "News12 | Long Island",
-   "domain": "longisland.news12.com",
-   "seen": "2026-10-03T13:09:14.337Z"
-  },
-  {
-   "id": "li-a33oyb",
-   "title": "Police Chase Down Man Accused Of Attacking Woman With Gun In New Cassel Home",
-   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQOF9jbnZFczAzT0FJbmFvTEt3b2ptbW0xYWdpWGxpMmw3TWJ4dDlFNk16QkhFYmlRX1hENEVZQ3g0LWlpQ0RWNVdBTzFLcjRiNTZmV1NfeGZjeXdnRXRZODlaRjhUTlo1NURYNWpEZG9BQ19kXzdnR3NZWENMSkVSb21fd2dMckQ0Z1VPZ1BMNW14NWFSX3Bxcl84X2ZJWnlTZm5XQmhoUmFCQQ?oc=5",
-   "date": "2026-10-03T10:14:53.000Z",
-   "source": "News12 | Long Island",
-   "domain": "longisland.news12.com",
-   "seen": "2026-10-03T13:09:14.337Z"
-  },
-  {
-   "id": "li-1e9udbr",
-   "title": "Crews Rescue 3 People From Fast Moving Baldwin House Fire",
-   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNSzhuYTJVbkpqQjVzVlZBQ3JQLXpjeTdreE9HNnV2bVdZQWUwMjh5Q0NJV0NEQk9TbFVhSEpqZWh2LVkwOWl5OUZBZ1U5MmRUTFd4NmV0ZGVibjdqdEN2WFZzMXRzZTZNR2ZSd3BmTzZsVUpYVm14SlJtZmdOSHFpNktLQjNONXhncnJlOTVMLTU?oc=5",
-   "date": "2026-10-03T10:09:04.000Z",
-   "source": "longisland.news12.com",
-   "domain": "longisland.news12.com",
-   "seen": "2026-10-05T07:31:27.526Z"
-  },
-  {
-   "id": "li-1r47m7j",
-   "title": "Long Island will keep flooding. What's the plan?",
-   "url": "https://www.newsday.com/opinion/editorials/long-island-flooding-long-term-planning-dqihsop3",
-   "date": "2026-10-03T06:01:38.000Z",
-   "source": "Newsday",
-   "domain": "newsday.com",
-   "image": "https://cdn.newsday.com/ace/c:OTQzZGJhNjgtOWNlZi00:N2Q4N2M5NjUtN2RjNS00/landscape/1280",
-   "summary": "We're good at handling emergencies. What we don't do well is long-term planning.",
-   "tried": 1,
-   "seen": "2026-10-03T07:46:58.230Z",
-   "direct": 1
-  },
-  {
-   "id": "li-104wb26",
-   "title": "Photos: Nassau Conference IV football — Manhasset at South Side",
-   "url": "https://www.newsday.com/sports/high-school/football/nassau-conference-iv-football-manhasset-south-side-photos-gyx6lsqi",
-   "date": "2026-10-03T03:23:31.000Z",
-   "source": "Newsday",
-   "domain": "newsday.com",
-   "image": "https://cdn.newsday.com/ace/c:YzBmZjQ5MDgtMDI1My00:YTQyNTE3YzktOTkxYy00/landscape/1280",
-   "summary": "Scenes from a Nassau Conference IV football game between Manhasset and host South Side.",
-   "tried": 1,
-   "seen": "2026-10-03T07:46:58.230Z",
-   "direct": 1
   }
  ],
  "tech": [
+  {
+   "id": "verge-1dc3rah",
+   "title": "OpenAI PR tells journalist to ‘move on’ while asking Sam Altman about a ChatGPT user’s suicide",
+   "url": "https://www.theverge.com/ai-artificial-intelligence/1004827/openai-sam-altman-vanity-fair-interview-pr",
+   "date": "2026-10-05T16:55:42.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/12/STK201_SAM_ALTMAN_CVIRGINIA_C.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "An OpenAI publicist tried to change the topic of CEO Sam Altman's interview with Vanity Fair's Mark Guiducci after the editor brought up a ChatGPT user's suicide.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "verge-itn538",
+   "title": "Sam Altman says ‘some bad things’ will happen but AI is totally worth it",
+   "url": "https://www.theverge.com/ai-artificial-intelligence/1004811/openai-altman-bad-things-ai-tradeoff",
+   "date": "2026-10-05T16:44:21.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/gettyimages-2294958253.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "Sam Altman thinks that the benefits of AI will be so great that \"the world should accept some bad things happening\" along the way.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "techcrunch-1xohko9",
+   "title": "HackerRank’s AI interviewer offers a glimpse into what job interviews could become",
+   "url": "https://techcrunch.com/2026/10/05/hackerranks-ai-interviewer-offers-a-glimpse-into-what-job-interviews-could-become/",
+   "date": "2026-10-05T16:43:35.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "HackerRank’s AI interviewer has already conducted more than 500,000 interviews, with Snowflake, Snorkel, and Capgemini among its early testers.",
+   "seen": "2026-10-05T16:56:08.531Z",
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2025/09/ai-avatar-simpleshow-2154151760.jpg?resize=1200,826"
+  },
+  {
+   "id": "verge-4eec7t",
+   "title": "Nvidia’s Shield TV Pro just got a $100 price hike",
+   "url": "https://www.theverge.com/tech/1004791/nvidia-shield-tv-pro-streaming-box-price-increase",
+   "date": "2026-10-05T15:43:13.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/shield.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "Nvidia's Shield TV streaming boxes are the latest victims of the memory shortage that has seen prices increase dramatically for everything from digital cameras to game consoles.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "techcrunch-743d1n",
+   "title": "OpenAI launches visual ads that appear alongside image generation results",
+   "url": "https://techcrunch.com/2026/10/05/openai-launches-visual-ads-that-appear-alongside-image-generation-results/",
+   "date": "2026-10-05T15:14:24.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "OpenAI said the new visual ads will show up after your image generation results appear in the U.S. only for now.",
+   "seen": "2026-10-05T16:56:08.531Z",
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2026/10/new-chatgpt-ads-format-and-measurement-inline-01.webp?w=1200"
+  },
+  {
+   "id": "ars-po8srn",
+   "title": "Mass quarantine issued in Russia after unexplained death of plague researcher",
+   "url": "https://arstechnica.com/health/2026/10/researchers-death-from-undisclosed-illness-sparks-mass-quarantine-in-russia/",
+   "date": "2026-10-05T15:12:17.000Z",
+   "source": "Ars Technica",
+   "domain": "arstechnica.com",
+   "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/GettyImages-2199370602-1152x648.jpg",
+   "summary": "Unconfirmed reports have suggested there was a laboratory accident.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "verge-80fh8e",
+   "title": "Apple’s new M6 Mac Mini is over $100 off",
+   "url": "https://www.theverge.com/gadgets/1004772/apple-mac-mini-m6-deal-october-prime-day-deal-sale",
+   "date": "2026-10-05T15:08:31.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/268759_Mac_Mini_AKrales_0011.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "Really the only negative associated with the new M6-powered Mac Mini is its high price. While the last-gen model debuted at just $599, the faster, but mostly unchanged 2026 edition starts at $899 — except for right now.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "techcrunch-dfl749",
+   "title": "Lola Vision Systems is trying to make it easier to run AI models on chips",
+   "url": "https://techcrunch.com/2026/10/05/lola-vision-systems-is-trying-to-make-it-easier-to-run-ai-models-on-chips/",
+   "date": "2026-10-05T15:00:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "Lola Vision Systems is one of the Startup Battlefield 200 companies battling it out at TechCrunch Disrupt, taking place October 13-15 in San Francisco.",
+   "seen": "2026-10-05T16:56:08.531Z",
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2026/09/GettyImages-2248111953.jpg?resize=1200,600"
+  },
+  {
+   "id": "techcrunch-xzqmr1",
+   "title": "Open or closed AI? How founders are choosing what to build on at TechCrunch Disrupt 2026",
+   "url": "https://techcrunch.com/2026/10/05/open-or-closed-ai-how-founders-are-choosing-what-to-build-on-at-techcrunch-disrupt-2026/",
+   "date": "2026-10-05T15:00:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "Learn how founders are choosing between building on open or closed AI at TechCrunch Disrupt 2026. Register now to save up to $100 and get a second pass at 50% off.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "techcrunch-41mltc",
+   "title": "Hackers steal 8 million citizens’ records from Danish government database",
+   "url": "https://techcrunch.com/2026/10/05/hackers-steal-8-million-citizens-records-from-danish-government-database/",
+   "date": "2026-10-05T14:58:42.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "The Danish government said the breach of names, addresses, and state-issued ID numbers affects 8 million people, including people living abroad and the deceased.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "verge-44zv4g",
+   "title": "CNN’s boss will remain as Paramount and WBD merge into Skydance",
+   "url": "https://www.theverge.com/entertainment/1004734/cnn-ceo-mark-thompson-paramount-warner-bros",
+   "date": "2026-10-05T14:42:34.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/gettyimages-2153092202.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "CNN CEO Mark Thompson will remain at the head of the news network when Paramount's $110 billion Warner Bros. Discovery acquisition closes this week.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "techcrunch-12qljir",
+   "title": "Researchers are tracking a Chinese AI ‘agent fleet’",
+   "url": "https://techcrunch.com/2026/10/05/researchers-are-tracking-a-chinese-ai-agent-fleet/",
+   "date": "2026-10-05T14:35:09.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "Independent researchers discovered an agent swarm that seems to be running on Tencent's infrastructure and targeting Alibaba's map service, Amap.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "verge-88uwq",
+   "title": "Sen. Adam Schiff on AI regulation, free speech, and impeaching Trump one more time",
+   "url": "https://www.theverge.com/podcast/1004286/senator-adam-schiff-ai-trump-regulation-corruption",
+   "date": "2026-10-05T14:30:00.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/DCD_2026-10-05_Schiff.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "Today, I’m talking with Sen. Adam Schiff, a Democrat from California. Schiff sits on a number of committees with oversight into tech and AI: intellectual property, antitrust, privacy and technology — it’s all there.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "techcrunch-qsp8tc",
+   "title": "Meet the Startup Battlefield 200 judges who’ll decide the winner at TechCrunch Disrupt 2026",
+   "url": "https://techcrunch.com/2026/10/05/meet-the-startup-battlefield-200-judges-wholl-decide-the-winner-at-techcrunch-disrupt-2026/",
+   "date": "2026-10-05T14:30:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "Meet the final five Startup Battlefield judges who'll decide who wins the pitch competition at TechCrunch Disrupt 2026. Get your pass now to save up to $100, and get a second at 50% off.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "verge-qkwim5",
+   "title": "The best early October Prime Day deals happening now",
+   "url": "https://www.theverge.com/gadgets/999447/best-early-amazon-prime-day-big-deals-sale-october",
+   "date": "2026-10-05T14:10:19.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/268775_October_Prime_Day_art_CVirginia.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "Amazon and other retailers are knocking down prices on popular products for October Prime Day, which starts October 6th at 3AM ET and lasts through 3AM ET on the 8th if you’re on the East Coast (12AM PT).",
+   "seen": "2026-10-03T17:31:37.670Z"
+  },
+  {
+   "id": "techcrunch-1q07o7k",
+   "title": "The final Disrupt Stage lineup: Three days of conversations you won’t hear anywhere outside of TechCrunch Disrupt 2026",
+   "url": "https://techcrunch.com/2026/10/05/the-final-disrupt-stage-lineup-three-days-of-conversations-you-wont-hear-anywhere-outside-of-techcrunch-disrupt-2026/",
+   "date": "2026-10-05T14:00:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "The full TechCrunch Disrupt Stage lineup revealed, featuring Max Hodak, Mark Wahlberg, Benchmark partners, and more. Register now to save up to $100 on your pass and get a second at 50% off.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "verge-191lkfd",
+   "title": "An open-source tool lets you delete 12GB of Apple Intelligence data on macOS",
+   "url": "https://www.theverge.com/ai-artificial-intelligence/1004672/mac-delete-apple-intelligence-ai-tool",
+   "date": "2026-10-05T13:47:14.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/06/highlights_siri_conversations_endframe__d56qnw2oz22q_large_2x.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "Getting some extra storage space on your Mac could be as easy as deleting Apple's AI features with a new open-source command line tool called RemoveMacAI.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "ars-lp3cr0",
+   "title": "AI glasses face their first major government crackdown",
+   "url": "https://arstechnica.com/ai/2026/10/ai-glasses-face-their-first-major-government-crackdown/",
+   "date": "2026-10-05T13:39:30.000Z",
+   "source": "Ars Technica",
+   "domain": "arstechnica.com",
+   "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/03/546417470_31238681149113739_395523165946500898_n.jpg",
+   "summary": "Norway wants time to write permanent rules for glasses that can record bystanders.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "verge-fcls7e",
+   "title": "OpenAI is sticking more ads in ChatGPT",
+   "url": "https://www.theverge.com/ai-artificial-intelligence/1004655/openai-chatgpt-visual-ads",
+   "date": "2026-10-05T13:09:48.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/chatgpt-visual-ads.webp?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "OpenAI's latest ad format will put images of sponsored products and services on your screen.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "verge-mfxf4e",
+   "title": "TCL’s paperlike OLED phone made me more excited for the iPhone Duo",
+   "url": "https://www.theverge.com/tech/1004079/tcl-p80-ultra-nxtpaper-matte-display-iphone-duo",
+   "date": "2026-10-05T12:02:41.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/tcl-p80-ultra-review-09.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "I've spent most of the last couple weeks using an otherwise unexceptional midrange Android phone with one amazing feature: a matte OLED display.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "techcrunch-1p1u661",
+   "title": "Can Safeworld convince people that GenAI robots won’t hurt them?",
+   "url": "https://techcrunch.com/2026/10/05/can-safeworld-convince-people-that-gen-ai-robots-wont-hurt-them/",
+   "date": "2026-10-05T12:00:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "Safeworld is building digital humans to make sure robots don't hurt the real ones.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "ars-151or7h",
+   "title": "Explaining Hall-effect, TMR, and other new types of \"mechanical\" switches",
+   "url": "https://arstechnica.com/gadgets/2026/10/the-hows-and-whys-of-non-mechanical-mechanical-keyboard-switches/",
+   "date": "2026-10-05T11:00:41.000Z",
+   "source": "Ars Technica",
+   "domain": "arstechnica.com",
+   "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/08/Varmilo-EC-1152x648.jpg",
+   "summary": "Ars Technica's guide to new keyboard sensing technologies.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "wired-51a9jp",
+   "title": "Best Power Banks (2026): My Picks After Testing Over 100",
+   "url": "https://www.wired.com/gallery/best-portable-chargers-power-banks/",
+   "date": "2026-10-05T11:00:00.000Z",
+   "source": "Wired",
+   "domain": "wired.com",
+   "image": "https://media.wired.com/photos/6ac03e8a3c662ead2b64eb3c/master/pass/Best%20Power%20Banks%20102026%20top%20art%20SOURCE%20Amazon.jpg",
+   "summary": "Keep your phone, laptop, handheld gaming console, and other electronics running with these travel-friendly power banks.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "wired-1tik854",
+   "title": "Withings BodyScan 2 Review: Worth Its Weight",
+   "url": "https://www.wired.com/review/withings-bodyscan-2/",
+   "date": "2026-10-05T10:36:00.000Z",
+   "source": "Wired",
+   "domain": "wired.com",
+   "image": "https://media.wired.com/photos/6ac00b2fa18993c6adb83faa/master/pass/Review%20Withings%20BodyScan%202%20102026%20top%20art%20SOURCE%20Writhings.jpg",
+   "summary": "After months of testing, this high-end smart scale has made me rethink how much a bathroom weigh-in can tell me.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "wired-9yiy53",
+   "title": "Omega Has New Bond Watches Even if There Isn’t a New James Bond",
+   "url": "https://www.wired.com/story/omega-has-new-bond-watches-even-if-we-dont-have-a-new-bond/",
+   "date": "2026-10-05T10:00:00.000Z",
+   "source": "Wired",
+   "domain": "wired.com",
+   "image": "https://media.wired.com/photos/6abf8143511796ab69fb457a/master/pass/SE%20_BondSpectre_ADV_Family_Duo_16_9_RVB.jpg",
+   "summary": "With no new 007 actor named and no film in the near future, Omega has had to get creative to keep its lucrative spy-watch train running.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "wired-1f5tcw1",
+   "title": "A Prediction Market About the Past? Sure, Why Not!",
+   "url": "https://www.wired.com/story/a-prediction-market-about-the-past-sure-why-not/",
+   "date": "2026-10-05T09:30:00.000Z",
+   "source": "Wired",
+   "domain": "wired.com",
+   "image": "https://media.wired.com/photos/6abe92d983ce388ebf1665d3/master/pass/Business_The%20Dumbest%20Prediction%20Market%20Yet%20Is%20Here,%20and%20It%20Lets%20You%20Bet%20on%20Things%20That%20Have%20Already%20Happened_v1.jpg",
+   "summary": "As prediction markets surge in popularity, a new platform called Verifact Markets is pushing the concept even further, letting users trade on “disputed facts.”",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "wired-13g31cv",
+   "title": "Staples Print and Marketing Services Review: Fast Holiday Gifts",
+   "url": "https://www.wired.com/story/staples-print-and-marketing-services/",
+   "date": "2026-10-05T09:00:00.000Z",
+   "source": "Wired",
+   "domain": "wired.com",
+   "image": "https://media.wired.com/photos/6abd5e2a48a41f7dfebad371/master/pass/Staples-Brings-Digital-Media-Into-the-Real-World,-Usually-in-One-Day.jpg",
+   "summary": "Staples’s printing service offers fast pickup and in-store experts who can help you get your family photos, novelty gifts, and business documents looking exactly how you want.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
   {
    "id": "tech-1k2clt9",
    "title": "Google pauses open-source bug bounty over AI slop submissions.",
@@ -3693,7 +4001,7 @@
    "source": "Ars Technica",
    "domain": "arstechnica.com",
    "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/egypt1-1152x648-1791134921.jpg",
-   "summary": "Fresh analysis of First Dynasty mass burials finds signs of fatal blunt force trauma on 39 percent of skulls",
+   "summary": "Fresh analysis of First Dynasty mass burials finds signs of fatal blunt force trauma on 39 percent of skulls.",
    "seen": "2026-10-05T07:31:27.526Z"
   },
   {
@@ -3841,17 +4149,6 @@
    "tried": 1,
    "seen": "2026-10-04T19:20:28.894Z",
    "direct": 1
-  },
-  {
-   "id": "verge-qkwim5",
-   "title": "The best early October Prime Day deals happening now",
-   "url": "https://www.theverge.com/gadgets/999447/best-early-amazon-prime-day-big-deals-sale-october",
-   "date": "2026-10-04T17:18:00.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/268775_October_Prime_Day_art_CVirginia.jpg?quality=90&strip=all&crop=0,0,100,100",
-   "summary": "It’s not even October yet and Amazon is already offering some Prime Big Deal Day discounts on its own hardware, along with plenty of other popular products.",
-   "seen": "2026-10-03T17:31:37.670Z"
   },
   {
    "id": "tech-1p2cdrg",
@@ -4194,274 +4491,6 @@
    "source": "Ars Technica",
    "domain": "arstechnica.com",
    "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "tech-1puyz75",
-   "title": "Converting local VMware Fusion VMs to something that runs on a Linux VPS",
-   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNR3dSdWNvbm9uOUZOb1VXaTNpNjRLTGhiemxZTE8yQ3lVZlBHUG1hSjR3U2VBTEstR2RNTlVYY1NjNjQ3NWpOcGQ2cjJHWi1kSGtTVWxuVkZieEl5UmFySlMxM29VZFY3ZkhJa3VnNVU4d1ZIajRXYnhidzJUNTJmUHluUV82aTY3ZVRNNG1vN0NHbGdxcDVBZ0t4aGVsRV8tcEMzN0FnSDJmZm1VT3loMUtra1dKSkJ6WHR0MUNwNDRvOXljYUJ6WENubGY?oc=5",
-   "date": "2026-10-04T08:36:24.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "tech-3ctu1c",
-   "title": "cybersecurity",
-   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE80elVMMWM4LU9tR3NjNlZmMXJ5aU93anJSMExTTlpZcGJUbVJUdFY5WEhPdU9kTXFqU1RGYS1NSURJU2xlN2RzWHI0akhvMDdtMm5FQ0ZnbFF5NU5EUFJB?oc=5",
-   "date": "2026-10-04T08:14:21.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "tech-e3uw28",
-   "title": "2026 | Page 160 of 160",
-   "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5aZnFTSXpkOU56THduZ3hhQlBKOEZZTzk2RzdYRmV4ZEREcDdXcGc1bk5POFZYeTVRckZ4bTVwbDBBWlFXZ3kydTF5VGNPQQ?oc=5",
-   "date": "2026-10-04T04:11:34.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "tech-qwg8zq",
-   "title": "Sass Jordan - Canadian blues rocker dead at 63",
-   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPaDlEaEtjZDNURUpZaWh3Sk82czM3aU9VUlVkYks1NWZlNHFxcTMxUWczYWdqa2lDYms2a3dUeW1oaVNERzFiSGZWdlpYY2lJMG1ZcWg0NERmOXpWYUdZVUE5Z19HMlNiLVo0UGlUZnhqejNfVnp6elpHdXV0ZUM2R0ctODZPTXNheUtRZmU5dnd5TUotVEk2cEhpWnlQUQ?oc=5",
-   "date": "2026-10-04T01:52:22.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "tech-1csvf9i",
-   "title": "Latest News",
-   "url": "https://techcrunch.com/latest/page/184/?utm_source=outbrain&utm_medium=website&utm_content=contactFAQs&kme00=P&km_Home_page=H_Publishers_cta&km_TopNav_contact=resourcesguides&km_FootNav_contact=advertisersbrand-studio&who=publisher&ResourceCenter0=Sneak_peek_click&ResourceCenter1=Sneak_peek_click&km_website-footer0=advertiser-guidelines&km_website-footer1=advertiser-guidelines&F1C=Cologne&a8=.VwlTVDbAuOlb4N_httpscc-tvguide.myjcom.jpenkozh-CHSptvichannelscatventermeitelehttpscc-tvguide.myjcom.jpchannelscatvkbsworlda8.VwlTVDbAuOlb4N_httpscc-tvguide.myjcom.jpptenchannelscatventermeitele&wtime=593s",
-   "date": "2026-10-04T01:37:55.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "image": "https://techcrunch.com/wp-content/uploads/2018/02/tc-backlight-e1689786273147.png?w=1200",
-   "tried": 1,
-   "seen": "2026-10-04T04:59:26.116Z",
-   "direct": 1
-  },
-  {
-   "id": "tech-1kd5j0v",
-   "title": "theegooch - Ars Technica",
-   "url": "https://arstechnica.com/civis/members/theegooch.413471/",
-   "date": "2026-10-03T23:19:36.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "tried": 1,
-   "seen": "2026-10-04T04:59:26.116Z",
-   "direct": 1
-  },
-  {
-   "id": "tech-17hg2zi",
-   "title": "Setting up multiple domains on a VPS with docker containers?",
-   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQaFVqTHZmZzRxT3V0cEt2T0E0WF9pUmcxMzRqVk4zQS02ZVBjVVFIWnVQaV9FUGdwQXpMTXdtTjdkM083bjg5MUFMUjQ4dWlXZXZZUDUzUmJYbEdFRFNoTkVaNEVVaVdzYlVSWkZHRHV3UUg5RGk5d2ZFcWJDNUhpaWxrR0VUT0loUVdlc0J3T0V4b1ZFUzhqVXVIQkNNcHh2Q1laOGJQMDd2U2d3RERyWlRfaWZ3ejV0clVz?oc=5",
-   "date": "2026-10-03T22:33:40.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "seen": "2026-10-04T04:59:26.116Z"
-  },
-  {
-   "id": "tech-xmbrat",
-   "title": "Can it run Doom: SQL database edition",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPbnZWZVV0N25yMVFESlIyb3lDUHQ2QWFYY3Z2YWpiZ3BCY3I3LVNlYlhXcUpPdXlQenRkdXZoakFsNTFCcWtEbWloYWRyYnkzQ1FhZVBXNXcxVWtURGhsM0tMdE1ZWHJ6QndMemUzZ3VHYTE3VU9OLTNYd01yc2R6WkdxYVVYVGNPc0huS0NRNnYzUTg?oc=5",
-   "date": "2026-10-03T21:18:14.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "seen": "2026-10-03T13:09:14.337Z"
-  },
-  {
-   "id": "tech-17v5cxa",
-   "title": "How I kept cool with NYC’s free battery program for window AC units",
-   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPbzFPMWdJT2JNbzEzMzZOTE1PX1dCMDE2cVBQekE4bDJtTFdRcEpMSFY2ZDc5eHlPUTZxSy1QUTZIVk4xdE9OQVBWMkd6dHJaSDVnY29UTC1jaVMzcVM5UU9lS1g1OGl3LW9RaHAxd3ZmSXVKZkZLX0djcThlYk5Fb0pPbW8zMElTMmcwSWVIbTdHRXVWejRPNUh1a0QwMmRYN0dfbERNUmpVSXB0TldPUVNPYUxiQUhiUG1GaktxMmdoRFpMTnFj?oc=5",
-   "date": "2026-10-03T21:14:40.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "seen": "2026-10-04T04:59:26.116Z"
-  },
-  {
-   "id": "tech-1vedmim",
-   "title": "Please help me with buying and setting up my first NAS",
-   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPZHNGSERLTmUxNkl6elZoUHJTV2tkS3NvckhPNTBBMXplcTdlNW9NSHN5V1N6WVBEaFRndWk2dWpWdGs1T3BrejdwbVVyQi1WMk5vVFYtRU94eURwMjJ5TzdZRTBSckk0ckhzQ2ZEX1poU2NjbjFhTHczdEItdDVWRUlIckJ1anlFaDl6TUJaR25HMkxYTWZ6RGxkOGYxMHllSllBQXdfMnk2VWZlZ0ZUQTF0LVQ?oc=5",
-   "date": "2026-10-03T20:58:28.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "tech-rfwrqy",
-   "title": "Sam Altman feels it necessary to clarify that people shouldn’t see AI as godlike for some reason.",
-   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxOSWs3eTlJS09NYkc1djFkWnp6d1BuMUJvZDk3SjJMSmdwZkZzNTlKTWJTeXVYQ0Q3RUV1VWhEcE1VRFdXQzJDbF9IWnA2MGEzQlplUHhZaEFtZTNhYnFYOUkyVjlIRjM5WVY5Q1dhaFVka3BEbm9Rd1N0alVyMUJsTnRIMDEtcnpsamJGQXptY0U0aG1ScmthWjRqemJoNmxCQklONnFUeXdRZ0tHMG1DNFpEZ2t4czltUUZmOEp0aF9UY25jVUkyeWk3aV9tV2J4Z0t3ak1QVjVJWVV0S3B4ajVqcTF2Z01PaXFJ?oc=5",
-   "date": "2026-10-03T20:49:33.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "seen": "2026-10-04T04:59:26.116Z"
-  },
-  {
-   "id": "ars-82122l",
-   "title": "Milt Windler, NASA flight director who helped save Apollo 13, dies at 94",
-   "url": "https://arstechnica.com/space/2026/10/milt-windler-nasa-flight-director-who-helped-save-apollo-13-dies-at-94/",
-   "date": "2026-10-03T19:45:17.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "image": "https://cdn.arstechnica.net/wp-content/uploads/2026/10/news-100326a-lg-1152x648.jpg",
-   "summary": "Milt Windler, one of the four leaders of Mission Control who in 1970 directed the round-the-clock efforts to bring the Apollo 13 astronauts back to Earth safely, has died at the age of 94.",
-   "seen": "2026-10-03T23:35:59.287Z"
-  },
-  {
-   "id": "techcrunch-1va9kvy",
-   "title": "Federal judge calls Flock ‘indiscriminate mass surveillance’",
-   "url": "https://techcrunch.com/2026/10/03/federal-judge-calls-flock-indiscriminate-mass-surveillance/",
-   "date": "2026-10-03T19:33:15.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "summary": "A federal judge ruled that a sheriff’s deputy violated a woman’s Fourth Amendment rights when using Flock to search for her license plate without a warrant.",
-   "image": "https://techcrunch.com/wp-content/uploads/2026/08/flock-camera-pole.jpg?resize=1200,799",
-   "tried": 1,
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "techcrunch-1siaeg9",
-   "title": "Amazon responds to data center backlash, says it no longer uses NDAs",
-   "url": "https://techcrunch.com/2026/10/03/amazon-responds-to-data-center-backlash-says-it-no-longer-uses-ndas/",
-   "date": "2026-10-03T18:43:57.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "summary": "The CEO of Amazon Web Services tried to push back against widespread suspicion of data centers.",
-   "image": "https://techcrunch.com/wp-content/uploads/2026/08/GettyImages-2283113936-maller.jpg?w=1024",
-   "tried": 1,
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "tech-rezs0d",
-   "title": "One of the authors of the Stochastic Parrots paper explains what it actually means.",
-   "url": "https://www.theverge.com/ai-artificial-intelligence/1004517/one-of-the-authors-of-the-stochastic-parrots-paper-explains-what-it-actually-means",
-   "date": "2026-10-03T18:35:32.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/01/verge-placeholder_f212b3.png?quality=90&strip=all&crop=0,0.13712291199202,100,99.725754176016",
-   "summary": "It’s been a dizzying few weeks of “is AI reasoning and / or alive” discourse, with the attendant pushback that these systems are just fancy autocomplete.",
-   "tried": 1,
-   "seen": "2026-10-03T20:46:08.400Z",
-   "direct": 1
-  },
-  {
-   "id": "tech-1hhu1l6",
-   "title": "“It’s news to me, in terms of David.”",
-   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE54a0xqZXRWaE9tQ29YMW1NRjEybFI4WnJxUXZGTUphYUhnY0lPT3QzeW56N09ZTzZxNURaekxFT3EyVDNtU25sZnp6QkJwWUc5QWJYeEhKWFVLanFNcVRUV2FIRDF4eUFLUXVGeHNtRTlqQkdNMkstenV3?oc=5",
-   "date": "2026-10-03T18:13:16.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "wired-5fgp7q",
-   "title": "The Nvidia Shield TV Is 7 Years Old. It Just Got a $100 Price Hike",
-   "url": "https://www.wired.com/story/7-year-old-tv-now-100-dollars-more-expensive-thank-ai/",
-   "date": "2026-10-03T18:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/6ac00d9bc910b804171a679e/master/pass/GettyImages-474968764.jpg",
-   "summary": "The price of anything with memory is skyrocketing thanks to AI. Aging streaming devices are no exception.",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "tech-4qo5ka",
-   "title": "Someone should tell Elon about these really cool technologies called radar and lidar.",
-   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNVk9hTkwwNnk2WENXYmJjMHZmWjkwbFQzbXh3NzVCVUtLZ2IxZjU2aEE4a1FRZ1dDM0ZZZHktdUZtY3ppa3RCaFFYcEFZN3kzakQxWk04dzM1V1BmU3M5SEZjU3B4RjY3RWp6U1U2M3FHSWFvQ0t0OWxqdGJSV0tQaGIwd001Zw?oc=5",
-   "date": "2026-10-03T17:03:26.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "verge-cbvrn",
-   "title": "Capcom is preparing for a ‘future where we create games together with AI’",
-   "url": "https://www.theverge.com/games/1004418/capcom-ai-game-development",
-   "date": "2026-10-03T16:49:10.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/RE9_SS_08.png?quality=90&strip=all&crop=0,0,100,100",
-   "summary": "Capcom's Pragmata might be all about the horrors of AI, but in practice the studio doesn't seem so down on the tech.",
-   "seen": "2026-10-03T17:31:37.670Z"
-  },
-  {
-   "id": "techcrunch-q6to6v",
-   "title": "OpenAI safety employee resigns, claiming the company’s ‘culture is broken’",
-   "url": "https://techcrunch.com/2026/10/03/openai-safety-employee-resigns-claiming-the-companys-culture-is-broken/",
-   "date": "2026-10-03T16:30:01.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "summary": "By his own admission, David Robinson is “something of a cliché”: an employee at a leading AI company who issues a dire warning while resigning from their job.",
-   "image": "https://techcrunch.com/wp-content/uploads/2026/05/openai-logo-code-background.jpg?resize=1200,798",
-   "tried": 1,
-   "seen": "2026-10-03T17:31:37.670Z"
-  },
-  {
-   "id": "tech-13j8o5a",
-   "title": "Ideas on flattening a plastic cord cover?",
-   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNTVFDamdjZmdnVkVva0FwMUNCUWotZGNSVWdCbjJTbGtUWFQ4alVCTlIxM191cDd5WUk5Q1drV3drM2pzekVaTTh3cTVxUldJaGlwSURac280Tm5VUFVKQ2JaRENCdDlyYTVzdzlmRmFNU29ZN1MwQ25qNkZIbDlpcVNuTnMyei1pdTBRMGo5R2tHMlpPLVRVelBUNEw5OFdHVUE?oc=5",
-   "date": "2026-10-03T15:56:58.000Z",
-   "source": "Ars Technica",
-   "domain": "arstechnica.com",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "techcrunch-1n7lj8j",
-   "title": "Jack Dorsey’s Bitchat disappears from app stores in India after government order",
-   "url": "https://techcrunch.com/2026/10/03/jack-dorseys-bitchat-disappears-from-app-stores-in-india-after-government-order/",
-   "date": "2026-10-03T15:02:01.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "summary": "Bitchat has become largely unavailable in India as a result of the restrictions.",
-   "image": "https://techcrunch.com/wp-content/uploads/2026/10/bitchat-unavailable-india-techcrunch.jpg?resize=1200,800",
-   "tried": 1,
-   "seen": "2026-10-03T17:31:37.670Z"
-  },
-  {
-   "id": "tech-12wq7h1",
-   "title": "The Hardware Decision Your Competitors Probably Haven’t Made Yet",
-   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPV0w4NXcxRzg1YU1iVVItQ0ZYdWE0bHRkbkxseFRxMG1LN242ZVV6dmhReUpwcWludnM3ejZxX01CZWJOcldQQW5nRjBQUmFudk1NSEg4RlQ1dWZodHJObXFmcGtrQ2dPTnp1QjJyMGNHSHBpcnV6Zkp5TmZVbnJwcy04aG8wb0NIa0EwbFMtMnFtdFZ3NFMta3FGUWxLaEcyUFQyOHplSUN3UQ?oc=5",
-   "date": "2026-10-03T15:02:01.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "verge-l8y33x",
-   "title": "Splice CEO Kakul Srivastava thinks AI emails are killing conversations",
-   "url": "https://www.theverge.com/entertainment/1004162/splice-ceo-kakul-srivastava-ai-interview",
-   "date": "2026-10-03T15:00:00.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/IMG_3820.png?quality=90&strip=all&crop=0,0,100,100",
-   "summary": "Kakul Srivastava is the CEO of Splice, the sample platform countless producers rely on for one-shots and melodic loops.",
-   "seen": "2026-10-03T17:31:37.670Z"
-  },
-  {
-   "id": "techcrunch-ukixfx",
-   "title": "Vessev built an electric ferry that almost flies",
-   "url": "https://techcrunch.com/2026/10/03/vessev-built-an-electric-ferry-that-almost-flies/",
-   "date": "2026-10-03T14:42:00.000Z",
-   "source": "TechCrunch",
-   "domain": "techcrunch.com",
-   "summary": "Vessev hopes its electric hydrofoil ferry will change the way people and cities think about boats.",
-   "image": "https://techcrunch.com/wp-content/uploads/2026/09/Vessev_VS%E2%80%939%E2%80%93NYCDrone-02.jpeg?resize=1200,675",
-   "tried": 1,
-   "seen": "2026-10-03T17:31:37.670Z"
-  },
-  {
-   "id": "verge-344r7e",
-   "title": "An OpenAI safety employee has quit and is sounding the alarm",
-   "url": "https://www.theverge.com/ai-artificial-intelligence/1004408/openai-safety-quits-sounding-the-alarm",
-   "date": "2026-10-03T14:31:56.000Z",
-   "source": "The Verge",
-   "domain": "theverge.com",
-   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/08/STK149_AI_01.jpg?quality=90&strip=all&crop=0,0,100,100",
-   "summary": "David Robinson used to write the safety reports that accompanied every major model release at OpenAI. This week, he resigned from his position and is now speaking out in an editorial in The Atlantic.",
-   "seen": "2026-10-03T17:31:37.670Z"
   }
  ],
  "markets": [
@@ -5071,6 +5100,292 @@
  ],
  "gaming": [
   {
+   "id": "vgc-1quj3ur",
+   "title": "Aion 2: Splendent Ruby location, Upgrade Essence Extraction Speciality quest guide",
+   "url": "https://www.videogameschronicle.com/guide/aion-2-splendent-ruby-location-upgrade-essence-extraction-speciality-quest-guide/",
+   "date": "2026-10-05T16:53:48.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/10/aion-2-essence-extraction-9.jpg",
+   "summary": "Best place to easily find Splendent Ruby in Aion 2",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "gamespot-2zenb",
+   "title": "How Is A Game Like GTA 6 Actually Made? Here’s How Rockstar Gets It Done",
+   "url": "https://www.gamespot.com/articles/how-is-a-game-like-gta-6-actually-made-heres-how-rockstar-gets-it-done/",
+   "date": "2026-10-05T16:32:43.000Z",
+   "source": "GameSpot",
+   "domain": "gamespot.com",
+   "image": "https://www.gamespot.com/wp-content/uploads/2026/10/Jason_Duval_03_a6b7f7.jpg?w=300",
+   "summary": "Rockstar's Grand Theft Auto 6 is one of the most highly anticipated game releases this year, or ever.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "gamespot-kzyi6w",
+   "title": "How Bill Skarsgard Became The Face Of Hideo Kojima’s Physint",
+   "url": "https://www.gamespot.com/articles/how-bill-skarsgard-became-the-face-of-hideo-kojimas-physint/",
+   "date": "2026-10-05T16:26:40.000Z",
+   "source": "GameSpot",
+   "domain": "gamespot.com",
+   "image": "https://www.gamespot.com/wp-content/uploads/2026/10/Skarsgard-Boy-Kills-World.jpg?w=300",
+   "summary": "Hideo Kojima's spiritual successor to Metal Gear Solid, Physint , doesn't just have a new home at Xbox ; it also has a famous face attached to it, with Bill Skarsgard (It, Boy Kills World) playing the lead role.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-j55asb",
+   "title": "Aion 2: 5 things I wish I knew before playing Aion 2",
+   "url": "https://www.videogameschronicle.com/guide/aion-2-5-things-i-wish-i-knew-before-playing-aion-2/",
+   "date": "2026-10-05T16:03:59.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/10/aion-2-33.jpg",
+   "summary": "Five things you really need to know before playing Aion 2 for the first time",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-zq0b1t",
+   "title": "Dungeons & Dragons Rewrites the Game’s Rules for the New World of Warcraft Book",
+   "url": "https://www.polygon.com/dungeons-and-dragons-world-of-warcraft-preview/",
+   "date": "2026-10-05T16:00:15.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/dungeons-dragons-world-of-warcraft-bronze-dragons.jpg",
+   "summary": "The book is experimenting with complex boss fights and transformative subclasses",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-xt7p1a",
+   "title": "Avengers: Secret Wars Filming Update Fuels Potential Delay Rumors",
+   "url": "https://www.polygon.com/avengers-secret-wars-anthony-mackie-captain-america-filming/",
+   "date": "2026-10-05T15:54:44.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/08/avengers_-doomsday-_-special-look-_-in-theaters-december-18-1-40-screenshot.jpg",
+   "summary": "Production on Avengers: Secret Wars is rumored to have been delayed, and now one MCU star has said he won't finish filming until at least July 2027.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-jz0yd9",
+   "title": "Aion 2 Essence Extraction guide: Upgrading Essence Extraction and success rates",
+   "url": "https://www.videogameschronicle.com/guide/aion-2-essence-extraction-guide-upgrading-essence-extraction-and-success-rates/",
+   "date": "2026-10-05T15:52:30.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/10/aion-2-essence-extraction-14.jpg",
+   "summary": "How to increase your success rates when using Essence Extraction in Aion 2",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-ib3c7f",
+   "title": "The Coalition used the SSD on Xbox Series S as makeshift RAM to help Gears of War E-Day run smoothly on it",
+   "url": "https://www.videogameschronicle.com/news/the-coalition-used-the-ssd-on-xbox-series-s-as-makeshift-ram-to-help-gears-of-war-e-day-run-smoothly-on-it/",
+   "date": "2026-10-05T15:51:41.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/10/gears-e-day.jpg",
+   "summary": "Other game teams are reportedly already interested in learning the method, it says",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-zkaqvv",
+   "title": "Lego Officially Reveals Three New Batman Sets for Early 2027",
+   "url": "https://www.polygon.com/lego-batman-new-sets-january-2027/",
+   "date": "2026-10-05T15:29:44.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/06/lego-batman-legacy-of-the-dark-knight-art-1.jpg",
+   "summary": "Three new Lego Batman sets are coming in January 2027, including two Batmobiles and a piece of Joker-themed wall art.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-cmkwab",
+   "title": "Bayonetta’s Return Sounds Imminent as Platinum Reveals Desire to ‘Further Develop the Character’",
+   "url": "https://www.polygon.com/bayonetta-return-platinumgames-ceo-tease/",
+   "date": "2026-10-05T15:14:48.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/24148492/Bayonetta_3_Tips_1.jpg",
+   "summary": "Action game star Bayonetta could return as PlatinumGames CEO reveals a 'stron desire to further develop the character'",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-onr1wz",
+   "title": "New 'Pokémon' 30th Anniversary TCG Deal Almost Sounds Too Good To Be True",
+   "url": "https://www.polygon.com/pokemon-30th-anniversary-dollar-general-etb-deal-discount-toys-app/",
+   "date": "2026-10-05T15:02:05.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2025/03/02-pokemon.jpg",
+   "summary": "The cheapest way to buy a Pokémon 30th Anniversary ETB comes from an unexpected retailer running two major discounts that can stack",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-1bj9jvy",
+   "title": "Magic: The Gathering Is Officially Bringing Back God Packs",
+   "url": "https://www.polygon.com/mtg-god-packs-booster-pack-changes-exclusive/",
+   "date": "2026-10-05T15:00:15.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/kruphixs-insight-mtg-art.jpg",
+   "summary": "Polygon has exclusive details about Magic: The Gathering's new God Packs, along with some of the changes coming to Booster Packs.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-il2xwe",
+   "title": "Aion 2 FAQ: Everything you need to know about Aion 2",
+   "url": "https://www.videogameschronicle.com/guide/aion-2-faq-everything-you-need-to-know-about-aion-2/",
+   "date": "2026-10-05T14:55:08.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/10/aion-2-7.jpg",
+   "summary": "The Aion 2 questions you need answered, all in one place",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-o5y2x7",
+   "title": "Steam's Secretly Biggest Driving Game Ever is Coming to PS5 in 2 Weeks",
+   "url": "https://www.polygon.com/beamng-drive-ps5-release-date-steam-driving-simulator/",
+   "date": "2026-10-05T14:46:02.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/beamng-drive-1.jpg",
+   "summary": "BeamNG.drive, a sandbox open-world car simulator with amazing soft-body physics, is quietly a massive hit on Steam already.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-1j723oi",
+   "title": "Disney Makes WandaVision Episodes Free Ahead of Marvel's Next Big Show",
+   "url": "https://www.polygon.com/wandavision-youtube-streaming-free-visionquest/",
+   "date": "2026-10-05T14:30:59.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/22358071/ham1280_106_comp_v020_20210112_r709_bf65ee9c.jpeg",
+   "summary": "VisionQuest premieres next week on Disney Plus. Ahead of it, Marvel has uploaded episodes of WandaVision to YouTube for free.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-1bynsds",
+   "title": "Pokémon Go 'World Space Week 2026' event guide",
+   "url": "https://www.polygon.com/pokemon-go-world-space-week-2026-astronaut-pikachu/",
+   "date": "2026-10-05T14:27:42.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/unnamed-1.jpg",
+   "summary": "Here's how to find an astronaut Pikachu in Pokémon Go, as well as what you get for finishing the \"World Space Week 2026\" research.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "polygon-br4ft2",
+   "title": "Secret Marvel Game Leaks Online With First Trailer",
+   "url": "https://www.polygon.com/marvel-project-comet-trailer-leak/",
+   "date": "2026-10-05T14:24:41.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/black-widow-win-screen-16_9.jpg",
+   "summary": "A trailer for a new Marvel gacha game for mobile, Project Comet, has seemingly leaked online.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "gamespot-53jyxs",
+   "title": "NBA 2K25 Is Getting Delisted Soon, Single-Player Modes Also Closing Down",
+   "url": "https://www.gamespot.com/articles/nba-2k25-is-getting-delisted-soon-single-player-modes-also-closing-down/",
+   "date": "2026-10-05T14:11:07.000Z",
+   "source": "GameSpot",
+   "domain": "gamespot.com",
+   "image": "https://www.gamespot.com/wp-content/uploads/2026/10/NBA2K-Large.jpeg?w=300",
+   "summary": "2K Sports has announced that NBA 2K25 will be discontinued soon, and that includes delisting the product and server shutdowns that will make even the game's single-player MyCareer and MyTeam components unplayable.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-f7yavj",
+   "title": "Aion 2 Factions: Best Faction to choose, Elyos or Asmodians",
+   "url": "https://www.videogameschronicle.com/guide/aion-2-factions-best-faction-to-choose-elyos-or-asmodians/",
+   "date": "2026-10-05T14:10:49.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/10/aion-2-12.jpg",
+   "summary": "Which Faction you should play as when starting Aion 2",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "gamespot-4th7qu",
+   "title": "10 New Things We Just Learned About GTA 6",
+   "url": "https://www.gamespot.com/articles/10-new-things-we-just-learned-about-gta-6/",
+   "date": "2026-10-05T14:04:17.000Z",
+   "source": "GameSpot",
+   "domain": "gamespot.com",
+   "image": "https://www.gamespot.com/wp-content/uploads/2026/09/GTA-6-Ambrosia.jpg?w=300",
+   "summary": "New information about Grand Theft Auto 6 continues to be revealed. Game Informer 's most recent issue included a number of new details, and we've rounded up some of the key things we learned below.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-e3zw3n",
+   "title": "Hellblade studio Ninja Theory has started laying off staff, following Xbox’s announcement that it faces closure",
+   "url": "https://www.videogameschronicle.com/news/hellblade-studio-ninja-theory-has-started-laying-off-staff-following-xboxs-announcement-that-it-faces-closure/",
+   "date": "2026-10-05T13:20:46.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/06/senua.jpg",
+   "summary": "Two separate agreements with the studio \"fell through\", Microsoft said",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "gamespot-142iic6",
+   "title": "Resident Evil Studio That’s Making Nintendo’s Zelda Movie Now Gunning For Battlefield As Well",
+   "url": "https://www.gamespot.com/articles/resident-evil-studio-thats-making-nintendos-zelda-movie-now-gunning-for-battlefield-as-well/",
+   "date": "2026-10-05T13:06:49.000Z",
+   "source": "GameSpot",
+   "domain": "gamespot.com",
+   "image": "https://www.gamespot.com/wp-content/uploads/2026/10/bf6-Large.jpeg?w=300",
+   "summary": "Video games are the new battlefield for movie ideas , and after a reported bidding war , it appears Sony Pictures is the frontrunner to secure the rights to the Battlefield movie .",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "gamespot-85ir2g",
+   "title": "Love And Deepspace Devs Have One Simple Request: Please Don’t Drink The Poison",
+   "url": "https://www.gamespot.com/articles/love-and-deepspace-devs-have-one-simple-request-please-dont-drink-the-poison/",
+   "date": "2026-10-05T13:04:56.000Z",
+   "source": "GameSpot",
+   "domain": "gamespot.com",
+   "image": "https://www.gamespot.com/wp-content/uploads/2026/10/Oh-right-the-poison.jpg?w=300",
+   "summary": "It hasn't been an easy year for the Love and Deepspace community after the Valko controversy left the fandom divided, but it looks like developer Papergames has brewed up new trouble for the gacha game.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-1faoy1v",
+   "title": "Dragon’s Dogma 2: Dark Arisen devs explain why they’re not abandoning the ‘friction’ that makes it special",
+   "url": "https://www.videogameschronicle.com/features/interviews/dragons-dogma-2-dark-arisen/",
+   "date": "2026-10-05T12:47:42.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/10/dd2dainterview.jpg",
+   "summary": "Dragon's Dogma 2: Dark Arisen's director and producer discuss design friction, player feedback, and Switch 2 optimization",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-1h8m5wo",
+   "title": "AI game mashup videos on social media spark debate and backlash among players and modders",
+   "url": "https://www.videogameschronicle.com/news/ai-game-mashup-videos-on-social-media-spark-debate-and-backlash-among-players-and-modders/",
+   "date": "2026-10-05T11:23:50.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/10/oqz1h6oImOzGS4X5.mp4_snapshot_00.15.960.jpg",
+   "summary": "The Claude-created videos overlay one game on top of another to make a rudimentary 'mashup'",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "vgc-eo28zk",
+   "title": "GTA 6 is deliberately avoiding direct political references, says Rockstar",
+   "url": "https://www.videogameschronicle.com/news/gta-6-is-deliberately-avoiding-direct-political-references-says-rockstar/",
+   "date": "2026-10-05T09:57:26.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2025/05/Brian_Heder_01.jpg",
+   "summary": "Rockstar writer says it wants to avoid recreating ‘the exact world we live in’",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
    "id": "games-142ipcn",
    "title": "Nitesh Tiwari's Ramayana May Get New Release Date of November 5 Worldwide",
    "url": "https://in.ign.com/ramayana/273249/nitesh-tiwaris-ramayana-may-get-new-release-date-of-november-5-worldwide",
@@ -5502,258 +5817,6 @@
    "source": "ign.com",
    "domain": "ign.com",
    "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "games-m7bm3j",
-   "title": "PECADO Community Reviews",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE85TW5UcU1qYU1GMV92Z25wYzh2bjZGeExfMV81bWNYd1ZvWXJxdUdubVBNUnNMbkRMb21CNlJTaFoteHhsdW9mWWQtc0lmbkZ2ME9TeFU4QWI?oc=5",
-   "date": "2026-10-04T20:28:14.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "games-1nujsrw",
-   "title": "Draftula Community Reviews",
-   "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE45YmV3b2kxWG5OZm9VSmlybnhLdkE1RkhDT3ZtQTVRdUNHZ0I5S1lVOGdZWmthUm04WkhMbnU5RldDN2JPQjJVUFZya0s5ZXdkNGE0N1NvSlVGbzA?oc=5",
-   "date": "2026-10-04T20:25:45.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "games-1yng0ht",
-   "title": "Act 3 Hard Cases",
-   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBjRDBONkUza0t0WW1OSGtnS3o1MmcwTkQ2VWhBZ3BNaVZEZThHbTN0MEJfTjktMzRDT1dodHRkX2JPeklib19xMk8xRnR5RHJ1ZFdOUlZ4MG9XQzRxR0VRSUstYjRRYXdRVWZ5RVVn?oc=5",
-   "date": "2026-10-04T20:15:31.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "games-jcxlg0",
-   "title": "Hero",
-   "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5QalNLVER6bFp0em1jQ3NqN3AyTW93T05TaWxoU2dBN1dIMmpZYWN5V2lac2t2ekw5dFd6bmtKX2hZWEszVVZDdnoyYw?oc=5",
-   "date": "2026-10-04T20:04:05.000Z",
-   "source": "sea.ign.com",
-   "domain": "sea.ign.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "games-5necm0",
-   "title": "Forever My Lady",
-   "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5mZW1xMUhGVVd5SHk5NWFnNmZ2eGtabTJHalpSVnZHa0dxNnYtbHJudW92TlU0bHZnNGZILVBVbUUtancwdndBSm1YWEpDemx3dloxYg?oc=5",
-   "date": "2026-10-04T20:03:13.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "polygon-1iecdqx",
-   "title": "8 Video Game Villains With Motives You Can't Argue With",
-   "url": "https://www.polygon.com/video-game-villains-who-were-right/",
-   "date": "2026-10-04T20:00:15.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/22989776/ss_4b2b412307b72a21f68148c32fab7a278875d139.jpg",
-   "summary": "From Renoir to Andrew Ryan, these 8 video game villains perhaps had a point…buried under the body count",
-   "seen": "2026-10-04T22:26:39.702Z"
-  },
-  {
-   "id": "games-169d5be",
-   "title": "Jensen Ackles Is Not Playing Batman: James Gunn Shuts Down DCU Casting Rumors",
-   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPdF8zeElXaEY4OGNGTjBibjFBTFc2UjBuVi1ZWS1BeUthMUN4WmNwbXpuLUVpSUl4Snl0ZWpzTU9HMXU0N1B0ZlpoU0ZaNnp2OUdDUVRZZlcyZTBKSTBEZTBhcVREcDVnSUhTa0MzQVZzYXItMHRhV2dWemk1bi1QcWlhVTZMenhCS0lvX3I0aw?oc=5",
-   "date": "2026-10-04T19:50:29.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "games-1w08v5h",
-   "title": "Hard Cases (Weapon Mods)",
-   "url": "https://www.ign.com/wikis/gears-of-war-e-day/Hard_Cases_(Weapon_Mods)",
-   "date": "2026-10-04T19:50:25.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "image": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/gears-of-war-e-day/b/b6/Gears_of_War_E-Day_Hard_Case_Feature.png",
-   "summary": "Hard Cases are a type of collectible that you can find in Gears of War: E-Day. They are hidden items that you’ll find throughout the campaign, and once",
-   "tried": 1,
-   "seen": "2026-10-04T15:55:32.171Z",
-   "direct": 1
-  },
-  {
-   "id": "games-wq2fhd",
-   "title": "Act 2 Hard Cases",
-   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5fVi1MVEV3bDQ1TFFMaDhkQVNieGtjdzNoVmg5OUc5X0ZpU0dKTWs1YTdVSEd2WUpmUlZ0RkVvYzFZbVQ4ZXFKR3k1RUVPeVFNeDdBSmRLVTVNd0E1ODllSWtCdGVfTVhCbkhIWUp3?oc=5",
-   "date": "2026-10-04T19:37:34.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "polygon-18tpwvo",
-   "title": "25 Years Later, Ridley Scott’s Most Controversial Thriller Is Officially Free on Youtube",
-   "url": "https://www.polygon.com/ridley-scott-hannibal-2001-controversy/",
-   "date": "2026-10-04T19:00:16.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/3.jpg",
-   "summary": "Ridley Scott is known for his epic sci-fi films, such 'Alien' and 'Blade Runner.' But in 2001, a controversial adaptation almost changed everything.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "games-1wa56xa",
-   "title": "mamasunnn00's Lists",
-   "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9OTndjdEhfZmh4MWhJNFdpWDg1aE5rTnFkWlE4SGY2ak9ZUFB4ZUg2R08tOU1lcGt3ckN5amd1QUlYVHNqbjhMVUkwQXNvN3hCWFBFT2NKMmcxQQ?oc=5",
-   "date": "2026-10-04T18:54:47.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T07:31:27.526Z"
-  },
-  {
-   "id": "games-1x43k76",
-   "title": "Digger Bombs With $20 Million Global Opening at the Box Office as Verity Takes the Top Spot",
-   "url": "https://www.ign.com/articles/tom-cruises-digger-bombs-hard-with-20-million-global-opening-in-theaters",
-   "date": "2026-10-04T18:48:21.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "image": "https://assets-prd.ignimgs.com/2026/07/20/diggerthumb2-1784555245673.png?width=1280&format=jpg&auto=webp&quality=80",
-   "summary": "Tom Cruise's Digger bombed hard in theaters, pulling in an estimated $20 million in its opening weekend at the global box office.",
-   "tried": 1,
-   "seen": "2026-10-04T19:20:28.894Z",
-   "direct": 1
-  },
-  {
-   "id": "games-sdbid5",
-   "title": "The Royal Restoration Society - Official Announcement Trailer",
-   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxORXZYM1dwajZSUWN5cnY2aXA3RDdzVjF5THhNYlFGZ0NhZ2g0am01QTVoUHpmZTFISHAxZE9hWUpQU2FYSGpETm5FSDlGdkN3b0lvSHp0QjlKTW1Oc2wwRkF4VXVxeTliNGM3ZDUwdnE1RFBSQ2RzQV9BRnpabVNGY2t5aExaTERCVTVha0hmVQ?oc=5",
-   "date": "2026-10-04T18:39:00.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "games-na60fv",
-   "title": "Video Game News, Reviews, and Walkthroughs",
-   "url": "https://news.google.com/rss/articles/CBMiQ0FVX3lxTE4ta2NqYktlcmJqdFBJNlluR1gyREdOakVmd3ZWSHFkMjZhb1UxSldteXNmNzdUM0NkS1VNVnZCY0o3ekU?oc=5",
-   "date": "2026-10-04T18:32:28.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "games-68ice6",
-   "title": "Love And Deepspace Warns Players Not To Drink Poison After Sharing Hallucinogenic Recipes",
-   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOSFpocTBaUXBRcG9OYjJhckFtSkpJNUJ6NE94d1ZnTGM3enVydU50WGpnVi1YSkM5Tm02V01xeU5iaGNYcFB6emdHdm1OeVNWZG9qbzBaWkdQQ09oZjVHNnJWWURiXy16bUVDallkSXpFdE1aV3JSVWZTb2RaLVZhOEdEQ0FFUlRTdm9JR2xqdkg2ZERUaEk2UnBfZUxCaFp4el8tbVhsNFhzTTI2bTlWWjlDMnFwYTJpd2ZN?oc=5",
-   "date": "2026-10-04T18:21:43.000Z",
-   "source": "Kotaku",
-   "domain": "kotaku.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "polygon-15dc2bh",
-   "title": "Nintendo's Zelda: Ocarina of Time Remake Gets Official Instrument Support and More",
-   "url": "https://www.polygon.com/zelda-ocarina-of-time-remake-new-features-notes-app-nintendo/",
-   "date": "2026-10-04T18:19:15.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/09/ocarina.JPG",
-   "summary": "The Legend of Zelda: Ocarina of Time for Nintendo Switch 2 will include a playable flute, Zelda Notes support, and an official Zelda quiz.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "polygon-rtyi4p",
-   "title": "Forget Star Wars Movies, the Franchise’s Future Belongs to Video Games",
-   "url": "https://www.polygon.com/star-wars-video-games-coming-for-movies-lunch/",
-   "date": "2026-10-04T18:00:15.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/06/star-wars-zero-company.jpg",
-   "summary": "Zero Company, Galactic Racer, KOTOR, and upcoming new games make SW look more like D&D than the MCU",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "games-1h7ocqt",
-   "title": "Forget Star Wars Movies, the Franchise’s Future Belongs to Video Games Now",
-   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5ZWEx3S3NNb2lJeUx1OWZPaTZxWE9IU1F0c0tyYVBMUjhUZnE5YmFRcTdiMnItVHJGSEp3cDJTLXF0QktFczkyZlFNNDF2MGxRb2RfTWJCV3lCOWctX2ZZSThXMXZNYXd0X0dOblZmTnVGNVNONmVXVlBn?oc=5",
-   "date": "2026-10-04T18:00:15.000Z",
-   "source": "Polygon.com",
-   "domain": "polygon.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "games-18f83m2",
-   "title": "Call of Duty: Modern Warfare 4 - Official DMZ Worldbuilder Trailer",
-   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQc1NRd2g5Rl9hN3NmbTZ4NVd5VFIwMUVyZTRNdXVpdG1vTjZHX0g4R2JoRC1pRTFPeXZ0NUdkZTlYbTFDSmFmZVBRMmNTTmI5ZG5wRzlyZVBnUE1Gb1dKb2N6MW5RcmEtemkxb3prdHRlcTVBd29mUUNQYXFLek1RM3puYi0tYW5PdEJobjlBLW1TSHVv?oc=5",
-   "date": "2026-10-04T17:55:44.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "games-1u63dv4",
-   "title": "All Fortnite Admin Panel Lobby Hack Codes For Free Rewards (October 2026)",
-   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOMURtSDhFYWQ5MWZTUHJhU0RTcWtYWFdUZExpR21UckticHBzeXhrX0M0N25KdUhNVHpnaWVKV2IxRVh3TXM4X0hkWTRxcWNzcEVCUGlEckdrdDJRT1ZtX1lGZ1cwSEhOMThKOHp2RjlGcl9JdGo4QndYLTRTazJLWDJRclVOMXZMWWMtWA?oc=5",
-   "date": "2026-10-04T17:37:17.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "games-b6elvt",
-   "title": "Avengers: Endgame Inches Closer to $3 Billion as Encore Re-Release Helps It Overtake Avatar at the Box Office",
-   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPQTZNNVlDSVBhSEZaMEhuWTA2Mm1MSUdGd0ZVYTZ3UFNhbUFHajFCR3RKYUZ0THFoYUpfR2lTa05IdU1Yak1jT2MxcF9JbzkxZTNSUExZNU16WC1Ccjc0SHBQT2ZHZk81a0FUU0NGVDNjS3AtczJ0ZXZDNjg1MGpTd2s0ZXEzZU9xNEV1NG9OZUVkQi05OFY2N08wd01VSURrVm5NeUh4Mkk1cWlvdlRXb2Ftbw?oc=5",
-   "date": "2026-10-04T17:36:04.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "games-1g3raq",
-   "title": "SlackStingray63's Playlists",
-   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9sdGZ1dTlOZ2pXSzlocFVPanR4R3lhdnZHYmdxTEJDVHdfc2pScXd1Vjg5X0FWdVppeDktVWY1aFpXcmVOU09rT1lQaDRuaEkyZmRfSTJkcUxWejliRXQ4?oc=5",
-   "date": "2026-10-04T17:11:23.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T07:31:27.526Z"
-  },
-  {
-   "id": "games-yjcloo",
-   "title": "Dynasty Warriors producer wants sequels, not remasters",
-   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPNmpLMVNwREI4MmEzdjlSMFJqb25pTlJuSmFUVlppa3hJVnhYTjJaX1k4bWYtaG5KMkM1cVFqTnppU093WVhtR2U4bEdnMkVjZW5wd25MU1dieEFYWGpkN29xUi11NXdKYzNYTGFYWDJtX2tRUWF6VjRsVGYteXhSbWRuQQ?oc=5",
-   "date": "2026-10-04T17:07:59.000Z",
-   "source": "Eurogamer.net",
-   "domain": "eurogamer.net",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "polygon-1vmvx9s",
-   "title": "'Buffy the Vampire Slayer' Would Be Much Better if It Were 2 Seasons Shorter",
-   "url": "https://www.polygon.com/buffy-season-5-hot-take/",
-   "date": "2026-10-04T17:00:16.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/08/spike-2.jpg",
-   "summary": "Buffy the Vampire Slayer ran for seven seasons, but cutting two of its weakest would have made the beloved series even better.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "games-o6ojmu",
-   "title": "LUCY",
-   "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE9OYVRnTUphNl9XN2tXVnlkc19NNExuaVNnTGZlOHRyWDltVXg1b2NsUXAwa1hIbHkwNDI2N2JMU040TEl2?oc=5",
-   "date": "2026-10-04T16:58:52.000Z",
-   "source": "ign.com",
-   "domain": "ign.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "games-1312e5q",
-   "title": "zenithmokta72's Playlists",
-   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5BU19tWWhmZ1JaV1F1WEVESDZ1Z2F6THk3b2liY2t3bF9iaHBEWUQzTGVvRDZya1RYQVlTRHNpSUpwV0VVM2Z6cGlxV25FZWNRMnVoWkFUOWRyQWZ5?oc=5",
-   "date": "2026-10-04T16:47:04.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-10-04T19:20:28.894Z"
   }
  ],
  "marvel": [
@@ -6036,6 +6099,220 @@
   }
  ],
  "pop": [
+  {
+   "id": "thr-3bo5o0",
+   "title": "Gaza Documentary ‘NAZA’ Sparks IDF Counter Film to Rebut Venice Winner",
+   "url": "https://www.hollywoodreporter.com/movies/movie-news/naza-sparks-idf-counter-film-1236722408/",
+   "date": "2026-10-05T16:54:56.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "‘NAZA: The Real Story’ by Israeli director Roi Danino is looking to pull the narrative back from fellow filmmakers Yuval Abraham and Rachel Szor and producer Jonathan Glazer.",
+   "seen": "2026-10-05T16:56:08.531Z",
+   "tried": 1,
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/10/naza-cover-youtube.jpg?crop=0px%2C5px%2C2560px%2C1433px&resize=1440%2C810"
+  },
+  {
+   "id": "variety-12whhkw",
+   "title": "Banijay America Confirms Ben Samek as CEO, Post-Merger With All3Media",
+   "url": "https://variety.com/2026/tv/news/banijay-america-confirms-ben-samek-ceo-merger-all3media-1236899206/",
+   "date": "2026-10-05T16:40:48.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2023/04/Ben-Samek-Headshot-copy-e1785449984649.jpg",
+   "summary": "As expected, Ben Samek has been named CEO of Banijay America, the combined structure across the Americas created following Banijay Entertainment’s recent merger with All3Media.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-14aqr43",
+   "title": "Inside the ‘Verity’ Adaptation: Crafting a Mystery Where Nothing Is Certain",
+   "url": "https://www.hollywoodreporter.com/movies/movie-features/inside-verity-adaptation-michael-showalter-colleen-hoover-1236713900/",
+   "date": "2026-10-05T16:30:00.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "Director Michael Showalter and author Colleen Hoover on the choices that keep viewers guessing, from an unreliable manuscript to a letter and an ending open to interpretation.",
+   "seen": "2026-10-05T16:56:08.531Z",
+   "tried": 1,
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/09/VerityColumnArtFinal.jpg?w=1440&h=810&crop=1"
+  },
+  {
+   "id": "variety-drqj3e",
+   "title": "Sebastian Stan Challenges Audiences to Question Their Own ‘Belief Systems’ at ‘Fjord’ Premiere: ‘There’s More to Just Simply Being Right’",
+   "url": "https://variety.com/2026/film/news/sebastian-stan-fjord-question-belief-systems-nyff-1236899165/",
+   "date": "2026-10-05T16:23:11.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/10/GettyImages-2298610460.jpg",
+   "summary": "Sebastian Stan stars in “Fjord” as a conservative Romanian father who faces religious discrimination after moving with his family to his wife’s (Renate Reinsve) progressive, remote Norwegian hometown.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "variety-apuwgp",
+   "title": "CMA’s ‘Celebration of Dolly Parton’ Special Slates 20 Performers, Including Ella Langley, Lainey Wilson, Molly Tuttle and Reba McEntire",
+   "url": "https://variety.com/2026/music/news/cma-dolly-parton-celebration-abc-special-ella-langley-1236899168/",
+   "date": "2026-10-05T16:21:11.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/08/Dolly-Parton.jpg",
+   "summary": "The lineup has been announced for “CMA Presents I Will Always Love You: A Celebration of Dolly Parton,” a special set to air live on ABC and Disney+ Oct.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "variety-18koq39",
+   "title": "Disney Wants Up to $12 Million for Super Bowl Commercials, Even With Big Game Ads Sold Out",
+   "url": "https://variety.com/2026/tv/news/disney-seeking-12-million-super-bowl-commercials-sold-out-1236899146/",
+   "date": "2026-10-05T16:18:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2020/09/nfl_rights.jpg",
+   "summary": "Disney is attempting a feat of magic that might vex even talented sorcerers like its own Maleficient or Dr. Strange.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-ku1n44",
+   "title": "Jamie Foxx Does Not Want to Be Canceled Over New Hulu Stand-up Special: “After That Kevin Hart Roast, I Had to Cut Everything”",
+   "url": "https://www.hollywoodreporter.com/tv/tv-features/jamie-foxx-take-care-of-yourself-hulu-special-interview-1236710409/",
+   "date": "2026-10-05T16:15:00.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The comedian tells THR how he really felt about that George Floyd joke, why he won't go on Shannon Sharpe's 'Club Shay Shay' podcast and why he's not chasing laughs with 'Take Care of Yourself.'",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "variety-h8caea",
+   "title": "Hammer Films Boss John Gore on Resurrecting the British Horror Icon, Plans to Remake the Classics and Why Christopher Lee Was the ‘Greatest Dracula’",
+   "url": "https://variety.com/2026/film/global/hammer-films-boss-john-gore-resurrecting-horror-icon-1236897440/",
+   "date": "2026-10-05T16:00:08.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/10/dracula_tiff04_00886547-copy.jpg",
+   "summary": "In the credits for the “Paranormal Activity” stage play currently running on the West End before it heads off to Broadway next year, next to Blumhouse, which produced the original hit film franchise, sits the name of…",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "variety-16y5bqm",
+   "title": "As WME’s Literary Media Department Turns 10, It Aims to Keep Pace With How Books Are Adapted: ‘Our Culture Is Shifting’",
+   "url": "https://variety.com/2026/tv/news/wme-literary-media-10-year-anniversary-dtf-st-louis-1236893981/",
+   "date": "2026-10-05T16:00:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/10/WME-Lit-Media.jpg",
+   "summary": "The WME literary media department, responsible for working with authors and shepherding screen adaptations of their literary works, is marking its tenth anniversary in the wake of a big showing at this year’s Emmys.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "variety-effn4p",
+   "title": "‘I Play Rocky,’ ‘Paper Tiger’ and ‘Josephine’ Among Coronado Island Film Festival 2026 Lineup",
+   "url": "https://variety.com/2026/film/news/coronado-island-film-festival-i-play-rocky-paper-tiger-1236898862/",
+   "date": "2026-10-05T16:00:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2025/10/I-play-Rocky-Anthony-Ippolito.jpg",
+   "summary": "“I Play Rocky,” “Paper Tiger” and “Josephine” are among the 140 narrative features, documentaries and short films set to screen during the Coronado Island Film Festival’s 11th season. The festival will run from Nov.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "variety-jfh8sx",
+   "title": "‘ARC Raiders,’ ‘The Finals’ Video Games Set TV Series and Film Adaptations at Chernin Entertainment",
+   "url": "https://variety.com/2026/tv/news/arc-raiders-the-finals-tv-series-movies-chernin-1236899094/",
+   "date": "2026-10-05T16:00:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/10/ARC-Raiders.png",
+   "summary": "Hit video games “ARC Raiders” and “The Finals” are both getting adapted for TV and film in new projects set up with Chernin Entertainment and Nexon-owned video game developer Embark Studios.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-9adrqp",
+   "title": "‘SNL UK’ Cast Member Al Nash, DaniBabes Among UTA Creators Roster Signings (Exclusive)",
+   "url": "https://www.hollywoodreporter.com/business/business-news/snl-uk-cast-member-al-nash-danibabes-uta-creators-signing-1236720773/",
+   "date": "2026-10-05T16:00:00.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "Britney De Villiers, Nimi Mehta, Grace Andrews and Tara Keeney also join the talent company's growing London-based practice.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-14kyoua",
+   "title": "Ron Howard to be Honored at 2026 Critics Choice Documentary Awards",
+   "url": "https://www.hollywoodreporter.com/movies/movie-news/ron-howard-2026-critics-choice-documentary-awards-honor-1236722378/",
+   "date": "2026-10-05T16:00:00.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "Jehane Noujaim will receive a lifetime achievement award named for D.A. Pennebaker while Ross Mathews is set to host the Nov. 8 awards ceremony in New York.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-1h3dzz0",
+   "title": "Luke Grimes Wasn’t Sure If ‘Marshals’ Would Be a Hit. Now He’s Prepping for a ‘Yellowstone’ Kind of Run",
+   "url": "https://www.hollywoodreporter.com/tv/tv-features/marshals-season-2-yellowstone-luke-grimes-interview-1236722080/",
+   "date": "2026-10-05T15:47:02.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The actor who plays Kayce Dutton talks all things season two, including 'Yellowstone' star Jimmy's (Jefferson White) return, if former star Kelsey Asbille has been approached about Monica flashbacks and if the megahit…",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "variety-cxuvig",
+   "title": "Dominga Sotomayor’s Cannes’ Directors Fortnight Film ‘La Perra’ Sells Internationally",
+   "url": "https://variety.com/2026/film/global/dominga-sotomayor-cannes-directors-fortnight-la-perra-1236899156/",
+   "date": "2026-10-05T15:41:15.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/05/LaPerra_Still_Cannes_04.jpg",
+   "summary": "Dominga Sotomayor’s “La Perra,” which premiered at Cannes’ Directors’ Fortnight and won the Palm Dog Award, has scored a raft of international sales for Paris-based sales outfit Lucky Number.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "variety-yoh7np",
+   "title": "Riley Keough and Director Clay Tweel Board First Responder Psychedelic Therapy Doc ‘Under Fire’ as Executive Producers (EXCLUSIVE)",
+   "url": "https://variety.com/2026/film/columns/riley-keough-clay-tweel-first-responder-psychedelic-therapy-documentary-under-fire-executive-producers-1236898220/",
+   "date": "2026-10-05T15:05:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/10/UNDER_FIRE_4K-1000.jpg",
+   "summary": "Riley Keough and Clay Tweel have joined Brandon Kapelow’s documentary “Under Fire” as executive producers.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-cckpx9",
+   "title": "Gillian Anderson Responds to Backlash Over Telling Superfans to Stop Sitting in Front Row",
+   "url": "https://www.hollywoodreporter.com/news/general-news/gillian-anderson-virginia-woolf-fans-front-row-video-1236722252/",
+   "date": "2026-10-05T15:03:38.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "\"It'll drive me mad,\" she said. The actress then clarified her comments after a video of the confrontation went viral.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-3erlzp",
+   "title": "Prime Video’s ‘Things We Never Got Over’ Adaptation Adds Sean Teale, Sarah Jeffery and More",
+   "url": "https://www.hollywoodreporter.com/tv/tv-news/things-we-never-got-over-prime-video-adds-six-cast-1236722300/",
+   "date": "2026-10-05T15:03:04.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The series is based on Lucy Score's novel of the same name, the first in her 'Knockemout' trilogy.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-ayc3s7",
+   "title": "‘The Flight’: After Iran Shot Down Ukraine Plane, Doc Follows Victims’ Families Fight for Justice",
+   "url": "https://www.hollywoodreporter.com/movies/movie-news/the-flight-doc-iran-shot-down-ukraine-plane-1236717197/",
+   "date": "2026-10-05T14:30:21.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "Soran Mardookhi's feature documentary debuting in Vancouver goes beyond casualty numbers to humanize lost loved ones, as grieving relatives campaign to hold Iranian authorities accountable.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "thr-1hfx7u3",
+   "title": "Golf Media Company Pro Shop Raises $24 Million In Expansion Push (Exclusive)",
+   "url": "https://www.hollywoodreporter.com/business/business-news/golf-media-company-pro-shop-raises-series-b-1236720861/",
+   "date": "2026-10-05T14:10:56.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "Arthur Blank's family office, Causeway Partners and Ares Capital are among the new investors in the company, founded by Chad Mumm and Joe Purzycki.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
   {
    "id": "variety-j01xh4",
    "title": "ITV Studios Travels to Mipcom With 10 New Titles on Its Formats Slate, Led by ‘The Chase Around the World’ (EXCLUSIVE)",
@@ -6552,207 +6829,140 @@
    "source": "Vulture",
    "domain": "vulture.com",
    "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "pop-1tf3rms",
-   "title": "Taylor Swift Is Not Dakota Johnson’s Therapist",
-   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNZ0h0d1RKMzRRM2RJMXllb1JvdVlaelFkXzlrZEpBZnNlWVBQb2xnNngxZmRHQU4wdjc0Yk94QWJ1bXBJZ2NOV2Z4R0NPQ3BqQTR4SHJ2TTcxeUFaV3VvMVBkM3NKSDVZc0stQVVvUndyNklJS2lYUTVvM1l3U09hdFQxeUs?oc=5",
-   "date": "2026-10-04T18:02:52.000Z",
-   "source": "Vulture",
-   "domain": "vulture.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-16i9ea7",
-   "title": "Gillian Anderson responds to backlash after tense exchange with ‘distracting’ superfans at West End show",
-   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNVVkyRVVxQ0s1dTFtMEF2Mk5YSkYtd0FTeWt0WDZRb0tBZG4zZ3RjVFFKZ2gtelpzY2x2eG9LS2lsQng3M1l0YzBOUThPa1F0bmx6eUVXYTk4YWQ5SWFXVVJzSVJDN295a1oxS09lcXNMbVN3cVFQbTRZc2pNLXo5bDZCRW5kNUFEQWsweTBYZE1KZXpWbTJKLU5EYnhtWHMtT3JJ?oc=5",
-   "date": "2026-10-04T18:01:33.000Z",
-   "source": "Entertainment Weekly",
-   "domain": "ew.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "thr-1iyti2x",
-   "title": "‘Ba’s Book’ Director Uncovers Father’s Secrets Over Vietnam War, Revolutionary Iran Upbringing",
-   "url": "https://www.hollywoodreporter.com/movies/movie-news/bas-book-director-vietnam-war-1236705255/",
-   "date": "2026-10-04T18:00:00.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "summary": "Ashley Duong has created an inventive hybrid film inspired by a memoir that fluidly moves between re-enactments and verite documentary styles.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "variety-1ho9fkz",
-   "title": "Sass Jordan, Singer and Longtime ‘Canadian Idol’ Judge, Dies at 65",
-   "url": "https://variety.com/2026/music/people-news/sass-jordan-dead-canadian-idol-singer-1236898644/",
-   "date": "2026-10-04T17:37:12.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/10/GettyImages-85480273.jpg",
-   "summary": "Sass Jordan, the singer, songwriter and longtime “Canadian Idol” judge, died on Oct. 2. She was 65. Her family confirmed her death, noting that she “died peacefully” and was “surrounded by those who loved her most.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-2ld95f",
-   "title": "Julie Bowen reveals what ‘Modern Family’ cast talks about in group chat",
-   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOX3hudk4xNl9UbktlRnJ1SDNKbEdSa1A5SjNXR1JEdTlKNlc3M0JSSVBhc2ZHYUR2Q0NUWl9yRzNLbC16bjl1d1Z1QjVYRG5QaEVVV1RJeGtzUnpneHpGalJqdGRtem4yQ0VhbENiYkdSUWpQdndkUGxBaW5mX2U3ZXJQYXR6bVpUVXc?oc=5",
-   "date": "2026-10-04T17:26:19.000Z",
-   "source": "Entertainment Weekly",
-   "domain": "ew.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-1trk1zg",
-   "title": "Tony Gilroy Says Paramount-Warner Bros. Merger Will 'Destroy' a 'Healthy and Beautiful Business' in 'The Name of Venture Capital': 'It's Tragic'",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNS1MtdjI0Yl93QjZIcFRtbkNraWFVbnZlYkFDNEJFa1FLajdEVWtFQmdDNTFna1c2eHpQZmhFVlVxZnNYUEY1aF8xTmxtd2FiRkJlU09RbHRWMUdrMGxqZE5sSFpfTlpxR0FLMk1KNWdjcERTUkRwUjQ2X01kY1F0UlZWOHZUaDV1YkJLOEg1UFNTSndncHpZUzU4Mjk0dE5s?oc=5",
-   "date": "2026-10-04T17:22:53.000Z",
-   "source": "Variety Australia",
-   "domain": "au.variety.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-75pd5u",
-   "title": "Aaron Sorkin Says It ‘Never Occurred’ to Him That Jesse Eisenberg Wouldn’t Play Mark Zuckerberg in ‘The Social Reckoning,’ Claims the Paycheck Was a ‘Disincentive’",
-   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQdlZydGVaa2hCQWQxbnZmMlMyOTJJVUFvZnFvVzRXSTB5WE5XOHlYWE5NM3FVdmpHMFhaem1fOUhWS3FGUDRlYzVSNnZ5d1JLcmcxTVRIVnEwTkxfSEJYYlZFa19RMEpHbTJMTE5HNWRta3owSEpxcjRfeUJaVDgyWFU5RkFPTEhuNjZ2Y0dqUEVfYWxtRUxSR1ZETzB2QndYMW5aa1lGekllZw?oc=5",
-   "date": "2026-10-04T17:22:53.000Z",
-   "source": "Variety Australia",
-   "domain": "au.variety.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-fj4wlj",
-   "title": "Pete Hegseth Chugs 'Spider-Man's Non-Alcoholic B--- Beer' in 'SNL' Cold Open That Mocks Tom Holland, Mitch McConnell and JD Vance",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQLXdvWmlnYlJXbEV1V0dHLUF5STVIaGNNQ0ctaWRDc0dGSGU0ZmhaZjg1WG9sRW9ScjV6aThxczV1R05WbjdxS1k1b1U1OGJPaF9mU1l0RVdyMVpoSUJjbDhSUzBRakY3LTd5akxnajZlVnRmLXBUYnllaTRrQzVpWUxZeDFpaFZTQVhoTmtObWkwS2s?oc=5",
-   "date": "2026-10-04T17:17:53.000Z",
-   "source": "Variety Australia",
-   "domain": "au.variety.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "variety-g5ey7c",
-   "title": "‘Spotlight’ Director Says The Catholic Church Hasn’t Done ‘Enough’ To Protect Children From Sexual Assault 10 Years After Film’s Best Picture Win: ‘Not Until Every Child Is Safe’",
-   "url": "https://variety.com/2026/film/news/spotlight-catholic-church-children-sexual-abuse-nyff-1236898551/",
-   "date": "2026-10-04T17:07:47.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/10/SPOTLIGHT-MOVIE.png",
-   "summary": "Tom McCarthy’s biographical drama “Spotlight” won Best Picture at the Academy Awards in 2016.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "variety-1hdljsf",
-   "title": "Daily Wire’s Pro-ICE Film ‘Pawn Shop’ Production Temporarily Suspended",
-   "url": "https://variety.com/2026/film/news/daily-wires-pro-ice-film-temporarily-suspended-montana-1236898635/",
-   "date": "2026-10-04T16:58:08.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/10/GettyImages-2297750742.jpg",
-   "summary": "Production of Daily Wire’s pro-ICE film “Pawn Shop” has been temporarily halted in Livingston, Mont., following a Special City Commission Meeting held on Saturday.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-11c4ahe",
-   "title": "Alan Alda opens up about Parkinson’s diagnosis: ‘I don’t want to wish it away’",
-   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE11Qnl3ZWxfRkhzYThacW9GVGktN2YtV0VEZjE5Mm42cGxkdFlZYjJDNTJRZlhQTG53UEpHY1VnVmIwQ2RMT19CUnV4VlA1b3ZNNG1yNllvMTBSc1c5RUVvZE5HTjFoRVBucWJhY2NGU3EzZ1ZzcXRnXw?oc=5",
-   "date": "2026-10-04T16:49:53.000Z",
-   "source": "Entertainment Weekly",
-   "domain": "ew.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "thr-4qjrlw",
-   "title": "‘Edward Said: Between Worlds’ Review: A Crucial Palestinian Scholar, Revived for a New Generation",
-   "url": "https://www.hollywoodreporter.com/movies/movie-reviews/edward-said-between-worlds-review-palestine-1236720415/",
-   "date": "2026-10-04T16:45:16.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "summary": "The latest doc from the Danish filmmaker and producer Maiken Baird (‘Icarus’) examines Said’s role in reframing the Palestinian struggle.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "thr-m3cta1",
-   "title": "Marjoe Gortner, Child Preacher and ‘Earthquake,’ ‘Falcon Crest’ Actor, Dies at 82",
-   "url": "https://www.hollywoodreporter.com/movies/movie-news/marjoe-gortner-dead-child-preacher-earthquake-falcon-crest-1236721873/",
-   "date": "2026-10-04T16:40:10.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "summary": "The subject of an Oscar-winning documentary, the Universal Pictures contract player also starred with Lynda Carter in ‘Bobbie Jo and the Outlaw.’",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-1v5zf00",
-   "title": "Explainer Video",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5feUNCbTRpVEIxSnNmdkVzaElVT2RmdE5XckJmdm41NEo0TXRqN0pwUTlMUktyVDNZNmpncUdvcF9HaHNjRjFyU2NtZ2NRYVJsaU81eF90dHA?oc=5",
-   "date": "2026-10-04T16:35:11.000Z",
-   "source": "Vulture",
-   "domain": "vulture.com",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "variety-1vm0h6t",
-   "title": "‘East of Eden’ Boss Zoe Kazan on That Devastating Ending, Why Florence Pugh’s Cathy Is Both a ‘Murderer’ and ‘Survivor’ and Making Lee a Central Character",
-   "url": "https://variety.com/2026/tv/news/east-of-eden-explained-ending-cathy-lee-sexuality-1236897001/",
-   "date": "2026-10-04T16:30:00.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/10/EastofEden.ZoeKazan-interview-FlorencePughMAIN.jpg",
-   "summary": "SPOILER ALERT: This interview contains major spoilers from “East of Eden,” now streaming on Netflix. Zoe Kazan has spent much of her life thinking about family legacy on and off screen.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "thr-piqnqi",
-   "title": "Where to Watch the Chiefs vs. Raiders Game Online",
-   "url": "https://www.hollywoodreporter.com/tv/tv-news/where-to-watch-chiefs-vs-raiders-game-free-nfl-streams-2026-1236721201/",
-   "date": "2026-10-04T16:30:00.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "summary": "The NFL Week 4 matchup is set for Sunday, Oct. 4 at Allegiant Stadium in Las Vegas.",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "variety-1bow7fv",
-   "title": "Pedro Pascal in ‘Behemoth!’: The Oscar-Worthy Role That He (and Latinos) Have Been Waiting For",
-   "url": "https://variety.com/2026/film/awards/pedro-pascal-behemoth-oscars-chances-latino-best-actor-1236898464/",
-   "date": "2026-10-04T16:15:00.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/10/BHMTH_01285_v1-e1790815108597.jpg",
-   "summary": "Pedro Pascal makes his Oscar case with a cello. “Behemoth!,” Tony Gilroy’s first feature as a director since “The Bourne Legacy” in 2012, world-premiered on Friday night at Alice Tully Hall as the centerpiece selection…",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "variety-1ihtf28",
-   "title": "Zach Bryan Breaks Attendance Record at Robert Kraft’s Gillette Stadium While Wearing ‘Free Palestine’ Shirt for Second Night in a Row",
-   "url": "https://variety.com/2026/music/news/zach-bryan-breaks-record-kraft-free-palestine-1236898609/",
-   "date": "2026-10-04T16:09:22.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/10/Screenshot-2026-10-04-at-11.59.08-AM-e1791129908709.png",
-   "summary": "Zach Bryan broke the attendance record at Robert Kraft’s Gillette Stadium on Saturday night, performing for 73,538 fans — the largest crowd for any event in the venue’s history — while wearing a “Free Palestine” shirt…",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "pop-g2osnl",
-   "title": "Zach Bryan Breaks Record at Kraft's Stadium in Free Palestine Shirt",
-   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPOENwWS1sSWRGeWFua3NZcGhSLURwck9zNXQ0QUk1cEFmQTlVQXphdmF0b080dnVsbkYzSjVSNEs2TnRSNlVNNVZwRmFCZWdmS2ptRUI2VFE3ZU82d0xFekpLS1Y1SXI4ekZLRjhjUEllSHpHQnVtekpkMEZjNEphLTNJNGM1V0NoNVFPTHJTT09PdkxIVl9kNA?oc=5",
-   "date": "2026-10-04T16:09:00.000Z",
-   "source": "variety.com",
-   "domain": "variety.com",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "variety-1clz39c",
-   "title": "James Van Der Beek Was the ‘Soul’ of ‘Dawson’s Creek,’ Says Show Creator Kevin Williamson: ‘He Handled His Cancer With Such Grace and Courage’",
-   "url": "https://variety.com/2026/tv/columns/dawsons-creek-kevin-williamson-james-van-der-beek-cancer-1236898546/",
-   "date": "2026-10-04T16:07:55.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2023/01/TSDDACR_EC129.jpg",
-   "summary": "“Dawson’s Creek” creator Kevin Williamson remembered the show’s late star Jame Van Der Beek on Saturday night while being honored with a Hero Award at the Barbara Berlanti Heroes Gala, Greg Berlanti’s annual F Cancer…",
-   "seen": "2026-10-04T19:20:28.894Z"
   }
  ],
  "music": [
+  {
+   "id": "billboard-15vos9p",
+   "title": "Olivia Rodrigo Says ‘Shame on Cornell’ Amid Fraternity Rape Lawsuit: ‘I Stand With Jane Doe’",
+   "url": "https://www.billboard.com/music/music-news/olivia-rodrigo-slams-cornell-amid-rape-lawsuit-1236354098/",
+   "date": "2026-10-05T16:32:53.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/10/lzzy-hale-2026-billboard-1800.jpg?w=237&h=147&crop=1",
+   "summary": "The singer condemned the university and \"every institution who protects rapists and abusers over women.\"",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "pitchfork-f0nc2m",
+   "title": "Flo Announce Therapy at the Club North America and Europe Tour",
+   "url": "https://pitchfork.com/story/flo-announces-therapy-at-the-club-north-america-and-europe-tour/",
+   "date": "2026-10-05T16:32:29.000Z",
+   "source": "Pitchfork",
+   "domain": "pitchfork.com",
+   "image": "https://media.pitchfork.com/photos/6ac3bc2bb491e38e68769995/master/pass/FLO%20-%20TATC%20Alt.%20Press%20Image%20(Credit%20-%20Alex%20J%20Piper).jpg",
+   "summary": "The British trio will make stops in New York, Los Angeles, Paris, London, and more",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-1wfyu0y",
+   "title": "BLACKPINK’s LISA Confronts Working With New Producers in Latest ‘Always Lalisa’ Doc Trailer: ‘I Felt Really Shy About Showing My Skills’",
+   "url": "https://www.billboard.com/music/pop/blackpink-lisa-working-new-producers-always-lalisa-trailer-1236354114/",
+   "date": "2026-10-05T16:24:35.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/10/victoria-monet-2026-press-lede-cr-MARVIN-billboard-1800-.jpg?w=237&h=147&crop=1",
+   "summary": "Director Sue Kim's film about a year in the life of the K-pop superstar will hit IMAX and cinemas worldwide on Oct. 12.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-wyynok",
+   "title": "Without Kendrick Lamar — or Drake — How Will Hip-Hop Show Up In the Grammys’ Biggest Categories?",
+   "url": "https://www.billboard.com/music/awards/hip-hop-grammys-2027-big-categories-outlook-1236352338/",
+   "date": "2026-10-05T16:00:00.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/09/cover-noah-kahan-billboard-2026-bb10-emman-montalvan-1-1800.jpg?crop=0px%2C84px%2C1800px%2C1117px&resize=237%2C147",
+   "summary": "Without an obvious star in contention — and given some of hip-hop’s declines in the past year — the genre’s marquee category chances may be slimmer.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-115sdz7",
+   "title": "Chrissie Hynde Praises Taylor Swift’s New Song ‘Cleveland!’: ‘A Girl Who Stays on the Cutting Edge’",
+   "url": "https://www.billboard.com/music/music-news/chrissie-hynde-praises-taylor-swift-song-cleveland-1236354085/",
+   "date": "2026-10-05T15:07:08.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/10/dakota-johnson-taylor-swift-snl-2026-billboard-1800.jpg?w=237&h=147&crop=1",
+   "summary": "\"Hats off to Taylor for commemorating Akron’s main competition,\" The Pretenders frontwoman gushed.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-15uu766",
+   "title": "Jay Wheeler Announces La Voz Favorita World Tour: All the Dates",
+   "url": "https://www.billboard.com/music/latin/jay-wheeler-tour-dates-la-voz-favorita-world-tour-1236354006/",
+   "date": "2026-10-05T15:00:00.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/09/Billboard-latin-music-week-2026-press-conference-e1789412255987.jpg?w=237&h=147&crop=1",
+   "summary": "Following his participation in Billboard Latin Music Week, the Puerto Rican star will tour Spain, the U.S. and Latin America through mid-2027.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-12tvnh6",
+   "title": "Could This Rap Remix Trend Bring the Genre Back To the Charts?",
+   "url": "https://www.billboard.com/music/rb-hip-hop/the-game-meek-mill-run-the-jewels-rap-remix-trend-1236350222/",
+   "date": "2026-10-05T14:59:37.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/05/01-Drake-2026-credit-Ben-Dorado-billboard-1800.jpg?w=237&h=147&crop=1",
+   "summary": "The Game, Meek Mill & Run the Jewels all remixed their own hits this summer. Did it move the needle?",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-304dk5",
+   "title": "Natanael Cano Talks His ‘Tupac, DMX, Chalino Sánchez Flow’ and Says ‘Mexico Never Lets Me Down’",
+   "url": "https://www.billboard.com/music/latin/natanael-cano-vol-1-album-mexico-tour-video-interview-1236354054/",
+   "date": "2026-10-05T14:08:53.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/09/DSC1701u3.jpg?w=237&h=147&crop=1",
+   "summary": "The King of Corridos Tumbados spoke with Billboard Español minutes before kicking off his stadium tour across Mexico.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-nmuak0",
+   "title": "Phoebe Bridgers (and Nine of Her Collaborators) Talk Injecting ‘Fresh Blood’ Into Her ‘Lost Weekend’ Album’s Sound",
+   "url": "https://www.billboard.com/music/rock/phoebe-bridgers-lost-weekend-collaborators-oral-history-1236352042/",
+   "date": "2026-10-05T14:00:00.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/09/cover-noah-kahan-billboard-2026-bb10-emman-montalvan-1-1800.jpg?crop=0px%2C84px%2C1800px%2C1117px&resize=237%2C147",
+   "summary": "Here's a deep dive into how they made her expansive new album — which could well wind up a multicategory contender.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-1iv49q3",
+   "title": "Wisin Signs With WME in All Areas: ‘I’m Ready to Expand Beyond Music’",
+   "url": "https://www.billboard.com/pro/wisin-signs-wme-all-areas/",
+   "date": "2026-10-05T14:00:00.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/09/wisin-2026-cr-alejandro-melendez-billboard-1800.jpg?w=237&h=147&crop=1",
+   "summary": "The news comes on the heels of the Puerto Rican artist announcing his new management team last month.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "billboard-ssguk5",
+   "title": "Music Business Headlines You Need to Know: Warner, ADA, Estates & AI | Billboard On the Record News",
+   "url": "https://www.billboard.com/video/music-business-headlines-you-need-to-know-on-the-record/",
+   "date": "2026-10-05T13:47:12.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "summary": "From Warner Music executive shakeups to Dolly Parton’s inheritance, streaming fraud and big AI news from Suno Music and Eleven Labs, September shaped up to be a busy month in the music industry.",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "pitchfork-1vjuvez",
+   "title": "Phoebe Bridgers, Massive Attack, Caroline Polachek to Headline Primavera 2027",
+   "url": "https://pitchfork.com/story/phoebe-bridgers-massive-attack-caroline-polachek-to-headline-primavera-2027/",
+   "date": "2026-10-05T10:37:40.000Z",
+   "source": "Pitchfork",
+   "domain": "pitchfork.com",
+   "image": "https://media.pitchfork.com/photos/6ac3abbdb491e38e68769911/master/pass/primavera-2027-lineup.jpeg",
+   "summary": "Pavement, Robyn, Turnstile, Skrillex, Doechii, Fontaines D.C., FKA twigs, and Hayley Williams are also among the acts",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
   {
    "id": "music-nfnklz",
    "title": "Pitchfork",
@@ -7107,13 +7317,13 @@
   },
   {
    "id": "pitchfork-1qadh0b",
-   "title": "Turnstile and Taylor Swift Shared the SNL Stage Last Night",
+   "title": "Turnstile and Taylor Swift Shared the SNL Stage",
    "url": "https://pitchfork.com/story/turnstile-and-taylor-swift-both-dropped-by-snl-last-night/",
    "date": "2026-10-04T15:09:33.000Z",
    "source": "Pitchfork",
    "domain": "pitchfork.com",
    "image": "https://media.pitchfork.com/photos/6ac27ccad1a25331377860e8/master/pass/MixCollage-04-Oct-2026-12-18-PM-8856.jpg",
-   "summary": "The Baltimore hardcore band were last night’s musical guest, and Swift made a surprise appearance during host Dakota Johnson’s monologue",
+   "summary": "The Baltimore hardcore band were the musical guest, while Swift made a surprise appearance as Dakota Johnson’s “literal therapist”",
    "seen": "2026-10-04T15:55:32.171Z"
   },
   {
@@ -7340,144 +7550,18 @@
    "source": "Rolling Stone",
    "domain": "rollingstone.com",
    "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "music-mx805e",
-   "title": "October 2026 – Page 9",
-   "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE14eE1nb2plenJmU21zVzF5VmhGYWlCQThkYjdQUlhsZzB6RXZqeTdUUlZIcllhU3c2QzlUaWw3RV8tSi1uYVlOdnUyWndqSXVjeVZaazhHRVpwQQ?oc=5",
-   "date": "2026-10-03T20:58:42.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com",
-   "seen": "2026-10-04T15:55:32.171Z"
-  },
-  {
-   "id": "billboard-a5ggel",
-   "title": "AC/DC Brings Out Foo Fighters’ Dave Grohl for ‘Highway to Hell’ at MetLife Show",
-   "url": "https://www.billboard.com/music/rock/acdc-dave-grohl-highway-to-hell-metlife-stadium-1236353873/",
-   "date": "2026-10-03T20:08:34.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com",
-   "image": "https://www.billboard.com/wp-content/uploads/2026/09/2293589794-e1790766920123.jpg?w=237&h=147&crop=1",
-   "summary": "The iconic rockers played the final concert of their Power Up Tour on Oct. 2.",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "billboard-gp5wal",
-   "title": "Elton John Thanks Fans for ‘All the Love’ as He Bids Farewell to the Stage in Mexico: 5 Best Moments",
-   "url": "https://www.billboard.com/lists/elton-john-farewell-tour-mexico-city-best-moments/",
-   "date": "2026-10-03T19:12:39.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com",
-   "image": "https://www.billboard.com/wp-content/uploads/2025/09/elton-john-chelsea-piers-2024-billboard-1800.jpg?w=237&h=147&crop=1",
-   "summary": "The British legend performed the first of his final two shows on Oct. 2 at the Estadio Banorte in Mexico City.",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "music-12brv83",
-   "title": "Miley, Madonna, ADÉLA & More: Highlights of This Week’s Billboard Charts",
-   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNMWNGRV8wdWdMaDdpT1d4N2Zwelp3LVI3dHZEOUlHeEtsYW8zNEpmaDQ4RXdxdWdXYUYwMkpsYkxQYThLOTVKUzdtSDNZd2RpemIzVFUtR0QxUFNyaEJaOGVXcmhoZGJRSzV6UTBfc2hOY3RXSU5qeWNRMk1DaTRvaUR3bk5lSlU?oc=5",
-   "date": "2026-10-03T19:05:46.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com",
-   "seen": "2026-10-04T11:04:11.493Z"
-  },
-  {
-   "id": "music-1scao67",
-   "title": "“I was going around saying, ‘Look at this, the world’s first headless guitar!’ and Les Paul said, ‘No, that’s wrong’”: Ned Steinberger’s headless revolution looked like a world first – until Les Paul dropped a bombshell: he’d already built one",
-   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQTUUwbFhCVTVoWFQyLUZaZ05YNE5KQU1lNEVvRENrLXVWNDUtbTFMejdGQmEwOHF4bkpOMEhMcHAwSjgzWTE4ejFmTDJKLUtVNWdNaHFBS2RYcXRSdDR6cEc4b2trUFFpYVZtLTJVMGRldnhHZkFRR05pMmZHT1dfY3hyTjE1UENYV1BpRUlKcWtlSFY2WWl0NFV4NVlVb28?oc=5",
-   "date": "2026-10-03T19:00:00.000Z",
-   "source": "Guitar World",
-   "domain": "guitarworld.com",
-   "seen": "2026-10-04T04:59:26.116Z"
-  },
-  {
-   "id": "billboard-3m8ksc",
-   "title": "‘JAŸ-Z in 8’: 8 Things We Learned From Episodes 5 & 6",
-   "url": "https://www.billboard.com/lists/jay-z-in-8-review-episodes-five-six-rick-rubin-hbo-max/",
-   "date": "2026-10-03T18:58:53.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com",
-   "image": "https://www.billboard.com/wp-content/uploads/2026/09/jay-z-rick-rubin-2026-billboard-1800.jpg?w=237&h=147&crop=1",
-   "summary": "The final two episodes will premiere on HBO Max on Friday, Oct. 9.",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "music-1boge8s",
-   "title": "PinkPantheress Is Building a Pop Empire",
-   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNVERVU21ZUGd2dWZOVG9yLTlobWJpcG42ajI3WTJwUW4yVEFWbXFHX19hVFdBcEtzRXA0WVVfY09KX0N1UzVETmdkYkt5OEY5QVBDWk5jT2VUMFpCcmtCamgyZEtvNk5lNnFOVUFJNVhyZk1aellQUzNWaEVUY0RBckJuRFA5VS11cXVOOGpyVl9JMmRnZmJqOFlLcGlzaUlZejVqckJ0bFA1QnEzdVRsdmtNN19mMkZ1a1E?oc=5",
-   "date": "2026-10-03T18:39:09.000Z",
-   "source": "Rolling Stone",
-   "domain": "rollingstone.com",
-   "seen": "2026-10-04T04:59:26.116Z"
-  },
-  {
-   "id": "music-17nkln9",
-   "title": "See AOC, Bernie Sanders Introduce the Strokes at Queens Concert",
-   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQOUNJWWQxcGpFNnJfY084Zl9ibEF2WkNsOFhtRlROTW5WWlhBbXEwRVQ4SlBlLThKNHYwY3had1hxa09SWGp1ZlM3YWJ4TW8zOFVBYkFJUXNuZXdJWWZtaEpEbjlMenJ4LVFaSUFQczNxYnVrbkVETUlvUDFCbHptWGRQVkJiSngwQ0ZvNlhkWXN2TlpJaWN1UWpoZEZZZm5hdEc5Y1EwV3VHOExadGhaa2oxUQ?oc=5",
-   "date": "2026-10-03T18:15:49.000Z",
-   "source": "Rolling Stone",
-   "domain": "rollingstone.com",
-   "seen": "2026-10-04T04:59:26.116Z"
-  },
-  {
-   "id": "music-1wptjjk",
-   "title": "Test your Eddie Van Halen knowledge with our quiz",
-   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9QT3dYV3YxUVo5LTJ0QjJWVkRnWkVseVl2cEVfS0tDbklSRXczRXhHTGNKcTZSOEV4X2J5cjlSU2c4NjBDdnJaSllsa2RtOHZlTjdtWU1oaWZPQTkyaXJEbWpEVDVyN2xJbUdoeEtJb3NRSnNxWEE?oc=5",
-   "date": "2026-10-03T18:00:00.000Z",
-   "source": "Guitar World",
-   "domain": "guitarworld.com",
-   "seen": "2026-10-04T04:59:26.116Z"
-  },
-  {
-   "id": "billboard-8hfoqs",
-   "title": "Taylor Swift Takes Fans Inside the Making of ‘Patient Zero’ in New ‘Expanded Video’",
-   "url": "https://www.billboard.com/music/music-news/taylor-swift-patient-zero-expanded-video-making-of-1236353805/",
-   "date": "2026-10-03T17:47:37.000Z",
-   "source": "Billboard",
-   "domain": "billboard.com",
-   "image": "https://www.billboard.com/wp-content/uploads/2025/08/05-taylor-swift-life-of-a-showgirl-pr-billboard-1800.jpg?w=237&h=147&crop=1",
-   "summary": "The clip finds the pop star breaking down her creative approach and sharing funny moments alongside stars Dakota Johnson and Colin Farrell.",
-   "seen": "2026-10-03T20:46:08.400Z"
-  },
-  {
-   "id": "music-kro86p",
-   "title": "Mike Patton Performs With Mariachi Gama 1000 For Mondo Cane’s Mexico Debut",
-   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPb05iajZ4aU5oc2NrWUd3dE91Q21RUW1kZVpQaF8wZDdUYzlxNHg0MmFrVzdOb09kc3dtakVqVFpwX3Flek9uY0JsYi02TTYzeWhUdjZ6d2EwMDFBb08yMTl2bmN5aklJNXYtai05bUxUdUg2M3BqY1dqT0Q4MXpGclFSQkFyT2x5enRmZEpBbk1lQ2ptTzZON0d5bHhIUjR5T1RYRDY4OXpwaFRI?oc=5",
-   "date": "2026-10-03T15:39:00.000Z",
-   "source": "Stereogum",
-   "domain": "stereogum.com",
-   "seen": "2026-10-04T04:59:26.116Z"
-  },
-  {
-   "id": "music-13u7zy1",
-   "title": "Music – Page 2898",
-   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPalhld3czVUJlVS1nNGpyS1RsMk5TRGpyUm5PVUtzeDJsR3lQRnN0V1lkSGV2X1JTcEZseUNDcG9oQ2ZQLVd1RDRIcjRWTkd5ZExsV1JaaUZQZFpRV2g1N3hybXZxd19NdTVmeWRUUlFnQ3NIS1M1TEoydWxDTHBvME5xTEpjOHFtd3d5bkM3T25qSUFxamRZdVdYWDRHQWZ1NlcyRGhqQQ?oc=5",
-   "date": "2026-10-03T15:17:31.000Z",
-   "source": "Rolling Stone",
-   "domain": "rollingstone.com",
-   "seen": "2026-10-04T19:20:28.894Z"
   }
  ],
  "reddit": [
   {
-   "id": "rd-1segkxg",
-   "title": "need a scientist to explain to me why this tiny paw has the same weight as a truck :/",
-   "url": "https://www.reddit.com/r/cats/comments/1wxjott/need_a_scientist_to_explain_to_me_why_this_tiny/",
-   "date": "2026-10-04T16:21:19.000Z",
-   "source": "r/cats",
+   "id": "rd-1el0eq5",
+   "title": "Filipino Model Uses Money Made On OF To Build School In Her Hometown",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wxxvsm/filipino_model_uses_money_made_on_of_to_build/",
+   "date": "2026-10-05T03:01:17.000Z",
+   "source": "r/SipsTea",
    "from": "popular",
-   "image": "https://preview.redd.it/gj950e3p7hth1.jpeg?width=640&crop=smart&auto=webp&s=79feb0e5e26cf9544d01817cd2e9db2f9cc1814e",
-   "seen": "2026-10-04T22:26:39.702Z"
-  },
-  {
-   "id": "rd-md9ysb",
-   "title": "This guy got people from around the world to teach him their favourite dance moves. Credit: Ed People",
-   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wxcut8/this_guy_got_people_from_around_the_world_to/",
-   "date": "2026-10-04T10:55:12.000Z",
-   "source": "r/MadeMeSmile",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/anZuYjc3dmhsZnRoMSjV9ZzGoiclqcLwo6W3zJostHcKzUBnbKed6xTVYJfQ.png?width=640&crop=smart&auto=webp&s=7a6d2cd6dd9ea8287225ed9fc4c071b7fa7aa293",
-   "seen": "2026-10-04T19:20:28.894Z"
+   "image": "https://preview.redd.it/5ss823acdkth1.jpeg?width=640&crop=smart&auto=webp&s=f172a6be482d77049f56637d4e5d4a5ff4703848",
+   "seen": "2026-10-05T07:31:27.526Z"
   },
   {
    "id": "rd-i1qxv9",
@@ -7500,34 +7584,24 @@
    "seen": "2026-10-04T22:26:39.702Z"
   },
   {
-   "id": "rd-lp4xw4",
-   "title": "Monkey Smells a Century Egg.",
-   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wxiqcf/monkey_smells_a_century_egg/",
-   "date": "2026-10-04T15:41:31.000Z",
+   "id": "rd-a2rc0u",
+   "title": "This is the moment captured when former high school football star breaks down in court as rape charge is dismissed after the 16-year-old accuser admits it never happened, following six years in prison.",
+   "url": "https://www.reddit.com/r/interesting/comments/1wxvfr1/this_is_the_moment_captured_when_former_high/",
+   "date": "2026-10-05T00:54:42.000Z",
+   "source": "r/interesting",
+   "from": "popular",
+   "image": "https://preview.redd.it/09qo0acarjth1.jpeg?width=640&crop=smart&auto=webp&s=8e7fad37d1d28336f00c0383eaa1bcd37990f47d",
+   "seen": "2026-10-05T07:31:27.526Z"
+  },
+  {
+   "id": "rd-9faout",
+   "title": "The tree perfectly fitting into the sunset.",
+   "url": "https://www.reddit.com/r/interestingasfuck/comments/1wy0abt/the_tree_perfectly_fitting_into_the_sunset/",
+   "date": "2026-10-05T05:17:18.000Z",
    "source": "r/interestingasfuck",
    "from": "popular",
-   "image": "https://external-preview.redd.it/b2xrOHRoZ2owaHRoMesOCSXSnIRQYeYJ4GOVKjD3P7t6uNfB66F5lRIzKVHD.png?width=320&crop=smart&auto=webp&s=5def9098a06a23e2b155fe03e186fd16026a53b3",
-   "seen": "2026-10-04T22:26:39.702Z"
-  },
-  {
-   "id": "rd-1qd2pas",
-   "title": "This wierd hole cloud i sawed this morning",
-   "url": "https://www.reddit.com/r/mildlyinteresting/comments/1wxeqat/this_wierd_hole_cloud_i_sawed_this_morning/",
-   "date": "2026-10-04T12:39:50.000Z",
-   "source": "r/mildlyinteresting",
-   "from": "popular",
-   "image": "https://preview.redd.it/fmb0lb344gth1.jpeg?width=640&crop=smart&auto=webp&s=d478383acebe5eddb77d67fbacb526d67d6d17d6",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-c53axm",
-   "title": "True application of techniques",
-   "url": "https://www.reddit.com/r/funny/comments/1wxje2v/true_application_of_techniques/",
-   "date": "2026-10-04T16:08:54.000Z",
-   "source": "r/funny",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/Y2J5eXNxdGY1aHRoMRhUlIHs_ieJqX8vwcFVcX0WYAzeqWToeRumVYeyyPCj.png?width=640&crop=smart&auto=webp&s=a40bec68d5dad5317e97b0b2e84ae309d445fe49",
-   "seen": "2026-10-05T01:09:48.942Z"
+   "image": "https://preview.redd.it/n1g6y6152lth1.png?width=640&crop=smart&auto=webp&s=9e1004adaacc732d20fd3f77888df41ce905e676",
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
    "id": "rd-ulddyl",
@@ -7540,104 +7614,24 @@
    "seen": "2026-10-05T01:09:48.942Z"
   },
   {
-   "id": "rd-a2rc0u",
-   "title": "This is the moment captured when former high school football star breaks down in court as rape charge is dismissed after the 16-year-old accuser admits it never happened, following six years in prison.",
-   "url": "https://www.reddit.com/r/interesting/comments/1wxvfr1/this_is_the_moment_captured_when_former_high/",
-   "date": "2026-10-05T00:54:42.000Z",
+   "id": "rd-1x2dar3",
+   "title": "In 2024, the first emperor penguin ever found in Australia was discovered on a beach after somehow swimming over 2,200 miles from its home in Antarctica. \"Gus\" only weighed about 50 pounds, which is around half the weight of a healthy male emperor penguin.",
+   "url": "https://www.reddit.com/r/interesting/comments/1wxw6cr/in_2024_the_first_emperor_penguin_ever_found_in/",
+   "date": "2026-10-05T01:32:11.000Z",
    "source": "r/interesting",
    "from": "popular",
-   "image": "https://preview.redd.it/09qo0acarjth1.jpeg?width=640&crop=smart&auto=webp&s=8e7fad37d1d28336f00c0383eaa1bcd37990f47d",
-   "seen": "2026-10-05T07:31:27.526Z"
+   "image": "https://external-preview.redd.it/Zm4zZWhlOWp3anRoMR0e-Kss16_m1VS3Hc0VmCGt6Q_FwHn1fBSyJTkFUx_c.png?width=640&crop=smart&auto=webp&s=0e040113686bd8f74472d28e9e4a3b0e2062752e",
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
-   "id": "rd-1kwd27g",
-   "title": "Let's Chat",
-   "url": "https://www.reddit.com/r/comics/comments/1wxfiye/lets_chat/",
-   "date": "2026-10-04T13:19:33.000Z",
-   "source": "r/comics",
+   "id": "rd-qgmja6",
+   "title": "Just picked up my new foster cat…",
+   "url": "https://www.reddit.com/r/cats/comments/1wxwoc4/just_picked_up_my_new_foster_cat/",
+   "date": "2026-10-05T01:57:52.000Z",
+   "source": "r/cats",
    "from": "popular",
-   "image": "https://preview.redd.it/rtkm0uo7bgth1.png?width=140&height=140&crop=1:1,smart&auto=webp&s=d6293272f6f7e6525d4c4e6d28d67a63b1b1f1c4",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-18fyl04",
-   "title": "Wait seriously.",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wxd1u7/wait_seriously/",
-   "date": "2026-10-04T11:06:26.000Z",
-   "source": "r/SipsTea",
-   "from": "popular",
-   "image": "https://preview.redd.it/l8o54ylinfth1.jpeg?width=640&crop=smart&auto=webp&s=0dca3656197fe89ffca35948922b350f5160a569",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-1gp7kov",
-   "title": "Routers in Australia:",
-   "url": "https://www.reddit.com/r/pcmasterrace/comments/1wxfxc7/routers_in_australia/",
-   "date": "2026-10-04T13:38:41.000Z",
-   "source": "r/pcmasterrace",
-   "from": "popular",
-   "image": "https://preview.redd.it/naakghdoegth1.jpeg?width=640&crop=smart&auto=webp&s=f993efb0e2726cb6ef4aa9084e45ba76b9e67323",
-   "seen": "2026-10-04T22:26:39.702Z"
-  },
-  {
-   "id": "rd-tp0of1",
-   "title": "Fossil of friendship",
-   "url": "https://www.reddit.com/r/Damnthatsinteresting/comments/1wxe4wp/fossil_of_friendship/",
-   "date": "2026-10-04T12:08:12.000Z",
-   "source": "r/Damnthatsinteresting",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/eG5rMG43NGp5ZnRoMYuLCPBJvjzl3HJGLRf8FYhV2BE81xEah5kKMCQ37I4u.jpeg?width=320&crop=smart&auto=webp&s=864f6413777c8ef88ef033b0ea29417f0fa219bf",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-1jbp9k8",
-   "title": "Study of 2.5 million children finds no link between MMR vaccine and autism.",
-   "url": "https://www.reddit.com/r/science/comments/1wxemcr/study_of_25_million_children_finds_no_link/",
-   "date": "2026-10-04T12:34:02.000Z",
-   "source": "r/science",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/vZvKjFy1QaKGT-q0yymNxa0Ypu6x328rK2CTewcD5xg.jpeg?width=640&crop=smart&auto=webp&s=84714b098b60c847ab2cb260ffe80eba2df8fb28",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-1el0eq5",
-   "title": "Filipino Model Uses Money Made On OF To Build School In Her Hometown",
-   "url": "https://www.reddit.com/r/SipsTea/comments/1wxxvsm/filipino_model_uses_money_made_on_of_to_build/",
-   "date": "2026-10-05T03:01:17.000Z",
-   "source": "r/SipsTea",
-   "from": "popular",
-   "image": "https://preview.redd.it/5ss823acdkth1.jpeg?width=640&crop=smart&auto=webp&s=f172a6be482d77049f56637d4e5d4a5ff4703848",
-   "seen": "2026-10-05T07:31:27.526Z"
-  },
-  {
-   "id": "rd-xtgmf4",
-   "title": "Max reactions to fans chanting his national anthem before the actual national anthem",
-   "url": "https://www.reddit.com/r/formula1/comments/1wxfxds/max_reactions_to_fans_chanting_his_national/",
-   "date": "2026-10-04T13:38:44.000Z",
-   "source": "r/formula1",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/MjU4N2FzY29lZ3RoMaLRYtivemYDqTWyKwwjO1GuhK47i6NiOh7KLwHguMCk.jpeg?width=640&crop=smart&auto=webp&s=fb58c07e1049adba74a3630f52078f5e249f165b",
-   "seen": "2026-10-04T19:20:28.894Z"
-  },
-  {
-   "id": "rd-1647gtd",
-   "title": "Exactly this...",
-   "url": "https://www.reddit.com/r/PoursTea/comments/1wxjru1/exactly_this/",
-   "date": "2026-10-04T16:24:47.000Z",
-   "source": "r/PoursTea",
-   "from": "popular",
-   "image": "https://preview.redd.it/cbprf0cb8hth1.jpeg?width=640&crop=smart&auto=webp&s=c991f97ebdb040e4da9809ec5ce6cdda4931df6c",
-   "seen": "2026-10-05T01:09:48.942Z"
-  },
-  {
-   "id": "rd-1qki563",
-   "title": "She almost ruined a proposal.",
-   "url": "https://www.reddit.com/r/TikTokCringe/comments/1wxccpb/she_almost_ruined_a_proposal/",
-   "date": "2026-10-04T10:24:16.000Z",
-   "source": "r/TikTokCringe",
-   "from": "popular",
-   "image": "https://external-preview.redd.it/MWtmODRxc3lmZnRoMbr-iyiQei3LG44At3PM-I6_9JiO0txs_OvQc1LXp9LT.jpeg?width=320&crop=smart&auto=webp&s=89362bf7bdb3557a859073c487bae41635de2e2e",
-   "seen": "2026-10-04T22:26:39.702Z"
+   "image": "https://preview.redd.it/m9krwptj2kth1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=1484b4cdd41d95dad5eec11c38b1726eac34b9e8",
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
    "id": "rd-lxhfb2",
@@ -7650,64 +7644,164 @@
    "seen": "2026-10-05T07:31:27.526Z"
   },
   {
-   "id": "rd-1gtuvrn",
-   "title": "of a leatherback sea turtle near Oping Beach, Indonesia",
-   "url": "https://www.reddit.com/r/AbsoluteUnits/comments/1wxa1tr/of_a_leatherback_sea_turtle_near_oping_beach/",
-   "date": "2026-10-04T07:56:29.000Z",
-   "source": "r/AbsoluteUnits",
+   "id": "rd-dg73qn",
+   "title": "Friends",
+   "url": "https://www.reddit.com/r/HolUp/comments/1wy1qpw/friends/",
+   "date": "2026-10-05T06:49:22.000Z",
+   "source": "r/HolUp",
    "from": "popular",
-   "image": "https://external-preview.redd.it/enZoNzljaGNwZXRoMXuFhJIfBwAL_zQ_VAqCRnTwbCu1HcgeI_lp_K0i_VcB.png?width=640&crop=smart&auto=webp&s=c9f2b2ad92771c2ebbfe1e4697f3df634c699c3d",
-   "seen": "2026-10-05T01:09:48.942Z"
+   "image": "https://preview.redd.it/f596il9kilth1.jpeg?width=640&crop=smart&auto=webp&s=4a43fe2045d995641daad0a5a003ef7127ceff64",
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
-   "id": "rd-19ghcqo",
-   "title": "me_irl",
-   "url": "https://www.reddit.com/r/me_irl/comments/1wxibxd/me_irl/",
-   "date": "2026-10-04T15:24:42.000Z",
-   "source": "r/me_irl",
+   "id": "rd-1alxqmw",
+   "title": "A thick piece of plastic tarpaulin discarded by truck drivers on the roadside got tangled around the deer's head; a citizen who noticed the animal intervened and rescued it.",
+   "url": "https://www.reddit.com/r/interesting/comments/1wxnjh5/a_thick_piece_of_plastic_tarpaulin_discarded_by/",
+   "date": "2026-10-04T18:59:16.000Z",
+   "source": "r/interesting",
    "from": "popular",
-   "image": "https://preview.redd.it/43w75nrkxgth1.jpeg?width=640&crop=smart&auto=webp&s=200cd09f9a3ef67db0df351c0991be4f75d709ff",
-   "seen": "2026-10-05T07:31:27.526Z"
+   "image": "https://external-preview.redd.it/NzljNm12aXV6aHRoMUkvNRhXrSvPIeHi9lsAMhreRinMhz7w-Ok27sFVvHgH.jpeg?width=320&crop=smart&auto=webp&s=92e911a19a8b9b4cd76a09c7a6f34ae334364c31",
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
-   "id": "rd-2n97vi",
-   "title": "best moshpit worm seen in the metal scene",
-   "url": "https://www.reddit.com/r/nextfuckinglevel/comments/1wxfyuo/best_moshpit_worm_seen_in_the_metal_scene/",
-   "date": "2026-10-04T13:40:41.000Z",
-   "source": "r/nextfuckinglevel",
+   "id": "rd-rzb0gw",
+   "title": "5 hospitals have been closed for quarantines in Siberia due to a possible plague outbreak.",
+   "url": "https://www.reddit.com/r/worldnews/comments/1wxtfy0/5_hospitals_have_been_closed_for_quarantines_in/",
+   "date": "2026-10-04T23:15:40.000Z",
+   "source": "r/worldnews",
    "from": "popular",
-   "image": "https://external-preview.redd.it/cDV5dDV3bjBmZ3RoMagkxE6OGgeX63h7zuo216Zuq7QVGNfsMp3AMWaDpdC-.png?width=640&crop=smart&auto=webp&s=5a879885afd5ff486e68df86a9e5a3176d7d0c3b",
-   "seen": "2026-10-05T07:31:27.526Z"
+   "image": "https://external-preview.redd.it/60uV7d_CrPRCeNHitQQ_u0B-KxagVuoDW7ehzs61H8o.jpeg?width=640&crop=smart&auto=webp&s=9b888635bd2f13264a6eff81b4b7a765da9fe4b9",
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
-   "id": "rd-gdsq43",
-   "title": "True application of techniques",
-   "url": "https://www.reddit.com/r/MadeMeSmile/comments/1wxevgp/true_application_of_techniques/",
-   "date": "2026-10-04T12:47:08.000Z",
-   "source": "r/MadeMeSmile",
+   "id": "rd-cv0tdr",
+   "title": "TIL Metal Gear Solid 4 (2008) holds the world record for the longest cutscene in any video game, with a single continuous cutscene of 71 minutes and a total of over 8 hours of cutscenes",
+   "url": "https://www.reddit.com/r/todayilearned/comments/1wxwxmv/til_metal_gear_solid_4_2008_holds_the_world/",
+   "date": "2026-10-05T02:10:52.000Z",
+   "source": "r/todayilearned",
    "from": "popular",
-   "image": "https://external-preview.redd.it/N3hiczl1cGc1Z3RoMZSdqrc-Dv0xxA0ulfkrkvsmHT3fNHTdFZ_v_ztA5JBW.png?width=320&crop=smart&auto=webp&s=ddc3091414907e6d39de71662bf70db2b5e852d0",
-   "seen": "2026-10-05T07:31:27.526Z"
+   "image": null,
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
-   "id": "rd-14my28u",
-   "title": "Chuck D: This concert is not by Ed Sheeran’s promoters. Free Palestine, free Haiti, and please free a closed mind. Flavor Flav: And fuck Donald Trump!",
-   "url": "https://www.reddit.com/r/popculturechat/comments/1wxbe9k/chuck_d_this_concert_is_not_by_ed_sheerans/",
-   "date": "2026-10-04T09:22:54.000Z",
-   "source": "r/popculturechat",
+   "id": "rd-12gpw9d",
+   "title": "When people get their facial hair removed and end up looking totally ridiculous afterwards",
+   "url": "https://www.reddit.com/r/lovethissmug/comments/1wxkrjw/when_people_get_their_facial_hair_removed_and_end/",
+   "date": "2026-10-04T17:05:47.000Z",
+   "source": "r/lovethissmug",
    "from": "popular",
-   "image": "https://external-preview.redd.it/cWJ3bHdyYno0ZnRoMfPxGD4VkaYPp1RXyCDbAYl-WdOOOc5keSXzSDc65J8Y.png?width=640&crop=smart&auto=webp&s=6aedb3edbf744bab27d095c0713315124acf31ba",
-   "seen": "2026-10-05T01:09:48.942Z"
+   "image": "https://preview.redd.it/hdw0mammfhth1.jpeg?width=640&crop=smart&auto=webp&s=7deb727dc01e968a136d1e2e86b2fd091390e095",
+   "seen": "2026-10-05T16:56:08.531Z"
   },
   {
-   "id": "rd-1ofmebr",
-   "title": "Congratulations to Lance Stroll for Completing his 1st Full Race This Year",
-   "url": "https://www.reddit.com/r/formula1/comments/1wxchb3/congratulations_to_lance_stroll_for_completing/",
-   "date": "2026-10-04T10:31:58.000Z",
-   "source": "r/formula1",
+   "id": "rd-1iotlrq",
+   "title": "Facts 💯",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wxkuyx/facts/",
+   "date": "2026-10-04T17:09:40.000Z",
+   "source": "r/SipsTea",
    "from": "popular",
-   "image": "https://preview.redd.it/ul9fk6adhfth1.jpeg?width=640&crop=smart&auto=webp&s=815f458a2e0040c3efe79ff2197638d969d3c6d4",
-   "seen": "2026-10-05T01:09:48.942Z"
+   "image": "https://preview.redd.it/uganc9y7ghth1.png?width=640&crop=smart&auto=webp&s=53662a1d2b4d03c552a45488c9de10c8ec0d7652",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-1q185rw",
+   "title": "Desperately wanting a big sibling snuggle 🥹",
+   "url": "https://www.reddit.com/r/Awww/comments/1wxtqrn/desperately_wanting_a_big_sibling_snuggle/",
+   "date": "2026-10-04T23:30:32.000Z",
+   "source": "r/Awww",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/dHoyb2JjbjljanRoMVeXiSzMdY4YqegYisi7dP7g0O6615d6TK8-LaD9JENe.jpeg?width=640&crop=smart&auto=webp&s=a84ca6e8194b84e3e55f65a22efb3d5598ab50c1",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-1j20f3",
+   "title": "For Dungeon Crafters",
+   "url": "https://www.reddit.com/r/dndmemes/comments/1wxmqtj/for_dungeon_crafters/",
+   "date": "2026-10-04T18:27:04.000Z",
+   "source": "r/dndmemes",
+   "from": "popular",
+   "image": "https://preview.redd.it/acm6oku4uhth1.jpeg?width=640&crop=smart&auto=webp&s=4b40e10910d2a0a3eeb73abb70e36903ef51bf21",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-1nac2uu",
+   "title": "People who stand this close to the bag claim",
+   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1wxyyw4/people_who_stand_this_close_to_the_bag_claim/",
+   "date": "2026-10-05T04:01:27.000Z",
+   "source": "r/mildlyinfuriating",
+   "from": "popular",
+   "image": "https://preview.redd.it/5sk9votlokth1.jpeg?width=640&crop=smart&auto=webp&s=7e6894e67fcb20d986e9b656feb2608fd7cc2dc4",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-lcgc9y",
+   "title": "Women humbling weak men is my fav genre",
+   "url": "https://www.reddit.com/r/justgalsbeingchicks/comments/1wxun64/women_humbling_weak_men_is_my_fav_genre/",
+   "date": "2026-10-05T00:14:28.000Z",
+   "source": "r/justgalsbeingchicks",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/ZTAyemd3cDNranRoMfMFdr7VP9rrDdHhLa7ZN5qxQH8FUGnes7hxpDj8QRQM.png?width=320&crop=smart&auto=webp&s=175b8453990fa476fdf422fc81bb1bd4413deb3e",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-svnhkc",
+   "title": "Wait a minute",
+   "url": "https://www.reddit.com/r/SipsTea/comments/1wy5axb/wait_a_minute/",
+   "date": "2026-10-05T10:42:31.000Z",
+   "source": "r/SipsTea",
+   "from": "popular",
+   "image": "https://preview.redd.it/ru3rcvr5omth1.jpeg?width=640&crop=smart&auto=webp&s=efa9f1760ac3102a4dfdccecd2d8a8678039b98a",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-1cw6quh",
+   "title": "Thought this was hilarious lol some people are just insane",
+   "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1wxuspz/thought_this_was_hilarious_lol_some_people_are/",
+   "date": "2026-10-05T00:22:08.000Z",
+   "source": "r/mildlyinfuriating",
+   "from": "popular",
+   "image": "https://preview.redd.it/f8jjzs7hljth1.jpg?width=140&height=140&crop=1:1,smart&auto=webp&s=d20bacd7279e7f2a26bb8573635b6f0381c4771b",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-1qae5ya",
+   "title": "TIL The Celtic custom of \"handfasting\" allowed couples to enter into a trial marriage lasting one year and a day. If the relationship didn't work out, the couple could separate without any further attachment. Successful couples would marry.",
+   "url": "https://www.reddit.com/r/todayilearned/comments/1wxsnzv/til_the_celtic_custom_of_handfasting_allowed/",
+   "date": "2026-10-04T22:37:48.000Z",
+   "source": "r/todayilearned",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/h7nzb0P2tC5jCtYINO6_IU-iFK_tBJEIWbl6wTX1CDM.jpeg?width=640&crop=smart&auto=webp&s=479ba455c81355c9e5b7b52b4aa0e59d6aecd735",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-1q7e5uq",
+   "title": "Toy Libraries help reduce consumption and increase kids' quality of life.",
+   "url": "https://www.reddit.com/r/Anticonsumption/comments/1wxp9ws/toy_libraries_help_reduce_consumption_and/",
+   "date": "2026-10-04T20:10:09.000Z",
+   "source": "r/Anticonsumption",
+   "from": "popular",
+   "image": "https://preview.redd.it/m72n4lkubith1.jpeg?width=320&crop=smart&auto=webp&s=94314117430c2e4a14385a284c3463db2a61e2da",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-1l9ffl5",
+   "title": "TRUMP IS OFFICIALLY THE MOST UNPOPULER",
+   "url": "https://www.reddit.com/r/DangerousNightsCrew/comments/1wxno6i/trump_is_officially_the_most_unpopuler/",
+   "date": "2026-10-04T19:04:16.000Z",
+   "source": "r/DangerousNightsCrew",
+   "from": "popular",
+   "image": "https://preview.redd.it/amm0gtjj0ith1.jpeg?width=320&crop=smart&auto=webp&s=6b78b2ab82bf5ee1445b6c74acdeced7d2f17132",
+   "seen": "2026-10-05T16:56:08.531Z"
+  },
+  {
+   "id": "rd-zaej9e",
+   "title": "Google Is Accused of Destroying Nearly 500 Football Fields of Forest for New Data Center Project",
+   "url": "https://www.reddit.com/r/technology/comments/1wxn3gg/google_is_accused_of_destroying_nearly_500/",
+   "date": "2026-10-04T18:41:17.000Z",
+   "source": "r/technology",
+   "from": "popular",
+   "image": "https://external-preview.redd.it/34nsa4C1D8FeQbJi8_nooUZHFsLzht0pRhoVxNCrR6E.jpeg?width=640&crop=smart&auto=webp&s=cd17320fc73767c97a26747790b70094a7aaabea",
+   "seen": "2026-10-05T16:56:08.531Z"
   }
  ]
 }
