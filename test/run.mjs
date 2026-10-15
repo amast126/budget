@@ -22,6 +22,7 @@ import { steamUnit } from './steam-unit.mjs';
 import { healthSyncUnit, makeSyncText } from './healthsync-unit.mjs';
 import { learningUnit } from './learning-unit.mjs';
 import { autoUnit } from './auto-unit.mjs';
+import { planningUnit } from './planning-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -234,6 +235,7 @@ await steamUnit(check);
 await healthSyncUnit(check);
 await learningUnit(check);
 await autoUnit(check);
+await planningUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -258,7 +260,7 @@ check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news
   await page.click('.menu-btn');
   await page.waitForSelector('.nav.open');
   const items = await page.$$eval('.nav.open .nav-item', (els) => els.map((e) => e.innerText.trim()));
-  check(items.join('|') === 'Home|News|Budget|Health|Entertainment|Learning|Cooking|Auto|Settings' && (await page.getAttribute('.menu-btn', 'aria-expanded')) === 'true' && /Home/.test(await page.innerText('.nav .nav-item.active')), `the sidebar lists every tab: ${items.join(', ')}`);
+  check(items.join('|') === 'Home|News|Budget|Planning|Health|Entertainment|Learning|Cooking|Auto|Settings' && (await page.getAttribute('.menu-btn', 'aria-expanded')) === 'true' && /Home/.test(await page.innerText('.nav .nav-item.active')), `the sidebar lists every tab: ${items.join(', ')}`);
   await page.screenshot({ path: path.join(OUT, 'phone-sidebar.png') });
   await page.click('.nav-scrim', { position: { x: 360, y: 400 } });
   await page.waitForTimeout(450);
@@ -2793,8 +2795,70 @@ await dp.click('.todo-row:has-text("Water the plants") input[type=checkbox]');
 check((await dp.$$('canvas.confetti')).length === 1, 'finishing a to-do sets off confetti');
 await dp.waitForTimeout(1600);
 check((await dp.$$('canvas.confetti')).length === 0, 'confetti cleans itself up');
+// ---------------------------------------------------------------- Planning (made-up house, wedding and vendor)
+{
+  const pp = await desk.newPage();
+  const perrs = [];
+  pp.on('pageerror', (e) => perrs.push(e.message));
+  await pp.goto(`${base}#/planning`, { waitUntil: 'networkidle' });
+  await pp.waitForSelector('.pl-hero');
+  await pp.waitForTimeout(500);
+  const plan = () => pp.evaluate(() => JSON.parse(localStorage.getItem('mod:planning') || 'null'));
+  const ht = await pp.innerText('.pl-hero');
+  check(/Wedding/i.test(ht) && /House · Suffolk/i.test(ht) && /\$700,000/.test(ht) && /Pick a wedding date/.test(ht), 'Planning starts from Suffolk’s median price and asks for dates');
+  const now = new Date();
+  const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const wedDay = ymd(new Date(now.getFullYear() + 1, now.getMonth(), 12));
+  const buyKey = ymd(new Date(now.getFullYear() + 2, now.getMonth(), 1)).slice(0, 7);
+  await pp.fill('.pl-when input[aria-label="Wedding date"]', wedDay);
+  await pp.waitForTimeout(250);
+  await pp.fill('.pl-when input[aria-label="Month to buy"]', buyKey);
+  await pp.waitForTimeout(350);
+  let pl = await plan();
+  check(pl && pl.wedding.date === wedDay && pl.house.buyMonth === buyKey, `set the wedding date (${wedDay}) and the month to buy (${buyKey})`);
+  const vt = await pp.innerText('.pl-verdict');
+  check(/The cash fits|Short by/.test(vt) && !!(await pp.$('.pl-chart svg path.pl-ln.after')) && (await pp.$$('.pl-outs > li')).length >= 2, `the verdict, the chart and what comes out (${vt.split('.')[0]})`);
+  await pp.click('.page-tabs .seg-btn:has-text("House")');
+  await pp.waitForSelector('.pf input[aria-label="Price"]');
+  await pp.fill('.pf input[aria-label="Price"]', '650000');
+  await pp.press('.pf input[aria-label="Price"]', 'Enter');
+  await pp.waitForTimeout(300);
+  pl = await plan();
+  check(pl.house.price === 650000 && /\$650,000/.test(await pp.innerText('.pl-hero')), 'change the price');
+  await pp.selectOption('select[aria-label="Typical project"]', { index: 1 });
+  await pp.click('.pl-form button:has-text("Add")');
+  await pp.waitForTimeout(300);
+  pl = await plan();
+  check(pl.house.renos.length === 1 && pl.house.renos[0].cost === 28500 && /Renovations right away \(1\)/.test(await pp.innerText('.planning')), 'add a typical renovation; it counts in the cash to buy');
+  const hp = await pp.innerText('.planning');
+  check(/Closing costs/.test(hp) && /Property tax/.test(hp) && /Your half/i.test(hp) && /Most you could take on/i.test(hp), 'monthly cost, cash to buy with closing costs, and how much house');
+  await pp.click('.page-tabs .seg-btn:has-text("Wedding")');
+  await pp.waitForSelector('input[aria-label="Vendor name"]');
+  await pp.fill('input[aria-label="Vendor name"]', 'Test Hall');
+  await pp.fill('input[aria-label="Contract total"]', '30000');
+  await pp.click('button:has-text("Add vendor")');
+  await pp.waitForTimeout(300);
+  await pp.fill('input[aria-label="Payment due"]', ymd(new Date(now.getFullYear(), now.getMonth() + 1, 1)));
+  await pp.fill('input[aria-label="Payment amount"]', '4000');
+  await pp.fill('input[aria-label="Payment note"]', 'Deposit');
+  await pp.click('button:has-text("Add payment")');
+  await pp.waitForTimeout(300);
+  pl = await plan();
+  const v = pl.wedding.vendors[0];
+  check(v && v.name === 'Test Hall' && v.total === 30000 && v.payments.length === 1 && v.payments[0].amount === 4000 && /Booked/.test(await pp.innerText('.pl-cats')), 'book a vendor and add its deposit; the venue estimate becomes the contract');
+  await pp.click('input[aria-label="Mark Test Hall $4,000 paid"]');
+  await pp.waitForTimeout(300);
+  pl = await plan();
+  check(pl.wedding.vendors[0].payments[0].paid === true && /\$4,000 paid/.test(await pp.innerText('.pl-hero')), 'mark the deposit paid');
+  await pp.screenshot({ path: path.join(OUT, 'planning-wedding.png'), fullPage: true });
+  await pp.click('.page-tabs .seg-btn:has-text("The plan")');
+  await pp.waitForTimeout(200);
+  check(!/Test Hall: Deposit/.test(await pp.innerText('.pl-outs')) && /Rest of the wedding/.test(await pp.innerText('.pl-outs')), 'a paid deposit leaves the schedule; the rest lands in the wedding month');
+  check(!perrs.length, `no errors on Planning${perrs.length ? ': ' + perrs.join(' | ') : ''}`);
+  await pp.close();
+}
 // every tab opened directly from a fresh load (data arrives after the first render)
-for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.page-title'], ['auto', '.cluster'], ['news', '.news-body']]) {
+for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.page-title'], ['auto', '.cluster'], ['news', '.news-body'], ['planning', '.pl-hero']]) {
   const tp = await desk.newPage();
   const errs = [];
   tp.on('pageerror', (e) => errs.push(e.message));
@@ -2969,7 +3033,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   const names = Object.keys(docs).sort().join(',');
   const y = String(new Date().getFullYear());
   check(b.historyVersion === 2 && b.configVersion === 28 && b.config.categories.length === 11 && Object.keys(b.months).length >= 8, `demo budget: ${Object.keys(b.months).length} months, current versions (so the budget module adds nothing of its own)`);
-  check(['home', 'auto', 'learning', 'cooking', 'health', `health-${y}`, 'health-hk', `health-hk-${y}`, 'health-hk-ecg', 'health-hk-routes', 'fun', 'guitar', 'sourdough', 'birthdays', 'recipebox'].every((n) => docs[n]), `demo documents: ${names}`);
+  check(['home', 'auto', 'learning', 'cooking', 'health', `health-${y}`, 'health-hk', `health-hk-${y}`, 'health-hk-ecg', 'health-hk-routes', 'fun', 'guitar', 'sourdough', 'birthdays', 'recipebox', 'planning'].every((n) => docs[n]), `demo documents: ${names}`);
   check(docs.fun.releases.every((r) => !/GTA|Grand Theft|Modern Warfare/i.test(r.title)) && !docs.fun.playing.some((g) => /Black Ops|Teamfight|Pokémon/i.test(g.title)) && docs.guitar.sessions.length > 20 && docs.sourdough.starter.feeds.length && docs.birthdays.people.length >= 5, 'demo person has their own games, guitar practice, starter and birthdays');
   check(docs.home.place.name === 'Seattle, WA' && docs.auto.car.make === 'Tesla' && docs.auto.state === 'WA' && docs.health.profile.sex === 'female' && docs['health-hk'].workouts.length > 100, 'demo person: Seattle, a Tesla, a year of Apple Health');
   const takeHome = b.config.incomes.reduce((a, i) => a + i.biweekly, 0) * 26;
@@ -3024,7 +3088,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(300);
   const spentAfter = await tp.innerText('.money .muted.small.num');
   check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
-  for (const [route, sel] of [['budget', '.bud-summary'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.rb-grid'], ['cooking?r=demo-miso-salmon', '.rp-title'], ['auto', '.cluster'], ['news', '.news-body'], ['fun', '.doom-zone'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
+  for (const [route, sel] of [['budget', '.bud-summary'], ['planning', '.pl-hero'], ['planning?wedding', '.pl-vendors'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.rb-grid'], ['cooking?r=demo-miso-salmon', '.rp-title'], ['auto', '.cluster'], ['news', '.news-body'], ['fun', '.doom-zone'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
     await tp.goto(`${base}?demo#/${route}`);
     await tp.waitForSelector(sel, { timeout: 8000 }).catch(() => {});
     check(!!(await tp.$(sel)) && !!(await tp.$('.demo-bar')), `demo #/${route} renders`);
