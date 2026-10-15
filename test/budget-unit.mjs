@@ -108,12 +108,63 @@ export async function budgetUnit(check) {
   const pv = I.paycheckView(d, today);
   check(pv.start === today && pv.income === 2000 && pv.savings === 200 && pv.upcoming.length === 6 && pv.bills.some((b) => b.bill.id === 'tmr'), `paycheck view: from ${pv.start}, ${pv.bills.length} bills, ${Math.round(pv.spendable)} to spend`);
   const ms = I.milestones(d, today);
-  check(ms.some((m) => m.kind === 'bill' && /Laptop/.test(m.title) && m.frees === 100) && ms.some((m) => m.kind === 'savings' && /400/.test(m.title)) && !ms.some((m) => /TV Plus/.test(m.title)), 'milestones: an installment ending, a savings step, and a new rate isn’t an ending');
+  check(ms.some((m) => m.kind === 'bill' && /Laptop/.test(m.title) && m.frees === 100) && ms.some((m) => m.kind === 'savings' && /400/.test(m.title)) && !ms.some((m) => m.kind === 'bill' && /TV Plus/.test(m.title)), 'milestones: an installment ending, a savings step, and a new rate isn’t an ending');
+  const tvm = ms.find((m) => m.kind === 'rate');
+  check(tvm && tvm.title === 'TV Plus down to $8' && tvm.frees === 7 && tvm.key === C.nextMonth(cur), `a new rate is its own milestone (${tvm && tvm.title})`);
   const nw = I.netWorth(d, { today });
   check(Math.abs(nw.stocks - 700) < 0.01 && nw.savings >= 5000 && nw.card >= 300, `net worth parts: savings ${Math.round(nw.savings)}, stocks ${nw.stocks}, card ${Math.round(nw.card)}`);
   const d3 = JSON.parse(JSON.stringify(d));
   I.recordNetWorth(d3, nw, today);
   check(d3.netWorth[cur].at === today && d3.netWorth[cur].total === C.round2(nw.total), 'a net worth reading is kept per month');
+
+  // a price change from a month on
+  {
+    const r = JSON.parse(JSON.stringify(d));
+    const from = C.addMonths(cur, 2);
+    r.months[from] = { ...C.emptyMonth(), paid: { rent: true }, amounts: { rent: 1010 } };
+    const nb = C.changeBillRate(r, 'rent', 1150, from, 'rent-2');
+    const old = r.config.bills.find((b) => b.id === 'rent');
+    check(nb && nb.id === 'rent-2' && nb.amount === 1150 && nb.starts === from && nb.ends === '' && old.ends === C.prevMonth(from) && old.amount === 1000 && r.config.bills.indexOf(nb) === r.config.bills.indexOf(old) + 1, 'price change: the old amount ends the month before, a copy starts at the new one');
+    check(r.months[from].paid['rent-2'] === true && r.months[from].amounts['rent-2'] === 1010 && r.months[from].paid.rent === undefined && r.months[cur].paid.rent === d.months[cur].paid.rent, 'ticks and one-month amounts from that month move to the new bill; earlier months stay');
+    check(C.activeBills(r.config, cur).find((b) => /Rent/.test(b.name)).amount === 1000 && C.activeBills(r.config, from).filter((b) => /Rent/.test(b.name)).map((b) => b.amount).join() === '1150', 'each month charges one rent at its own amount');
+    const rm = I.milestones(r, today).find((m) => m.kind === 'rate' && /Rent/.test(m.title));
+    check(rm && rm.title === 'Rent up to $1,150' && rm.frees === -150 && rm.key === from && !I.milestones(r, today).some((m) => m.kind === 'bill' && /Rent/.test(m.title)), `a rise is a milestone that costs more each month (${rm && rm.title})`);
+    check(C.changeBillRate(r, 'rent', 1200, from) === null && C.changeBillRate(r, 'rent', 1200, '2030') === null, 'can’t change a bill from after it ends, or from a bad month');
+    check(C.changeBillRate(r, 'rent-2', 1175, C.addMonths(from, -1)) && r.config.bills.find((b) => b.id === 'rent-2').amount === 1175 && r.config.bills.filter((b) => /^Rent/.test(b.name)).length === 2, 'a bill that starts later just takes the new amount');
+    const gone = C.changeBillRate(r, 'lap', 120, C.nextMonth(cur), 'lap-2');
+    check(gone && gone.ends === C.addMonths(cur, 4), 'a bill with an end month keeps it after the change');
+  }
+
+  // planned deposits
+  {
+    const p = JSON.parse(JSON.stringify(d));
+    const at = new Date(`${today}T12:00:00`);
+    const base = C.projectSavings(p, 6, at);
+    const k3 = C.addMonths(cur, 3);
+    C.addPlanned(p, { id: 'pl1', month: k3, amount: 50000, note: 'Test windfall' });
+    const pr = C.projectSavings(p, 6, at);
+    const before = pr.find((x) => x.key === C.prevMonth(k3)).balance;
+    const after = pr.find((x) => x.key === k3);
+    check(Math.abs(before - base.find((x) => x.key === C.prevMonth(k3)).balance) < 0.01 && after.lump === 50000 && after.balance - base.find((x) => x.key === k3).balance > 50000, `a planned deposit lands in its month in the projection (+${Math.round(after.balance - base.find((x) => x.key === k3).balance)})`);
+    check(Math.abs(C.savingsBalance(p) - C.savingsBalance(d)) < 0.01, 'but isn’t in the balance until it lands');
+    const pm = I.milestones(p, today).find((m) => m.kind === 'deposit');
+    check(pm && pm.key === k3 && pm.title === 'Test windfall: $50,000 into savings' && /Savings about \$[\d,]+ after/.test(pm.detail), `planned deposit milestone (${pm && pm.detail})`);
+    C.addPlanned(p, { id: 'pl2', month: C.prevMonth(cur), amount: 300000, note: '' });
+    const late = I.milestones(p, today).find((m) => m.kind === 'deposit' && m.key === cur);
+    check(late && /Log it on the Savings page/.test(late.detail) && /FDIC/.test(late.detail) && C.projectSavings(p, 1, at)[0].lump === 300000, 'one that’s due but not logged sits on this month, and a balance past $250,000 mentions the FDIC limit');
+    check(C.plannedDue(p.savings, cur).map((x) => x.id).join() === 'pl2', 'due: the overdue one only');
+    const al2 = I.computeAlerts(p, today, {}, {}).filter((a) => a.key.startsWith('planned:'));
+    check(al2.length === 1 && al2[0].key === `planned:pl2:${cur}` && /\$300,000 into savings \(planned for /.test(al2[0].title) && I.computeAlerts(p, today, { planned: false }, {}).every((a) => !a.key.startsWith('planned:')), `planned alert: ${al2[0] && al2[0].title}`);
+    p.savings.asOf = today;
+    const e1 = C.landPlanned(p, 'pl2', C.addDays(today, -3), 'e1');
+    check(e1 && e1.type === 'adhoc' && e1.amount === 300000 && e1.absorbed === true && !p.savings.planned.some((x) => x.id === 'pl2'), 'landed before the balance snapshot: logged and already inside it');
+    const e2 = C.landPlanned(p, 'pl1', today, 'e2');
+    check(e2 && e2.absorbed === false && e2.note === 'Test windfall' && Math.abs(C.savingsBalance(p) - C.savingsBalance(d) - 50000) < 0.01 && p.savings.planned.length === 0, 'landed on the snapshot day or later: adds to the balance');
+    C.addPlanned(p, { id: 'pl3', month: k3, amount: -2500, note: 'Test trip' });
+    check(I.milestones(p, today).some((m) => m.kind === 'deposit' && m.title === 'Test trip: $2,500 out of savings') && C.landPlanned(p, 'pl3', today, 'e3').type === 'withdrawal', 'a planned withdrawal');
+    const n = C.normalizeBudget(JSON.parse(JSON.stringify({ ...p, savings: { ...p.savings, planned: [{ id: 'x', month: k3, amount: 5 }, null] } })));
+    check(n.savings.planned.length === 1 && C.normalizeBudget(JSON.parse(JSON.stringify(d))).savings.planned.length === 0, 'normalize keeps planned deposits and drops junk');
+  }
 
   // roommates and Venmo
   const dues = I.roommateDues(d, cur, today);

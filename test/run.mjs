@@ -823,6 +823,41 @@ if (await page.$('.sv-form')) {
   await page.waitForTimeout(150);
   check(!(await stored()).savings.entries.some((x) => x.note === 'Test deposit'), 'and undo it');
   check(/Card balance/.test(await page.innerText('.budget')) || !(await stored()).card, 'the Apple Card panel');
+  // planned deposits (made-up): one next month, one due now that lands
+  const [yy0, mm0] = curKey.split('-').map(Number);
+  const nextKey = mm0 === 12 ? `${yy0 + 1}-01` : `${yy0}-${String(mm0 + 1).padStart(2, '0')}`;
+  const plan = async (amount, month, note) => {
+    await page.fill('.pl-form input[aria-label="Planned amount"]', amount);
+    await page.fill('.pl-form input[aria-label="Planned month"]', month);
+    await page.fill('.pl-form input[aria-label="Planned note"]', note);
+    await page.click('.pl-form button:has-text("Plan it")');
+    await page.waitForTimeout(250);
+  };
+  const before = await page.innerText('.sv-marks');
+  await plan('1234', nextKey, 'Test bonus');
+  let sv = (await stored()).savings;
+  check(sv.planned.some((p) => p.month === nextKey && p.amount === 1234 && p.note === 'Test bonus') && sv.entries.every((e) => e.note !== 'Test bonus'), 'plan a deposit for next month (not in the balance yet)');
+  check(/Test bonus/.test(await page.innerText('.planned')) && !/Due this month/.test(await page.innerText('.planned')) && (await page.innerText('.sv-marks')) !== before, 'it shows in Planned and moves the projection');
+  await plan('50', curKey, 'Test transfer');
+  check(/Due this month/.test(await page.innerText('.planned li:has-text("Test transfer")')), 'one planned for this month is due');
+  await page.click('.planned li:has-text("Test transfer") button:has-text("Log it")');
+  await page.waitForTimeout(250);
+  sv = (await stored()).savings;
+  check(sv.entries.some((e) => e.note === 'Test transfer' && e.amount === 50 && e.type === 'adhoc' && e.date === todayL) && !sv.planned.some((p) => p.note === 'Test transfer'), 'log it once it lands');
+  await page.click('.toast-btn');
+  await page.waitForTimeout(250);
+  sv = (await stored()).savings;
+  check(!sv.entries.some((e) => e.note === 'Test transfer') && sv.planned.some((p) => p.note === 'Test transfer'), 'undo puts it back to planned');
+  await page.click('.planned li:has-text("Test transfer") button.x');
+  await page.waitForTimeout(250);
+  check(!(await stored()).savings.planned.some((p) => p.note === 'Test transfer'), 'remove a plan');
+  await page.screenshot({ path: path.join(OUT, 'budget-savings.png'), fullPage: true });
+  await budTab('Outlook');
+  check(/Test bonus: \$1,234 into savings/.test(await page.innerText('.mtl')), 'the planned deposit is on the Outlook timeline');
+  await budTab('Savings & card');
+  await page.click('.planned li:has-text("Test bonus") button.x');
+  await page.waitForTimeout(250);
+  check(!(await stored()).savings.planned.length, 'and gone again');
 }
 // stocks: prices refresh on open (made-up quotes)
 await budTab('Stocks');
@@ -866,6 +901,25 @@ await budTab('Settings');
   await page.click('.bill-sheet button:has-text("Save")');
   await page.waitForTimeout(150);
   check((await stored()).config.bills.find((b) => b.id === 'bill-test-net').amount === 90, 'edit a bill in its sheet');
+  // a price change from next month (made-up amounts), then undo it
+  {
+    const [yy0, mm0] = curKey.split('-').map(Number);
+    const nextKey = mm0 === 12 ? `${yy0 + 1}-01` : `${yy0}-${String(mm0 + 1).padStart(2, '0')}`;
+    await page.click('.budget button[aria-label="Edit Test Internet"]');
+    await page.waitForSelector('.bill-sheet .rate-box');
+    await page.fill('.bill-sheet input[aria-label="New amount"]', '95');
+    const rt = await page.innerText('.bill-sheet .rate-box');
+    check(/\$90\.00 through \w+ \d{4}, \$95\.00 from \w+ \d{4} on/.test(rt), `the price change says what happens (${rt.split('\n').find((l) => /through/.test(l))})`);
+    await page.click('.bill-sheet button:has-text("Schedule the change")');
+    await page.waitForTimeout(250);
+    let bs = (await stored()).config.bills.filter((b) => b.name === 'Test Internet');
+    check(bs.length === 2 && bs[0].id === 'bill-test-net' && bs[0].ends === curKey && bs[0].amount === 90 && bs[1].starts === nextKey && bs[1].amount === 95 && bs[1].share === 0.5 && bs[1].card === true, 'schedule a price change from next month: the old amount ends this month, the new one keeps the share and card');
+    check(/from \w+ \d{4}/.test(await page.innerText('.bud-settings')) && !(await page.$('.bill-sheet')), 'both show in Bills, with their months');
+    await page.click('.toast-btn');
+    await page.waitForTimeout(250);
+    bs = (await stored()).config.bills.filter((b) => b.name === 'Test Internet');
+    check(bs.length === 1 && bs[0].ends === '' && bs[0].amount === 90, 'and undo it');
+  }
   await page.screenshot({ path: path.join(OUT, 'budget-settings.png'), fullPage: true });
 }
 // import an Apple Card statement (a made-up one)
@@ -3015,6 +3069,10 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
       await tp.click(`.bud-tabs .nchip:has-text("${v}")`);
       await tp.waitForTimeout(200);
     }
+    await tp.click('.bud-tabs .nchip:has-text("Outlook")');
+    await tp.waitForTimeout(200);
+    const ot = await tp.innerText('.budget .mtl');
+    check(/HOA dues up to \$695/.test(ot) && /Annual bonus: \$18,000 into savings/.test(ot), 'demo outlook: a price change and a planned deposit');
     await tp.click('.bud-tabs .nchip:has-text("Stocks")');
     await tp.waitForTimeout(200);
     check(/VTI/.test(await tp.innerText('.budget')) && !/no price yet/.test(await tp.innerText('.budget .holds')), 'demo stocks have (made-up) prices');
