@@ -102,6 +102,11 @@ function budgetDoc(today, R) {
   const [ty, tm] = today.split('-').map(Number);
   const loanEnds = isoOf(new Date(ty, tm - 1 + 33, 1)).slice(0, 7); // about three years of car payments left
   const bills = BILLS.map(([name, category, amount, day, card], i) => ({ id: `demo-bill-${i}`, name, category, amount, starts: '', ends: /auto loan/i.test(name) ? loanEnds : '', day, card, share: 1 }));
+  // the HOA raises its dues in three months
+  const hoa = bills.find((b) => /^HOA/.test(b.name));
+  const hoaFrom = isoOf(new Date(ty, tm - 1 + 3, 1)).slice(0, 7);
+  hoa.ends = isoOf(new Date(ty, tm - 1 + 2, 1)).slice(0, 7);
+  bills.splice(bills.indexOf(hoa) + 1, 0, { ...hoa, id: 'demo-bill-hoa-new', amount: 695, starts: hoaFrom, ends: '' });
   // Paid every other Friday; the anchor is the most recent one.
   const t = new Date(ty, tm - 1, Number(today.slice(8, 10)));
   const back = (t.getDay() + 2) % 7; // days since the last Friday
@@ -170,7 +175,7 @@ function budgetDoc(today, R) {
       roommates: [],
     },
     months,
-    savings: { balance: 48260.12, asOf: today, apy: 4.2, entries },
+    savings: { balance: 48260.12, asOf: today, apy: 4.2, entries, planned: [{ id: 'demo-plan-bonus', month: isoOf(new Date(ty, tm - 1 + 4, 1)).slice(0, 7), amount: 18000, note: 'Annual bonus' }] },
     card: { balance: 1284.5, asOf: today, apr: 22.99, limit: 30000, lastInterest: 0 },
     portfolio: {
       holdings: [

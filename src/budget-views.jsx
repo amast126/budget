@@ -661,10 +661,11 @@ function SavingsPanel({ data, upd, onToast, extra }) {
               Update balance
             </button>
           </section>
+          <PlannedCard data={data} upd={upd} onToast={onToast} proj={proj} />
           <section className="card">
             <h2 className="card-title">Where this is headed</h2>
             <p className="muted small">
-              Scheduled deposits ({fmt0(per)} a paycheck now, stepping up as set in Settings) plus {sv.apy}% interest.
+              Scheduled deposits ({fmt0(per)} a paycheck now, stepping up as set in Settings){C.plannedOf(sv).length ? ', planned deposits in their month,' : ''} plus {sv.apy}% interest.
             </p>
             <LineChart points={pts} fmt={fmt0} label="Projected savings" color="green" height={170} gap={40} dots={false} refLine={goal > 0 ? { v: goal, label: '3 months fixed' } : undefined} />
             <ul className="list sv-marks">
@@ -686,6 +687,104 @@ function SavingsPanel({ data, upd, onToast, extra }) {
         {extra ? <div className="bud-full">{extra}</div> : null}
       </div>
     </>
+  );
+}
+
+// Money you know is coming (a bonus, a transfer): it counts in the projection from its month, and turns into a logged
+// deposit once you say it landed.
+function PlannedCard({ data, upd, onToast, proj }) {
+  const sv = data.savings;
+  const cur = C.todayKey();
+  const planned = C.plannedOf(sv);
+  const [f, setF] = useState({ month: C.nextMonth(cur), amount: '', note: '', out: false });
+  const [landing, setLanding] = useState({});
+  const amt = Number(f.amount);
+  const ok = f.amount !== '' && Number.isFinite(amt) && amt > 0 && /^\d{4}-\d{2}$/.test(f.month || '');
+  const add = async (e) => {
+    e.preventDefault();
+    if (!ok) return;
+    const p = { id: C.uid(), month: f.month, amount: C.round2(f.out ? -amt : amt), note: f.note.trim() };
+    if (!(await upd((d) => C.addPlanned(d, p)))) return;
+    onToast({ text: `Planned: ${fmt(Math.abs(p.amount))} ${p.amount < 0 ? 'out' : 'in'} ${C.monthShort(p.month)}`, undo: async () => (await upd((d) => C.removePlanned(d, p.id)), onToast({ text: 'Removed' })) });
+    setF({ ...f, amount: '', note: '' });
+  };
+  const remove = async (p) => {
+    if (!(await upd((d) => C.removePlanned(d, p.id)))) return;
+    onToast({ text: `Removed the ${C.monthShort(p.month)} plan`, undo: async () => (await upd((d) => C.addPlanned(d, p)), onToast({ text: 'Restored' })) });
+  };
+  const land = async (p) => {
+    const date = landing[p.id] || C.todayISO();
+    const entryId = C.uid();
+    if (!(await upd((d) => C.landPlanned(d, p.id, date, entryId)))) return;
+    const inside = sv.asOf && date < sv.asOf;
+    onToast({
+      text: `Logged ${fmt(Math.abs(p.amount))} on ${C.dateLabel(date)}${inside ? `; it’s inside your ${C.dateLabel(sv.asOf)} balance` : ''}`,
+      undo: async () => (
+        await upd((d) => {
+          d.savings.entries = d.savings.entries.filter((x) => x.id !== entryId);
+          C.addPlanned(d, p);
+        }),
+        onToast({ text: 'Back to planned' })
+      ),
+    });
+  };
+  const over = proj.find((x) => x.balance > C.FDIC_LIMIT);
+  const bal = C.savingsBalance(data);
+  return (
+    <section className="card planned">
+      <h2 className="card-title">Planned deposits</h2>
+      <p className="muted small">Money you know is coming, like a bonus or a transfer. It counts in the projection from its month, and in the balance once you log it.</p>
+      {planned.length ? (
+        <ul className="list pl-rows">
+          {planned.map((p) => {
+            const due = p.month <= cur;
+            return (
+              <li key={p.id} className={due ? 'pl-due' : ''}>
+                <div className="row-between">
+                  <span className="grow">
+                    <b>{p.note || (p.amount < 0 ? 'Withdrawal' : 'Deposit')}</b>
+                    <span className="muted small"> · {C.monthShort(p.month)}</span>
+                    {due ? <span className="spill t-amber">{p.month < cur ? 'Overdue' : 'Due this month'}</span> : null}
+                  </span>
+                  <span className="sv-amt">
+                    <Money v={p.amount} sign className={p.amount < 0 ? 'c-red' : 'c-green'} />
+                    <button className="x small-x" aria-label={`Remove the ${C.monthShort(p.month)} plan of ${fmt(Math.abs(p.amount))}`} onClick={() => remove(p)}>
+                      ×
+                    </button>
+                  </span>
+                </div>
+                {due ? (
+                  <div className="pl-land">
+                    <span className="muted small">Landed on</span>
+                    <input className="input" type="date" value={landing[p.id] || C.todayISO()} onChange={(e) => setLanding({ ...landing, [p.id]: e.target.value })} aria-label="Date it landed" />
+                    <button className="btn small primary" onClick={() => land(p)}>
+                      Log it
+                    </button>
+                  </div>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
+      <form className="sv-form pl-form" onSubmit={add}>
+        <select className="input" value={f.out ? 'out' : 'in'} onChange={(e) => setF({ ...f, out: e.target.value === 'out' })} aria-label="Deposit or withdrawal">
+          <option value="in">Deposit</option>
+          <option value="out">Withdrawal</option>
+        </select>
+        <input className="input num" inputMode="decimal" placeholder="Amount" value={f.amount} onChange={(e) => setF({ ...f, amount: e.target.value })} aria-label="Planned amount" />
+        <input className="input" type="month" value={f.month} onChange={(e) => setF({ ...f, month: e.target.value })} aria-label="Planned month" />
+        <input className="input" placeholder="Note (optional)" value={f.note} onChange={(e) => setF({ ...f, note: e.target.value })} aria-label="Planned note" />
+        <button className="btn" type="submit" disabled={!ok}>
+          Plan it
+        </button>
+      </form>
+      {over ? (
+        <p className="small note fdic">
+          {bal > C.FDIC_LIMIT ? 'Your balance is' : `The projection passes ${fmt0(C.FDIC_LIMIT)} in ${C.monthShort(over.key)}, so it’ll be`} over the FDIC limit. Deposit insurance covers {fmt0(C.FDIC_LIMIT)} per depositor, per bank, per ownership category; anything above that at one bank isn’t insured.
+        </p>
+      ) : null}
+    </section>
   );
 }
 
@@ -781,7 +880,7 @@ export function OutlookView({ data, auto, goSavings, dark }) {
   const prev = snaps.filter(([k]) => k < cur).pop();
   const ms = useMemo(() => I.milestones(data, today), [data, today]);
   const freed = ms.length ? ms[ms.length - 1].freedSoFar : 0;
-  const lastBill = [...ms].reverse().find((m) => m.kind === 'bill');
+  const lastBill = [...ms].reverse().find((m) => m.frees);
   const p = data.portfolio;
   return (
     <div className="bud-outlook">
@@ -841,9 +940,10 @@ export function OutlookView({ data, auto, goSavings, dark }) {
           <section className="card">
             <div className="card-head">
               <h2 className="card-title">What’s coming</h2>
-              {freed > 0 && lastBill ? (
-                <span className="muted small num">
-                  +{fmt0(freed)} a month by {C.monthShort(lastBill.key)}
+              {Math.abs(freed) >= 1 && lastBill ? (
+                <span className={`small num ${freed > 0 ? 'muted' : 'c-red'}`}>
+                  {freed > 0 ? '+' : '−'}
+                  {fmt0(Math.abs(freed))} a month by {C.monthShort(lastBill.key)}
                 </span>
               ) : null}
             </div>
@@ -862,12 +962,19 @@ export function OutlookView({ data, auto, goSavings, dark }) {
                       <div className="small c-green num">
                         +{fmt0(m.frees)} a month{m.freedSoFar > m.frees ? ` (${fmt0(m.freedSoFar)} a month freed by then)` : ''}
                       </div>
+                    ) : m.frees < 0 ? (
+                      <div className="small c-red num">−{fmt(-m.frees).replace(/\.00$/, '')} a month</div>
+                    ) : m.kind === 'deposit' ? (
+                      <div className={`small num ${m.amount < 0 ? 'c-red' : 'c-green'}`}>
+                        {m.amount < 0 ? '−' : '+'}
+                        {fmt0(Math.abs(m.amount))} once
+                      </div>
                     ) : null}
                   </li>
                 ))}
               </ol>
             ) : (
-              <p className="empty">Nothing scheduled. Bills with an end month and savings steps in Settings show up here.</p>
+              <p className="empty">Nothing scheduled. Bills that end or change price, savings steps in Settings, and planned deposits show up here.</p>
             )}
             <button className="btn small quiet" onClick={goSavings}>
               Savings projection
@@ -1555,6 +1662,29 @@ export function SettingsView({ data, upd, onToast, alertStatus }) {
             onToast({ text: isNew ? `Added ${clean.name}` : `Saved ${clean.name}` });
             setBill(null);
           }}
+          onRate={
+            bill.isNew
+              ? null
+              : async (amount, from) => {
+                  const b = cfg.bills.find((x) => x.id === bill.id);
+                  if (!b) return;
+                  const prevBills = JSON.parse(JSON.stringify(cfg.bills));
+                  const prevMonths = JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(data.months).filter(([k]) => k >= from).map(([k, m]) => [k, { paid: m.paid, amounts: m.amounts, collected: m.collected }]))));
+                  const newId = C.uid();
+                  if (!(await upd((d) => C.changeBillRate(d, b.id, amount, from, newId)))) return;
+                  setBill(null);
+                  onToast({
+                    text: `${b.name}: ${fmt(amount)} from ${C.monthShort(from)}`,
+                    undo: async () => {
+                      await upd((d) => {
+                        d.config.bills = prevBills;
+                        Object.entries(prevMonths).forEach(([k, v]) => d.months[k] && Object.assign(d.months[k], v));
+                      });
+                      onToast({ text: 'Change undone' });
+                    },
+                  });
+                }
+          }
           onDelete={
             bill.isNew
               ? null
@@ -1589,7 +1719,13 @@ function BillRow({ b, onClick }) {
   );
 }
 
-function BillSheet({ bill, onSave, onDelete, onClose }) {
+function BillSheet({ bill, onSave, onDelete, onClose, onRate }) {
+  const [rate, setRate] = useState(() => ({ amount: '', from: C.nextMonth(C.todayKey()) }));
+  const rateAmt = rate.amount === '' ? NaN : Number(rate.amount);
+  const rateFromOk = /^\d{4}-\d{2}$/.test(rate.from || '');
+  const rateEnded = rateFromOk && bill.ends && bill.ends < rate.from;
+  const rateInPlace = rateFromOk && bill.starts && bill.starts >= rate.from;
+  const rateOk = !!onRate && Number.isFinite(rateAmt) && rateAmt >= 0 && rateFromOk && !rateEnded && C.round2(rateAmt) !== C.round2(bill.amount);
   const [f, setF] = useState(() => ({
     ...bill,
     amount: String(bill.amount ?? ''),
@@ -1668,8 +1804,35 @@ function BillSheet({ bill, onSave, onDelete, onClose }) {
         </label>
       </div>
       <p className="muted small">
-        Day 31 means the last day of the month. A bill with a day ticks itself once it passes. From and Until are for bills that start or end, like installments or a new rate.
+        Day 31 means the last day of the month. A bill with a day ticks itself once it passes. From and Until are for bills that start or end, like installments.
       </p>
+      {onRate ? (
+        <div className="rate-box">
+          <h3 className="ss-h">Price change</h3>
+          <div className="form-grid">
+            <label>
+              <span className="muted small">New amount charged</span>
+              <input className="input num" inputMode="decimal" value={rate.amount} onChange={(e) => setRate({ ...rate, amount: e.target.value })} aria-label="New amount" placeholder={fmt(bill.amount)} />
+            </label>
+            <label>
+              <span className="muted small">Starting</span>
+              <input className="input" type="month" value={rate.from} onChange={(e) => setRate({ ...rate, from: e.target.value })} aria-label="New amount starting" />
+            </label>
+          </div>
+          <p className="muted small">
+            {!rateFromOk
+              ? 'Pick the first month of the new amount.'
+              : rateEnded
+                ? `This bill ends after ${C.monthShort(bill.ends)}, so there’s nothing to change from ${C.monthShort(rate.from)}.`
+                : rateInPlace
+                  ? `This bill starts ${C.monthShort(bill.starts)}, so this just changes its amount.`
+                  : `${fmt(bill.amount)} through ${C.monthShort(C.prevMonth(rate.from))}, ${Number.isFinite(rateAmt) && rate.amount !== '' ? fmt(rateAmt) : 'the new amount'} from ${C.monthShort(rate.from)} on. Earlier months keep the old amount.`}
+          </p>
+          <button className="btn" onClick={() => rateOk && onRate(C.round2(rateAmt), rate.from)} disabled={!rateOk}>
+            Schedule the change
+          </button>
+        </div>
+      ) : null}
       <div className="sheet-acts">
         <button className="btn primary" onClick={save} disabled={!ok}>
           Save
@@ -1700,6 +1863,7 @@ const ALERT_KINDS = [
   ['payday', 'Payday: what this paycheck covers'],
   ['roommates', 'A roommate hasn’t paid after 7 and 14 days'],
   ['monthly', 'Month wrap-up on the 1st'],
+  ['planned', 'A planned savings deposit is due this month'],
   ['learning', 'Learning: a booked exam’s countdown, and a Sunday check-in if study is behind'],
 ];
 function AlertsCard({ data, upd, onToast, status }) {

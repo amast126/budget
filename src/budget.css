@@ -213,6 +213,15 @@ div.txrow { cursor: default; }
 .sv-amt { display: inline-flex; align-items: center; gap: 2px; flex: none; }
 .sv-marks { margin-top: 8px; }
 .sv-marks > li { padding: 6px 0; }
+.pl-rows > li { padding: 8px 0; }
+.pl-rows .spill { margin-left: 6px; }
+.pl-land { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.pl-land .input { width: auto; flex: 1 1 140px; min-width: 0; }
+.pl-form { margin-top: 10px; }
+.fdic { margin: 4px 0 0; color: var(--ink-soft); }
+.rate-box { border-top: 1px solid var(--rule); margin-top: 6px; padding-top: 4px; }
+.rate-box .ss-h { margin-top: 8px; }
+.rate-box .btn { margin-top: 2px; }
 .carry { display: flex; align-items: center; gap: 8px; }
 .carry .input { width: 110px; }
 .card-panel .bud-cols { margin-top: 10px; }
@@ -228,6 +237,8 @@ div.txrow { cursor: default; }
 .mt-dot { position: absolute; left: -18px; top: 10px; width: 12px; height: 12px; border-radius: 50%; background: var(--card); border: 2px solid var(--green); }
 .mt-savings .mt-dot { border-color: var(--blue); }
 .mt-fund .mt-dot { border-color: var(--amber); background: var(--amber); }
+.mt-rate .mt-dot { border-color: var(--red); }
+.mt-deposit .mt-dot { border-color: var(--green); background: var(--green); }
 .mt-title { font-weight: 600; margin: 1px 0; }
 
 /* ---- stocks ---- */

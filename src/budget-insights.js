@@ -563,6 +563,25 @@ export function milestones(data, today = todayISO()) {
       bills: bills.map((b) => b.name),
     });
   }
+  // a bill that ends the month before a same-named one starts is a price change
+  cfg.bills.forEach((b) => {
+    if (!b.starts || b.starts <= cur) return;
+    const was = cfg.bills.find((x) => x !== b && root(x.name) === root(b.name) && x.ends === C.prevMonth(b.starts));
+    if (!was) return;
+    const before = C.billCost(null, was);
+    const after = C.billCost(null, b);
+    const diff = C.round2(after - before);
+    if (Math.abs(diff) < 0.005) return;
+    const yours = C.billShare(b) < 1 ? ' (your share)' : '';
+    out.push({
+      kind: 'rate',
+      key: b.starts,
+      title: `${baseName(b.name)} ${diff > 0 ? 'up' : 'down'} to ${money(after)}${yours}`,
+      detail: `From ${money(before)}, starting with the ${C.monthShort(b.starts)} bill`,
+      frees: -diff,
+      bills: [b.name],
+    });
+  });
   const steps = cfg.savings.filter((s) => s.starts && s.starts > cur).sort((a, b) => (a.starts < b.starts ? -1 : 1));
   steps.forEach((s) => {
     const per = sum(C.activeSavings(cfg, s.starts), (x) => x.biweekly);
@@ -575,10 +594,37 @@ export function milestones(data, today = todayISO()) {
     const goal = stats.fixed * 3;
     const proj = C.projectSavings(data, 36);
     const bal = C.savingsBalance(data);
+    const planned = C.plannedOf(data.savings);
     const hit = proj.find((p) => p.balance >= goal);
-    if (goal > 0 && bal < goal && hit) out.push({ kind: 'fund', key: hit.key, title: `Emergency fund reaches three months of fixed costs`, detail: `${fmt0(goal)}, at the scheduled deposits plus interest`, frees: 0 });
+    if (goal > 0 && bal < goal && hit)
+      out.push({ kind: 'fund', key: hit.key, title: `Emergency fund reaches three months of fixed costs`, detail: planned.some((p) => p.month <= hit.key && p.amount > 0) ? `${fmt0(goal)}, once the planned deposit lands` : `${fmt0(goal)}, at the scheduled deposits plus interest`, frees: 0 });
+    // planned one-off deposits; one that's due but not logged yet sits on this month
+    const byMonth = new Map();
+    planned.forEach((p) => {
+      const k = p.month < cur ? cur : p.month;
+      byMonth.set(k, [...(byMonth.get(k) || []), p]);
+    });
+    for (const [k, ps] of byMonth) {
+      const total = sum(ps, (p) => p.amount);
+      const at = proj.find((p) => p.key === k);
+      const late = ps.some((p) => p.month < cur);
+      const what = ps.length === 1 && ps[0].note ? `${ps[0].note}: ` : '';
+      const bits = [];
+      if (at) bits.push(`Savings about ${fmt0(at.balance)} after${data.savings.apy > 0 && total > 0 ? `, earning about ${fmt0(at.balance * C.monthlyRate(data.savings.apy))} a month at ${data.savings.apy}% APY` : ''}`);
+      if (at && at.balance > C.FDIC_LIMIT && bal <= C.FDIC_LIMIT) bits.push(`That’s past the ${fmt0(C.FDIC_LIMIT)} FDIC insurance limit for one bank`);
+      if (late) bits.push('Log it on the Savings page once it lands');
+      out.push({
+        kind: 'deposit',
+        key: k,
+        title: `${what}${fmt0(Math.abs(total))} ${total >= 0 ? 'into' : 'out of'} savings`,
+        detail: bits.join('. '),
+        frees: 0,
+        amount: total,
+      });
+    }
   }
-  const sorted = out.sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
+  const rank = { bill: 0, rate: 1, savings: 2, deposit: 3, fund: 4 };
+  const sorted = out.sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : (rank[a.kind] ?? 9) - (rank[b.kind] ?? 9)));
   let freed = 0;
   sorted.forEach((m) => {
     freed += m.frees || 0;
@@ -588,6 +634,9 @@ export function milestones(data, today = todayISO()) {
   return sorted;
 }
 const monthStats = (data, key) => C.monthStats(data, key);
+const baseName = (n) => String(n || '').replace(/\s*\(.*?\)\s*/g, ' ').trim();
+// whole dollars when there are no cents
+const money = (n) => (Math.abs(n - Math.round(n)) < 0.005 ? fmt0(n) : fmt(n));
 
 // ---------------------------------------------------------------- net worth
 // What you have minus what you owe: savings, the brokerage account, the Apple Card, and the car loan (its balance from
@@ -653,7 +702,7 @@ export function roommateDues(data, key, today = todayISO()) {
 }
 
 // ---------------------------------------------------------------- phone alerts
-export const DEFAULT_ALERTS = { bills: true, budget: true, threshold: 0.9, payday: true, roommates: true, monthly: true, learning: true };
+export const DEFAULT_ALERTS = { bills: true, budget: true, threshold: 0.9, payday: true, roommates: true, monthly: true, planned: true, learning: true };
 // The alerts due today. `sent` holds keys already sent, so each goes out once.
 export function computeAlerts(data, today = todayISO(), prefs = {}, sent = {}) {
   const p = { ...DEFAULT_ALERTS, ...prefs };
@@ -719,6 +768,17 @@ export function computeAlerts(data, today = todayISO(), prefs = {}, sent = {}) {
       const left = s.budget - s.spent;
       push({ key: `monthly:${last}`, title: `${C.monthName(last)} wrap-up`, body: `${left >= 0 ? `${fmt0(left)} under` : `${fmt0(-left)} over`} your ${fmt0(s.budget)} spending budget. Net ${fmt0(s.net)} (${C.pct(s.rate)} of income).`, tags: 'spiral_calendar' });
     }
+  }
+  if (p.planned && data.savings) {
+    C.plannedDue(data.savings, cur).forEach((x) => {
+      const out1 = x.amount < 0;
+      push({
+        key: `planned:${x.id}:${cur}`,
+        title: `${x.note ? `${x.note}: ` : ''}${fmt0(Math.abs(x.amount))} ${out1 ? 'out of' : 'into'} savings ${x.month < cur ? `(planned for ${C.monthName(x.month)})` : 'this month'}`,
+        body: 'Log it on the Savings page once it lands, so the balance and the projection stay right.',
+        tags: 'bank',
+      });
+    });
   }
   return out;
 }

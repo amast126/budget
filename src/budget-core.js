@@ -221,30 +221,60 @@ export function absorbAll(d) {
     if (t.dc === 'pending') t.dc = 'absorbed';
   });
 }
+// Planned one-off deposits (or withdrawals, as negatives) by month: money you know is coming. They count in the
+// projection from their month, but not in the balance until you log them as landed.
+export const plannedOf = (sv) => ((sv && sv.planned) || []).filter((p) => p && /^\d{4}-\d{2}$/.test(p.month || '') && Number(p.amount)).sort((a, b) => (a.month < b.month ? -1 : a.month > b.month ? 1 : 0));
+export const plannedDue = (sv, key = todayKey()) => plannedOf(sv).filter((p) => p.month <= key);
+export function addPlanned(d, { id = uid(), month, amount, note = '' }) {
+  const p = { id, month, amount: round2(amount), note: String(note || '').trim() };
+  d.savings.planned = [...(d.savings.planned || []), p];
+  return p;
+}
+export function removePlanned(d, id) {
+  d.savings.planned = (d.savings.planned || []).filter((x) => x.id !== id);
+}
+// It landed: it becomes an ordinary logged entry on that date. If the balance snapshot is from after that date, the
+// snapshot already has it, so the entry is marked as inside it.
+export function landPlanned(d, id, date = todayISO(), entryId = uid()) {
+  const p = (d.savings.planned || []).find((x) => x.id === id);
+  if (!p) return null;
+  removePlanned(d, id);
+  const a = round2(p.amount);
+  const entry = { id: entryId, date, type: a < 0 ? 'withdrawal' : 'adhoc', amount: a, note: p.note || (a < 0 ? 'Planned withdrawal' : 'Planned deposit'), absorbed: !!(d.savings.asOf && date < d.savings.asOf) };
+  d.savings.entries.push(entry);
+  return entry;
+}
+export const FDIC_LIMIT = 250000;
 export const monthlyRate = (apy) => Math.pow(1 + (Number(apy) || 0) / 100, 1 / 12) - 1;
 export function dailyCashEstimate(m, bills, key) {
   const fromBills = bills ? sum(bills.filter((b) => b.card && isPaid(m, b, key)), (b) => billFull(m, b) * billDc(b)) : 0;
   return sum(m ? m.transactions : [], cashbackFor) + fromBills;
 }
-// Month-by-month savings balance at the scheduled per-paycheck amounts plus interest.
+// Month-by-month savings balance at the scheduled per-paycheck amounts plus interest, with planned deposits in their
+// month (ones already due but not logged yet count this month). A planned deposit earns about half a month's interest
+// in the month it lands.
 export function projectSavings(data, monthsAhead, now = new Date()) {
   const sv = data.savings;
   const cfg = data.config;
+  const rate = monthlyRate(sv.apy);
+  const planned = plannedOf(sv);
   let bal = savingsBalance(data);
   let key = keyOf(isoOf(now));
   const out = [];
   const paid = sum(sv.entries.filter((e) => e.type === 'deposit' && e.date.startsWith(key)), (e) => e.amount);
   const perNow = sum(activeSavings(cfg, key), (x) => x.biweekly);
   const dueNow = paydaysIn(key, cfg.payAnchor).length * perNow;
-  bal += Math.max(0, dueNow - paid);
-  bal += bal * monthlyRate(sv.apy) * ((daysIn(key) - now.getDate()) / daysIn(key));
-  out.push({ key, balance: bal });
+  const lumpNow = sum(planned.filter((p) => p.month <= key), (p) => p.amount);
+  bal += Math.max(0, dueNow - paid) + lumpNow;
+  bal += (bal - lumpNow / 2) * rate * ((daysIn(key) - now.getDate()) / daysIn(key));
+  out.push({ key, balance: bal, lump: lumpNow });
   for (let i = 0; i < monthsAhead; i++) {
     key = nextMonth(key);
     const per = sum(activeSavings(cfg, key), (x) => x.biweekly);
+    const lump = sum(planned.filter((p) => p.month === key), (p) => p.amount);
     bal += paydaysIn(key, cfg.payAnchor).length * per;
-    bal += bal * monthlyRate(sv.apy);
-    out.push({ key, balance: bal });
+    bal += bal * rate + lump + (lump / 2) * rate;
+    out.push({ key, balance: bal, lump });
   }
   return out;
 }
@@ -330,6 +360,7 @@ export function normalizeBudget(d) {
   if (d.savings) {
     d.savings.entries = d.savings.entries || [];
     d.savings.apy = Number(d.savings.apy) || 0;
+    d.savings.planned = (d.savings.planned || []).filter((p) => p && p.id);
   }
   if (d.portfolio) {
     d.portfolio = { cash: 0, quotes: {}, refreshedAt: '', ...d.portfolio };
@@ -471,6 +502,35 @@ export function setCollected(d, key, billId, rid, on) {
   else delete cur[rid];
   if (Object.keys(cur).length === 0) delete m.collected[billId];
   else m.collected[billId] = cur;
+}
+// A new amount from a given month on. The bill ends the month before and a copy starts at the new amount, so earlier
+// months keep the old one; ticks, one-month amounts and roommate payments already recorded from that month move to the
+// copy. A bill that only starts that month (or later) just takes the new amount. Returns the bill now charging it, or
+// null when the bill ends before that month. Pass the new id when the change runs more than once (local, then saved).
+export function changeBillRate(d, id, amount, from, newId = uid()) {
+  const bills = d.config.bills;
+  const old = bills.find((b) => b.id === id);
+  if (!old || !/^\d{4}-\d{2}$/.test(from || '') || !Number.isFinite(Number(amount))) return null;
+  if (old.ends && old.ends < from) return null;
+  const a = round2(amount);
+  if (old.starts && old.starts >= from) {
+    old.amount = a;
+    return old;
+  }
+  const next = { ...old, id: newId, amount: a, starts: from, ends: old.ends || '' };
+  delete next.isNew;
+  old.ends = prevMonth(from);
+  bills.splice(bills.indexOf(old) + 1, 0, next);
+  Object.entries(d.months || {}).forEach(([k, m]) => {
+    if (k < from) return;
+    ['paid', 'amounts', 'collected'].forEach((f) => {
+      if (m[f] && m[f][id] !== undefined) {
+        m[f][next.id] = m[f][id];
+        delete m[f][id];
+      }
+    });
+  });
+  return next;
 }
 // Rename categories by id; logged expenses follow the new name.
 export function setCategories(d, next) {
