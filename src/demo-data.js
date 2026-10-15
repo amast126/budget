@@ -16,6 +16,7 @@ import { demoBox } from './demo-recipes.js';
 import { defaultAuto, logService, addTread, addPads } from './auto-logic.js';
 import { addFill } from './auto-fuel.js';
 import { addWatch, compareWith } from './auto-costs.js';
+import { defaultPlanning, setCounty, addReno, addVendor, addPayment } from './planning-logic.js';
 import { MCU } from './fun-logic.js';
 import { demoSteam } from './demo-steam.js';
 
@@ -460,6 +461,22 @@ export function demoDocs(now = new Date()) {
   compareWith(auto, auto.next.watch[0].id);
   Object.assign(auto.next, { down: 6500, tradeIn: 31000, apr: 5.4, term: 60 });
   docs.auto = auto;
+
+  // Planning: a wedding in about eleven months and a bigger house after it (made-up vendors and numbers)
+  const plans = defaultPlanning();
+  setCounty(plans, 'other');
+  const mk = (n) => isoOf(new Date(ty, tm - 1 + n, 1)).slice(0, 7);
+  Object.assign(plans.house, { price: 1150000, taxRate: 0.93, insurance: 2100, buyMonth: mk(20), maxPct: 35 });
+  addReno(plans, { id: 'demo-reno-1', name: 'Kitchen refresh', cost: 32000, month: '' });
+  addReno(plans, { id: 'demo-reno-2', name: 'Primary bathroom', cost: 29000, month: mk(26) });
+  Object.assign(plans.wedding, { date: isoOf(new Date(ty, tm - 1 + 11, 13)), guests: 120 });
+  addVendor(plans, { id: 'demo-v-venue', name: 'Lakeview Hall', cat: 'venue', total: 31500 });
+  addPayment(plans, 'demo-v-venue', { id: 'demo-p-1', due: addDays(today, -60), amount: 6000, paid: true, note: 'Deposit' });
+  addPayment(plans, 'demo-v-venue', { id: 'demo-p-2', due: isoOf(new Date(ty, tm - 1 + 5, 1)), amount: 10000, note: 'Second payment' });
+  addPayment(plans, 'demo-v-venue', { id: 'demo-p-3', due: isoOf(new Date(ty, tm - 1 + 10, 13)), amount: 15500, note: 'Final' });
+  addVendor(plans, { id: 'demo-v-photo', name: 'North Light Photo', cat: 'photo', total: 6200 });
+  addPayment(plans, 'demo-v-photo', { id: 'demo-p-4', due: addDays(today, -20), amount: 1500, paid: true, note: 'Retainer' });
+  docs.planning = plans;
 
   // Learning: AI for product work, one fundamentals exam passed, the next one booked
   const learning = defaultLearning();

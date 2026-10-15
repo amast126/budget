@@ -19,6 +19,8 @@ import { CountUp, Skeleton } from './fx.jsx';
 import { Sparkline } from './spark.jsx';
 import { AutoPage, AutoHomeCard, useRecalls } from './auto.jsx';
 import { defaultAuto, normalizeAuto } from './auto-logic.js';
+import { PlanningPage } from './planning.jsx';
+import { defaultPlanning, normalizePlanning } from './planning-logic.js';
 import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
 import { HealthPage, HealthHomeCard } from './health.jsx';
 import { HealthSyncPage } from './health-more.jsx';
@@ -43,6 +45,7 @@ import funCss from './fun.css';
 import cookCss from './cooking.css';
 import learnCss from './learning.css';
 import autoCss from './auto.css';
+import planCss from './planning.css';
 import { normalizeBox, defaultBox, moveMine, mineId } from './recipebox-logic.js';
 import { createPhotoStore } from './recipe-photos.js';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
@@ -67,7 +70,7 @@ trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss + learnCss + autoCss;
+  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss + learnCss + autoCss + planCss;
   document.head.appendChild(s);
 }
 
@@ -629,6 +632,7 @@ const MODULES = {
   birthdays: [normalizeBirthdays, defaultBirthdays, 'birthdays'],
   news: [normalizeNewsPrefs, defaultNewsPrefs, 'your saved stories'],
   recipebox: [normalizeBox, defaultBox, 'your recipe box'],
+  planning: [normalizePlanning, defaultPlanning, 'your plans'],
   alerts: [(d) => d || null, () => null, 'the alerts status'], // written by the Budget alerts job
   steam: [normalizeSteam, () => null, 'your Steam library'], // written by the Steam sync job
   'steam-live': [normalizeLive, () => null, 'your Steam status'], // written by the Steam sync job
@@ -660,6 +664,7 @@ const TABS = [
   ['home', 'home', 'Home'],
   ['news', 'news', 'News'],
   ['budget', 'budget', 'Budget'],
+  ['planning', 'map', 'Planning'],
   ['health', 'heart', 'Health'],
   ['fun', 'game', 'Entertainment'],
   ['learning', 'learn', 'Learning'],
@@ -770,6 +775,7 @@ function App() {
   const [steam] = useModuleDoc(allowed, user, 'steam');
   const [steamLive] = useModuleDoc(allowed, user, 'steam-live');
   const [box, boxError] = useModuleDoc(allowed, user, 'recipebox');
+  const [planning, planningError] = useModuleDoc(allowed, user, 'planning');
   // Recipe photos live in documents of their own, read when they're needed.
   const photos = useMemo(
     () =>
@@ -1072,6 +1078,7 @@ function App() {
   const mutateBirthdays = mutateDoc('birthdays');
   const mutateNews = mutateDoc('news');
   const mutateBox = mutateDoc('recipebox');
+  const mutatePlanning = mutateDoc('planning');
   // "My recipes" from before the recipe box move into it once: each entry is copied into the box (which remembers
   // what it has taken), then only those entries leave the cooking document. Tried once per visit.
   const moving = useRef(false);
@@ -1376,8 +1383,9 @@ function App() {
         ) : null}
         {route === 'health' ? <HealthPage health={health} years={healthYears} hk={hk} hkYears={hkYears} act={healthAct} error={healthError} plan={cooking && cooking.plan} wx={forecast.s} /> : null}
         {route === 'health-sync' ? <HealthSyncPage health={health} hk={hk} hkYears={hkYears} years={healthYears} act={healthAct} /> : null}
+        {route === 'planning' ? <PlanningPage plan={planning} budget={data} mutate={mutatePlanning} error={planningError} onToast={showToast} /> : null}
         {route === 'budget' ? <BudgetPage data={data} mutate={mutateBudget} error={dataError} onToast={showToast} dark={look.dark} auto={auto} route={location.hash} alertStatus={alertStatus} /> : null}
-        {['budget', 'learning', 'cooking', 'news', 'auto', 'health', 'health-sync', 'fun'].includes(route) ? null : (
+        {['budget', 'planning', 'learning', 'cooking', 'news', 'auto', 'health', 'health-sync', 'fun'].includes(route) ? null : (
           <Home
             user={user}
             data={data}
