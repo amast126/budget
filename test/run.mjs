@@ -728,14 +728,34 @@ const budTab = async (label) => {
 await page.fill('.ledger input[aria-label="Description"]', 'Testv');
 await page.waitForSelector('.ledger .msuggest button:has-text("Testville Pizza")');
 await page.click('.ledger .msuggest button:has-text("Testville Pizza")');
-check((await page.inputValue('.ledger input[aria-label="Amount"]')) === '18.4' && (await page.inputValue('.ledger select[aria-label="Category"]')) === dine, 'picking a merchant fills its category and usual amount');
-check((await page.$$('.ledger .rchip')).length >= 1, 'your usual merchants are one tap away');
+check((await page.inputValue('.ledger input[aria-label="Amount"]')) === '18.4' && (await page.$eval('.ledger .catchip[aria-pressed="true"]', (e) => e.textContent)) === dine, 'picking a merchant fills its category (a chip) and usual amount');
+{
+  // the Month view leads with the add box: the summary, then adding, before the budgets and bills
+  const order = await page.$$eval('.bud-month .card', (els) => els.map((e) => (e.querySelector('.card-title') || {}).textContent || (e.classList.contains('bud-summary') ? 'summary' : '')));
+  check(order[0] === 'summary' && order[1] === 'Expenses' && order.indexOf('Spending budgets') > 1 && !order.some((t) => /Last three days|Savings targets/.test(t)) && !(await page.$('.bud-summary .kpis')), `the Month view leads with adding (${order.join(' → ')})`);
+  check(!(await page.isVisible('.ledger input[aria-label="Date"]')) && !(await page.isVisible('.ledger select[aria-label="Paid with"]')) && (await page.$$('.ledger .catchip')).length === (await stored()).config.categories.length, 'date and card wait under More options; every category is a chip');
+  await page.click('.ledger .qadd-more');
+  check((await page.isVisible('.ledger input[aria-label="Date"]')) && (await page.$$('.ledger .rchip')).length >= 1, 'More options: date, card, and your usual places one tap away');
+}
 await page.fill('.ledger input[aria-label="Amount"]', '21.60');
 await page.click('.ledger button:has-text("Add expense")');
 await page.waitForSelector('.toast');
 await page.waitForTimeout(150);
 let tv = (await stored()).months[curKey].transactions.find((t) => t.desc === 'Testville Pizza');
 check(tv && tv.amount === 21.6 && tv.category === dine && tv.dc === 'pending' && /Testville Pizza/.test(await page.innerText('.ledger .txlist')), 'added from the Budget tab, shown at once');
+// money in: a refund or a sale counts against spending
+{
+  await page.fill('.ledger input[aria-label="Amount"]', '25');
+  await page.fill('.ledger input[aria-label="Description"]', 'Test refund');
+  await page.click('.ledger .qadd-back input[type=checkbox]');
+  await page.click('.ledger button:has-text("Add money in")');
+  await page.waitForTimeout(250);
+  const rf = (await stored()).months[curKey].transactions.find((t) => t.desc === 'Test refund');
+  check(rf && rf.amount === -25 && /back to/.test(await page.innerText('.toast')) && !(await page.isChecked('.ledger .qadd-back input[type=checkbox]')), 'money in saves a negative amount, and the switch resets');
+  await page.click('.toast-btn');
+  await page.waitForTimeout(200);
+  check(!(await stored()).months[curKey].transactions.some((t) => t.desc === 'Test refund'), 'and undo removes it');
+}
 // edit it in its sheet
 await page.click('.ledger .txrow:has-text("Testville Pizza")');
 await page.waitForSelector('.txn-sheet');
@@ -762,6 +782,8 @@ check(tv && tv.amount === 22 && !(await page.$('.txn-sheet')), 'tap an expense t
 }
 // bills and what the roommate owes
 {
+  check(!(await page.isVisible('.bills-fold .bill')) && /\d+ of \d+ charged/.test(await page.innerText('.bills-fold > summary')), 'fixed costs fold into one line');
+  await page.click('.bills-fold > summary');
   const box = '.budget .bill:has-text("Test Internet") input[type=checkbox]';
   check(await page.isChecked(box), 'a bill with a charge day ticks itself');
   await page.click(box);
