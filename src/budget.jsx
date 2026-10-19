@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as C from './budget-core.js';
 import * as I from './budget-insights.js';
 import { CategoryMark, StatusPill, PaceBar, Money, Sheet, Kpi, isPhoneLike } from './budget-ui.jsx';
-import { AddForm, MerchantInput, useMerchants } from './budget-add.jsx';
+import { AddForm, QuickAdd, MerchantInput, useMerchants } from './budget-add.jsx';
 import { SwipeRow, useSwipe, Skeleton } from './fx.jsx';
 import { BarChart } from './chart-kit.jsx';
 import { Icon } from './ui.jsx';
@@ -212,19 +212,15 @@ function MonthView({ data, upd, onToast, monthKey, keys, setMonth, openTxn, open
       <Summary data={data} s={s} p={p} monthKey={monthKey} />
       <div className="bud-cols">
         <div className="col">
-          <Categories data={data} s={s} p={p} monthKey={monthKey} openCategory={openCategory} />
-          <RecentDays data={data} s={s} p={p} monthKey={monthKey} openTxn={openTxn} />
+          <Ledger data={data} upd={upd} onToast={onToast} monthKey={monthKey} openTxn={openTxn} />
         </div>
         <div className="col">
+          <Categories data={data} s={s} p={p} monthKey={monthKey} openCategory={openCategory} />
           <Bills data={data} upd={upd} s={s} monthKey={monthKey} />
           <OwedToYou data={data} upd={upd} s={s} monthKey={monthKey} goSettings={goSettings} />
-          <SavingsTargets data={data} s={s} monthKey={monthKey} goSavings={goSavings} />
-        </div>
-        <div className="bud-full">
-          <Ledger data={data} upd={upd} onToast={onToast} monthKey={monthKey} openTxn={openTxn} openImport={openImport} />
         </div>
       </div>
-      {m.transactions.length === 0 ? (
+      {m.transactions.length === 0 && monthKey !== C.todayKey() ? (
         <p className="muted small note">
           This month is empty.{' '}
           <button
@@ -244,8 +240,7 @@ function MonthView({ data, upd, onToast, monthKey, keys, setMonth, openTxn, open
   );
 }
 
-function Summary({ data, s, p, monthKey }) {
-  const cfg = data.config;
+function Summary({ s, p }) {
   const left = s.budget - s.spent;
   const st = C.statusOf(s.spent, s.budget, p);
   const daysLeft = p.days - p.day + 1;
@@ -259,13 +254,6 @@ function Summary({ data, s, p, monthKey }) {
           ? `Finished ${fmt0(left)} under budget`
           : `Finished ${fmt0(-left)} over budget`
         : 'Full budget available';
-  const paydays = C.paydaysIn(monthKey, cfg.payAnchor);
-  const next = p.state === 'current' ? C.nextPayday(cfg.payAnchor) : null;
-  const incomeNote = paydays.length
-    ? `Paydays ${paydays.map(C.dateLabel).join(', ')}${paydays.length === 3 ? ' (three this month; the third is extra)' : ''}${next ? `. Next ${next.days === 0 ? 'today' : next.days === 1 ? 'tomorrow' : `in ${next.days} days`}` : ''}`
-    : `${fmt(s.incomeBiweekly)} biweekly, as a month`;
-  const afterSavings = s.income - s.fixed - s.savingsMonthly;
-  const over = s.budget - afterSavings;
   return (
     <section className="card bud-summary">
       <div className="bs-top">
@@ -281,17 +269,6 @@ function Summary({ data, s, p, monthKey }) {
         {fmt(s.spent)} spent of {fmt0(s.budget)}
         {p.state === 'current' ? ` · day ${p.day} of ${p.days}` : ''}
       </div>
-      <div className="kpis">
-        <Kpi label="Income" value={fmt(s.income)} sub={incomeNote} />
-        <Kpi label="Fixed costs" value={fmt(s.fixed)} sub={`${fmt0(s.paidTotal)} charged so far`} />
-        <Kpi
-          label="Spending budget"
-          value={fmt(s.budget)}
-          sub={over > 0 ? `${fmt0(over)} more than what's left after bills and savings` : `${fmt0(afterSavings)} left after bills and savings`}
-          tone={over > 0 ? 'red' : null}
-        />
-        <Kpi label="Projected net" value={fmt(s.net)} sub={`${pct(s.rate)} of income. Savings target ${fmt0(s.savingsMonthly)}`} tone={s.net < 0 ? 'red' : null} />
-      </div>
     </section>
   );
 }
@@ -299,7 +276,7 @@ function Summary({ data, s, p, monthKey }) {
 function Categories({ data, s, p, monthKey, openCategory }) {
   const cats = data.config.categories;
   return (
-    <section className="card">
+    <section className="card bcats">
       <div className="card-head">
         <h2 className="card-title">Spending budgets</h2>
         <span className="muted small">{p.state === 'current' ? `Pace as of day ${p.day}` : p.state === 'past' ? 'Month complete' : 'Not started'}</span>
@@ -311,20 +288,14 @@ function Categories({ data, s, p, monthKey, openCategory }) {
           const rem = c.budget - spent;
           return (
             <li key={c.id}>
-              <button className="bcat" onClick={() => openCategory({ name: c.name, key: monthKey })}>
-                <CategoryMark category={c.name} />
+              <button className="bcat compact" onClick={() => openCategory({ name: c.name, key: monthKey })} aria-label={`${c.name}: ${fmt(spent)} of ${fmt0(c.budget)}, ${rem < 0 ? `${fmt(-rem)} over` : `${fmt(rem)} left`}`}>
+                <CategoryMark category={c.name} size={24} />
                 <span className="grow">
                   <span className="row-between">
                     <b>{c.name}</b>
-                    <span className={`num ${rem < 0 ? 'c-red' : ''}`}>{rem < 0 ? `${fmt(-rem)} over` : `${fmt(rem)} left`}</span>
+                    <span className={`num ${rem < 0 ? 'c-red' : st === 'over' || st === 'ahead' ? 'c-amber' : ''}`}>{rem < 0 ? `${fmt0(-rem)} over` : `${fmt0(rem)} left`}</span>
                   </span>
                   <PaceBar spent={spent} budget={c.budget} p={p} st={st} />
-                  <span className="row-between muted small">
-                    <span className="num">
-                      {fmt(spent)} of {fmt0(c.budget)}
-                    </span>
-                    <StatusPill st={st} />
-                  </span>
                 </span>
               </button>
             </li>
@@ -346,101 +317,15 @@ function Categories({ data, s, p, monthKey, openCategory }) {
   );
 }
 
-function RecentDays({ data, s, p, monthKey, openTxn }) {
-  if (p.state === 'future') return null;
-  const m = data.months[monthKey];
-  const end = p.state === 'current' ? C.todayISO() : `${monthKey}-${C.pad2(p.days)}`;
-  const days = [end, C.addDays(end, -1), C.addDays(end, -2)];
-  const perDay = s.budget / p.days;
-  const total = sum(
-    m.transactions.filter((t) => days.includes(t.date)),
-    (t) => t.amount,
-  );
-  const budgetOf = (name) => (data.config.categories.find((c) => c.name === name) || {}).budget || 0;
-  const label = (iso, i) =>
-    p.state !== 'current'
-      ? `${C.weekdayLabel(iso)}, ${C.dateLabel(iso)}`
-      : i === 0
-        ? `Today, ${C.dateLabel(iso)}`
-        : i === 1
-          ? `Yesterday, ${C.dateLabel(iso)}`
-          : `${C.weekdayLabel(iso)}, ${C.dateLabel(iso)}`;
-  return (
-    <section className="card">
-      <div className="card-head">
-        <h2 className="card-title">Last three days</h2>
-        <span className="muted small num">
-          {fmt(total)} vs {fmt0(perDay * 3)} at an even pace
-        </span>
-      </div>
-      {days.map((iso, i) => {
-        const rows = m.transactions.filter((t) => t.date === iso).sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount));
-        const tot = sum(rows, (t) => t.amount);
-        const diff = tot - perDay;
-        const by = {};
-        rows.forEach((t) => (by[t.category] = (by[t.category] || 0) + t.amount));
-        const top = Object.entries(by).sort((a, b) => b[1] - a[1]);
-        const pushedOver = data.config.categories
-          .filter((c) => {
-            if (!by[c.name] || c.budget <= 0) return false;
-            const before = sum(
-              m.transactions.filter((t) => t.category === c.name && t.date < iso),
-              (t) => t.amount,
-            );
-            return before <= c.budget && before + by[c.name] > c.budget;
-          })
-          .map((c) => c.name);
-        const lines = [];
-        if (!rows.length) lines.push(iso > C.todayISO() ? 'Hasn’t happened yet.' : 'Nothing logged.');
-        else {
-          lines.push(`${rows.length} ${rows.length === 1 ? 'purchase' : 'purchases'}, ${fmt0(Math.abs(diff))} ${diff > 0 ? 'over' : 'under'} the ${fmt0(perDay)} daily allowance.`);
-          if (top.length === 1) lines.push(`All ${top[0][0]}${rows.length > 1 ? `, led by ${rows[0].desc} at ${fmt(rows[0].amount)}` : ''}.`);
-          else lines.push(`${top[0][0]} was ${Math.round((top[0][1] / tot) * 100)}% of it; the largest was ${rows[0].desc} at ${fmt(rows[0].amount)}.`);
-          if (pushedOver.length) lines.push(`This day put ${pushedOver.join(' and ')} over for the month.`);
-          const leftCat = budgetOf(top[0][0]) - (s.spentBy[top[0][0]] || 0);
-          if (p.state === 'current' && i === 0 && budgetOf(top[0][0]) > 0)
-            lines.push(leftCat >= 0 ? `${top[0][0]} has ${fmt0(leftCat)} left this month.` : `${top[0][0]} is ${fmt0(-leftCat)} over this month.`);
-          const dc = sum(rows, C.cashbackFor);
-          if (dc > 0) lines.push(`${fmt(dc)} Daily Cash.`);
-        }
-        return (
-          <div key={iso} className="rday">
-            <div className="row-between">
-              <b className="small">{label(iso, i)}</b>
-              <span className="rday-tot">
-                <span className={`num ${!rows.length ? 'muted' : diff > 0 ? 'c-red' : 'c-green'}`}>{fmt(tot)}</span>
-                {rows.length ? <StatusPill st={diff > 0 ? 'over' : 'on'} /> : null}
-              </span>
-            </div>
-            {rows.length ? (
-              <ul className="list rday-list">
-                {rows.map((t) => (
-                  <li key={t.id}>
-                    <button className="txrow compact" onClick={() => openTxn(t.id)}>
-                      <CategoryMark category={t.category} size={22} />
-                      <span className="grow">{t.desc}</span>
-                      <span className="num">{fmt(t.amount)}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-            <p className={`small rday-note ${rows.length ? '' : 'muted'}`}>{lines.join(' ')}</p>
-          </div>
-        );
-      })}
-    </section>
-  );
-}
-
-function Ledger({ data, upd, onToast, monthKey, openTxn, openImport }) {
+const FIRST_ROWS = 10;
+function Ledger({ data, upd, onToast, monthKey, openTxn }) {
   const m = data.months[monthKey];
   const [filter, setFilter] = useState('All');
-  const [limit, setLimit] = useState(40);
+  const [limit, setLimit] = useState(FIRST_ROWS);
   const downAt = useRef(null);
   useEffect(() => {
     setFilter('All');
-    setLimit(40);
+    setLimit(FIRST_ROWS);
   }, [monthKey]);
   const cats = data.config.categories.map((c) => c.name);
   const rows = [...(filter === 'All' ? m.transactions : m.transactions.filter((t) => t.category === filter))].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
@@ -460,29 +345,33 @@ function Ledger({ data, upd, onToast, monthKey, openTxn, openImport }) {
           {filter !== 'All' ? ` in ${filter}` : ''}, {fmt(total)}
         </span>
       </div>
-      <AddForm
+      <QuickAdd
         key={monthKey}
         data={data}
         dateDefault={isCur ? C.todayISO() : `${monthKey}-01`}
+        note={isCur ? '' : `Dated ${C.dateLabel(`${monthKey}-01`)}, ${monthKey.slice(0, 4)}`}
         onAdd={async (t) => {
           const ok = await upd((d) => C.addTxn(d, t));
-          onToast({ text: `Added ${fmt(t.amount)} to ${t.category}`, undo: async () => (await upd((d) => C.removeTxn(d, t.id)), onToast({ text: 'Removed' })) });
+          const where = C.keyOf(t.date) !== monthKey ? ` (${C.monthShort(C.keyOf(t.date))})` : '';
+          onToast({
+            text: t.amount < 0 ? `Added ${fmt(-t.amount)} back to ${t.category}${where}` : `Added ${fmt(t.amount)} to ${t.category}${where}`,
+            undo: async () => (await upd((d) => C.removeTxn(d, t.id)), onToast({ text: 'Removed' })),
+          });
           return ok;
         }}
       />
-      <div className="ledger-bar">
-        <select className="input" value={filter} onChange={(e) => setFilter(e.target.value)} aria-label="Show category">
-          <option>All</option>
-          {cats.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
-        <button className="btn small quiet" onClick={openImport}>
-          Import Apple Card CSV
-        </button>
-      </div>
+      {m.transactions.length > FIRST_ROWS ? (
+        <div className="ledger-bar">
+          <select className="input" value={filter} onChange={(e) => setFilter(e.target.value)} aria-label="Show category">
+            <option>All</option>
+            {cats.map((c) => (
+              <option key={c}>{c}</option>
+            ))}
+          </select>
+        </div>
+      ) : null}
       {rows.length === 0 ? (
-        <p className="empty">{m.transactions.length === 0 ? 'No expenses logged yet. Add the first one above.' : `Nothing in ${filter} this month.`}</p>
+        <p className="empty">{m.transactions.length === 0 ? 'Nothing logged yet this month.' : `Nothing in ${filter} this month.`}</p>
       ) : (
         <ul className="list txlist">
           {rows.slice(0, limit).map((t) => (
@@ -517,11 +406,11 @@ function Ledger({ data, upd, onToast, monthKey, openTxn, openImport }) {
         </ul>
       )}
       {rows.length > limit ? (
-        <button className="btn quiet block" onClick={() => setLimit(limit + 60)}>
-          Show more
+        <button className="btn quiet block" onClick={() => setLimit(limit === FIRST_ROWS ? rows.length : limit + 100)}>
+          Show all {rows.length}
         </button>
       ) : null}
-      <p className="muted small note swipe-hint">Tap an expense to edit it; swipe left to delete.</p>
+      {rows.length ? <p className="muted small note swipe-hint">Tap an expense to edit it; swipe left to delete.</p> : null}
     </section>
   );
 }
@@ -530,14 +419,15 @@ function Bills({ data, upd, s, monthKey }) {
   const m = data.months[monthKey];
   const [editing, setEditing] = useState(null);
   const [val, setVal] = useState('');
+  const charged = s.bills.filter((b) => C.isPaid(m, b, monthKey)).length;
   return (
-    <section className="card">
-      <div className="card-head">
+    <details className="card bills-fold">
+      <summary className="card-head">
         <h2 className="card-title">Fixed costs</h2>
         <span className="muted small num">
-          {fmt(s.fixed)} yours · {fmt0(s.paidTotal)} charged
+          {charged} of {s.bills.length} charged · {fmt0(s.fixed)}
         </span>
-      </div>
+      </summary>
       <ul className="list">
         {s.bills.map((b) => {
           const paid = C.isPaid(m, b, monthKey);
@@ -593,7 +483,7 @@ function Bills({ data, upd, s, monthKey }) {
         })}
       </ul>
       <p className="muted small note">Bills with a charge day tick themselves on that day. Tap an amount to enter what this month actually charged.</p>
-    </section>
+    </details>
   );
 }
 
@@ -608,6 +498,7 @@ function OwedToYou({ data, upd, s, monthKey, goSettings }) {
     shared.filter((b) => C.isPaid(m, b, monthKey)),
     (b) => C.owedLeft(cfg, m, b),
   );
+  if (outstanding <= 0.005) return null; // shows up only while someone owes you
   if (!rs.length)
     return (
       <section className="card owed">
@@ -713,50 +604,6 @@ function OwedToYou({ data, upd, s, monthKey, goSettings }) {
   );
 }
 
-function SavingsTargets({ data, s, monthKey, goSavings }) {
-  const paydays = C.paydaysIn(monthKey, data.config.payAnchor);
-  const due = paydays.length * s.savingsBiweekly;
-  const deposited = data.savings
-    ? sum(
-        data.savings.entries.filter((e) => e.type === 'deposit' && e.date.startsWith(monthKey)),
-        (e) => e.amount,
-      )
-    : 0;
-  return (
-    <section className="card">
-      <div className="card-head">
-        <h2 className="card-title">Savings targets</h2>
-        <span className="muted small num">{fmt0(s.savingsMonthly)} a month</span>
-      </div>
-      <ul className="list">
-        {s.savings.map((x) => (
-          <li key={x.id} className="row-between sv-row">
-            <span>
-              {x.name}
-              {x.starts || x.ends ? (
-                <span className="muted small"> · {[x.starts ? `from ${C.monthShort(x.starts)}` : '', x.ends ? `through ${C.monthShort(x.ends)}` : ''].filter(Boolean).join(', ')}</span>
-              ) : null}
-            </span>
-            <span className="num">
-              {fmt(x.biweekly)} <span className="muted small">/ paycheck</span>
-            </span>
-          </li>
-        ))}
-      </ul>
-      {data.savings ? (
-        <p className="muted small note">
-          Savings balance <b className="num">{fmt(C.savingsBalance(data))}</b>.
-          {due > 0 ? ` This month: ${fmt0(deposited)} of ${fmt0(due)} deposited (${paydays.length} ${paydays.length === 1 ? 'payday' : 'paydays'} × ${fmt0(s.savingsBiweekly)}).` : ''}{' '}
-          <button className="linkish" onClick={goSavings}>
-            Open savings
-          </button>
-        </p>
-      ) : null}
-    </section>
-  );
-}
-
-// ---------------------------------------------------------------- sheets
 function TxnSheet({ data, upd, onToast, id, onClose, openMerchant }) {
   const found = useMemo(() => C.findTxn(data, id), [data, id]);
   const index = useMerchants(data);

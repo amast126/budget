@@ -3,7 +3,7 @@
 // (the Apple Pay shortcut).
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { merchantIndex, suggestMerchants, recentMerchants, matchMerchant, cleanMerchant, parseAddLink } from './budget-insights.js';
-import { todayISO, keyOf, fmt, newTxn } from './budget-core.js';
+import { todayISO, keyOf, fmt, newTxn, categoryUse } from './budget-core.js';
 import { CategoryMark, Sheet } from './budget-ui.jsx';
 
 export function useMerchants(data) {
@@ -147,6 +147,107 @@ export function AddForm({ data, onAdd, initial, submitLabel = 'Add expense', aut
       {chips ? (
         <div className="af-chips">
           <RecentChips index={index} onPick={fill} />
+        </div>
+      ) : null}
+    </form>
+  );
+}
+
+// The Month view's add box: an amount, what it was, and a category chip. The date (today), the card (the one you used
+// last) and "money in" for a refund or a sale wait under More options; picking a merchant you've used fills in its
+// category, card and usual amount.
+export function QuickAdd({ data, onAdd, dateDefault, note }) {
+  const index = useMerchants(data);
+  const cfgCats = data.config.categories.map((c) => c.name);
+  // categories you use most come first
+  const cats = useMemo(() => {
+    const use = categoryUse(data);
+    return [...cfgCats].sort((a, b) => (use[b] || 0) - (use[a] || 0));
+  }, [data.months, cfgCats.join('|')]);
+  const methods = data.config.paymentMethods && data.config.paymentMethods.length ? data.config.paymentMethods : ['Apple Card'];
+  const lastMethod = useMemo(() => {
+    let best = null;
+    Object.values(data.months || {}).forEach((m) => (m.transactions || []).forEach((t) => (!best || t.date > best.date ? (best = t) : null)));
+    return best && methods.includes(best.method) ? best.method : methods[0] || '';
+  }, [data.months, methods.join('|')]);
+  const blank = (keep = {}) => ({ date: dateDefault || todayISO(), desc: '', amount: '', category: cats[0] || '', method: lastMethod, back: false, fromPick: false, ...keep });
+  const [d, setD] = useState(() => blank());
+  const [more, setMore] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const amt = useRef(null);
+  const desc = useRef(null);
+  useEffect(() => {
+    setD((x) => ({ ...x, category: cfgCats.includes(x.category) ? x.category : cats[0] || '', method: methods.includes(x.method) ? x.method : lastMethod }));
+  }, [cfgCats.join('|'), methods.join('|')]);
+  const fill = (e) => {
+    setD((x) => ({ ...x, desc: e.name, category: cfgCats.includes(e.category) ? e.category : x.category, method: methods.includes(e.method) ? e.method : x.method, amount: x.amount === '' || x.fromPick ? String(e.amount || '') : x.amount, fromPick: true }));
+    setTimeout(() => amt.current && (amt.current.focus(), amt.current.select()), 0);
+  };
+  const raw = Math.abs(Number(d.amount));
+  const ok = String(d.desc).trim() && d.amount !== '' && Number.isFinite(raw) && raw !== 0 && d.date && d.category;
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!ok || busy) return;
+    setBusy(true);
+    const t = newTxn({ date: d.date, desc: d.desc, category: d.category, amount: d.back ? -raw : raw, method: d.method });
+    const done = await onAdd(t);
+    setBusy(false);
+    if (done !== false) {
+      setD((x) => blank({ category: x.category, method: x.method, date: x.date }));
+      desc.current && desc.current.focus();
+    }
+  };
+  return (
+    <form className="qadd" onSubmit={submit}>
+      <div className="qadd-row">
+        <label className={`af-amt ${d.back ? 'back' : ''}`}>
+          <span className="sr">Amount</span>
+          <span className="af-dollar">{d.back ? '+$' : '$'}</span>
+          <input ref={amt} className="input num" inputMode="decimal" placeholder="0.00" value={d.amount} onChange={(e) => setD({ ...d, amount: e.target.value.replace(/^-/, ''), fromPick: false })} aria-label="Amount" />
+        </label>
+        <MerchantInput index={index} value={d.desc} inputRef={desc} className="input af-desc" onChange={(v) => setD({ ...d, desc: v })} onPick={fill} />
+      </div>
+      <div className="chips-row qadd-cats" role="group" aria-label="Category">
+        {cats.map((c) => (
+          <button key={c} type="button" className={`chip catchip ${d.category === c ? 'on' : ''}`} aria-pressed={d.category === c} onClick={() => setD({ ...d, category: c })}>
+            {c}
+          </button>
+        ))}
+      </div>
+      <div className="qadd-go">
+        <button className="btn primary" disabled={!ok || busy} type="submit">
+          {busy ? 'Adding…' : d.back ? 'Add money in' : 'Add expense'}
+        </button>
+        <button type="button" className="btn quiet qadd-more" onClick={() => setMore(!more)} aria-expanded={more}>
+          More options {more ? '▴' : '▾'}
+        </button>
+      </div>
+      {!more && (note || d.method !== methods[0] || d.back) ? (
+        <p className="muted small qadd-note">
+          {[note, `Paid with ${d.method}`, d.back ? 'money in' : ''].filter(Boolean).join(' · ')}
+        </p>
+      ) : null}
+      {more ? (
+        <div className="qadd-extra">
+          <label>
+            <span className="muted small">Date</span>
+            <input className="input" type="date" value={d.date} onChange={(e) => setD({ ...d, date: e.target.value })} aria-label="Date" />
+          </label>
+          <label>
+            <span className="muted small">Paid with</span>
+            <select className="input" value={d.method} onChange={(e) => setD({ ...d, method: e.target.value })} aria-label="Paid with">
+              {methods.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </select>
+          </label>
+          <label className="check-row qadd-back">
+            <input type="checkbox" checked={d.back} onChange={(e) => setD({ ...d, back: e.target.checked })} /> Money in (a refund or something you sold)
+          </label>
+          <div className="qadd-merchants">
+            <span className="muted small">Your usual places</span>
+            <RecentChips index={index} onPick={fill} />
+          </div>
         </div>
       ) : null}
     </form>

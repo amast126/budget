@@ -137,6 +137,34 @@ div.txrow { cursor: default; }
 .rchip { flex: none; }
 .add-sheet .addform { margin-top: 8px; }
 
+/* ---- the Month view's add box ---- */
+.qadd { display: flex; flex-direction: column; gap: 10px; margin: 2px 0 6px; }
+.qadd-row { display: grid; grid-template-columns: minmax(96px, 0.8fr) minmax(0, 2fr); gap: 8px; }
+.qadd .af-amt .input { font-size: 20px; font-weight: 600; }
+.qadd .af-amt.back .input, .qadd .af-amt.back .af-dollar { color: var(--green); }
+.qadd .af-amt.back .input { padding-left: 32px; }
+.qadd-cats { margin: 0; padding: 2px 0; }
+.qadd-cats .chip { flex: none; padding: 7px 12px; font-size: 13.5px; }
+.qadd-go { display: flex; gap: 8px; align-items: center; }
+.qadd-go .btn.primary { flex: 1 1 auto; }
+.qadd-more { flex: none; font-weight: 600; font-size: 14px; padding: 10px 12px; }
+.qadd-note { margin: -4px 0 0; }
+.qadd-extra { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 10px; padding: 10px 0 2px; border-top: 1px solid var(--paper-deep); }
+.qadd-extra > label { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.qadd-extra .qadd-back, .qadd-extra .qadd-merchants { grid-column: 1 / -1; }
+.qadd-merchants { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ledger .txlist { margin-top: 4px; }
+
+/* ---- budgets in one line each; fixed costs folded ---- */
+.bcat.compact { padding: 8px 0; gap: 10px; }
+.bcat.compact .pbar { height: 5px; margin: 5px 0 2px; }
+.bcat.compact .pbar-mark { top: -2px; bottom: -2px; }
+.bills-fold > summary { list-style: none; cursor: pointer; margin-bottom: 0; flex-wrap: wrap; }
+.bills-fold > summary::-webkit-details-marker { display: none; }
+.bills-fold > summary .card-title::after { content: ' ▾'; font-size: 14px; color: var(--ink-soft); }
+.bills-fold[open] > summary .card-title::after { content: ' ▴'; }
+.bills-fold[open] > summary { margin-bottom: 10px; }
+
 /* ---- sheets ---- */
 .bsheet { max-width: 520px; }
 .bsheet.wide-sheet { max-width: 760px; }
