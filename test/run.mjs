@@ -1,7 +1,7 @@
 // Headless test of the dashboard at phone and desktop width with a stand-in backend.
 // Budget data: a real export (path in BUDGET_EXPORT). The budget module runs in local mode from the same data,
 // so a quick-add made on the home screen can be checked inside the real budget module.
-// Run: ./build.sh && BUDGET_EXPORT=/path/export.json node test/run.mjs shots/
+// Run: bash build.sh && BUDGET_EXPORT=/path/export.json EAN_IMAGE=/path/barcode.png node test/run.mjs shots/
 import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
@@ -23,6 +23,7 @@ import { healthSyncUnit, makeSyncText } from './healthsync-unit.mjs';
 import { learningUnit } from './learning-unit.mjs';
 import { autoUnit } from './auto-unit.mjs';
 import { planningUnit } from './planning-unit.mjs';
+import { homeUnit } from './home-unit.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT = path.resolve(process.argv[2] || 'shots');
@@ -236,6 +237,7 @@ await healthSyncUnit(check);
 await learningUnit(check);
 await autoUnit(check);
 await planningUnit(check);
+await homeUnit(check);
 // Phones: tabs are in the sidebar that slides out from the menu button.
 async function go(label) {
   const direct = page.locator(`.nav .nav-item:has-text("${label}")`).first();
@@ -248,19 +250,44 @@ async function go(label) {
 await page.goto(base, { waitUntil: 'networkidle' });
 await page.waitForSelector('.money .big');
 await page.screenshot({ path: path.join(OUT, 'home.png'), fullPage: true });
+const homeDoc = () => page.evaluate(() => JSON.parse(localStorage.getItem('mod:home') || 'null'));
 const txt = await page.innerText('.main');
-check(/Left to spend|Over budget by/.test(txt), 'money card renders');
-check(/Next payday/.test(txt), 'payday shown');
-check(/Bills this week/.test(txt), 'bills card renders');
+check(/Left to spend|Over budget by/.test(txt) && /a day for the next|spent of/.test(txt), 'money card: left to spend, and about how much a day');
+check(/Coming up/.test(txt) && /Savings/.test(txt) && /One small thing/.test(txt), 'Home is money, coming up, savings and one small thing');
 check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news is off the home screen');
-// phone navigation: a menu button (bottom left, naming the tab you're on) opens a sidebar with every tab
+check(!(await page.$('.rings-card, .weather, .todo, .heat-card, .insights, .portfolio, .birthdays, .steam-live, .hero-line, .hero .cd')), 'no rings, weather card, to-dos, heatmap, insights, stocks, birthdays or countdowns on Home');
+// phone navigation: a menu button (bottom left, naming the tab you're on) opens a sidebar. It starts with Home and
+// Budget; the other tabs switch on in Settings → Tabs.
 {
   const navShown = () => page.locator('.nav').isVisible();
+  const navItems = () => page.$$eval('.nav.open .nav-item', (els) => els.map((e) => e.innerText.trim()));
+  const settingsTab = async (label) => {
+    await page.click('.menu-btn');
+    await page.click('.nav.open .nav-settings');
+    await page.click(`.settings-tabs input[aria-label="${label}"]`);
+    await page.waitForTimeout(80);
+    await page.click('.settings-sheet button:has-text("Done")');
+  };
   check((await page.isVisible('.menu-btn')) && /Home/.test(await page.innerText('.menu-btn')) && !(await navShown()), 'phones: a menu button instead of a tab bar, sidebar closed');
   await page.click('.menu-btn');
   await page.waitForSelector('.nav.open');
-  const items = await page.$$eval('.nav.open .nav-item', (els) => els.map((e) => e.innerText.trim()));
-  check(items.join('|') === 'Home|News|Budget|Planning|Health|Entertainment|Learning|Cooking|Auto|Settings' && (await page.getAttribute('.menu-btn', 'aria-expanded')) === 'true' && /Home/.test(await page.innerText('.nav .nav-item.active')), `the sidebar lists every tab: ${items.join(', ')}`);
+  let items = await navItems();
+  check(items.join('|') === 'Home|Budget|Settings' && (await page.getAttribute('.menu-btn', 'aria-expanded')) === 'true' && /Home/.test(await page.innerText('.nav .nav-item.active')), `the sidebar starts with just Home and Budget: ${items.join(', ')}`);
+  await page.click('.nav.open .nav-settings');
+  await page.waitForSelector('.settings-tabs');
+  const sw = await page.$$eval('.settings-tabs .tgl-row', (els) => els.map((e) => [e.innerText.trim().split('\n')[0], e.querySelector('input').checked]));
+  check(sw.length === 8 && sw.slice(0, 7).map((x) => x[0]).join('|') === 'News|Planning|Health|Entertainment|Learning|Cooking|Auto' && sw.slice(0, 7).every((x) => !x[1]) && sw[7][0] === 'One small thing' && sw[7][1], 'Settings → Tabs: a switch for each other tab (all off) and One small thing (on)');
+  await page.screenshot({ path: path.join(OUT, 'settings-tabs.png'), fullPage: true });
+  for (const label of ['News', 'Planning', 'Health', 'Entertainment', 'Learning', 'Cooking', 'Auto']) {
+    await page.click(`.settings-tabs input[aria-label="${label} tab"]`);
+    await page.waitForTimeout(60);
+  }
+  check((await homeDoc()).tabs.join() === 'news,planning,health,fun,learning,cooking,auto', 'switching them on saves to the home document, in sidebar order');
+  await page.click('.settings-sheet button:has-text("Done")');
+  await page.click('.menu-btn');
+  await page.waitForSelector('.nav.open');
+  items = await navItems();
+  check(items.join('|') === 'Home|Budget|News|Planning|Health|Entertainment|Learning|Cooking|Auto|Settings', `and they show in the sidebar: ${items.join(', ')}`);
   await page.screenshot({ path: path.join(OUT, 'phone-sidebar.png') });
   await page.click('.nav-scrim', { position: { x: 360, y: 400 } });
   await page.waitForTimeout(450);
@@ -287,6 +314,16 @@ check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news
   await page.waitForSelector('.vice-zone');
   await page.waitForTimeout(450);
   check(!(await navShown()) && /Entertainment/.test(await page.innerText('.menu-btn')), 'picking a tab opens it and closes the sidebar; the button shows where you are');
+  // a tab switched off leaves the sidebar, but its page still opens from a link and keeps its data
+  await settingsTab('Entertainment tab');
+  await page.click('.menu-btn');
+  await page.waitForSelector('.nav.open');
+  items = await navItems();
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(450);
+  check(!items.includes('Entertainment') && !!(await page.$('.vice-zone')) && /Entertainment/.test(await page.innerText('.menu-btn')), 'switching Entertainment off takes it out of the sidebar; the page itself still works');
+  await settingsTab('Entertainment tab');
+  check((await homeDoc()).tabs.includes('fun'), 'and back on');
   await go('Home');
   await page.waitForSelector('.money .big');
 }
@@ -321,14 +358,16 @@ check(!/Supreme Court lets Trump/.test(txt) && !/Mark all read/.test(txt), 'news
   check(/^rgb/.test(edge.tone) && nums(edge.bg).join() === nums(edge.tone).join() && edge.meta === edge.tone && edge.h > edge.vh + 100, `the sky reaches past the screen's edges and the page color matches its top (${edge.tone})`);
   check(near(nums(edge.stripTop), edge.pxTop) && near(nums(edge.stripBottom), edge.pxBottom) && edge.scrim === 'none', `Safari's bars get the sky's own edge colors (top ${edge.stripTop} vs sky ${edge.pxTop.map(Math.round)}, bottom ${edge.stripBottom} vs sky ${edge.pxBottom.map(Math.round)}, scrim ${edge.scrim}); nothing else full-width sits at the edges`);
 }
-// phone order: rings (and the weekly recap on Sun/Mon), weather, to-do, then money
-const order = (await page.$$eval('.home-grid .card .card-title', (els) => els.map((e) => [e.textContent, Math.round(e.getBoundingClientRect().top)]).sort((a, b) => a[1] - b[1]).map((x) => x[0]))).filter((t) => !/^(Your week|Last week)$/.test(t));
-check(order[0] === 'Today’s rings' && order[1] === 'Weather' && order[2] === 'To-do', `phone order starts ${order.slice(0, 4).join(', ')}`);
-// the sky header
+// phone order: money (with the add box), coming up, savings, one small thing
+{
+  const order = await page.$$eval('.sh-cards .card', (els) => els.map((e) => [(e.querySelector('.card-title') || {}).textContent || (e.classList.contains('sh-savings') ? 'Savings' : ''), Math.round(e.getBoundingClientRect().top)]).sort((a, b) => a[1] - b[1]).map((x) => x[0]));
+  const at = (t) => order.indexOf(t);
+  check(/^[A-Z][a-z]+$/.test(order[0]) && !!(await page.$('.sh-money .qadd')) && at('Coming up') === 1 && at('Savings') > at('Coming up') && at('One small thing') === order.length - 1, `Home order: ${order.join(' → ')}`);
+}
+// the sky header: greeting, date and weather only
 const hero = (await page.innerText('.hero')).replace(/\n/g, ' ');
 check(/Good (morning|afternoon|evening), Alec/.test(hero) && /68°/.test(hero), `header greets and shows the weather: ${hero.slice(0, 80)}…`);
-check((await page.$$('.hero .hero-line')).length === 1 && (await page.innerText('.hero-line')).length > 10, `header line: ${await page.innerText('.hero-line')}`);
-check(/to GTA VI/.test(hero) && /to payday|Payday today/.test(hero), 'countdown chips: payday and GTA VI');
+check(!(await page.$('.hero .hero-line')) && !(await page.$('.hero .cd')), 'no summary line or countdown chips in the header');
 check(/sky-(dawn|day|golden|dusk|night)/.test(await page.getAttribute('.hero', 'class')), `sky phase: ${await page.getAttribute('.hero', 'class')}`);
 // with "reduce motion" the sky is painted once, still, but complete: opaque, with an overcast deck's texture
 {
@@ -351,118 +390,123 @@ check(/sky-(dawn|day|golden|dusk|night)/.test(await page.getAttribute('.hero', '
   const night = /sky-(night|dusk)/.test(await page.getAttribute('.hero', 'class')); // a dark overcast night has little texture to show
   check(px.opaque > 0.99 && px.spread > (night ? 3 : 12), `still sky painted (opaque ${px.opaque.toFixed(2)}, tonal range ${Math.round(px.spread)})`);
 }
-check(/Good tennis weather/.test(await page.innerText('.weather')), `tennis line: ${((await page.innerText('.weather')).match(/Good tennis weather[^\n]*/) || ['none'])[0]}`);
-check((await page.$$('.lring')).length === 4 && /Money/.test(await page.innerText('.rings-card')) && /Mind/.test(await page.innerText('.rings-card')), 'four life rings');
-check((await page.$$('.money .spark .spark-line')).length === 1, 'money card sparkline');
-await page.screenshot({ path: path.join(OUT, 'home-hero.png') });
-const wx = await page.innerText('.weather');
-check(/Dix Hills, NY 11746/.test(wx) && /68°/.test(wx) && /H 69° \/ L 56°/.test(wx.replace(/\s+/g, ' ')), 'weather shows Dix Hills with temp and high/low');
-check(/Rain today, high 69°, low 56°/.test(wx) && /Windy, gusts to 35 mph/.test(wx), `weather sentence: ${(wx.match(/Rain today[^\n]*/) || [''])[0]}`);
-check((await page.$$('.wx-hour')).length >= 5, 'hourly strip for the next 12 hours');
-await page.screenshot({ path: path.join(OUT, 'home-weather.png') });
-await page.click('.weather .card-head .link-btn');
-await page.fill('input[aria-label="Weather location"]', 'Brooklyn');
-await page.click('.wx-search button[type=submit]');
-await page.click('.wx-results .rc');
-await page.waitForTimeout(250);
-let H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
-check(H.place.name === 'Brooklyn, NY' && Math.abs(H.place.lat - 40.65) < 0.01, `location saved (${H.place.name})`);
-check(/Brooklyn, NY/.test(await page.innerText('.weather')) && /71°/.test(await page.innerText('.weather')) && weatherCalls.some((l) => Math.abs(l - 40.65) < 0.01), 'weather reloads for the new place');
-await page.click('.weather .card-head .link-btn');
-await page.click('.wx-search button:has-text("Use Dix Hills")');
-await page.waitForTimeout(250);
-H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
-check(H.place.zip === '11746', 'back to the Dix Hills default');
-// to-do
-for (const t of ['Renew car registration', 'Call the dentist', 'Book AI-901 exam']) {
-  await page.fill('input[aria-label="New to-do"]', t);
-  await page.press('input[aria-label="New to-do"]', 'Enter');
-  await page.waitForTimeout(100);
+// savings: one line, opening Savings & card
+{
+  const sv = (await page.innerText('.sh-savings')).replace(/\n/g, ' ');
+  check(/Savings\s+\$[\d,]+/.test(sv) && /view=savings/.test(await page.getAttribute('.sh-savings', 'href')), `savings in one line: ${sv}`);
 }
-H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
-check(H.todos.length === 3 && H.todos[0].text === 'Book AI-901 exam', 'three to-dos added, newest first');
-await page.click('.todo-row:has-text("Call the dentist") input[type=checkbox]');
-await page.waitForTimeout(150);
-check(/2 open/.test(await page.innerText('.todo')) && /Done \(1\)/.test(await page.innerText('.todo')), 'ticking one moves it to Done');
-await page.click('.todo-row:has-text("Renew car registration") .x');
-await page.waitForSelector('.toast');
-H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
-check(H.todos.length === 2, 'delete removes it');
-await page.click('.toast-btn');
-await page.waitForTimeout(200);
-H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
-check(H.todos.length === 3 && H.todos[2].text === 'Renew car registration', 'undo puts it back in place');
-await page.click('.todo button:has-text("Clear done")');
-await page.waitForTimeout(150);
-H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
-check(H.todos.length === 2 && !H.todos.some((t) => t.done), 'clear done');
-check(H.doneLog && Object.values(H.doneLog).reduce((a, b) => a + b, 0) === 1, 'finished to-dos are counted even after Clear done');
-let rtxt = (await page.innerText('.rings-card')).replace(/\n/g, ' ');
-check(/1 of 3 to-dos/.test(rtxt) && /1 To-dos/.test(rtxt), `Home ring and to-do streak: ${rtxt}`);
-// swipe right to finish a to-do
-const row = await page.$('.todo-row:has-text("Book AI-901 exam") .todo-text');
-const rb = await row.boundingBox();
-await page.mouse.move(rb.x + 20, rb.y + rb.height / 2);
-await page.mouse.down();
-for (let i = 1; i <= 8; i++) await page.mouse.move(rb.x + 20 + i * 18, rb.y + rb.height / 2);
-await page.mouse.up();
-await page.waitForTimeout(200);
-H = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:home')));
-check(H.todos.find((t) => t.text === 'Book AI-901 exam').done, 'swipe right finishes a to-do');
-rtxt = (await page.innerText('.rings-card')).replace(/\n/g, ' ');
-check(/2 of 3 to-dos/.test(rtxt), 'Home ring moves to 2 of 3');
-// swipe left deletes (with undo)
-const row2 = await page.$('.todo-row:has-text("Renew car registration") .todo-text');
-const rb2 = await row2.boundingBox();
-await page.mouse.move(rb2.x + 200, rb2.y + rb2.height / 2);
-await page.mouse.down();
-for (let i = 1; i <= 8; i++) await page.mouse.move(rb2.x + 200 - i * 18, rb2.y + rb2.height / 2);
-await page.mouse.up();
-await page.waitForSelector('.toast');
-check(/To-do deleted/.test(await page.innerText('.toast')), 'swipe left deletes, with undo');
-await page.click('.toast-btn');
-await page.waitForTimeout(200);
-// week in review
-await page.click('.rings-card button:has-text("Week in review")');
-await page.waitForSelector('.week-sheet');
-const wtxt = (await page.innerText('.week-sheet')).replace(/\n/g, ' ');
-check(/This week/.test(wtxt) && /Spent|No card spending/.test(wtxt) && /To-dos done/.test(wtxt) && (await page.$$('.week-sheet .tile')).length >= 4, `week in review: ${wtxt.slice(0, 120)}…`);
-await page.click('.week-sheet button[aria-label="Previous week"]');
-check(/Last week/.test(await page.innerText('.week-sheet')), 'week in review steps back a week');
-await page.screenshot({ path: path.join(OUT, 'home-week.png') });
-await page.click('.week-sheet .x');
-// heatmap
-const cells = (await page.$$('.heat-card .hc[role=gridcell]')).length;
-check(cells >= 70 && cells % 7 === 0, `heatmap grid: ${cells} days`);
-check(/Spent on \d+ of \d+ days/.test(await page.innerText('.heat-card')), `heatmap summary: ${await page.innerText('.heat-card .heat-read')}`);
-await page.click('.heat-card .seg-btn:has-text("Study")');
-check(/No study logged|Studied on/.test(await page.innerText('.heat-card')), 'heatmap switches measure');
-await page.click('.heat-card .seg-btn:has-text("Spending")');
-const insightsN = (await page.$$('.insights .insight')).length;
-console.log('  insights:', await page.$$eval('.insights .insight', (e) => e.map((x) => x.innerText)));
-check(insightsN >= 1, `insights card: ${insightsN}`);
-await page.screenshot({ path: path.join(OUT, 'home-todo.png') });
+// One small thing: pick an area, then one tiny thing a day. Do it or skip it; nothing keeps score.
+{
+  const st = () => page.innerText('.small-thing');
+  const dt = new Date();
+  const today = `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
+  const cycleTo = async (re) => {
+    for (let i = 0; i < 4 && !re.test(await st()); i++) {
+      await page.click('.small-thing button:has-text("Something else")');
+      await page.waitForTimeout(80);
+    }
+    return re.test(await st());
+  };
+  check(/Pick an area/.test(await st()) && (await page.$$eval('.small-thing .st-area', (e) => e.map((x) => x.textContent.trim()))).join('|') === 'Learning|Cooking|Health|Car', 'One small thing starts by asking for an area: Learning, Cooking, Health or Car');
+  await page.click('.small-thing .st-area:has-text("Cooking")');
+  await page.waitForSelector('.small-thing .st-btns');
+  check((await homeDoc()).small.area === 'cooking', 'picking Cooking saves it');
+  check(await cycleTo(/Add one thing to the grocery list/), '“Something else” moves to the next one');
+  await page.fill('.small-thing input[aria-label="Grocery item"]', 'Test oat milk');
+  await page.click('.small-thing button:has-text("Add to the list")');
+  await page.waitForSelector('.small-thing .st-done');
+  let ck = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+  check(ck.grocery.some((g) => g.name === 'Test oat milk' && !g.done) && /Done\. That’s it for today\./.test(await st()), 'adding a grocery puts it on the Cooking list and finishes today’s one thing');
+  check(!/streak|in a row/i.test(await st()) && !(await page.$('.small-thing .c-red, .small-thing .neg, .small-thing .pill')), 'no streaks, nothing red');
+  await page.screenshot({ path: path.join(OUT, 'home-small-thing.png'), fullPage: true });
+  await page.click('.small-thing button:has-text("Undo")');
+  await page.waitForSelector('.small-thing .st-btns');
+  ck = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cooking')));
+  check(!ck.grocery.some((g) => g.name === 'Test oat milk') && !(await homeDoc()).small.log[today].done, 'Undo takes the grocery back off and reopens it');
+  // Learning: a study one logs ten minutes on the current step of the roadmap
+  await page.click('.small-thing .st-which');
+  await page.click('.small-thing .st-area:has-text("Learning")');
+  await page.waitForSelector('.small-thing .st-btns');
+  check(await cycleTo(/Study for 10 minutes|Read one lesson/), 'Learning has a study one');
+  check(/Done logs 10 minutes on [A-Z0-9-]+/.test(await st()), `it says where the time goes: ${((await st()).match(/Done logs[^\n]*/) || [''])[0]}`);
+  await page.click('.small-thing button:has-text("Done")');
+  await page.waitForSelector('.small-thing .st-done');
+  let LD = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+  check(LD && LD.log.some((e) => e.minutes === 10 && e.date === today), 'Done logs it in Learning');
+  await page.click('.small-thing button:has-text("Undo")');
+  await page.waitForSelector('.small-thing .st-btns');
+  LD = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
+  check(!LD.log.some((e) => e.minutes === 10 && e.date === today), 'and Undo takes it back out');
+  // Car: what it needs next, answered right there
+  await page.click('.small-thing .st-which');
+  await page.click('.small-thing .st-area:has-text("Car")');
+  await page.waitForSelector('.small-thing .st-btns');
+  check(await cycleTo(/See what the car needs next/), 'Car has a “what’s next” one');
+  check(/(is due now|in about [\d,]+ miles|in \d+ days?|in about \d+ months)\./.test(await st()), `and answers it: ${((await st()).match(/[A-Z][^\n]*(due now|miles|days?|months)\./) || [''])[0]}`);
+  // after a few, it offers the tab back
+  await page.evaluate((today) => {
+    const h = JSON.parse(localStorage.getItem('mod:home'));
+    const d0 = new Date(`${today}T12:00:00`);
+    for (let i = 1; i <= 5; i++) {
+      const d = new Date(d0.getTime() - i * 86400000);
+      const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      h.small.log[k] = { area: 'auto', done: 'tires', skips: 0 };
+    }
+    h.tabs = h.tabs.filter((t) => t !== 'auto');
+    localStorage.setItem('mod:home', JSON.stringify(h));
+    window.__modSubs.home.forEach((f) => f());
+  }, today);
+  await page.waitForTimeout(100);
+  await page.click('.small-thing button:has-text("Got it")');
+  await page.waitForSelector('.small-thing .st-offer');
+  check(/You’ve done 6 of these\. Want the Auto tab back in the sidebar\?/.test(await st()), 'after a handful done, it offers the tab');
+  await page.click('.small-thing .st-offer button:has-text("Turn it on")');
+  await page.waitForTimeout(100);
+  check((await homeDoc()).tabs.includes('auto') && !(await page.$('.small-thing .st-offer')), 'one tap puts it back');
+  // skip through all of them: no guilt, just tomorrow
+  await page.click('.small-thing button:has-text("Undo")');
+  await page.waitForSelector('.small-thing .st-btns');
+  for (let i = 0; i < 3 && (await page.$('.small-thing button:has-text("Something else")')); i++) {
+    await page.click('.small-thing button:has-text("Something else")');
+    await page.waitForTimeout(80);
+  }
+  check(/That’s all for today\. A new one shows up tomorrow\./.test(await st()), 'skipping all of them just waits for tomorrow');
+  // hide the card, then bring it back from Settings
+  await page.click('.small-thing button:has-text("Try a different area")');
+  await page.click('.small-thing .st-hide');
+  await page.waitForTimeout(150);
+  check(!(await page.$('.small-thing')) && (await homeDoc()).small.on === false && /Turn it back on in Settings/.test(await page.innerText('.toast')), 'the card can be hidden');
+  await page.click('.menu-btn');
+  await page.click('.nav.open .nav-settings');
+  await page.click('.settings-tabs input[aria-label="One small thing on Home"]');
+  await page.waitForTimeout(80);
+  await page.click('.settings-sheet button:has-text("Done")');
+  await page.waitForSelector('.small-thing');
+  check((await homeDoc()).small.area === 'auto', 'and comes back from Settings where it left off');
+}
+
 
 const billsShown = await page.$$eval('.bill', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
 console.log('  bills:', billsShown);
 
-// quick add
+// quick add (the same add box as the Budget tab)
 const before = (await stored()).months;
 const key = new Date().toISOString().slice(0, 7);
 const n0 = (before[key] ? before[key].transactions.length : 0);
-await page.fill('input[aria-label="Amount"]', '12.50');
-await page.fill('input[aria-label="Description"]', 'Test coffee');
-const cats = await page.$$eval('select[aria-label="Category"] option', (o) => o.map((x) => x.textContent));
-const dining = cats.find((c) => /Dining/.test(c)) || cats[0];
-await page.selectOption('select[aria-label="Category"]', dining);
-await page.click('button:has-text("Add expense")');
+const QA = '.sh-money .qadd';
+await page.fill(`${QA} input[aria-label="Amount"]`, '12.50');
+await page.fill(`${QA} input[aria-label="Description"]`, 'Test coffee');
+const cats = await page.$$eval(`${QA} .catchip`, (o) => o.map((x) => x.textContent));
+const dining = cats.find((c) => /Dining|Restaurant/.test(c)) || cats[0];
+await page.click(`${QA} .catchip:text-is("${dining}")`);
+await page.click(`${QA} button:has-text("Add expense")`);
 await page.waitForSelector('.toast');
 const toastText = await page.innerText('.toast');
 check(/Added \$12\.50/.test(toastText), `toast: ${toastText.replace(/\n/g, ' ')}`);
 let after = await stored();
 const added = after.months[key].transactions.slice(-1)[0];
-check(after.months[key].transactions.length === n0 + 1 && added.desc === 'Test coffee' && added.amount === 12.5, 'transaction written to budget data');
-check(added.method === 'Apple Pay' && added.dc === 'pending' && added.card === 'pending', `transaction flags: method=${added.method} dc=${added.dc} card=${added.card}`);
+check(after.months[key].transactions.length === n0 + 1 && added.desc === 'Test coffee' && added.amount === 12.5 && added.category === dining, 'transaction written to budget data');
+check(after.config.paymentMethods.includes(added.method), `transaction flags: method=${added.method} dc=${added.dc} card=${added.card}`);
 check(!!after.updatedAt && after.updatedAt > (JSON.parse(EXPORT).updatedAt || 0), 'updatedAt bumped');
 await page.screenshot({ path: path.join(OUT, 'home-added.png') });
 
@@ -473,22 +517,22 @@ after = await stored();
 check(after.months[key].transactions.length === n0, 'undo removes it');
 
 // add again for the budget-module check
-await page.fill('input[aria-label="Amount"]', '7.25');
-await page.fill('input[aria-label="Description"]', 'Dashboard test bagel');
-await page.click('button:has-text("Add expense")');
+await page.fill(`${QA} input[aria-label="Amount"]`, '7.25');
+await page.fill(`${QA} input[aria-label="Description"]`, 'Dashboard test bagel');
+await page.click(`${QA} button:has-text("Add expense")`);
 await page.waitForSelector('.toast');
 
 // toggle a bill
-const firstBill = await page.$('.bill input[type=checkbox]');
+const firstBill = await page.$('.sh-coming .bill input[type=checkbox]');
 if (firstBill) {
   const wasPaid = await firstBill.isChecked();
-  await page.click('.bill input[type=checkbox]');
+  await page.click('.sh-coming .bill input[type=checkbox]');
   await page.waitForTimeout(150);
-  const nowPaid = await page.$eval('.bill input[type=checkbox]', (e) => e.checked);
+  const nowPaid = await page.$eval('.sh-coming .bill input[type=checkbox]', (e) => e.checked);
   check(nowPaid === !wasPaid, `bill tick toggles (${wasPaid} → ${nowPaid})`);
-  await page.click('.bill input[type=checkbox]');
+  await page.click('.sh-coming .bill input[type=checkbox]');
   await page.waitForTimeout(150);
-  const back = await page.$eval('.bill input[type=checkbox]', (e) => e.checked);
+  const back = await page.$eval('.sh-coming .bill input[type=checkbox]', (e) => e.checked);
   check(back === wasPaid, 'bill tick toggles back');
 } else {
   console.log('  (no bills in the next 7 days to toggle)');
@@ -709,8 +753,14 @@ page.on('request', (r) => r.url().startsWith('https://ntfy.sh/') && ntfy.push({ 
 await page.reload({ waitUntil: 'networkidle' });
 await go('Budget');
 await page.waitForSelector('.budget .bud-summary');
+// Month, Savings & card and Settings always show; the rest open from More.
+const budTabOn = async (p, label) => {
+  const chip = p.locator(`.bud-tabs .nchip:text-is("${label}")`);
+  if (!(await chip.count())) await p.click('.bud-tabs .bud-more');
+  await p.click(`.bud-tabs .nchip:text-is("${label}")`);
+};
 const budTab = async (label) => {
-  await page.click(`.bud-tabs .nchip:has-text("${label}")`);
+  await budTabOn(page, label);
   await page.waitForTimeout(250);
 };
 {
@@ -718,7 +768,11 @@ const budTab = async (label) => {
   check(!(await page.$('iframe')) && /Left to spend|Over budget by/.test(bt) && /Spending budgets/.test(bt) && /Fixed costs/.test(bt) && /Expenses/.test(bt), 'Budget is part of the app now (no frame): summary, categories, bills, expenses');
   check(/Dashboard test bagel/.test(bt), 'the Home quick-add is in this month’s expenses');
   const views = await page.$$eval('.bud-tabs .nchip', (e) => e.map((x) => x.textContent));
-  check(views.join('|') === 'Month|Paycheck|Spending|Savings & card|Outlook|Stocks|Year|Settings', `budget views: ${views.join(', ')}`);
+  check(views.join('|') === 'Month|Savings & card|Settings|More ▾', `three budget views, the rest behind More: ${views.join(', ')}`);
+  await page.click('.bud-tabs .bud-more');
+  const all = await page.$$eval('.bud-tabs .nchip', (e) => e.map((x) => x.textContent));
+  check(all.join('|') === 'Month|Savings & card|Settings|More ▴|Paycheck|Spending|Outlook|Stocks|Year', `More opens the others: ${all.slice(4).join(', ')}`);
+  await page.click('.bud-tabs .bud-more');
   await page.waitForTimeout(300);
   const sb = await stored();
   check(sb.configVersion === 28 && sb.historyVersion === 2, 'an older budget gets the budget app’s one-time upgrade');
@@ -987,25 +1041,20 @@ await page.waitForSelector('.add-sheet');
   await page.waitForTimeout(250);
   check((await stored()).months[curKey].transactions.some((t) => t.desc === 'Testville Pizza' && t.amount === 12.34) && !(await page.$('.add-sheet')) && /#\/$/.test(page.url()), 'one tap adds it and lands on Home');
 }
-// Home's quick add knows your merchants too
-await page.waitForSelector('.qa');
-await page.fill('.qa input[aria-label="Description"]', 'Testv');
-await page.waitForSelector('.qa .msuggest button:has-text("Testville Pizza")');
-await page.click('.qa .msuggest button:has-text("Testville Pizza")');
-check((await page.inputValue('.qa select[aria-label="Category"]')) === dine && (await page.inputValue('.qa input[aria-label="Amount"]')) !== '', 'Home quick add suggests merchants and fills them in');
-await page.fill('.qa input[aria-label="Description"]', '');
-await page.fill('.qa input[aria-label="Amount"]', '');
+// Home's add box knows your merchants too
+await page.waitForSelector('.sh-money .qadd');
+await page.fill('.sh-money .qadd input[aria-label="Description"]', 'Testv');
+await page.waitForSelector('.sh-money .qadd .msuggest button:has-text("Testville Pizza")');
+await page.click('.sh-money .qadd .msuggest button:has-text("Testville Pizza")');
+check((await page.$eval('.sh-money .qadd .catchip[aria-pressed="true"]', (e) => e.textContent)) === dine && (await page.inputValue('.sh-money .qadd input[aria-label="Amount"]')) !== '', 'Home’s add box suggests merchants and fills them in');
+await page.fill('.sh-money .qadd input[aria-label="Description"]', '');
+await page.fill('.sh-money .qadd input[aria-label="Amount"]', '');
 {
   const w = await page.evaluate(() => document.documentElement.scrollWidth);
   check(w <= 390, `no sideways scrolling on a phone (${w}px)`);
 }
 
 // ---------------- learning
-await go('Home');
-await page.waitForSelector('.money .big');
-const learnCard = '.home .card:has(h2:text-is("Learning"))';
-const homeLearn = await page.innerText(learnCard);
-check(/Learning/.test(homeLearn) && /AI-901/.test(homeLearn), 'Home shows the Learning card with AI-901');
 await go('Learning');
 await page.waitForSelector('.steps .step');
 const stepsText = await page.$$eval('.learning .col:first-child .step .step-head', (els) => els.map((e) => e.innerText.replace(/\n/g, ' | ')));
@@ -1047,10 +1096,6 @@ await page.waitForTimeout(200);
 L = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:learning')));
 check(L.plan.includes('sc-300'), `SC-300 added to roadmap at position ${L.plan.indexOf('sc-300') + 1}`);
 await page.screenshot({ path: path.join(OUT, 'learning-after.png'), fullPage: true });
-await go('Home');
-await page.waitForSelector('.money .big');
-check(/exam in 20 days/.test(await page.innerText(learnCard)), 'Home learning card shows exam countdown');
-await page.screenshot({ path: path.join(OUT, 'home-learning.png'), fullPage: true });
 // Exam prep for the booked AI-901: rate skills, tick a module, log practice tests, clear and reset the date
 await go('Learning');
 await page.click('.page-tabs .seg-btn:has-text("Exam prep")');
@@ -1127,15 +1172,10 @@ CD = await page.evaluate(() => JSON.parse(localStorage.getItem('mod:cards') || '
   check(/Done: 4 reviews/.test(await page.innerText('.fc-done')) && CD.log[t] === 4 && due[0] === ld(2) && due[1] === ld(2) && due[2] === ld(4) && CD.cards.every((c) => c.first === t), `flashcards: four reviews saved; two back in 2 days, one in 4 (${due.join(', ')})`);
 }
 await page.screenshot({ path: path.join(OUT, 'learning-cards.png'), fullPage: true });
-await go('Home');
-await page.waitForSelector('.money .big');
-check(/Flashcards/.test(await page.innerText(learnCard)) && /All caught up today/.test(await page.innerText(learnCard)) && /\d+% ready/.test(await page.innerText(learnCard)), 'Home learning card: readiness, and flashcards caught up');
+
 
 
 // ---------------- cooking: the recipe box (search, a recipe's page, servings, cook mode, import, add, edit, delete)
-await go('Home');
-await page.waitForSelector('.money .big');
-check(/Cooking/.test(await page.innerText('.col:nth-child(2)')) && /Grocery list/.test(await page.innerText('.col:nth-child(2)')), 'Home shows the Cooking card');
 await go('Cooking');
 await page.waitForSelector('.cooking .cook-hero');
 const rbox = () => page.evaluate(() => JSON.parse(localStorage.getItem('mod:recipebox') || 'null'));
@@ -1490,18 +1530,6 @@ await page.waitForSelector('.mealprep .mp-grid');
   check(C.plan.length === 2, 'remove one from the plan');
   await page.screenshot({ path: path.join(OUT, 'cooking-mealprep.png'), fullPage: true });
 }
-await go('Home');
-await page.waitForSelector('.money .big');
-const homeCook = await page.innerText('.col:nth-child(2)');
-check(/Tonight: Garlic butter rice/.test(homeCook) && /6 recipes/.test(homeCook), `Home Cooking card suggests tonight’s dinner from your box: ${(homeCook.match(/Cooking[\s\S]{0,120}/) || [''])[0].replace(/\n/g, ' · ')}`);
-check(/This week’s prep/.test(homeCook) && /2 recipes · 8 servings/.test(homeCook), 'and this week’s prep');
-await page.click('.home-cooking a.home-row:has-text("Tonight")');
-await page.waitForSelector('.rp-title:text-is("Garlic butter rice")');
-check(true, 'Home’s tonight link opens the recipe');
-await page.click('.rp-back');
-await page.waitForSelector('.money .big');
-check(/#\/?$/.test(await page.evaluate(() => location.hash)) || (await page.evaluate(() => location.hash)) === '', 'and Back goes back Home');
-await page.screenshot({ path: path.join(OUT, 'home-cooking.png'), fullPage: true });
 
 
 // ---------------- auto
@@ -1512,12 +1540,6 @@ const carBill = expBills.find((b) => /car payment|auto loan|car loan/i.test(b.na
 const insNext = expBills.find((b) => /geico|insurance/i.test(b.name) && b.starts && b.starts > curKey);
 const money2 = (n) => `$${Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const monLabel = (ym) => new Date(`${ym}-15T12:00:00`).toLocaleString('en-US', { month: 'short', year: 'numeric' });
-await go('Home');
-await page.waitForSelector('.auto-home');
-let autoHome = await page.innerText('.auto-home');
-check(/2021 Nissan Altima SL/.test(autoHome) && /NYS inspection (due|expired)/.test(autoHome), `Home auto card: ${autoHome.replace(/\n/g, ' | ')}`);
-check(/\d+ payments? left · \$[\d,.]+ · paid off Jun 2027/.test(autoHome), 'Home auto card shows the car loan countdown');
-check(/2 recalls to check/.test(autoHome), 'Home auto card flags recalls');
 await go('Auto');
 await page.waitForSelector('.auto .mt-row');
 let atext = await page.innerText('.auto');
@@ -1691,10 +1713,6 @@ await page.screenshot({ path: path.join(OUT, 'auto-costs.png'), fullPage: true }
 await page.click('.cl-light[aria-label^="Recalls"]');
 await page.waitForSelector('#auto-recalls');
 check(/#\/auto\?car$/.test(await page.evaluate(() => location.hash)), 'a warning light opens the Car section at its card');
-await go('Home');
-await page.waitForSelector('.auto-home');
-autoHome = await page.innerText('.auto-home');
-check(/1 recall to check/.test(autoHome) && !/NYS inspection/.test(autoHome) && /Front brake pads are getting thin/.test(autoHome), `Home card updates (inspection done, one recall left, pads): ${autoHome.replace(/\n/g, ' | ')}`);
 
 
 // ---------------------------------------------------------------- health
@@ -1704,9 +1722,6 @@ const hDoc = () => page.evaluate(() => JSON.parse(localStorage.getItem('mod:heal
 const yDoc = () => page.evaluate((y) => JSON.parse(localStorage.getItem('mod:health-' + y) || 'null'), Y);
 const localToday = await page.evaluate(() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; });
 const dayFood = async () => ((await yDoc()).days[localToday] || { food: [] }).food;
-await go('Home');
-await page.waitForSelector('.health-home');
-check(/Set up your target/.test(await page.innerText('.health-home')), 'Home health card asks for setup');
 await go('Health');
 await page.waitForSelector('.health .targets');
 await page.selectOption('select[aria-label="Sex"]', 'male');
@@ -1907,12 +1922,6 @@ await page.click('.meals-tab .sm-row .rc');
 await page.waitForTimeout(250);
 F = await dayFood();
 check(F.length === foodBefore + 1 && F[F.length - 1].meal === 'snack' && F[F.length - 1].k === 244, 'saved meal logged in one tap');
-// Home card
-await go('Home');
-await page.waitForSelector('.health-home');
-const hh = (await page.innerText('.health-home')).replace(/\n/g, ' ');
-check(/calories left|calories over/.test(hh) && /Steps 9,500/.test(hh) && /Weight/.test(hh), `Home health card: ${hh}`);
-check((await page.$$('.health-home .mb-bar')).length === 7, 'Home health card: 7 days of calories');
 {
   // An old weigh-in from years ago (e.g. an Apple Health import) must not count as "30 days ago".
   const { weightStats, normalizeHealth } = await import('../src/health-logic.js');
@@ -1922,9 +1931,6 @@ check((await page.$$('.health-home .mb-bar')).length === 7, 'Home health card: 7
   const st = weightStats(h, iso(t));
   check(st.change30 == null && st.since && st.since.date !== '2020-12-06', `weight trend ignores years-old weigh-ins (${JSON.stringify(st.since)})`);
 }
-const rt2 = (await page.innerText('.rings-card')).replace(/\n/g, ' ');
-check(/Body/.test(rt2) && /(workout|steps)/.test(rt2) && /Food logged/.test(rt2), `rings after logging: ${rt2}`);
-await page.screenshot({ path: path.join(OUT, 'home-health.png'), fullPage: true });
 // Cooking → log a serving
 await go('Cooking');
 await page.click('.cooking .page-tabs .seg-btn:has-text("Kitchen")'); // the tab remembers Meal prep from before
@@ -2033,9 +2039,7 @@ check((await page.$$('.audiogram .ag-o')).length === 6, 'audiogram points drawn'
 await page.screenshot({ path: path.join(OUT, 'health-hearing.png'), fullPage: true });
 // the view is remembered
 await go('Home');
-await page.waitForSelector('.health-home');
-const hh2 = (await page.innerText('.health-home')).replace(/\n/g, ' ');
-check(/Slept 7h 15m/.test(hh2), `Home health card shows last night: ${hh2}`);
+await page.waitForSelector('.money .big');
 await go('Health');
 await page.waitForSelector('.health-tabs');
 check(/on/.test(await page.getAttribute('.health-tabs .seg-btn:has-text("Hearing")', 'class')), 'Health reopens on the last view');
@@ -2115,11 +2119,6 @@ await page.waitForSelector('.report-card');
   check(/\b(January|February|March|April|May|June|July|August|September|October|November|December) \d{4}/.test(rp) && /Steps a day/.test(rp) && /Sleep a night/.test(rp), `monthly report: ${rp.slice(0, 160)}`);
 }
 await page.screenshot({ path: path.join(OUT, 'health-report.png'), fullPage: true });
-// Home: readiness on the Body ring and the Health card; the overdue checkup
-await go('Home');
-await page.waitForSelector('.health-home');
-check(/Normal|Ready|Take it easy/.test(await page.innerText('.rings-card .lr-tag')), 'Body ring carries readiness');
-check((await page.$('.health-home .home-ready')) && /Dental cleaning overdue/.test(await page.innerText('.health-home')), 'Home health card: readiness and the overdue checkup');
 // the daily sync link from an iPhone Shortcut: without the key it asks first; with it, it saves right away
 const agoIso = (n) => page.evaluate((n) => { const d = new Date(); d.setDate(d.getDate() - n); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }, n);
 const d2 = await agoIso(2);
@@ -2586,10 +2585,6 @@ await ctx.route(/steamstatic\.com|media\.steampowered\.com/, (route) => (/apps\/
   });
   await page.waitForSelector('.steam-alert');
   check(/Privacy Settings → Game details → Public/.test(await page.innerText('.steam-alert')), 'a sync problem shows what to do (private game details)');
-  // Home: while you're in a game
-  await go('Home');
-  await page.waitForSelector('.steam-live');
-  check(/Playing now/i.test(await page.innerText('.steam-live')) && /Test Racer®/.test(await page.innerText('.steam-live')) && (await page.getAttribute('.steam-live', 'href')) === '#/fun', 'Home shows what you’re playing on Steam, linking to Entertainment');
   await page.evaluate(() => {
     const l = JSON.parse(localStorage.getItem('mod:steam-live'));
     l.game = null;
@@ -2598,7 +2593,6 @@ await ctx.route(/steamstatic\.com|media\.steampowered\.com/, (route) => (/apps\/
     window.__modSubs['steam-live'].forEach((f) => f());
   });
   await page.waitForTimeout(300);
-  check(!(await page.$('.steam-live')), 'and it goes away when you stop');
   await go('Entertainment');
   await page.waitForSelector('.steam-zone .steam-foot');
   await page.click('.steam-foot .link-btn');
@@ -2720,77 +2714,14 @@ SDD = await mod('sourdough');
 check(SDD.bakes.length === 1 && SDD.bakes[0].rating === 4 && SDD.bakes[0].hydration === 75 && SDD.calc.loaves === 2 && SDD.calc.adjust === true, 'bake log saved; calculator settings kept');
 await page.screenshot({ path: path.join(OUT, 'sourdough.png'), fullPage: true });
 
-// ---------------------------------------------------------------- Home: guitar, starter, birthdays, portfolio
+// ---------------------------------------------------------------- News: NYC politics
+await go('News');
+await page.waitForSelector('.news-page .news-body');
+await page.click('.nchip[data-sec="nyc"]');
+await page.waitForTimeout(100);
+check(/deputy mayor for housing/.test(await page.innerText('.news-body')), 'NYC politics in the News tab');
 await go('Home');
 await page.waitForSelector('.money .big');
-await page.waitForSelector('.portfolio .tk');
-{
-  const lc = await page.innerText(learnCard);
-  check(/Guitar/.test(lc) && /🔥 1/.test(lc) && /25m today/.test(lc) && /Grade 2, module 3/.test(lc), `Home learning card has guitar: ${lc.split('\n').slice(-2).join(' ')}`);
-  check(/Sourdough starter/.test(await page.innerText('.home .card:has(h2:text-is("Cooking"))')), 'Home cooking card shows the starter');
-  const chipsT = await page.innerText('.chips-row');
-  check(/to MW4/.test(chipsT) && /to GTA VI/.test(chipsT) && /to Doomsday/.test(chipsT) && /to Test Game/.test(chipsT), `release countdowns on Home: ${chipsT.replace(/\n/g, ' ')}`);
-}
-{
-  await page.waitForTimeout(400);
-  const tks = await page.$$eval('.portfolio .tk', (els) => els.map((e) => e.innerText.replace(/\s+/g, ' ')));
-  const pf = await page.innerText('.portfolio');
-  check(tks.length === 7 && tks.every((t) => /\$\d/.test(t) && /[+-]?\d+\.\d\d%/.test(t)), `portfolio prices: ${tks.slice(0, 3).join(' | ')} …`);
-  await page.click('.portfolio .seg-btn:has-text("Energy")');
-  const en = await page.innerText('.portfolio .pf-news');
-  check(/GOOG test headline/.test(pf) && !/Market wrap/.test(pf) && /on average today/.test(pf) && /nuclear deals/.test(en), 'portfolio headlines: news naming your companies (market wraps skipped) plus the energy/quantum/robotics themes');
-  await page.click('.portfolio .seg-btn:has-text("Quantum")');
-  const qs = await page.$$eval('.portfolio .pf-news .story-title', (els) => els.map((e) => e.textContent));
-  check(qs.length === 1 && /quantum computer/.test(qs[0]), 'quantum headlines on their own');
-  await page.screenshot({ path: path.join(OUT, 'home-portfolio.png'), fullPage: true });
-  await page.click('.portfolio a:has-text("Markets news")');
-  await page.waitForSelector('.news-page .news-body');
-  const tabOn = await page.innerText('.nchip.on');
-  const mk = await page.innerText('.news-body');
-  check(/Markets/.test(tabOn) && /Warehouse robots/.test(mk) && /Robotics/.test(mk), 'Markets news opens from the portfolio card, tagged by theme');
-  await page.click('.nchip[data-sec="nyc"]');
-  await page.waitForTimeout(100);
-  check(/deputy mayor for housing/.test(await page.innerText('.news-body')), 'NYC politics in the News tab');
-  await go('Home');
-  await page.waitForSelector('.money .big');
-}
-await page.click('.birthdays button:has-text("Add or import birthdays")');
-await page.waitForSelector('.bday-sheet');
-{
-  const d = new Date();
-  d.setDate(d.getDate() + 3);
-  await page.fill('.bday-form input[aria-label="Name"]', 'Test Person');
-  await page.selectOption('.bday-form select[aria-label="Month"]', String(d.getMonth() + 1));
-  await page.selectOption('.bday-form select[aria-label="Day"]', String(d.getDate()));
-  await page.fill('.bday-form input[aria-label="Birth year"]', '1990');
-  await page.click('.bday-form button[type=submit]');
-  await page.waitForTimeout(150);
-  const vcf = ['BEGIN:VCARD', 'FN:Val Entine', 'BDAY:1985-02-14', 'END:VCARD', 'BEGIN:VCARD', 'FN:Sam Fourth', 'BDAY;X-APPLE-OMIT-YEAR=1604:1604-07-04', 'END:VCARD', 'BEGIN:VCARD', 'FN:No Birthday', 'END:VCARD'].join('\n');
-  await page.setInputFiles('input[aria-label="Import birthdays file"]', { name: 'contacts.vcf', mimeType: 'text/vcard', buffer: Buffer.from(vcf) });
-  await page.waitForSelector('.bday-sheet .ok-note');
-  const m1 = await page.innerText('.bday-sheet .ok-note');
-  await page.setInputFiles('input[aria-label="Import birthdays file"]', { name: 'friends.csv', mimeType: 'text/csv', buffer: Buffer.from('Name,Birthday\nVal Entine,2/14/1985\nCasey Csv,March 3\n') });
-  await page.waitForFunction(() => /friends\.csv/.test(document.querySelector('.bday-sheet .ok-note').textContent));
-  const m2 = await page.innerText('.bday-sheet .ok-note');
-  const BDD = await mod('birthdays');
-  check(BDD.people.length === 4 && /2 added/.test(m1) && /1 added/.test(m2) && /1 already here/.test(m2), `birthdays: added one, imported a .vcf (${m1.replace(/.*: /, '')}) and a .csv (${m2.replace(/.*: /, '')})`);
-  const [dl] = await Promise.all([page.waitForEvent('download'), page.click('.bday-io button:has-text("Add to Calendar")')]);
-  const ics = fs.readFileSync(await dl.path(), 'utf8');
-  check(dl.suggestedFilename() === 'birthdays.ics' && (ics.match(/BEGIN:VEVENT/g) || []).length === 4 && /Test Person’s birthday/.test(ics), 'calendar file with every birthday');
-  await page.click('.bday-sheet button[aria-label="Remove Casey Csv"]');
-  await page.waitForSelector('.toast-btn');
-  await page.click('.toast-btn');
-  await page.waitForTimeout(200);
-  check((await mod('birthdays')).people.length === 4, 'removing a birthday can be undone');
-  await page.screenshot({ path: path.join(OUT, 'birthdays.png') });
-  await page.click('.bday-sheet .btn.primary.block');
-}
-await page.waitForTimeout(200);
-{
-  const chipsT = await page.innerText('.chips-row');
-  check(/3\s*days to Test’s birthday/.test(chipsT), 'a birthday this week shows in the header');
-  check(!!(await page.$('.slot.o4 .birthdays')) && /Test Person turns \d+/.test(await page.innerText('.birthdays')), 'and the Birthdays card moves up next to the to-do list');
-}
 
 // settings sheet
 await go('Settings');
@@ -2810,13 +2741,15 @@ await dp.waitForTimeout(1400);
 const bigAria = await dp.getAttribute('.money .big > span', 'aria-label');
 check(bigAria && (await dp.innerText('.money .big')).trim() === bigAria, `money counts up to ${bigAria}`);
 await dp.screenshot({ path: path.join(OUT, 'desktop.png') });
-await dp.fill('input[aria-label="New to-do"]', 'Water the plants');
-await dp.press('input[aria-label="New to-do"]', 'Enter');
-await dp.waitForTimeout(150);
-await dp.click('.todo-row:has-text("Water the plants") input[type=checkbox]');
-check((await dp.$$('canvas.confetti')).length === 1, 'finishing a to-do sets off confetti');
-await dp.waitForTimeout(1600);
-check((await dp.$$('canvas.confetti')).length === 0, 'confetti cleans itself up');
+{
+  // a wide screen keeps Home to one calm column, with just Home and Budget in the sidebar to start
+  const box = await dp.evaluate(() => {
+    const r = [...document.querySelectorAll('.sh-cards .card')].map((e) => e.getBoundingClientRect());
+    return { n: r.length, w: Math.max(...r.map((x) => x.width)), lefts: new Set(r.map((x) => Math.round(x.left))).size };
+  });
+  const navT = await dp.$$eval('.nav .nav-item', (els) => els.map((e) => e.innerText.trim()).join('|'));
+  check(box.n >= 4 && box.w <= 640 && box.lefts === 1 && navT === 'Home|Budget|Settings', `desktop Home: ${box.n} cards in one column (${Math.round(box.w)}px), sidebar ${navT}`);
+}
 // ---------------------------------------------------------------- Planning (made-up house, wedding and vendor)
 {
   const pp = await desk.newPage();
@@ -3027,21 +2960,8 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     const { tp, errs } = await open(73, 13);
     await tp.waitForSelector('.hero canvas.precip');
     await tp.waitForTimeout(3500);
-    const ledge = await tp.evaluate(() => {
-      const c = document.querySelector('.hero canvas.precip');
-      const cb = c.getBoundingClientRect();
-      const r = document.querySelector('.hero .cd').getBoundingClientRect();
-      const k = c.width / cb.width;
-      const y = Math.round((r.top - cb.top - 1.5) * k);
-      const x0 = Math.round((r.left - cb.left + 12) * k);
-      const x1 = Math.round((r.right - cb.left - 12) * k);
-      const d = c.getContext('2d').getImageData(x0, y, x1 - x0, 1).data;
-      let snow = 0;
-      for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 150 && d[i] > 180) snow++;
-      return snow / (x1 - x0);
-    });
     const f = await skyPx(tp, '.hero canvas.precip');
-    check(ledge > 0.6 && f.bright > 50 && !errs.length, `snow falls (${f.bright} bright samples) and lies on the chips (${Math.round(ledge * 100)}% of a chip's top)`);
+    check(f.bright > 50 && !errs.length, `snow falls (${f.bright} bright samples)`);
     await tp.locator('.hero').screenshot({ path: path.join(OUT, 'hero-snow.png') });
     await tp.close();
   }
@@ -3100,15 +3020,15 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForSelector('.hero');
   await tp.waitForTimeout(600);
   check(/[?&]demo/.test(tp.url()) && /Good (morning|afternoon|evening), Jordan/.test(await tp.innerText('.hero')), `demo opens without signing in: ${(await tp.innerText('.hero-title')).trim()}`);
-  check((await tp.$$('.lring')).length === 4 && /Seattle, WA/.test(await tp.innerText('.weather')) && /2024 Tesla Model Y/.test(await tp.innerText('.main')), 'demo home: rings, Seattle weather, the sample car');
-  const chips = await tp.innerText('.chips-row');
-  check(!/GTA/.test(chips) && !/inspection/.test(chips) && /AI-901 exam/.test(chips) && /to Dune/.test(chips) && /Maya’s birthday/.test(chips), `demo countdowns are the demo person's: ${chips.replace(/\n/g, ' ')}`);
-  const spentBefore = await tp.innerText('.money .muted.small.num');
-  await tp.fill('.qa input[aria-label="Amount"]', '12.34');
-  await tp.fill('.qa input[aria-label="Description"]', 'Demo test lunch');
-  await tp.click('.qa button[type=submit]');
+  const navT = await tp.$$eval('.nav .nav-item', (els) => els.map((e) => e.innerText.trim()).join('|'));
+  check(!!(await tp.$('.sh-coming')) && !!(await tp.$('.sh-savings')) && /Cooking/.test(await tp.innerText('.small-thing')) && navT === 'Home|Budget|News|Planning|Health|Entertainment|Learning|Cooking|Auto|Settings', `demo home: the simple Home, One small thing on Cooking, every tab on (${navT})`);
+  const leftNow = () => tp.getAttribute('.money .big > span', 'aria-label');
+  const spentBefore = await leftNow();
+  await tp.fill('.sh-money .qadd input[aria-label="Amount"]', '12.34');
+  await tp.fill('.sh-money .qadd input[aria-label="Description"]', 'Demo test lunch');
+  await tp.click('.sh-money .qadd button[type=submit]');
   await tp.waitForTimeout(300);
-  const spentAfter = await tp.innerText('.money .muted.small.num');
+  const spentAfter = await leftNow();
   check(spentBefore !== spentAfter, `quick add works in the demo (${spentBefore} → ${spentAfter})`);
   for (const [route, sel] of [['budget', '.bud-summary'], ['planning', '.pl-hero'], ['planning?wedding', '.pl-vendors'], ['health', '.health-tabs'], ['learning', '.page-title'], ['cooking', '.rb-grid'], ['cooking?r=demo-miso-salmon', '.rp-title'], ['auto', '.cluster'], ['news', '.news-body'], ['fun', '.doom-zone'], ['learning?guitar', '.practice'], ['cooking?sourdough', '.starter']]) {
     await tp.goto(`${base}?demo#/${route}`);
@@ -3152,23 +3072,23 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
     await tp.click('.ledger button:has-text("Add expense")');
     await tp.waitForTimeout(300);
     for (const v of ['Paycheck', 'Spending', 'Savings & card', 'Outlook', 'Stocks', 'Year', 'Settings']) {
-      await tp.click(`.bud-tabs .nchip:has-text("${v}")`);
+      await budTabOn(tp, v);
       await tp.waitForTimeout(200);
     }
-    await tp.click('.bud-tabs .nchip:has-text("Outlook")');
+    await budTabOn(tp, 'Outlook');
     await tp.waitForTimeout(200);
     const ot = await tp.innerText('.budget .mtl');
     check(/HOA dues up to \$695/.test(ot) && /Annual bonus: \$18,000 into savings/.test(ot), 'demo outlook: a price change and a planned deposit');
-    await tp.click('.bud-tabs .nchip:has-text("Stocks")');
+    await budTabOn(tp, 'Stocks');
     await tp.waitForTimeout(200);
     check(/VTI/.test(await tp.innerText('.budget')) && !/no price yet/.test(await tp.innerText('.budget .holds')), 'demo stocks have (made-up) prices');
     await tp.screenshot({ path: path.join(OUT, 'demo-budget-stocks.png'), fullPage: true });
-    await tp.click('.bud-tabs .nchip:has-text("Month")');
+    await budTabOn(tp, 'Month');
   }
   await tp.click('a.nav-item:has-text("Home")');
   await tp.waitForSelector('.money');
   await tp.waitForTimeout(300);
-  check((await tp.innerText('.money .muted.small.num')) !== spentAfter, 'a change in the Budget tab shows on Home');
+  check((await leftNow()) !== spentAfter, 'a change in the Budget tab shows on Home');
   const keys = await tp.evaluate(() => ({ real: localStorage.getItem('budget-tracker-v1'), demo: Object.keys(localStorage).filter((k) => k.startsWith('demo:')).length }));
   check(keys.real === 'REAL-DATA-SENTINEL' && keys.demo >= 12, `the real budget key is untouched (${keys.demo} demo documents beside it)`);
   const idb = await tp.evaluate(async () => (indexedDB.databases ? (await indexedDB.databases()).map((d) => d.name) : []));
@@ -3226,7 +3146,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForTimeout(500);
   const look = () =>
     tp.evaluate(() => {
-      const card = document.querySelector('.home-grid .card');
+      const card = document.querySelector('.sh-cards .card');
       const cs = getComputedStyle(card);
       const alpha = (cs.backgroundColor.match(/rgba?\(([^)]+)\)/) || [, '0,0,0,1'])[1].split(',').map(Number)[3];
       return {
@@ -3293,7 +3213,7 @@ for (const [route, sel] of [['health', '.health-tabs'], ['learning', '.page-titl
   await tp.waitForSelector('.hero');
   await tp.waitForTimeout(500);
   const d = await tp.evaluate(() => {
-    const card = document.querySelector('.home-grid .card');
+    const card = document.querySelector('.sh-cards .card');
     const bg = getComputedStyle(card).backgroundColor.match(/\d+(\.\d+)?/g).map(Number);
     const ink = getComputedStyle(card.querySelector('.card-title')).color.match(/\d+/g).map(Number);
     return { html: document.documentElement.className, bg, ink };
@@ -3332,12 +3252,9 @@ for (const [W, want] of [[1366, 0], [1920, 3], [2560, 4], [3440, 6]]) {
   await tp.waitForSelector('.hero');
   await tp.waitForTimeout(700);
   const h = await layout();
-  check(h.cols === want && (want === 0 || h.columns === want) && h.overlaps === 0 && h.scrollW <= W, `${W}px wide: Home in ${want || 'the usual two'} columns${want ? ` (${h.columns} used, no overlaps)` : ''}`);
+  const homeW = await tp.evaluate(() => Math.round(document.querySelector('.simple-home').getBoundingClientRect().width));
+  check(h.cols === 0 && homeW <= 640 && h.scrollW <= W, `${W}px wide: Home stays one calm column (${homeW}px)`);
   if (want) {
-    await tp.fill('.todo input[aria-label="New to-do"]', 'A taller card');
-    await tp.press('.todo input[aria-label="New to-do"]', 'Enter');
-    await tp.waitForTimeout(300);
-    check((await layout()).overlaps === 0, `${W}px: a card that grows pushes the ones below it down`);
     await tp.click('a.nav-item:has-text("Budget")');
     await tp.waitForSelector('.budget .bud-summary');
     await tp.waitForTimeout(500);
@@ -3363,16 +3280,17 @@ for (const [label, hh, want] of [['night', 22, 'sky-night'], ['golden', 18, 'sky
   await tp.locator('.hero').screenshot({ path: path.join(OUT, `hero-${label}.png`) });
   await tp.close();
 }
-await dp.click('a.nav-item:has-text("Cooking")');
+// tabs that are switched off still open from a link
+await dp.evaluate(() => (location.hash = '#/cooking'));
 await dp.waitForSelector('.cooking .cook-hero');
 await dp.evaluate(() => {});
 await dp.waitForTimeout(300);
 await dp.screenshot({ path: path.join(OUT, 'desktop-cooking.png'), fullPage: true });
-await dp.click('a.nav-item:has-text("Auto")');
+await dp.evaluate(() => (location.hash = '#/auto'));
 await dp.waitForSelector('.cluster');
 await dp.waitForTimeout(300);
 await dp.screenshot({ path: path.join(OUT, 'desktop-auto.png') });
-await dp.click('a.nav-item:has-text("Health")');
+await dp.evaluate(() => (location.hash = '#/health'));
 await dp.waitForSelector('.health');
 await dp.waitForTimeout(300);
 await dp.screenshot({ path: path.join(OUT, 'desktop-health.png'), fullPage: true });
