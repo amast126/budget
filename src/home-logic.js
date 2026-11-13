@@ -3,8 +3,11 @@ import { uid, todayISO } from './budget-logic.js';
 
 export const DEFAULT_PLACE = { name: 'Dix Hills, NY', zip: '11746', lat: 40.80482, lon: -73.33623 };
 
+// Tabs you can switch on in Settings. Home and Budget are always there; the rest start hidden.
+export const OPTIONAL_TABS = ['news', 'planning', 'health', 'fun', 'learning', 'cooking', 'auto'];
+
 export function defaultHome() {
-  return { version: 1, place: { ...DEFAULT_PLACE }, todos: [], doneLog: {} };
+  return { version: 1, place: { ...DEFAULT_PLACE }, todos: [], doneLog: {}, tabs: [], small: { on: true, area: '', log: {} } };
 }
 export function normalizeHome(d) {
   const base = defaultHome();
@@ -15,8 +18,103 @@ export function normalizeHome(d) {
     place: p && Number.isFinite(p.lat) && Number.isFinite(p.lon) && p.name ? p : base.place,
     todos: Array.isArray(d.todos) ? d.todos.filter((t) => t && t.text) : [],
     doneLog: d.doneLog && typeof d.doneLog === 'object' ? d.doneLog : {}, // to-dos finished per day, kept after "Clear done"
+    tabs: Array.isArray(d.tabs) ? d.tabs.filter((t) => OPTIONAL_TABS.includes(t)) : [],
+    small: normalizeSmall(d.small),
     updatedAt: d.updatedAt,
   };
+}
+
+// ---------------------------------------------------------------- tabs
+export function setTab(d, tab, on) {
+  if (!OPTIONAL_TABS.includes(tab)) return;
+  const rest = (d.tabs || []).filter((t) => t !== tab);
+  d.tabs = on ? OPTIONAL_TABS.filter((t) => t === tab || rest.includes(t)) : rest;
+}
+
+// ---------------------------------------------------------------- one small thing
+// For the areas you'd like to get into: one tiny thing a day from one area, done or skipped, no streaks.
+export const SMALL_AREAS = {
+  learning: {
+    name: 'Learning',
+    actions: [
+      { id: 'study', text: 'Study for 10 minutes', kind: 'study', minutes: 10 },
+      { id: 'unit', text: 'Read one lesson or unit', kind: 'study', minutes: 10 },
+      { id: 'cards', text: 'Flip through 5 flashcards', kind: 'done', href: '#/learning' },
+    ],
+  },
+  cooking: {
+    name: 'Cooking',
+    actions: [
+      { id: 'grocery', text: 'Add one thing to the grocery list', kind: 'grocery' },
+      { id: 'cook', text: 'Cook one meal at home', kind: 'done' },
+      { id: 'fridge', text: 'Check the fridge for anything going bad', kind: 'done' },
+    ],
+  },
+  health: {
+    name: 'Health',
+    actions: [
+      { id: 'walk', text: 'Take a 20-minute walk', kind: 'done' },
+      { id: 'stretch', text: 'Stretch for 5 minutes', kind: 'done' },
+      { id: 'outside', text: 'Get outside for 10 minutes', kind: 'done' },
+    ],
+  },
+  auto: {
+    name: 'Car',
+    actions: [
+      { id: 'next', text: 'See what the car needs next', kind: 'service' },
+      { id: 'tires', text: 'Check the tire pressure', kind: 'done' },
+      { id: 'miles', text: 'Note the odometer', kind: 'miles' },
+    ],
+  },
+};
+function normalizeSmall(x) {
+  const o = x && typeof x === 'object' ? x : {};
+  const log = o.log && typeof o.log === 'object' ? o.log : {};
+  return { on: o.on !== false, area: SMALL_AREAS[o.area] ? o.area : '', log };
+}
+const dayNo = (iso) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  return Math.round(Date.UTC(y, m - 1, d) / 86400000);
+};
+// Today's one thing: which action, and whether it's done, or skipped past everything.
+export function smallToday(home, today = todayISO()) {
+  const sm = normalizeSmall(home && home.small);
+  const area = SMALL_AREAS[sm.area];
+  if (!sm.on || !area) return { on: sm.on, area: '' };
+  const day = sm.log[today] && sm.log[today].area === sm.area ? sm.log[today] : { skips: 0 };
+  const n = area.actions.length;
+  const skips = day.skips || 0;
+  const doneAction = day.done ? area.actions.find((a) => a.id === day.done) : null;
+  const action = doneAction || (skips < n ? area.actions[(dayNo(today) + skips) % n] : null);
+  const total = Object.values(sm.log).filter((e) => e && e.area === sm.area && e.done).length;
+  const week = Object.entries(sm.log).filter(([k, e]) => e && e.area === sm.area && e.done && dayNo(today) - dayNo(k) < 7).length;
+  return { on: true, area: sm.area, name: area.name, action, done: !!doneAction, ref: doneAction ? day.ref || null : null, out: !action, total, week };
+}
+const trim = (log, today) => Object.fromEntries(Object.entries(log).filter(([k]) => dayNo(today) - dayNo(k) < 120));
+export function setSmallArea(d, area) {
+  d.small = normalizeSmall(d.small);
+  d.small.area = SMALL_AREAS[area] ? area : '';
+  d.small.on = true;
+}
+export function setSmallOn(d, on) {
+  d.small = normalizeSmall(d.small);
+  d.small.on = !!on;
+}
+// `ref` remembers what the action wrote elsewhere (a study log entry, grocery items, a mileage reading) so Undo can take it back.
+export function smallDone(d, actionId, today = todayISO(), ref = null) {
+  d.small = normalizeSmall(d.small);
+  const prev = d.small.log[today] && d.small.log[today].area === d.small.area ? d.small.log[today] : { skips: 0 };
+  d.small.log = trim({ ...d.small.log, [today]: { ...prev, area: d.small.area, done: actionId, ref } }, today);
+}
+export function smallUndo(d, today = todayISO()) {
+  d.small = normalizeSmall(d.small);
+  const e = d.small.log[today];
+  if (e) d.small.log = { ...d.small.log, [today]: { ...e, done: null, ref: null } };
+}
+export function smallSkip(d, today = todayISO()) {
+  d.small = normalizeSmall(d.small);
+  const prev = d.small.log[today] && d.small.log[today].area === d.small.area ? d.small.log[today] : { skips: 0 };
+  d.small.log = trim({ ...d.small.log, [today]: { ...prev, area: d.small.area, skips: (prev.skips || 0) + 1, done: null } }, today);
 }
 
 // ---------------------------------------------------------------- to-dos

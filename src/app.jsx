@@ -9,36 +9,31 @@ import { Icon } from './ui.jsx';
 import { applyTheme, useTheme, trackGlassLight } from './theme.js';
 import { PageSky } from './sky.jsx';
 import { Lens } from './lens.jsx';
-import { LearningPage, LearningHomeCard } from './learning.jsx';
+import { LearningPage } from './learning.jsx';
 import { defaultLearning, normalize as normalizeLearning } from './learning-logic.js';
-import { CookingPage, CookingHomeCard, FinishShopSheet, tonightPick } from './cooking.jsx';
+import { CookingPage, FinishShopSheet } from './cooking.jsx';
 import { defaultCooking, normalizeCooking, putAway, groceriesCategory } from './cooking-logic.js';
-import { WeatherCard, TodoCard, useForecast } from './home-cards.jsx';
-import { Hero, RingsCard, WeekCard, WeekSheet, InsightsCard, HeatmapCard, useNow } from './pulse.jsx';
-import { CountUp, Skeleton } from './fx.jsx';
-import { Sparkline } from './spark.jsx';
-import { AutoPage, AutoHomeCard, useRecalls } from './auto.jsx';
+import { useForecast } from './home-cards.jsx';
+import { SimpleHome } from './simple-home.jsx';
+import { AutoPage, useRecalls } from './auto.jsx';
 import { defaultAuto, normalizeAuto } from './auto-logic.js';
 import { PlanningPage } from './planning.jsx';
 import { defaultPlanning, normalizePlanning } from './planning-logic.js';
-import { defaultHome, normalizeHome, DEFAULT_PLACE, removeTodo, restoreTodo } from './home-logic.js';
-import { HealthPage, HealthHomeCard } from './health.jsx';
+import { defaultHome, normalizeHome, DEFAULT_PLACE, OPTIONAL_TABS, setTab, setSmallOn } from './home-logic.js';
+import { HealthPage } from './health.jsx';
 import { HealthSyncPage } from './health-more.jsx';
 import * as HM from './health-more.js';
 import { FunPage } from './fun.jsx';
 import { defaultFun, normalizeFun, steamToAdd, addSteamGames, cleanName } from './fun-logic.js';
-import { SteamLiveCard } from './steam.jsx';
-import { normalizeSteam, normalizeLive, liveStatus } from './steam-logic.js';
+import { normalizeSteam, normalizeLive } from './steam-logic.js';
 import { defaultGuitar, normalizeGuitar } from './guitar-logic.js';
 import { defaultCards, normalizeCards } from './cards-logic.js';
 import { defaultSourdough, normalizeSourdough } from './sourdough-logic.js';
-import { defaultBirthdays, normalizeBirthdays, upcoming as upcomingBirthdays } from './birthdays-logic.js';
-import { BirthdaysCard, BirthdaySheet } from './birthdays.jsx';
-import { PortfolioCard } from './portfolio.jsx';
+import { defaultBirthdays, normalizeBirthdays } from './birthdays-logic.js';
 import { NewsPage } from './news.jsx';
 import { BudgetPage } from './budget.jsx';
 import { startWideLayout } from './wide.js';
-import { MerchantInput, RecentChips, useMerchants, AddSheet, parseAddLink } from './budget-add.jsx';
+import { AddSheet, parseAddLink } from './budget-add.jsx';
 import budgetCss from './budget.css';
 import healthCss from './health-more.css';
 import funCss from './fun.css';
@@ -46,31 +41,20 @@ import cookCss from './cooking.css';
 import learnCss from './learning.css';
 import autoCss from './auto.css';
 import planCss from './planning.css';
+import homeCss from './simple-home.css';
 import { normalizeBox, defaultBox, moveMine, mineId } from './recipebox-logic.js';
 import { createPhotoStore } from './recipe-photos.js';
 import { defaultNewsPrefs, normalizeNewsPrefs } from './news-logic.js';
 import * as H from './health-logic.js';
 import * as HK from './hk-logic.js';
-import {
-  homeSummary,
-  newTransaction,
-  addTransaction,
-  toggleBillPaid,
-  fmt,
-  fmt0,
-  todayISO,
-  dateLabel,
-  keyOf,
-  STATUS_LABEL,
-  daysIn,
-} from './budget-logic.js';
+import { homeSummary, newTransaction, addTransaction, toggleBillPaid, fmt, todayISO, keyOf } from './budget-logic.js';
 
 applyTheme(); // before the first paint, so there's no flash of the other look
 trackGlassLight();
 if (!document.getElementById('dash-css')) {
   const s = document.createElement('style');
   s.id = 'dash-css';
-  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss + learnCss + autoCss + planCss;
+  s.textContent = css + glassCss + newsCss + budgetCss + healthCss + funCss + cookCss + learnCss + autoCss + planCss + homeCss;
   document.head.appendChild(s);
 }
 
@@ -97,10 +81,6 @@ const lsSet = (k, v) => {
     /* private mode */
   }
 };
-function greeting(d = new Date()) {
-  const h = d.getHours();
-  return h < 5 ? 'Good evening' : h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-}
 function useRoute() {
   const get = () => (location.hash.replace(/^#\/?/, '') || 'home').split('?')[0];
   const [r, setR] = useState(get);
@@ -110,332 +90,6 @@ function useRoute() {
     return () => window.removeEventListener('hashchange', on);
   }, []);
   return r;
-}
-
-// ---------------------------------------------------------------- small pieces
-function Pill({ status }) {
-  return <span className={`pill pill-${status}`}>{STATUS_LABEL[status] || status}</span>;
-}
-
-function Bar({ spent, budget, frac, status }) {
-  const pct = budget > 0 ? Math.min(100, (spent / budget) * 100) : spent > 0 ? 100 : 0;
-  return (
-    <div className="bar" title={budget > 0 && frac < 1 ? `Even pace today: ${fmt0(budget * frac)}` : undefined}>
-      <div className={`bar-fill bar-${status}`} style={{ width: `${pct}%` }} />
-      {budget > 0 && frac > 0 && frac < 1 ? <div className="bar-pace" style={{ left: `${frac * 100}%` }} /> : null}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------- home cards
-// Spending so far this month, day by day, against an even pace to the budget.
-function SpendSpark({ data, s }) {
-  const m = (data.months || {})[s.key];
-  const days = s.pacing.days;
-  const upto = s.pacing.day;
-  if (!m || upto < 2) return null;
-  const byDay = new Array(days).fill(0);
-  (m.transactions || []).forEach((t) => {
-    const d = Number(String(t.date || '').slice(8, 10));
-    if (d >= 1 && d <= days) byDay[d - 1] += Number(t.amount) || 0;
-  });
-  let cum = 0;
-  const mon = new Date(`${s.key}-15T12:00:00`).toLocaleString('en-US', { month: 'short' });
-  const points = byDay.slice(0, upto).map((v, i) => {
-    cum += v;
-    return { i, v: cum, label: `${mon} ${i + 1}` };
-  });
-  return (
-    <div className="money-spark">
-      <Sparkline points={points} reference={[{ i: 0, v: 0 }, { i: days - 1, v: s.budget }]} domain={days - 1} tone={s.status === 'on' || s.status === 'under' ? 'green' : 'amber'} fmt={fmt0} label="Spent so far this month" height={52} />
-      <div className="muted small">Spent so far vs an even pace (gray line) to {fmt0(s.budget)}</div>
-    </div>
-  );
-}
-
-function MoneyCard({ s, data }) {
-  const monthName = new Date(`${s.key}-01T12:00:00`).toLocaleString('en-US', { month: 'long' });
-  const pd = s.payday;
-  return (
-    <section className="card money">
-      <div className="card-head">
-        <h2 className="card-title">{monthName}</h2>
-        <span className="muted small">Day {s.pacing.day} of {s.pacing.days}</span>
-      </div>
-      <div className="money-grid">
-        <div className="money-main">
-          <div className="muted small">{s.left >= 0 ? 'Left to spend' : 'Over budget by'}</div>
-          <div className={`big num ${s.left < 0 ? 'neg' : ''}`}>
-            <CountUp value={Math.abs(s.left)} format={fmt} />
-          </div>
-          <div className="muted small num">
-            {fmt(s.spent)} spent of {fmt0(s.budget)}
-          </div>
-        </div>
-        <div className="money-side">
-          <div className="muted small">Next payday</div>
-          <div className="mid num">{pd ? (pd.days === 0 ? 'Today' : pd.days === 1 ? 'Tomorrow' : `${pd.days} days`) : '—'}</div>
-          <div className="muted small">{pd ? dateLabel(pd.iso) : 'Set a payday in Budget → Settings'}</div>
-        </div>
-      </div>
-      <Bar spent={s.spent} budget={s.budget} frac={s.pacing.frac} status={s.status} />
-      {data ? <SpendSpark data={data} s={s} /> : null}
-      <div className="row-between">
-        <Pill status={s.status} />
-        <a className="link small" href="#/budget">Open budget →</a>
-      </div>
-    </section>
-  );
-}
-
-function QuickAdd({ s, data, onAdd }) {
-  const blank = () => ({ date: todayISO(), desc: '', amount: '', category: s.categoryNames[0] || '', method: s.methods[0] || '' });
-  const [d, setD] = useState(blank);
-  const [busy, setBusy] = useState(false);
-  const amtRef = useRef(null);
-  const index = useMerchants(data);
-  useEffect(() => {
-    // keep selections valid if the budget's categories or methods change
-    setD((x) => ({
-      ...x,
-      category: s.categoryNames.includes(x.category) ? x.category : s.categoryNames[0] || '',
-      method: s.methods.includes(x.method) ? x.method : s.methods[0] || '',
-    }));
-  }, [s.categoryNames.join('|'), s.methods.join('|')]);
-  // a merchant you've used before fills in its category, card and usual amount
-  const pick = (e) => {
-    setD((x) => ({
-      ...x,
-      desc: e.name,
-      category: s.categoryNames.includes(e.category) ? e.category : x.category,
-      method: s.methods.includes(e.method) ? e.method : x.method,
-      amount: x.amount === '' || x.picked ? String(e.amount || '') : x.amount,
-      picked: true,
-    }));
-    setTimeout(() => amtRef.current && (amtRef.current.focus(), amtRef.current.select()), 0);
-  };
-  const amount = Number(d.amount);
-  const ok = d.desc.trim() && d.amount !== '' && !isNaN(amount) && amount !== 0 && d.date && d.category;
-  const submit = async (e) => {
-    e.preventDefault();
-    if (!ok || busy) return;
-    setBusy(true);
-    const done = await onAdd(newTransaction(d));
-    setBusy(false);
-    if (done) {
-      setD((x) => ({ ...blank(), category: x.category, method: x.method }));
-      amtRef.current && amtRef.current.focus();
-    }
-  };
-  const set = (k) => (e) => setD({ ...d, [k]: e.target.value, picked: k === 'amount' ? false : d.picked });
-  return (
-    <section className="card">
-      <div className="card-head">
-        <h2 className="card-title">Quick add</h2>
-        <span className="muted small">Goes straight into the budget</span>
-      </div>
-      <form className="qa" onSubmit={submit}>
-        <label className="qa-amt">
-          <span className="sr">Amount</span>
-          <span className="qa-dollar">$</span>
-          <input ref={amtRef} className="input num" inputMode="decimal" placeholder="0.00" value={d.amount} onChange={set('amount')} aria-label="Amount" />
-        </label>
-        <MerchantInput index={index} value={d.desc} className="input qa-desc" onChange={(v) => setD({ ...d, desc: v })} onPick={pick} />
-        <select className="input" value={d.category} onChange={set('category')} aria-label="Category">
-          {s.categoryNames.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
-        <select className="input" value={d.method} onChange={set('method')} aria-label="Paid with">
-          {s.methods.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
-        <input className="input" type="date" value={d.date} onChange={set('date')} aria-label="Date" />
-        <button className="btn primary" disabled={!ok || busy} type="submit">
-          {busy ? 'Adding…' : 'Add expense'}
-        </button>
-        <div className="qa-chips">
-          <RecentChips index={index} onPick={pick} n={5} />
-        </div>
-      </form>
-    </section>
-  );
-}
-
-function dueLabel(u) {
-  if (u.daysAway === 0) return 'Today';
-  if (u.daysAway === 1) return 'Tomorrow';
-  return dateLabel(u.due);
-}
-
-function BillsCard({ s, onToggle }) {
-  return (
-    <section className="card">
-      <div className="card-head">
-        <h2 className="card-title">Bills this week</h2>
-        <span className="muted small num">{s.upcomingTotal > 0 ? `${fmt(s.upcomingTotal)} still to go` : 'All set'}</span>
-      </div>
-      {s.upcoming.length === 0 ? (
-        <p className="empty">Nothing charges in the next 7 days.</p>
-      ) : (
-        <ul className="list">
-          {s.upcoming.map((u) => (
-            <li key={`${u.key}-${u.id}`} className={`bill ${u.paid ? 'done' : ''}`}>
-              <label className="bill-check">
-                <input type="checkbox" checked={u.paid} onChange={() => onToggle(u)} aria-label={`${u.name} paid`} />
-                <span className="box">{u.paid ? <Icon name="check" size={14} /> : null}</span>
-              </label>
-              <div className="grow">
-                <div className="bill-name">{u.name}</div>
-                <div className="muted small">
-                  {dueLabel(u)}
-                  {u.card ? ' · Apple Card' : ''}
-                  {u.split ? ` · your share of ${fmt(u.full)}` : ''}
-                </div>
-              </div>
-              <div className="num bill-amt">{fmt(u.cost)}</div>
-            </li>
-          ))}
-        </ul>
-      )}
-      <p className="muted small note">Bills tick themselves on their charge day. Tick one early if you paid it already.</p>
-    </section>
-  );
-}
-
-function WatchCard({ s }) {
-  return (
-    <section className="card">
-      <div className="card-head">
-        <h2 className="card-title">Running hot</h2>
-        <span className="muted small">{s.watch.length ? `${s.watch.length} of ${s.categories.length} categories` : 'This month'}</span>
-      </div>
-      {s.watch.length === 0 ? (
-        <p className="empty">Every category is on pace.</p>
-      ) : (
-        <ul className="list">
-          {s.watch.map((c) => (
-            <li key={c.name} className="cat">
-              <div className="row-between">
-                <span className="cat-name">{c.name}</span>
-                <span className="num small">
-                  {fmt0(c.spent)} <span className="muted">/ {fmt0(c.budget)}</span>
-                </span>
-              </div>
-              <Bar spent={c.spent} budget={c.budget} frac={s.pacing.frac} status={c.status} />
-              <Pill status={c.status} />
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
-  );
-}
-
-let homeSeen = false;
-// A birthday this week moves the Birthdays card up next to the to-do list on phones.
-const bdaySoon = (b, today) => upcomingBirthdays(b, today, 7).length > 0;
-function Home({ user, data, onAdd, onToggle, dataError, learning, mutateLearning, cooking, recipes, box, home, mutateHome, onDeleteTodo, auto, recalls, health, healthYears, hk, hkYears, news, fun, steam, steamLive, guitar, mutateGuitar, cards, sourdough, birthdays, mutateBirthdays, onBirthdays, forecast, pageSky }) {
-  const s = useMemo(() => (data ? homeSummary(data) : null), [data]);
-  const first = String((user && user.displayName) || '').split(' ')[0];
-  const place = (home && home.place) || DEFAULT_PLACE;
-  const now = useNow();
-  const day = todayISO();
-  const [week, setWeek] = useState(false);
-  const [intro] = useState(() => !homeSeen);
-  useEffect(() => {
-    homeSeen = true;
-  }, []);
-  // Everything the rings, streaks, insights and header read from, recomputed only when a document changes.
-  const ctx = useMemo(
-    () => ({ data, health, years: healthYears, hk, hkYears, learning, home, auto, fun, birthdays, today: day, now: new Date(), pick: tonightPick(cooking, recipes, box), demo: IS_DEMO, sport: IS_DEMO ? 'running' : 'tennis' }),
-    [data, health, healthYears, hk, hkYears, learning, home, auto, fun, birthdays, cooking, recipes, box, day]
-  );
-  // Slots carry a phone order; on wide screens the two columns show as laid out.
-  return (
-    <div className={`home ${intro ? 'intro' : ''}`}>
-      <Hero ctx={ctx} wx={forecast.s} greeting={greeting(now)} name={first} pageSky={pageSky} />
-      {dataError ? <div className="alert">{dataError}</div> : null}
-      <div className="grid home-grid">
-        <div className="col">
-          <div className="slot o1">
-            <RingsCard ctx={ctx} onReview={() => setWeek(true)} />
-          </div>
-          <div className="slot o2">
-            <WeekCard ctx={ctx} onOpen={() => setWeek(true)} />
-          </div>
-          {s ? (
-            <>
-              <div className="slot o5">
-                <MoneyCard s={s} data={data} />
-              </div>
-              <div className="slot o8">
-                <QuickAdd s={s} data={data} onAdd={onAdd} />
-              </div>
-              <div className="slot o9">
-                <BillsCard s={s} onToggle={onToggle} />
-              </div>
-            </>
-          ) : (
-            <div className="slot o5">{dataError ? <section className="card"><p className="empty">Budget data unavailable.</p></section> : <Skeleton lines={4} tall />}</div>
-          )}
-          <div className="slot o7">
-            <InsightsCard ctx={ctx} />
-          </div>
-          <div className="slot o11">
-            <HeatmapCard ctx={ctx} />
-          </div>
-          {s ? (
-            <div className="slot o12">
-              <WatchCard s={s} />
-            </div>
-          ) : null}
-        </div>
-        <div className="col">
-          {(liveStatus(steamLive) || {}).playing ? (
-            <div className="slot o2">
-              <SteamLiveCard steam={steam} live={steamLive} />
-            </div>
-          ) : null}
-          <div className="slot o3">
-            <WeatherCard place={place} forecast={forecast} onPlace={(p) => mutateHome((d) => (d.place = p), `Weather set to ${p.name}`)} />
-          </div>
-          <div className="slot o4">
-            <TodoCard data={home} mutate={mutateHome} onDelete={onDeleteTodo} />
-          </div>
-          {birthdays && birthdays.people.length ? (
-            <div className={`slot ${bdaySoon(birthdays, day) ? 'o4' : 'o15'}`}>
-              <BirthdaysCard data={birthdays} mutate={mutateBirthdays} onManage={onBirthdays} />
-            </div>
-          ) : null}
-          <div className="slot o6">
-            <HealthHomeCard health={health} years={healthYears} hk={hk} hkYears={hkYears} />
-          </div>
-          <div className="slot o10">
-            <AutoHomeCard auto={auto} data={data} recalls={recalls} />
-          </div>
-          <div className="slot o13">
-            <LearningHomeCard data={learning} mutate={mutateLearning} guitar={guitar} mutateGuitar={mutateGuitar} cards={cards} />
-          </div>
-          <div className="slot o14">
-            <CookingHomeCard data={cooking} recipes={recipes} sourdough={sourdough} box={box} />
-          </div>
-          {data ? (
-            <div className="slot o12">
-              <PortfolioCard data={data} news={news} />
-            </div>
-          ) : null}
-          {birthdays && !birthdays.people.length ? (
-            <div className="slot o15">
-              <BirthdaysCard data={birthdays} mutate={mutateBirthdays} onManage={onBirthdays} />
-            </div>
-          ) : null}
-        </div>
-      </div>
-      {week ? <WeekSheet ctx={ctx} onClose={() => setWeek(false)} /> : null}
-    </div>
-  );
 }
 
 // A slim bar across the top in demo mode: what this is, start over, or leave.
@@ -503,7 +157,38 @@ function LookSettings({ look }) {
   );
 }
 
-function Settings({ user, onClose, onToast, look }) {
+// Which tabs show in the sidebar, and whether Home shows One small thing. Saved in the home document.
+function TabSettings({ home, mutateHome }) {
+  const on = new Set((home && home.tabs) || []);
+  const small = !home || !home.small || home.small.on !== false;
+  return (
+    <div className="settings-tabs">
+      <h3 className="settings-sub">Tabs</h3>
+      <p className="muted small">Home and Budget are always there. Turn others on when you want them. Nothing in a tab is deleted while it’s off.</p>
+      <div className="tgl-list">
+        {TABS.filter(([k]) => OPTIONAL_TABS.includes(k)).map(([k, icon, label]) => (
+          <label key={k} className="tgl-row">
+            <Icon name={icon} size={18} />
+            <span className="grow">{label}</span>
+            <input type="checkbox" role="switch" className="tgl" checked={on.has(k)} disabled={!home} onChange={(e) => mutateHome((d) => setTab(d, k, e.target.checked))} aria-label={`${label} tab`} />
+          </label>
+        ))}
+      </div>
+      <h3 className="settings-sub">Home</h3>
+      <div className="tgl-list">
+        <label className="tgl-row">
+          <span className="grow">
+            One small thing
+            <span className="muted small tgl-sub">A tiny daily step in an area you’d like to get into</span>
+          </span>
+          <input type="checkbox" role="switch" className="tgl" checked={small} disabled={!home} onChange={(e) => mutateHome((d) => setSmallOn(d, e.target.checked))} aria-label="One small thing on Home" />
+        </label>
+      </div>
+    </div>
+  );
+}
+
+function Settings({ user, onClose, onToast, look, home, mutateHome }) {
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(demoLink());
@@ -514,7 +199,7 @@ function Settings({ user, onClose, onToast, look }) {
   };
   return (
     <div className="sheet-bg" onClick={onClose}>
-      <div className="sheet" role="dialog" aria-label="Settings" onClick={(e) => e.stopPropagation()}>
+      <div className="sheet settings-sheet" role="dialog" aria-label="Settings" onClick={(e) => e.stopPropagation()}>
         <h2 className="card-title">Settings</h2>
         {IS_DEMO ? (
           <p className="muted small">
@@ -523,6 +208,7 @@ function Settings({ user, onClose, onToast, look }) {
         ) : (
           <p className="muted small">Signed in as {user.email}. Only this account can open the dashboard.</p>
         )}
+        {mutateHome ? <TabSettings home={home} mutateHome={mutateHome} /> : null}
         {look ? <LookSettings look={look} /> : null}
         {IS_DEMO ? (
           <button className="btn primary block" onClick={exitDemo}>
@@ -659,11 +345,12 @@ function useModuleDoc(allowed, user, name) {
   return [doc, err];
 }
 
-// Every tab, in sidebar order.
+// Every tab, in sidebar order. Home and Budget always show; the rest only once switched on in Settings → Tabs
+// (their pages still open from a link while they're off, and nothing in them is deleted).
 const TABS = [
   ['home', 'home', 'Home'],
-  ['news', 'news', 'News'],
   ['budget', 'budget', 'Budget'],
+  ['news', 'news', 'News'],
   ['planning', 'map', 'Planning'],
   ['health', 'heart', 'Health'],
   ['fun', 'game', 'Entertainment'],
@@ -671,6 +358,7 @@ const TABS = [
   ['cooking', 'pot', 'Cooking'],
   ['auto', 'car', 'Auto'],
 ];
+const ALWAYS = ['home', 'budget'];
 
 // The sidebar. On phones it's a drawer: it slides in from the left, follows your finger when you swipe it closed,
 // and closes on Escape or a tap outside (the page behind doesn't scroll meanwhile).
@@ -750,7 +438,6 @@ function App() {
   const [menu, setMenu] = useState(false); // the sidebar on phones
   const [autoError, setAutoError] = useState('');
   const recalls = useRecalls(auto ? auto.car : null);
-  const [bdaySheet, setBdaySheet] = useState(false);
   // Budget changes show at once (optimistic); snapshots from the server wait until our own writes have landed.
   const budgetPending = useRef(0);
   const budgetSince = useRef(0);
@@ -769,7 +456,6 @@ function App() {
   const [guitar] = useModuleDoc(allowed, user, 'guitar');
   const [cards] = useModuleDoc(allowed, user, 'cards');
   const [sourdough] = useModuleDoc(allowed, user, 'sourdough');
-  const [birthdays] = useModuleDoc(allowed, user, 'birthdays');
   const [newsPrefs] = useModuleDoc(allowed, user, 'news');
   const [alertStatus] = useModuleDoc(allowed, user, 'alerts');
   const [steam] = useModuleDoc(allowed, user, 'steam');
@@ -1075,7 +761,6 @@ function App() {
   const mutateGuitar = mutateDoc('guitar');
   const mutateCards = mutateDoc('cards');
   const mutateSourdough = mutateDoc('sourdough');
-  const mutateBirthdays = mutateDoc('birthdays');
   const mutateNews = mutateDoc('news');
   const mutateBox = mutateDoc('recipebox');
   const mutatePlanning = mutateDoc('planning');
@@ -1233,17 +918,6 @@ function App() {
     const category = s.categoryNames.find((n) => /gas|auto|charging/i.test(n));
     return category ? { methods: s.methods, category } : null;
   }, [data]);
-  const onDeleteTodo = async (t) => {
-    let removed = null;
-    await mutateHome((d) => (removed = removeTodo(d, t.id)));
-    showToast({
-      text: 'To-do deleted',
-      undo: async () => {
-        if (removed) await mutateHome((d) => restoreTodo(d, removed.item, removed.index));
-        setToast(null);
-      },
-    });
-  };
   // Finish a shop: log the total under Groceries in the budget (optional) and put the ticked items away.
   const budgetInfo = useMemo(() => {
     if (!data) return null;
@@ -1328,7 +1002,7 @@ function App() {
       <div className={`nav-scrim ${menu ? 'on' : ''}`} onClick={() => setMenu(false)} aria-hidden="true" />
       <SideNav open={menu} onClose={() => setMenu(false)}>
         <div className="brand">Dashboard</div>
-        {TABS.map(([to, icon, label]) => (
+        {TABS.filter(([to]) => ALWAYS.includes(to) || (home && home.tabs.includes(to))).map(([to, icon, label]) => (
           <React.Fragment key={to}>{nav(to, icon, label)}</React.Fragment>
         ))}
         <button
@@ -1386,37 +1060,21 @@ function App() {
         {route === 'planning' ? <PlanningPage plan={planning} budget={data} mutate={mutatePlanning} error={planningError} onToast={showToast} /> : null}
         {route === 'budget' ? <BudgetPage data={data} mutate={mutateBudget} error={dataError} onToast={showToast} dark={look.dark} auto={auto} route={location.hash} alertStatus={alertStatus} /> : null}
         {['budget', 'planning', 'learning', 'cooking', 'news', 'auto', 'health', 'health-sync', 'fun'].includes(route) ? null : (
-          <Home
+          <SimpleHome
             user={user}
             data={data}
             dataError={dataError}
             onAdd={onAdd}
             onToggle={onToggle}
+            mutateBudget={mutateBudget}
+            home={home}
+            mutateHome={mutateHome}
             learning={learning}
             mutateLearning={mutateLearning}
             cooking={cooking}
-            recipes={recipes}
-            box={box}
-            home={home}
-            mutateHome={mutateHome}
-            onDeleteTodo={onDeleteTodo}
+            mutateCooking={mutateCooking}
             auto={auto}
-            recalls={recalls}
-            health={health}
-            healthYears={healthYears}
-            hk={hk}
-            hkYears={hkYears}
-            news={news}
-            fun={fun}
-            steam={steam}
-            steamLive={steamLive}
-            guitar={guitar}
-            mutateGuitar={mutateGuitar}
-            cards={cards}
-            sourdough={sourdough}
-            birthdays={birthdays}
-            mutateBirthdays={mutateBirthdays}
-            onBirthdays={() => setBdaySheet(true)}
+            mutateAuto={mutateAuto}
             forecast={forecast}
             pageSky={glass}
           />
@@ -1442,8 +1100,7 @@ function App() {
           ) : null}
         </div>
       ) : null}
-      {settings ? <Settings user={user} onClose={() => setSettings(false)} onToast={showToast} look={look} /> : null}
-      {bdaySheet && birthdays ? <BirthdaySheet data={birthdays} mutate={mutateBirthdays} onClose={() => setBdaySheet(false)} onToast={showToast} /> : null}
+      {settings ? <Settings user={user} onClose={() => setSettings(false)} onToast={showToast} look={look} home={home} mutateHome={mutateHome} /> : null}
       {shopping && cooking ? (
         <FinishShopSheet count={cooking.grocery.filter((g) => g.done).length} budget={budgetInfo} onSubmit={finishShop} onClose={() => setShopping(false)} />
       ) : null}

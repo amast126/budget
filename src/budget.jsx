@@ -37,6 +37,8 @@ export const BUDGET_VIEWS = [
   ['year', 'Year'],
   ['settings', 'Settings'],
 ];
+// Always showing; the rest wait behind More.
+export const MAIN_VIEWS = ['month', 'savings', 'settings'];
 
 export function BudgetPage({ data: raw, mutate, error, onToast, dark, auto, route, alertStatus }) {
   // A normalized copy for the screens; changes go through `upd`, which normalizes the stored copy first.
@@ -48,6 +50,7 @@ export function BudgetPage({ data: raw, mutate, error, onToast, dark, auto, rout
     return BUDGET_VIEWS.some(([k]) => k === v) ? v : 'month';
   });
   useEffect(() => lsSet('dash.budgetView', view), [view]);
+  const [more, setMore] = useState(() => !MAIN_VIEWS.includes(view));
   const keys = data ? Object.keys(data.months).sort() : [];
   const [month, setMonth] = useState(null);
   const cur = C.todayKey();
@@ -96,6 +99,11 @@ export function BudgetPage({ data: raw, mutate, error, onToast, dark, auto, rout
   const openTxn = (id) => setTxnId(id);
   const openMerchant = (name) => setMerchant(name);
   const common = { data, upd, onToast, dark, openTxn, openMerchant };
+  const chip = ([k, l]) => (
+    <button key={k} aria-pressed={view === k} className={`nchip ${view === k ? 'on' : ''}`} style={{ '--sc': dark ? '#62d39b' : '#145a3c' }} onClick={() => setView(k)}>
+      {l}
+    </button>
+  );
   const sub = view === 'month' ? (monthKey ? `${C.monthLong(monthKey)}` : 'No months yet') : BUDGET_VIEWS.find(([k]) => k === view)[1];
   return (
     <div className={`home budget view-${view}`}>
@@ -108,12 +116,12 @@ export function BudgetPage({ data: raw, mutate, error, onToast, dark, auto, rout
           <Icon name="down" size={16} /> Import statement
         </button>
       </header>
-      <div className="news-chips bud-tabs" role="tablist" aria-label="Budget views">
-        {BUDGET_VIEWS.map(([k, l]) => (
-          <button key={k} role="tab" aria-selected={view === k} className={`nchip ${view === k ? 'on' : ''}`} style={{ '--sc': dark ? '#62d39b' : '#145a3c' }} onClick={() => setView(k)}>
-            {l}
-          </button>
-        ))}
+      <div className="news-chips bud-tabs" role="group" aria-label="Budget views">
+        {BUDGET_VIEWS.filter(([k]) => MAIN_VIEWS.includes(k)).map(chip)}
+        <button className={`nchip bud-more ${!more && !MAIN_VIEWS.includes(view) ? 'on' : ''}`} style={{ '--sc': dark ? '#62d39b' : '#145a3c' }} aria-expanded={more} onClick={() => setMore(!more)}>
+          More {more ? '▴' : '▾'}
+        </button>
+        {more ? BUDGET_VIEWS.filter(([k]) => !MAIN_VIEWS.includes(k)).map(chip) : null}
       </div>
       {view === 'month' ? (
         <MonthView
@@ -487,7 +495,7 @@ function Bills({ data, upd, s, monthKey }) {
   );
 }
 
-function OwedToYou({ data, upd, s, monthKey, goSettings }) {
+export function OwedToYou({ data, upd, s, monthKey, goSettings }) {
   const m = data.months[monthKey];
   const cfg = data.config;
   const shared = s.bills.filter((b) => C.billShare(b) < 1 && C.billOwed(m, b) > 0);

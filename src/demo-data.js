@@ -428,6 +428,9 @@ export function demoDocs(now = new Date()) {
       { id: uid(), text: 'Pick up dry cleaning', added: addDays(today, -1), done: true, doneAt: today },
     ],
     doneLog: { ...doneLog, [today]: 1 },
+    // the demo shows every tab; One small thing starts on Cooking with a couple done already
+    tabs: ['news', 'planning', 'health', 'fun', 'learning', 'cooking', 'auto'],
+    small: { on: true, area: 'cooking', log: { [addDays(today, -1)]: { area: 'cooking', done: 'cook', skips: 0 }, [addDays(today, -3)]: { area: 'cooking', done: 'grocery', skips: 1 } } },
   };
 
   // Auto: a 2024 Model Y in Washington (no inspection; registration renews yearly), on a loan

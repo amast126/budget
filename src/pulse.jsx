@@ -28,11 +28,12 @@ export function useNow(ms = 60000) {
 }
 
 // ---------------------------------------------------------------- header
-export function Hero({ ctx, wx, greeting, name, pageSky = false }) {
+// `simple`: just the greeting, date and weather (no summary line or countdowns).
+export function Hero({ ctx, wx, greeting, name, pageSky = false, simple = false }) {
   const now = useNow();
   const sky = skyOf(now, wx && wx.sunriseISO, wx && wx.sunsetISO, wx && wx.code);
-  const lines = useMemo(() => dayLine({ ...ctx, wx, now }), [ctx, wx, now.getHours(), now.getMinutes() >> 4]);
-  const cds = useMemo(() => countdowns(ctx), [ctx]);
+  const lines = useMemo(() => (simple ? [] : dayLine({ ...ctx, wx, now })), [simple, ctx, wx, now.getHours(), now.getMinutes() >> 4]);
+  const cds = useMemo(() => (simple ? [] : countdowns(ctx)), [simple, ctx]);
   // The sky itself (color, sun, moon, stars, clouds) is one canvas; rain and snow fall on a second one above it.
   return (
     <header className={`hero sky-${sky.phase} wx-${sky.kind} ${pageSky ? 'on-page-sky' : ''}`}>
