@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-22T16:57:30.544Z",
+ "generated": "2026-11-22T22:23:28.163Z",
  "searchVersion": {
   "nyc": 2,
   "markets": 3,
@@ -8,25 +8,27 @@
  },
  "sources": {
   "ap": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "politics",
    "kind": "google",
-   "name": "AP"
+   "name": "AP",
+   "error": "HTTP 503"
   },
   "reuters": {
-   "ok": true,
+   "ok": false,
    "count": 14,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "politics",
    "kind": "google",
-   "name": "Reuters"
+   "name": "Reuters",
+   "error": "HTTP 503"
   },
   "reddit": {
    "ok": false,
    "count": 25,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "r/popular",
@@ -34,113 +36,126 @@
    "error": "HTTP 404"
   },
   "tech": {
-   "ok": true,
+   "ok": false,
    "count": 66,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "tech",
    "kind": "google",
-   "name": "Tech"
+   "name": "Tech",
+   "error": "HTTP 503"
   },
   "ai": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "tech",
    "kind": "google",
-   "name": "AI"
+   "name": "AI",
+   "error": "HTTP 503"
   },
   "pop": {
-   "ok": true,
+   "ok": false,
    "count": 70,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "pop",
    "kind": "google",
-   "name": "Pop culture"
+   "name": "Pop culture",
+   "error": "HTTP 503"
   },
   "music": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "music",
    "kind": "google",
-   "name": "Music"
+   "name": "Music",
+   "error": "HTTP 503"
   },
   "nyc": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "nyc",
    "kind": "google",
-   "name": "NYC"
+   "name": "NYC",
+   "error": "HTTP 503"
   },
   "mamdani": {
-   "ok": true,
+   "ok": false,
    "count": 27,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "nyc",
    "kind": "google",
-   "name": "Mamdani"
+   "name": "Mamdani",
+   "error": "HTTP 503"
   },
   "energy": {
-   "ok": true,
+   "ok": false,
    "count": 73,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "markets",
    "kind": "google",
-   "name": "Energy"
+   "name": "Energy",
+   "error": "HTTP 503"
   },
   "quantum": {
-   "ok": true,
+   "ok": false,
    "count": 34,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "markets",
    "kind": "google",
-   "name": "Quantum"
+   "name": "Quantum",
+   "error": "HTTP 503"
   },
   "robotics": {
-   "ok": true,
+   "ok": false,
    "count": 86,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "markets",
    "kind": "google",
-   "name": "Robotics"
+   "name": "Robotics",
+   "error": "HTTP 503"
   },
   "games": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "gaming",
    "kind": "google",
-   "name": "Gaming"
+   "name": "Gaming",
+   "error": "HTTP 503"
   },
   "mygames": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "gaming",
    "kind": "google",
-   "name": "Your games"
+   "name": "Your games",
+   "error": "HTTP 503"
   },
   "marvel": {
-   "ok": true,
+   "ok": false,
    "count": 85,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "marvel",
    "kind": "google",
-   "name": "Marvel"
+   "name": "Marvel",
+   "error": "HTTP 503"
   },
   "top": {
-   "ok": true,
+   "ok": false,
    "count": 38,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "top",
    "kind": "google",
-   "name": "Top stories"
+   "name": "Top stories",
+   "error": "HTTP 503"
   },
   "thecity": {
    "ok": true,
    "count": 4,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "nyc",
    "kind": "feed",
    "name": "THE CITY",
@@ -149,7 +164,7 @@
   "lipress": {
    "ok": true,
    "count": 10,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "li",
    "kind": "feed",
    "name": "Long Island Press",
@@ -158,7 +173,7 @@
   "verge": {
    "ok": true,
    "count": 10,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "tech",
    "kind": "feed",
    "name": "The Verge",
@@ -167,7 +182,7 @@
   "ars": {
    "ok": true,
    "count": 20,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "tech",
    "kind": "feed",
    "name": "Ars Technica",
@@ -176,7 +191,7 @@
   "techcrunch": {
    "ok": true,
    "count": 20,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "tech",
    "kind": "feed",
    "name": "TechCrunch",
@@ -185,24 +200,25 @@
   "wired": {
    "ok": true,
    "count": 30,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "tech",
    "kind": "feed",
    "name": "Wired",
    "url": "https://www.wired.com/feed/rss"
   },
   "li": {
-   "ok": true,
+   "ok": false,
    "count": 100,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "li",
    "kind": "google",
-   "name": "Long Island"
+   "name": "Long Island",
+   "error": "HTTP 503"
   },
   "gamespot": {
    "ok": true,
    "count": 30,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "gaming",
    "kind": "feed",
    "name": "GameSpot",
@@ -211,7 +227,7 @@
   "vgc": {
    "ok": true,
    "count": 10,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "gaming",
    "kind": "feed",
    "name": "VGC",
@@ -220,7 +236,7 @@
   "polygon": {
    "ok": true,
    "count": 10,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "gaming",
    "kind": "feed",
    "name": "Polygon",
@@ -229,7 +245,7 @@
   "variety": {
    "ok": true,
    "count": 10,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "pop",
    "kind": "feed",
    "name": "Variety",
@@ -238,7 +254,7 @@
   "thr": {
    "ok": true,
    "count": 10,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "pop",
    "kind": "feed",
    "name": "The Hollywood Reporter",
@@ -247,7 +263,7 @@
   "billboard": {
    "ok": true,
    "count": 10,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "music",
    "kind": "feed",
    "name": "Billboard",
@@ -256,7 +272,7 @@
   "pitchfork": {
    "ok": true,
    "count": 29,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "music",
    "kind": "feed",
    "name": "Pitchfork",
@@ -264,21 +280,21 @@
   },
   "photos": {
    "ok": true,
-   "count": 18,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "count": 5,
+   "checked": "2026-11-22T22:23:28.163Z",
    "kind": "enrich",
-   "decoded": 20,
-   "tried": 22
+   "decoded": 0,
+   "tried": 6
   },
   "reddit-subs": {
    "ok": false,
    "count": 40,
-   "checked": "2026-11-22T16:57:30.544Z",
+   "checked": "2026-11-22T22:23:28.163Z",
    "section": "reddit",
    "kind": "reddit",
    "name": "your subreddits",
    "via": "rss",
-   "error": "HTTP 429"
+   "error": "HTTP 404"
   }
  },
  "top": [
@@ -2878,6 +2894,39 @@
  ],
  "li": [
   {
+   "id": "lipress-1aoyxke",
+   "title": "Geraldo Rivera: Russia is the Bad Guy",
+   "url": "https://www.longislandpress.com/2026/11/22/geraldo-rivera-russia-is-the-bad-guy/",
+   "date": "2026-11-22T22:18:21.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2025/09/Copy-of-LIP-Featured-Image-6.jpg?w=384",
+   "summary": "As a kid growing up during Eisenhower-era Long Island, I had all the usual prejudices; Yankees over Dodgers, summer over school, New York over New Jersey, and America over everywhere, especially Russia.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "lipress-bzwud0",
+   "title": "Bill O’Reilly: The Three Amigos",
+   "url": "https://www.longislandpress.com/2026/11/22/bill-oreilly-the-three-amigos/",
+   "date": "2026-11-22T22:17:42.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/09/admin-ajax-7.jpg?w=384",
+   "summary": "Michael Corleone is one of the great characters in film history. One of his classic lines was this: “Keep your friends close, but your enemies closer.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "lipress-1arzusz",
+   "title": "Holocaust survivor shares story with local students",
+   "url": "https://www.longislandpress.com/2026/11/22/holocaust-survivor-shares-story/",
+   "date": "2026-11-22T20:21:58.000Z",
+   "source": "Long Island Press",
+   "domain": "longislandpress.com",
+   "image": "https://www.longislandpress.com/wp-content/uploads/2026/11/IMG_0973-rotated.jpeg?w=288",
+   "summary": "Manfred “Manny” Korman was born on Dec. 21, 1931, in Hamburg, Germany. Korman’s entire family, including his brother, Gerd, mother, Rosa, and father, Max, survived the Holocaust.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
    "id": "lipress-1fts80z",
    "title": "Victoria’s Secrets | Bringing people together",
    "url": "https://qns.com/2026/11/victorias-secrets-bringing-people-together/",
@@ -3474,40 +3523,98 @@
    "source": "Newsday",
    "domain": "newsday.com",
    "seen": "2026-11-20T17:42:08.025Z"
-  },
-  {
-   "id": "li-jdvfov",
-   "title": "Gavin O'Brien's late TD pass to cousin Charlie O'Brien helps give Northport Suffolk II football title",
-   "url": "https://www.newsday.com/sports/high-school/football/suffolk-division-ii-football-final-northport-half-hollow-hills-east-xsq69hi9",
-   "date": "2026-11-20T21:52:47.000Z",
-   "source": "Newsday",
-   "domain": "newsday.com",
-   "image": "https://cdn.newsday.com/ace/c:YzUxYWM4ZjYtYWMwOS00:NGM3OTViMTQtZDEyNS00/landscape/1280",
-   "summary": "The Tigers (10-1) won their first county title since 1991 and will make their first appearance in the Long Island Championships next Friday at Hofstra.",
-   "tried": 1,
-   "seen": "2026-11-20T08:57:29.485Z",
-   "direct": 1
-  },
-  {
-   "id": "li-1mut028",
-   "title": "Student loan forgiveness available for NYS nursing educators, young farmers",
-   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOcXE2TVNUVlNmMktBeEpHQlM4Uno2c0Q0MmJPNjlMakxZb1VpOWptNkFCV0dWSHp1YzlfREFVVlk3Z1NqNTgwZmJEbFE2OGdKdHVlOHFWTmUyUHhUQXVxU2lINVR3OEh5ZkZHbkpVaEJEaFNiUEVSc1JGV0NWc2c5a0ZITjJDeUdfNE45YWhHYW9vOVBKUExhNk96QnFVdk5O?oc=5",
-   "date": "2026-11-20T21:30:19.000Z",
-   "source": "Newsday",
-   "domain": "newsday.com",
-   "seen": "2026-11-20T23:47:08.529Z"
-  },
-  {
-   "id": "li-f6i4x0",
-   "title": "22 Year Old Man Dies Following Soundview Apartment Fire",
-   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPMHZ0SWEzT1hwZjlsT01ocU1BbVMtUlhyWEhYbUtmdi0xT2xvaFpjbWtFdVZfNTNiTHkxNW1uOW00dkRRZXlmeHJHMEdnbFVDdU9ZSGlWa2dDRVJtVFVWa2xHYVpKaktwQjdKWjZHN2Z0eWV2TWJSN1ZiZTBfTjhsWXFVOXd1bkItVkpmbjNn?oc=5",
-   "date": "2026-11-20T21:28:30.000Z",
-   "source": "News12 | Long Island",
-   "domain": "longisland.news12.com",
-   "seen": "2026-11-20T23:47:08.529Z"
   }
  ],
  "tech": [
+  {
+   "id": "techcrunch-4vkmsx",
+   "title": "‘You Can See Everything’ has made more than $100M worldwide",
+   "url": "https://techcrunch.com/2026/11/22/you-can-see-everything-has-made-more-than-100m-worldwide/",
+   "date": "2026-11-22T21:42:48.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "The new Elizabeth Holmes documentary is just beginning to roll out internationally.",
+   "seen": "2026-11-22T22:23:28.163Z",
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2026/10/V8_PHASE-1_LOBTS.jpg?resize=1200,900"
+  },
+  {
+   "id": "techcrunch-4bi9x0",
+   "title": "OpenAI’s chief scientist has thoughts on how to limit AI development",
+   "url": "https://techcrunch.com/2026/11/22/openais-chief-scientist-has-thoughts-on-how-to-limit-ai-development/",
+   "date": "2026-11-22T21:14:07.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "To establish a speed limit on AI development, you need to agree on how to measure speed.",
+   "seen": "2026-11-22T22:23:28.163Z",
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2026/05/openai-logo-code-background.jpg?resize=1200,798"
+  },
+  {
+   "id": "techcrunch-jzwskp",
+   "title": "The best apps to make new friends right now",
+   "url": "https://techcrunch.com/2026/11/22/as-people-look-for-ways-to-make-new-friends-here-are-the-apps-promising-to-help/",
+   "date": "2026-11-22T21:00:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "We've compiled a list of friendship apps, from friend discovery platforms like BFF to event-focused ones like Timeleft.",
+   "seen": "2026-11-22T22:23:28.163Z",
+   "tried": 1,
+   "image": "https://techcrunch.com/wp-content/uploads/2021/10/GettyImages-596631439.jpg?resize=1200,800"
+  },
+  {
+   "id": "techcrunch-108i16q",
+   "title": "Why data centers are at the center of the Big Tech backlash",
+   "url": "https://techcrunch.com/2026/11/22/why-data-centers-are-at-the-center-of-the-big-tech-backlash/",
+   "date": "2026-11-22T18:08:43.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "Journalist Paris Marx unpacks his new book \"Hyperscale.\"",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "verge-hi8437",
+   "title": "Delta flights in and out of Atlanta delayed due to system outage",
+   "url": "https://www.theverge.com/transportation/1039779/delta-flights-delayed-system-outage",
+   "date": "2026-11-22T17:46:44.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/07/gettyimages-2223798482.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "All Delta flights in and out of Atlanta are facing significant delays on Sunday due to a problem with the system that calculates a plane's weight and balance.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "verge-jg5by0",
+   "title": "Binding of Isaac developer removes AI music from Repentance Plus",
+   "url": "https://www.theverge.com/games/1039770/binding-of-isaac-ai-music",
+   "date": "2026-11-22T17:25:20.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/j7yPmbNCP4I-HD.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "The Binding of Isaac: Repentance Plus has spent the last few days getting review-bombed on Steam after it was discovered that a particular segment of the game used AI music.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "techcrunch-1fs6xz",
+   "title": "TechCrunch Mobility: A/B testing robots vs. humans",
+   "url": "https://techcrunch.com/2026/11/22/techcrunch-mobility-a-b-testing-robots-vs-humans/",
+   "date": "2026-11-22T17:06:00.000Z",
+   "source": "TechCrunch",
+   "domain": "techcrunch.com",
+   "summary": "Welcome back to TechCrunch Mobility, your hub for the future of transportation and, now more than ever, the role AI is playing in it.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "verge-wb3m7d",
+   "title": "Some of our favorite Switch 2 games are cheaper through Black Friday",
+   "url": "https://www.theverge.com/gadgets/1037313/nintendo-switch-2-game-black-friday-cyber-monday-deal-sale",
+   "date": "2026-11-22T17:00:00.000Z",
+   "source": "The Verge",
+   "domain": "theverge.com",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2025/07/NS2_DonkeyKongBananza_SCRN_25.jpg?quality=90&strip=all&crop=0,0,100,100",
+   "summary": "Black Friday is a great time to expand your game library because it’s a chance to catch deals that aren’t normally happening throughout the year. That’s true for Nintendo Switch 2 games, as well.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
   {
    "id": "verge-kk6w7v",
    "title": "Sheherazaad’s Khudgarzi is gorgeous, ‘genre-chaotic’ South Asian folk",
@@ -3564,9 +3671,9 @@
    "source": "TechCrunch",
    "domain": "techcrunch.com",
    "summary": "Can a TV be too large? This writer's recent upgrade to a 65-inch OLED came with some unexpected challenges.",
-   "seen": "2026-11-22T16:57:30.544Z",
+   "image": "https://techcrunch.com/wp-content/uploads/2026/11/Image-from-iOS.jpg?resize=1200,900",
    "tried": 1,
-   "image": "https://techcrunch.com/wp-content/uploads/2026/11/Image-from-iOS.jpg?resize=1200,900"
+   "seen": "2026-11-22T16:57:30.544Z"
   },
   {
    "id": "verge-1fa2kef",
@@ -4274,94 +4381,6 @@
    "image": "https://media.wired.com/photos/66ea076ee8502211cd1d9a42/master/pass/WIRED-Coupons-13.jpg",
    "summary": "Enjoy 20% off your first order with a Brooks coupon code, plus top discounts and deals on our favorite Brooks running shoes.",
    "seen": "2026-11-21T06:14:02.334Z"
-  },
-  {
-   "id": "wired-5j8nrs",
-   "title": "Mint Mobile Discounts for November 2026",
-   "url": "https://www.wired.com/story/mint-mobile-promo-code/",
-   "date": "2026-11-21T06:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/67b63b98fb14553f0ebd9ffd/master/pass/WIRED-Coupons-R2_15.png",
-   "summary": "Reduce your monthly cell phone bill with these active Mint Mobile coupons and promos, limited-time promotions, and 5G plan savings.",
-   "seen": "2026-11-21T06:14:02.334Z"
-  },
-  {
-   "id": "wired-d9j5ks",
-   "title": "Mountain Hardwear Coupon Code 15% Off November",
-   "url": "https://www.wired.com/story/mountain-hardwear-promo-codes/",
-   "date": "2026-11-21T06:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/66ea07715f7a3326e9fe7ca3/master/pass/WIRED-Coupons-5.jpg",
-   "summary": "High-performance mountaineering and hiking apparel doesn't have to break the bank.",
-   "seen": "2026-11-21T06:14:02.334Z"
-  },
-  {
-   "id": "wired-g752al",
-   "title": "Google Workspace Promo Codes: 14% Off for November 2026",
-   "url": "https://www.wired.com/story/google-workspace-promo-code/",
-   "date": "2026-11-21T06:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/67b63b967f8fc45af4896200/master/pass/WIRED-Coupons-R2_7.png",
-   "summary": "Boost your productivity and save with exclusive Google Workspace coupons from WIRED. Get up to 14% off plans for three months, including Starter, Standard, and Plus tiers.",
-   "seen": "2026-11-21T06:14:02.334Z"
-  },
-  {
-   "id": "wired-1if0s83",
-   "title": "Motorola Coupon Code for November 2026",
-   "url": "https://www.wired.com/story/motorola-coupon-code/",
-   "date": "2026-11-21T06:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/67b63b9a4816461befb48207/master/pass/WIRED-Coupons-R2_12.png",
-   "summary": "Upgrade your smartphone for less with the latest Motorola promo codes, free shipping offers, and exclusive seasonal discounts.",
-   "seen": "2026-11-21T06:14:02.334Z"
-  },
-  {
-   "id": "wired-139qsx1",
-   "title": "Total Wireless Promo Codes & Deals: 50% Off Select Plans",
-   "url": "https://www.wired.com/story/total-wireless-promo-code/",
-   "date": "2026-11-21T06:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/66ea0772ca863bb4c1028b66/master/pass/WIRED-Coupons-4.jpg",
-   "summary": "Find great deals for Total Wireless, like 50% off select plans, and enjoy big savings.",
-   "seen": "2026-11-21T06:14:02.334Z"
-  },
-  {
-   "id": "wired-10ob61r",
-   "title": "Nike Promo Codes and Discounts: 30% for November 2026",
-   "url": "https://www.wired.com/story/nike-promo-code/",
-   "date": "2026-11-21T06:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/66ea076ea6cbbaa16c12af30/master/pass/WIRED-Coupons-12.jpg",
-   "summary": "Check out our deals for Nike this November 2026, including 15% off select purchases.",
-   "seen": "2026-11-21T06:14:02.334Z"
-  },
-  {
-   "id": "wired-1bxdvxc",
-   "title": "Ulta Promo Codes: Up to 20% Off in November 2026",
-   "url": "https://www.wired.com/story/ulta-coupon/",
-   "date": "2026-11-21T06:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/67b63b9283a9f95e0ab9b215/master/pass/WIRED-Coupons-R2_3.png",
-   "summary": "Shop the latest beauty trends and save big using an Ulta promo code for beauty tech, makeup, and more.",
-   "seen": "2026-11-21T06:14:02.334Z"
-  },
-  {
-   "id": "wired-1x2jnkz",
-   "title": "Uplift Promo Codes: $300 Off",
-   "url": "https://www.wired.com/story/uplift-desk-coupon-code/",
-   "date": "2026-11-21T06:00:00.000Z",
-   "source": "Wired",
-   "domain": "wired.com",
-   "image": "https://media.wired.com/photos/67b63b985c0507c1bb18ab66/master/pass/WIRED-Coupons-R2_14.png",
-   "summary": "Upgrade your home office with the best Uplift Desk discount codes. Save on standing desks, ergonomic chairs, and accessories.",
-   "seen": "2026-11-21T06:14:02.334Z"
   }
  ],
  "markets": [
@@ -5064,6 +5083,182 @@
  ],
  "gaming": [
   {
+   "id": "vgc-1alwqbg",
+   "title": "GTA 6 Boobie Time walkthrough: How to complete the mission and rewards",
+   "url": "https://www.videogameschronicle.com/guide/gta-6-boobie-time-walkthrough-how-to-complete-the-mission-and-rewards/",
+   "date": "2026-11-22T22:17:09.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/11/GTA-6-Boobie-Time-Walkthrough-6.jpg",
+   "summary": "How to complete Boobie Time in GTA 6",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "vgc-bwxsm1",
+   "title": "GTA 6: Should you shoot Kirk or Mr Mangrove?",
+   "url": "https://www.videogameschronicle.com/guide/shoot-kirk-or-mr-mangrove-gta-6/",
+   "date": "2026-11-22T21:07:24.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/11/GTA-6-Shoot-Kirk-or-Mr-Mangrove-6.jpg",
+   "summary": "What happens if you shoot Kirk or Mr Mangrove in GTA 6?",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-1dyki5d",
+   "title": "Sorry, Vice City, but You’re the Most Boring Part of GTA 6",
+   "url": "https://www.polygon.com/gta-6-vice-city-boring/",
+   "date": "2026-11-22T21:00:17.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/grand-theft-auto-6-vice-city-skyline-1.jpg",
+   "summary": "Grand Theft Auto 6's map is so well-designed that Vice City just might be the least exciting thing about Leonida.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "vgc-1c9ucha",
+   "title": "GTA 6 Skunk Ape questline walkthrough: All effigy locations and choices",
+   "url": "https://www.videogameschronicle.com/guide/gta-6-skunk-ape-questline-walkthrough-all-effigy-locations-and-choices/",
+   "date": "2026-11-22T20:44:10.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/11/GTA-6-Skunkape-Complete-Walkthrough-5.jpg",
+   "summary": "How to start and complete the Skunk Ape questline in GTA 6",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-159wwfu",
+   "title": "GTA 6's T-shirts Are True Works of Art",
+   "url": "https://www.polygon.com/gta-6-t-shirts/",
+   "date": "2026-11-22T20:30:17.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/jason-gator.png",
+   "summary": "Fashion can help you evade police in GTA 6, and Rockstar's design team has crafted some seriously covetable threads for the game.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-hg8xu8",
+   "title": "How to steal the BF Bandito in GTA 6",
+   "url": "https://www.polygon.com/gta-6-bf-bandito-steal-how-to-moses-grand-theft-auto/",
+   "date": "2026-11-22T20:29:44.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/gta6_guide_bandito_lead.jpg",
+   "summary": "Here's what you need to do to steal the BF Bandito in GTA 6 and complete one of Moses's requests",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "vgc-54qp0z",
+   "title": "GTA 6 Bad Luck, I Guess trophy guide: How to rob the Payday Loans store",
+   "url": "https://www.videogameschronicle.com/guide/gta-6-bad-luck-i-guess-trophy-guide-how-to-rob-the-payday-loans-store/",
+   "date": "2026-11-22T19:57:32.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/11/Bad-Luck-I-guess-Trophy-Guide-GTA-6-4.jpg",
+   "summary": "Unlock this secret trophy/achievement in GTA 6",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "vgc-6sob6t",
+   "title": "GTA 6: Arthur Morgan’s hat location from Red Dead Redemption 2",
+   "url": "https://www.videogameschronicle.com/guide/gta-6-arthur-morgan-hat-location/",
+   "date": "2026-11-22T19:36:38.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/11/GTA-6-Arthur-Morgans-hat-location-from-Red-Dead-Redemption-2-4.jpg",
+   "summary": "How to find Arthur Morgan's hat from RDR2 in Grand Theft Auto 6",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-hfcxmb",
+   "title": "'GTA 6' Bombshell: Husband Melts Down After Wife Hid Her Role In Game For Years",
+   "url": "https://www.polygon.com/gta-6-amber-wallin-comedian-instagram-npc-voice-actor-husband-secret/",
+   "date": "2026-11-22T19:32:30.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/grand-theft-auto-6-jason-and-lucia-motorcycles.jpg",
+   "summary": "A long-kept GTA 6 secret low-key almost destroyed comedian Amber Wallin's marriage.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-1e6jj77",
+   "title": "The Best GTA 6 Easter Eggs We’ve Seen So Far",
+   "url": "https://www.polygon.com/gta-6-easter-eggs/",
+   "date": "2026-11-22T18:42:14.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2025/10/gta6jason.JPG",
+   "summary": "Grand Theft Auto 6 features tons of celebrity cameos, pop-culture references, and nods to past Rockstar games. Here are a few of our faves.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "vgc-a5w3pn",
+   "title": "GTA 6: Full Alien UFO questline walkthrough",
+   "url": "https://www.videogameschronicle.com/guide/gta-6-full-alien-ufo-questline-walkthrough/",
+   "date": "2026-11-22T18:25:15.000Z",
+   "source": "VGC",
+   "domain": "videogameschronicle.com",
+   "image": "https://www.videogameschronicle.com/files/2026/11/GTA-6-Full-Alien-UFO-questline-walkthrough-5.jpg",
+   "summary": "How to unlock and complete the alien UFO easter egg questline in Grand Theft Auto 6",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-nvairw",
+   "title": "American Psycho Reboot Is 'Not Happening,' Director Says",
+   "url": "https://www.polygon.com/american-psycho-reboot-movie-update-luca-guadagnino/",
+   "date": "2026-11-22T18:09:46.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/25019298/american_psycho_bateman.jpg",
+   "summary": "We won't be getting a version of American Psycho from the director of Challengers",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-ndspqu",
+   "title": "Go on a trip with Dave and Beezlebub for a sick boss fight in GTA 6",
+   "url": "https://www.polygon.com/gta-6-hell-event-port-hellhorn-circles-of-hell-hellspawn-comshot/",
+   "date": "2026-11-22T18:05:11.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/gta6_guide_hellevent_lead2.jpg",
+   "summary": "In this guide, you learn all you need to start the Hell event in GTA 6 and go fight demons in Doom style to earn a unique weapon.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-ftx4hl",
+   "title": "Six Years Too Late, Next-Gen Finally Arrives with GTA 6",
+   "url": "https://www.polygon.com/patch-notes-gta-6-next-gen/",
+   "date": "2026-11-22T18:00:18.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/vice_city_13-1.jpg",
+   "summary": "Grand Theft Auto 6 is the best reason to buy a PS5 or Xbox Series X, but it might be the last time a game makes us feel this way",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-14kzwx4",
+   "title": "Christopher Nolan's Mystery Thriller Masterpiece Is Officially Being Removed from Netflix",
+   "url": "https://www.polygon.com/memento-leaving-netflix-december-2026/",
+   "date": "2026-11-22T17:23:18.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/mv5byjdknjm3m2qtywzlzs00mdzjlthmnzktmmjkotazzmrjymm1xkeyxkfqcgc-_v1_.jpg",
+   "summary": "The director's 2001 breakthrough film established many of the techniques and themes he's used throughout his career",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "polygon-vi8e5g",
+   "title": "Christopher Nolan's The Odyssey Built a 36-Foot Cyclops Puppet and Hauled It Up a Mountain",
+   "url": "https://www.polygon.com/the-odyssey-cyclops-puppet-practical-effects/",
+   "date": "2026-11-22T17:00:19.000Z",
+   "source": "Polygon",
+   "domain": "polygon.com",
+   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/cyclops.jpg",
+   "summary": "The Odyssey's effects team reveals how they built a 36-foot Cyclops puppet and hauled it up a mountain to film inside a cave in Greece.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
    "id": "games-1krjvuj",
    "title": "American Psycho Remake From Director Luca Guadagnino No Longer Happening",
    "url": "https://nordic.ign.com/american-psycho-new-adaptation/115953/american-psycho-remake-from-director-luca-guadagnino-no-longer-happening",
@@ -5590,156 +5785,6 @@
    "source": "IGN",
    "domain": "ign.com",
    "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-1oz2qcr",
-   "title": "Randy's Wish List - All Randy's Car Locations",
-   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQbmtJSWh2dlNxUkx0c0ZmYk1VaU9TOXNfeEEzM3QyQ0luajg4ZE9tUEtJQ1BhMEVPVFRsekQ0QzdzLUlqNjNRQTlsTmlXLUxIT0lpYUo4LTNqNXBEU1RsbWd6QUxONXZJaE5mY19kVDhnLW0takpicUFkYTVvUlZ6aXFiYXctT3Et?oc=5",
-   "date": "2026-11-22T06:22:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-i5defp",
-   "title": "Bricked Up Walkthrough",
-   "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE4xemRXM2R5MXdTVEhtaDVfcUhwNlJueEJaZzRKb1o5QWlNS19GYU5WUWFUdFpSMWlJTXJzSlNyOVQ2TTFMVlV0RlZVN0I1d2RoRWFYa0ItQ0lzMzhCejNKT08xV0M?oc=5",
-   "date": "2026-11-22T06:18:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T16:57:30.544Z"
-  },
-  {
-   "id": "games-8goysh",
-   "title": "Hidden Charges Walkthrough",
-   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9BVWhLVnYtWmZ1MjMyb1pLTTZzWFhpcUhOOTlTcGpPODhUN0d3SU1rb0xXa1F2RjNxbjNWRHJRZnFUMEdCSmdfOG5FRmtZV1ZUR2tEakxsNHE2UzJLVkNMRjF4NTRrVm5qNWc?oc=5",
-   "date": "2026-11-22T06:02:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-88n24x",
-   "title": "Cooties Walkthrough",
-   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE0zN1VPYUhlanZ0cXFILU9KNHdrRXZ0LXNfYkVncGxqUDVFWE1KbG5FU1pkMi1saGVWRnBiUi1HaHN0YkRkU0dtYnlHSEhxek5fbTdJQk1WZjlLUERvem1xSQ?oc=5",
-   "date": "2026-11-22T05:55:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-1rjp5t4",
-   "title": "Caught Slipping Walkthrough",
-   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBtZEdFN0xHeEVEcmxmdnFhcE9sMmpYQWFRRGVLQnIzeU5pVnJ6R1ZkR3lNaVpHX0JzZHNYLXMtUFFoWkE1UUFtOThyWU1QSVAwQThoQ3ZSTkE1YmI2VlhOSF9RUlpfTEdkZFNj?oc=5",
-   "date": "2026-11-22T05:35:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-1e8bf0k",
-   "title": "Ride or Die Walkthrough",
-   "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9DTkIwc0xzNmdCX3M0ZlpnVDNGUmJNWEJQM0M5WjluWmtUZzEtX3FlZmY5OTVKTXpPOTJKeVZMcGNiZ25GWFVBaWI4Q25rQ0p5V1ZHZ25lN05jTEZndngwd2xIa05UUQ?oc=5",
-   "date": "2026-11-22T05:30:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-1yqlinh",
-   "title": "All Pets - Steal An Egg [Roblox] Guide",
-   "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9YelQxcFVFZVIyNDJrOWxmUW1lbGxvVDdNMTMyLWlQTXhNWWhzQ0VIS2ctV2d2emtsb2lYTnFBNWhKaDQzUlExLTI2VmxtYXBidlFGcEVZMFhwUmtEZnZFU0E4ZDQ?oc=5",
-   "date": "2026-11-22T05:12:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-dwze3y",
-   "title": "These Piranha Plant Slippers Double as Mario-themed Decor When You Put Them Away",
-   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNQjFTMVIxdlJ1MEVxZHBwbVN6R1J3dVYxdGNoalhtZUtIR3AxQzRIWjBPVk91c3ZYcnQyVjB6aGF5NDhnUVNld1JTNkljUDhEX1RuWmNCbXF3bERSSENiTzlVQ0k3M2dQSGNvRkNuTEgxZ01JVmt2NGhCY3Q0MWF1b2g2V25qTVI3?oc=5",
-   "date": "2026-11-22T05:08:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-1h2d8lu",
-   "title": "Some of the Best Modern Board Games Are Getting Amazon Lightning Deals for Black Friday This Year",
-   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9pZzFHMS12U04zeWJoTF9oMXpDaVQ1YVVOYVlyT0RXUllqWXROaDFjOTBaY2tBamxPdWJScWFEMEp0YjdVYnpLdHR4MlZJWUlvdzdpaGxHSFJZby1pLUl0U3IxQ051ODU1TUUyZDJxdVU5NzJ3ZzktMENn?oc=5",
-   "date": "2026-11-22T04:19:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "polygon-1ygk3br",
-   "title": "46 Years Later, the Most Influential Thriller of All Time Is Officially Free on YouTube",
-   "url": "https://www.polygon.com/friday-the-13th-youtube-watch-free-november-2026/",
-   "date": "2026-11-22T04:00:17.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/11/m8dfrth_ec020.jpg",
-   "summary": "The start of Jason Voorhees's story, 'Friday the 13th,' is now available to watch for free.",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "polygon-73o88s",
-   "title": "58 Years Later, Captain Kirk's Best Star Trek Quote Is the Greatest Line in Sci-Fi History",
-   "url": "https://www.polygon.com/best-captain-kirk-quote-star-trek-original-series/",
-   "date": "2026-11-22T03:59:17.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/06/captain-kirk-og.png",
-   "summary": "Captain Kirk's speech in 'Return to Tomorrow' says more about what Star Trek stands for than any other line in the original series.",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-ddp7n",
-   "title": "Submachine Guns",
-   "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9xUldyT0U0aTZJVWc0bHJiR1VweHY0c3dXM1RfUUltSzRfcUtLUE9nQzk2SWNia3pUMkZqUTB0UXlMSlJsWTVNUldYLUp2aWFJMHhrd2RaOXI3ZlU?oc=5",
-   "date": "2026-11-22T03:02:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T16:57:30.544Z"
-  },
-  {
-   "id": "polygon-1rlou5c",
-   "title": "61 Years Later, Charlie Brown's Greatest Enemy Is Still an Undefeated 'Peanuts' Icon",
-   "url": "https://www.polygon.com/kite-eating-tree-peanuts/",
-   "date": "2026-11-22T03:00:28.000Z",
-   "source": "Polygon",
-   "domain": "polygon.com",
-   "image": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/charlie-brown-011-1024.jpg",
-   "summary": "Charlie Brown's only real arch-rival was a malevolent tree. Chomp chomp chomp.",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-148fjfl",
-   "title": "Sniper Rifles",
-   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5YYmQ2blVZa3ZjaDdpcVh2Yms1X19HSk93WkYwaWlmUlRGeEFzRUI4VU50WnBuM3pjNVgxZkdGVXZzOGkzTjByWTVXemRsOEs3aFFYT0N4bGk?oc=5",
-   "date": "2026-11-22T02:10:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-epm0m8",
-   "title": "Unpacked Comshot 12",
-   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBMbWJXYlVWczgxRENDSEw1bDJoV2RqckREWkZzOUpJTDM0Y0lSMEVqM1Q0QXFHUW11TGFOU0J6ZFZDWXJCME1BekM4ckpqUUoyZU9HcTN6N29oUVF3Y2ZOaQ?oc=5",
-   "date": "2026-11-22T02:04:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "games-1mlaepj",
-   "title": "Shotguns",
-   "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9jSU4teUltS0Zib1BoR1RJcUgtUk40VDR1NmZCdkkyVXZLeVB3Y01XR0hadDV6dHJBdHBMdmExbGdWZFZ5Ti1hQWxGaEZEVzhmZ1E?oc=5",
-   "date": "2026-11-22T01:44:00.000Z",
-   "source": "IGN",
-   "domain": "ign.com",
-   "seen": "2026-11-22T08:36:46.507Z"
   }
  ],
  "marvel": [
@@ -5998,6 +6043,160 @@
  ],
  "pop": [
   {
+   "id": "thr-1wx6df7",
+   "title": "Mahershala Ali Says “There Are Not Roles for Me” in “Vast Majority of Projects,” Despite Winning 2 Oscars",
+   "url": "https://www.hollywoodreporter.com/movies/movie-news/mahershala-ali-no-roles-majority-projects-despite-oscar-wins-1236760722/",
+   "date": "2026-11-22T21:41:46.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The actor previously took home Academy Awards for best supporting actor for 2016’s 'Moonlight' and 2018's 'Green Book.'",
+   "seen": "2026-11-22T22:23:28.163Z",
+   "tried": 1,
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/11/Mahershala-Ali-getty-H-2026.png?w=1296&h=730&crop=1"
+  },
+  {
+   "id": "variety-5ziif0",
+   "title": "‘Glee’ Star Chris Colfer Says He Forgot Kurt Hummel ‘Meant So Much to People’ Because of the ‘Homophobia and Hatred’ He Experienced During the Show",
+   "url": "https://variety.com/2026/tv/news/glee-chris-colfer-kurt-homophobia-1236955465/",
+   "date": "2026-11-22T21:31:30.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/11/TCDGLEE_EC183.jpg",
+   "summary": "Chris Colfer is opening up about what it meant to play his now-beloved “Glee” character, Kurt Hummel, a month after reuniting on stage with his on-screen love interest and co-star, Darren Criss.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "variety-5piwq1",
+   "title": "Huelva Ibero-American Film Festival Prizes: ‘After Elena,’ Alfredo Castro, Lucía Puenzo and ‘La Bola Negra’ Win Big",
+   "url": "https://variety.com/2026/film/global/huelva-ibero-american-film-festival-prizes-after-elena-1236955462/",
+   "date": "2026-11-22T21:09:57.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/09/Foto-Despues-de-Elena-adaptacion-afiche-Meikincine.jpg",
+   "summary": "Spain’s Huelva Ibero-American Film Festival, one of Europe’s foremost Latin American cinema platforms, prized two of the region’s cinema greats, awarding top prizes to Chilean actor Alfredo Castro and Argentine…",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "thr-zj3eq5",
+   "title": "SHEGLAM Opens the Wizards’ Vault With Its Third Harry Potter Makeup Collection",
+   "url": "https://www.hollywoodreporter.com/lifestyle/shopping/sheglam-harry-potter-makeup-collection-2026-products-review-1236759625/",
+   "date": "2026-11-22T20:40:18.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The set features playful, wearable essentials for eyes, lips and complexion, each inspired by a familiar corner of the wizarding world.",
+   "seen": "2026-11-22T22:23:28.163Z",
+   "tried": 1,
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/11/she-glam-harry-potter.jpg?w=1440&h=810&crop=1"
+  },
+  {
+   "id": "variety-179bcwd",
+   "title": "John Turturro Says ‘I Still Consider Myself a Beginner’ as He Gets Marrakech Film Festival Tribute Award: ‘Every Job Is Like a First Love’",
+   "url": "https://variety.com/2026/film/festivals/john-turturro-marrakech-film-festival-award-still-beginner-1236955255/",
+   "date": "2026-11-22T20:39:11.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/11/john-turturro.jpg",
+   "summary": "Though his career has spanned over four decades, John Turturro still feels like it’s just the beginning.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "variety-1r3omel",
+   "title": "‘Hunger Games’ Lead Joseph Zada on Filming His Breakout Movie Role and ‘Sunrise on the Reaping’s’ Intense Stunts: ‘I Look Like a F—ing Action Star!’",
+   "url": "https://variety.com/2026/film/features/hunger-games-sunrise-on-the-reaping-joseph-zada-action-scenes-1236954627/",
+   "date": "2026-11-22T20:30:00.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/11/MCDHUGA_LG071.jpg",
+   "summary": "When it comes to taking on the leading role in one of the most beloved film (and literary) franchises, sometimes you just have to jump right in.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "variety-16w7yo9",
+   "title": "Ina Garten Says She Turned Down ‘Dancing With the Stars’ Because the Thought of Competing Gave Her ‘Nightmares’",
+   "url": "https://variety.com/2026/tv/news/ina-garten-dancing-with-the-stars-1236955404/",
+   "date": "2026-11-22T20:14:53.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/11/GettyImages-2300906234.jpg",
+   "summary": "Celebrity chef Ina Garten will not be cooking up a freestyle for “Dancing with the Stars” in the near future.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "variety-16igmk0",
+   "title": "‘You Can See Everything’ Becomes Rare Documentary to Surpass $100 Million Globally",
+   "url": "https://variety.com/2026/film/box-office/you-can-see-everything-crosses-100-million-global-box-office-1236955393/",
+   "date": "2026-11-22T19:57:37.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/09/Screenshot-2026-09-06-at-7.57.52-PM.webp",
+   "summary": "“You Can See Everything” has surpassed $100 million globally, a rare box office milestone for a documentary.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "variety-e8hyi5",
+   "title": "Noah Kahan Deserved a Lot More Grammy Love Than Just One Minor Nomination. Here’s Why He Didn’t Get It",
+   "url": "https://variety.com/2026/music/columns/noah-kahan-lack-of-grammy-nominations-reasons-1236955321/",
+   "date": "2026-11-22T19:30:19.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/11/MAB_2419-e1795368424397.jpg",
+   "summary": "In previous eras of less pervasive social media, we usually could only guess at just how disappointed music and film personalities were when they didn’t fare well with Grammy or Oscar nominations.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "thr-6xgsan",
+   "title": "The Hotel Bel-Air’s Menu Returns to Tradition",
+   "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/hotel-bel-airs-returns-classic-menu-1236757360/",
+   "date": "2026-11-22T19:00:00.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "Everything old is new again, as classic hits are revived, from the Thai-style chicken salad to the house burger.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "variety-19bm26x",
+   "title": "Noah Schnapp Says He Auditioned to Play Haymitch in ‘Hunger Games: Sunrise on the Reaping’: ‘They Picked Right for This One’",
+   "url": "https://variety.com/2026/film/news/noah-schnapp-hunger-games-sunrise-on-the-reaping-haymich-1236955369/",
+   "date": "2026-11-22T18:47:06.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/11/GettyImages-2282807244-1.jpg",
+   "summary": "The odds were not in Noah Schnapp’s favor when it came to joining “The Hunger Games: Sunrise on the Reaping.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "thr-19hlvm3",
+   "title": "After 114 Years, the Beverly Hills Hotel Gets a (Night)life",
+   "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/beverly-hills-hotel-nightlife-supper-club-bar-1236757355/",
+   "date": "2026-11-22T18:30:00.000Z",
+   "source": "The Hollywood Reporter",
+   "domain": "hollywoodreporter.com",
+   "summary": "The landmark’s biggest expansion yet adds a supper club, a cocktail bar and, at long last… a screening room.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "variety-8ewlxo",
+   "title": "Sheila Mangubat, ’90 Day Fiancé: Before the 90 Days’ Star, Dies at 35",
+   "url": "https://variety.com/2026/tv/people-news/sheila-mangubat-dead-90-day-fiance-1236955340/",
+   "date": "2026-11-22T18:27:55.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/11/split-image-1000-3-1.jpg",
+   "summary": "Sheila Mangubat, who appeared on the reality series “90 Day Fiancé: Before the 90 Days,” has died. She was 35. David Dangerfield, Mangubat’s former fiancé, announced her death in an Instagram post shared on Saturday.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "variety-1bsxcu2",
+   "title": "Jeff Goldblum, Marion Cotillard and John Turturro Dine With Morocco’s HRH Prince Moulay Rachid at Starry Royal Gala During Marrakech Film Festival",
+   "url": "https://variety.com/2026/film/festivals/jeff-goldblum-marion-cotillard-morocco-prince-royal-dinner-1236955306/",
+   "date": "2026-11-22T18:01:36.000Z",
+   "source": "Variety",
+   "domain": "variety.com",
+   "image": "https://variety.com/wp-content/uploads/2026/11/marrakech-royal-dinner.jpg",
+   "summary": "Jeff Goldblum, Marion Cotillard, John Turturro and more stars got the royal treatment on Saturday night at a glitzy dinner hosted by Morocco’s His Royal Highness Prince Moulay Rachid and Her Royal Highness Princess…",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
    "id": "pop-8otylg",
    "title": "Billy Ray Cyrus attends daughter Miley’s wedding amid rumored family drama",
    "url": "https://ew.com/billy-ray-cyrus-attends-daughter-miley-wedding-amid-rumored-family-rift-12272158",
@@ -6016,9 +6215,9 @@
    "source": "The Hollywood Reporter",
    "domain": "hollywoodreporter.com",
    "summary": "He spent nearly 30 years with the network, often teaming with Chris Berman: “We’ve lost one of the best human beings ever to walk the planet.”",
-   "seen": "2026-11-22T16:57:30.544Z",
+   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/11/Tom-Jackson-obit-temp-getty-H-2026.png?w=1296&h=730&crop=1",
    "tried": 1,
-   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/11/Tom-Jackson-obit-temp-getty-H-2026.png?w=1296&h=730&crop=1"
+   "seen": "2026-11-22T16:57:30.544Z"
   },
   {
    "id": "thr-1q3r6p7",
@@ -6027,7 +6226,7 @@
    "date": "2026-11-22T16:44:02.000Z",
    "source": "The Hollywood Reporter",
    "domain": "hollywoodreporter.com",
-   "summary": "The sixth film in the Lionsgate franchise bounced back after 2023's 'The Ballad of Songbirds & Snakes,' while freshly expanded 'I Play Rocky' and newcomer 'Elsinore' also impressed.",
+   "summary": "The sixth film in the Lionsgate series rebounded after 2023's 'The Ballad of Songbirds & Snakes,' while freshly expanded 'I Play Rocky' and newcomer 'Elsinore' also came out swinging.",
    "seen": "2026-11-21T20:48:54.387Z"
   },
   {
@@ -6543,152 +6742,75 @@
    "source": "Entertainment Weekly",
    "domain": "ew.com",
    "seen": "2026-11-22T08:36:46.507Z"
-  },
-  {
-   "id": "thr-1xosz2g",
-   "title": "Where to Watch the NWSL Championship: Washington Spirit vs. Kansas City Current",
-   "url": "https://www.hollywoodreporter.com/tv/tv-news/watch-nwsl-final-washington-spirit-kansas-city-current-free-1236758737/",
-   "date": "2026-11-21T20:00:00.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "summary": "Washington Spirit will have the benefit of a hometown crowd at the sold-out game, while the hungry Kansas City Current seek their first title.",
-   "image": "https://www.hollywoodreporter.com/wp-content/uploads/2026/11/washington-spirit.jpg?crop=0px%2C145px%2C3918px%2C2193px&resize=1440%2C810",
-   "tried": 1,
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "pop-um3hn5",
-   "title": "Jennifer Lopez gave up creative control of documentary produced by Ben Affleck: ‘Disappointing’",
-   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNUE0tZWJlTV9TaF9zSGNKVGk4SkM0Q3U5b3MtTEIyb3BEQUZDNHVjdUNIejV6MmsyeDYtTXJjVFBGZE11WGhaNUV6MzFURElBLVRqSmFzLTUwTkRJLUZVWHBfbXBHNlRsLVFHUV8xQmtmcVQwQzBFN0dZdGpHMUt4d2RXdUMxeXhJSElwS2ZxZ1I0TzBhWHVSOUlfcFI?oc=5",
-   "date": "2026-11-21T20:00:00.000Z",
-   "source": "Entertainment Weekly",
-   "domain": "ew.com",
-   "seen": "2026-11-22T01:01:41.345Z"
-  },
-  {
-   "id": "variety-q780yi",
-   "title": "Jeff Goldblum Performs a Piano Medley and Reflects on His Career at Marrakech Film Festival: ‘The Stories That We Tell Matter’",
-   "url": "https://variety.com/2026/film/global/jeff-goldblum-career-marrakech-film-festival-tilda-swinton-1236954972/",
-   "date": "2026-11-21T19:51:33.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/11/GettyImages-2305693351.jpg",
-   "summary": "Jeff Goldblum was honored with a tribute award at the Marrakech Film Festival on Saturday, delighting the audience with a surprise piano performance before reflecting on more than half a century in cinema, giving a…",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "variety-vcpx6y",
-   "title": "Russell Crowe’s Request to Shoot ‘A Beautiful Mind’ Chronologically Added $1 Million to the Budget, Says Ron Howard: ‘It Was the Right Kind of Investment’",
-   "url": "https://variety.com/2026/film/news/russell-crowe-a-beautiful-mind-sequence-ron-howard-1236955038/",
-   "date": "2026-11-21T19:28:57.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/11/MSDBEMI_EC006.jpg",
-   "summary": "“A Beautiful Mind” director Ron Howard recently called Russell Crowe’s suggestion to shoot the film in order, which cost the studio an additional $1 million, was “the right kind of investment.",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "pop-12v0ll0",
-   "title": "Russell Crowe's 'A Beautiful Mind' Request Added $1 Million to Budget",
-   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPUFh1eUEwdlpuMmV0eS1MRmNESi1SeHhxSjJKZkRpTXBxTHJOaWN2YmoxLW1LSGtzRXpOWkd3czYzTlY3SXZHNERmankxTjJyUF96bmM2WkVDalFfdGdEZTR1LWhUdFh4SzU2VmN2WmttNW1sR3l6aVQ2RnV0amZUTVpKQTN3Vm82OUh6MGQxWDhnUGR4bEsyRlFObUQ4QQ?oc=5",
-   "date": "2026-11-21T19:28:00.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "variety-p3crol",
-   "title": "How the ‘Elsinore’ Makeup Team Transformed Stars Andrew Scott and Olivia Colman to Bring the Story of Ian Charleson to Life",
-   "url": "https://variety.com/2026/artisans/news/elsinore-makeup-olivia-colman-andrew-scott-1236954968/",
-   "date": "2026-11-21T19:09:40.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/11/elsinore-E_03084_R_rgb.jpg",
-   "summary": "In “Elsinore,” Andrew Scott plays real-life actor Ian Charleson, who performed his final role while dying of AIDS.",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "pop-e4ifix",
-   "title": "'Elsinore': How Makeup and Acting Bring Ian Charleson's Story to Life",
-   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQM3JxT2dLa2VIX2F6ZlpkMF8tYXpaMGhiV0luV3RwLVo3MWc2RzZGUk50WjlBdzNFemNlMkMwbkpST1RrTjBvdEpZRHA3TmNrTTdxZXB3cEd0TldUWi1WNzR5QXNxSGdWZ28zR0lPdVF1Um4tMENMbGJ5V1VyMEtZSWZyRnB4UlJuLWFBaUJvbkFLU3l2dUJzQw?oc=5",
-   "date": "2026-11-21T19:09:00.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "pop-1uoztzw",
-   "title": "E.J. Carroll, ‘The Deuce’ and ‘Law & Order’ actor, dies at 66 while en route to voiceover job",
-   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQMzhoUlBUTXZsdGdQMWU4R1NFZWhUNS15VVJYRzZZU044ZU16RGh1VVR4cUpSRlNjMGVFLVJMS2ZPeWpqanZGMDFadURRcjVkQWd1Tmo5TzR5QmxGY19jS3ZzVTJvdnpLejY2LUx2NFlLZ29nM0pkMW5PY0V0TmxMemVlTmw?oc=5",
-   "date": "2026-11-21T19:04:39.000Z",
-   "source": "Entertainment Weekly",
-   "domain": "ew.com",
-   "seen": "2026-11-22T01:01:41.345Z"
-  },
-  {
-   "id": "thr-ibh3mf",
-   "title": "Hollywood’s Biggest Watch Nerds Are Obsessing Over These Indie Brands",
-   "url": "https://www.hollywoodreporter.com/lifestyle/style/indie-watch-brands-hollywood-1236760300/",
-   "date": "2026-11-21T19:00:00.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "summary": "From Keanu Reeves to Samuel L. Jackson to Ryan Reynolds, in-the-know insiders favor niche watchmakers that surprise and spark conversations.",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "pop-y38iwf",
-   "title": "How Tom Holland helped calm Zendaya’s first-day nerves on ‘The Odyssey’",
-   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9JbkE2STRoZ0VaQ3FWNFJvN3l3Qi16ejJOZzZrdThvLVdwS1JHTHk4RTl2dkdXOU1SZVBpRkRNRFFhXzdnWUpLQm52VllNTHQ0VERoVDg2R3NmME9XTERZZWVyTkJOS2RPU3I3RzI1WDFXYWk0MHlINHZ5VTdYcWc?oc=5",
-   "date": "2026-11-21T19:00:00.000Z",
-   "source": "Entertainment Weekly",
-   "domain": "ew.com",
-   "seen": "2026-11-22T01:01:41.345Z"
-  },
-  {
-   "id": "variety-nis2cd",
-   "title": "Stephan James on Honoring Carl Weathers’ Legacy and Learning to Box for ‘I Play Rocky’",
-   "url": "https://variety.com/2026/film/features/i-play-rocky-stephan-james-carl-weathers-boxing-training-1236954058/",
-   "date": "2026-11-21T18:30:00.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/11/GettyImages-2294889046.jpg",
-   "summary": "Stephan James has played a few real-life figures in his career, including Olympic gold medalist Jesse Owens (in 2016’s “Race”) and civil rights leader John Lewis (2014’s “Selma”), so he knows the drill.",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "thr-sbs08g",
-   "title": "How Raising Cane’s Became an A-List Magnet",
-   "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/raising-canes-a-list-parties-1236757826/",
-   "date": "2026-11-21T18:30:00.000Z",
-   "source": "The Hollywood Reporter",
-   "domain": "hollywoodreporter.com",
-   "summary": "Celebs from Adrien Brody to Teyana Taylor and Matthew Rhys are flocking to parties thrown by the chicken tender chain’s charismatic CEO.",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "variety-q2r60j",
-   "title": "Andrew Rannells Was Told to ‘Stay Away’ From Kevin Spacey After Meeting Backstage at ‘The Book of Mormon’; He Then Sent a ‘Handwritten Letter’ ‘Asking Me on a Date’",
-   "url": "https://variety.com/2026/tv/news/andrew-rannells-kevin-spacey-date-1236955011/",
-   "date": "2026-11-21T18:20:47.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/11/La-Bataille-De-Gaulle-Lge-De-Fer-De-Gaulle-Tilting-Iron-Screening-The-79th-Annual-Cannes-Film-Festival-1000.jpg",
-   "summary": "Andrew Rannells recently revealed that Kevin Spacey asked him out while the “Girls” actor was starring in “The Book of Mormon” on Broadway. “I’ve never told this story before.",
-   "seen": "2026-11-21T20:48:54.387Z"
-  },
-  {
-   "id": "variety-15mse7j",
-   "title": "Actor Awards Predictions: Andrew Garfield, Inde Navarrette and ‘The Odyssey’ Lead an Unsettled Film Race as ‘Widow’s Bay’ and HBO Max Could Rule TV",
-   "url": "https://variety.com/lists/2027-sag-actor-awards-predictions/",
-   "date": "2026-11-21T18:15:00.000Z",
-   "source": "Variety",
-   "domain": "variety.com",
-   "image": "https://variety.com/wp-content/uploads/2026/03/artificial-teaser-trailer-1000.jpg",
-   "summary": "Variety Awards Circuit section is the home for all awards news and related content throughout the year, featuring the following: the official predictions for the upcoming Oscars, Emmys, Grammys and Tony Awards…",
-   "seen": "2026-11-21T20:48:54.387Z"
   }
  ],
  "music": [
+  {
+   "id": "billboard-a4xl0r",
+   "title": "NFL Mexico City Game Halftime Show 2026: Here’s Where to Watch The Warning Perform Live Online Free",
+   "url": "https://www.billboard.com/culture/product-recommendations/nfl-mexico-city-game-the-warning-halftime-watch-live-free-1236385357/",
+   "date": "2026-11-22T22:20:00.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2024/11/directv-stream.png?w=512&h=512&crop=1",
+   "summary": "Livestream the Minnesota Vikings taking on the San Fransisco 49ers live from Mexico City on Nov. 22 — and watch The Warning perform at halftime.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "billboard-1qnryx7",
+   "title": "Morgan Wallen, Garth Brooks, Taylor Swift & More Artists With Most Weeks at No. 1 on Top Country Albums Chart: Full List",
+   "url": "https://www.billboard.com/lists/top-country-albums-number-ones-biggest/",
+   "date": "2026-11-22T22:01:27.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "summary": "Male solo artists dominate, though three female solo artists and two groups have also achieved the feat.",
+   "seen": "2026-11-22T22:23:28.163Z",
+   "tried": 1
+  },
+  {
+   "id": "billboard-1ftjqlz",
+   "title": "Twenty One Pilots, The Offspring, Peaches & More: 5 Best Moments in Mexico City’s Corona Capital (Day 2)",
+   "url": "https://www.billboard.com/lists/corona-capital-2026-day-2-twenty-one-pilots-offspring/",
+   "date": "2026-11-22T21:58:31.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/11/CHVRCHES-CC26-FOTOLILIANAESTRADA-e1795295536949.jpg?w=237&h=147&crop=1",
+   "summary": "Duo Tyler Joseph and Josh Dun bid an indefinite farewell to the stage on the second day of the festival.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "billboard-vsbt9f",
+   "title": "ATEEZ Earn Fourth No. 1 on Billboard 200 With ‘GOLDEN HOUR : Part.6’",
+   "url": "https://www.billboard.com/music/chart-beat/ateez-golden-hour-part6-no1-billboard-200-chart-1236387535/",
+   "date": "2026-11-22T21:40:27.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/09/hongjoong-exclusive-2026-press-cr-tyler-shields-billboard-1-1800.jpg?w=237&h=147&crop=1",
+   "summary": "Plus, U2 achieves its 14th top 10 with the debut of Carnaval de Luz .",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "billboard-7qwfr1",
+   "title": "Miley Cyrus & Maxx Morando’s Wedding Photos Are Here",
+   "url": "https://www.billboard.com/culture/lifestyle/miley-cyrus-wedding-photos-maxx-morando-1236387483/",
+   "date": "2026-11-22T19:57:07.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/11/2268065554-e1795325735581.jpg?w=237&h=147&crop=1",
+   "summary": "The couple were married in Palm Springs, Calif., on Saturday (Nov. 21).",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
+  {
+   "id": "billboard-16fyiyf",
+   "title": "Selena Gomez Helps Couple With Baby’s Sex Reveal at Spurs Game, ‘With No Hesitation’",
+   "url": "https://www.billboard.com/music/pop/selena-gomez-baby-gender-reveal-spurs-game-couple-1236387456/",
+   "date": "2026-11-22T18:15:39.000Z",
+   "source": "Billboard",
+   "domain": "billboard.com",
+   "image": "https://www.billboard.com/wp-content/uploads/2026/11/miley-cyrus-maxx-morando-march-2026-billboard-1800.jpg?w=237&h=147&crop=1",
+   "summary": "The star opened the envelope and announced whether the baby will be born male or female at Saturday night's game in San Antonio, Texas.",
+   "seen": "2026-11-22T22:23:28.163Z"
+  },
   {
    "id": "music-11k1907",
    "title": "SECOND PRIME NUMBER IN THE 100S",
@@ -7267,60 +7389,6 @@
    "date": "2026-11-22T15:32:44.000Z",
    "source": "amoeba-cms.pitchfork.com",
    "domain": "amoeba-cms.pitchfork.com",
-   "seen": "2026-11-22T16:57:30.544Z"
-  },
-  {
-   "id": "music-mci7sg",
-   "title": "HOW TO MAKE ROBLOX ACCESSORIES",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQR2ZSZ1E2YWdVWk42M2lIWnBZT2dZOUl1N194SUtUSFNaUEdhbmZkSDZnOXZTYllydnNDMDNEQU9mOE1feElJZEtXVGJrdUEyMmE1ek5CYm4yd2lEc2Y2czBFd1J2SGxMYUV3elN1SjZWRm1rQnh3RFpwUHdEYVgyVC0xOFhDblhKY05zRFlsUXF2SW8?oc=5",
-   "date": "2026-11-22T15:32:43.000Z",
-   "source": "amoeba-cms.pitchfork.com",
-   "domain": "amoeba-cms.pitchfork.com",
-   "seen": "2026-11-22T16:57:30.544Z"
-  },
-  {
-   "id": "music-14jzgxu",
-   "title": "FALL CREEK SPORTS HISTORY",
-   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPUDFCNVdRZTBlUzhXdFN3Vi1kT2kzYkcxSWMtRXpJSW9ibndwZXRfb0JDRTB6UzY4WGtOS3JIeVVkbFZBc2hoSk1JbW4xY0lBMVROMXA5Tk9lZ0p3azJ1NDQ4Mkp5OEJ4dGpTQTZNWnZyNVlLMk9SbFpLY1FLN3A0WHZJdEtfMmg5SENzbw?oc=5",
-   "date": "2026-11-22T15:32:32.000Z",
-   "source": "amoeba-cms.pitchfork.com",
-   "domain": "amoeba-cms.pitchfork.com",
-   "seen": "2026-11-22T16:57:30.544Z"
-  },
-  {
-   "id": "music-1qechkd",
-   "title": "CALCULUS BC TI84 PROGRAMS",
-   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNajl2ZE53Y3B5WnM3bG1yMWJjeU9ZZ1c5Q3NncVgtbjE4X1NqdTRMNldKOElNQjR5OU12bS1MQ3lfQl9xeUh5WGhST1hhbnllUGdwUkhHU2dzZktpMkVKVmZpU2plWjgyQ0xYU0t2SFpzMWk3RV9ZNHIzRGRaSkl2OGlSQUdZQWcyc2dTaQ?oc=5",
-   "date": "2026-11-22T15:32:15.000Z",
-   "source": "amoeba-cms.pitchfork.com",
-   "domain": "amoeba-cms.pitchfork.com",
-   "seen": "2026-11-22T16:57:30.544Z"
-  },
-  {
-   "id": "music-tivndw",
-   "title": "JAPANESE DRAGON COLORING: A COMPLETE HOW-TO GUIDE & ANALYTICAL REVIEW",
-   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOUjNyQ3NZODB4MTNRd1pVWkZxRGRQTjNuSUhlNUJMMEduZTN3OXJITXJxd0RjdXdyVVIxNkNoZUF3WS1nMkhDaVlmV3BKSU4ya2htaTl5dnpMSVduYjFnNXE1NTJiOEhyUS1jLVFacWo5RW55bnVsa3pFbHh4VDcwY0xTVHBGaW1rWVhZ?oc=5",
-   "date": "2026-11-22T15:32:12.000Z",
-   "source": "amoeba-cms.pitchfork.com",
-   "domain": "amoeba-cms.pitchfork.com",
-   "seen": "2026-11-22T16:57:30.544Z"
-  },
-  {
-   "id": "music-1qccrl2",
-   "title": "HIMALAYAN VS CHINESE RED PANDA: ULTIMATE COMPARISON GUIDE",
-   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOb3dRZC1BQ3J0SWEyLWtiSHVfS182eE5Eano3b296T0xRS3Ewcm5DaExYQWIyVTZBV2JxUXp3bmpoWm5Qa2xBMVVPQUZyUmUyLWtRQV9CTm85WGxnOURJclU0eWREVERjN1BsXzU4ZFhlUWFoLThjcFo3bWtWMEpCMVVDSWdoUTFpbGhGQ1F6bjBuejg?oc=5",
-   "date": "2026-11-22T15:31:56.000Z",
-   "source": "amoeba-cms.pitchfork.com",
-   "domain": "amoeba-cms.pitchfork.com",
-   "seen": "2026-11-22T16:57:30.544Z"
-  },
-  {
-   "id": "music-1hu8dys",
-   "title": "RUN AND ESCAPE MATH PLAYGROUND",
-   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOUXlMTVdNNnJOVnU4UDdEX0VwTFQyc0NSVlhHZzh5a1JINXI1MmdLZW1oaXdvN0hiMFpXYlNNaUNkOEtHay13ajlSb2w3c2g2LTdYa2ltVkxvUkZGeUIzMXNvc3Y5MnlGTHNDRHdqT051SThOLXprNkpqb1I1dzl6TThFT0VWVXBYN29odkoxVQ?oc=5",
-   "date": "2026-11-22T15:31:46.000Z",
-   "source": "infocus.pitchfork.com",
-   "domain": "infocus.pitchfork.com",
    "seen": "2026-11-22T16:57:30.544Z"
   }
  ],
